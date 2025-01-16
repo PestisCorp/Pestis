@@ -7,4 +7,4 @@ Ani Boja (Lead Designer),
 Murray Groves (Lead Programmer),   
 Vinh Bui,   
 Shayaan Ahmed,  
-Chongshen Wang  
+Chongsheng Wang  
