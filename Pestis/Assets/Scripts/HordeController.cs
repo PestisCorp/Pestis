@@ -11,18 +11,13 @@ public class HordeController : NetworkBehaviour
     public int AliveRats { get; set; } = 3;
 
     private List<GameObject> _spawnedRats = new List<GameObject>();
-    
+    private int _ratsToSpawn = 0;
     void AliveRatsChanged()
     {
         int difference = AliveRats - _spawnedRats.Count;
         if (difference > 0)
         {
-            // Spawn a Rat
-            for (int i = 0; i < difference; i++)
-            {
-                GameObject rat = Instantiate(ratPrefab, this.transform.position, Quaternion.identity, this.transform);
-                _spawnedRats.Add(rat);
-            }
+            _ratsToSpawn = difference;
         } else if (difference < 0)
         {
             // Kill a Rat
@@ -37,7 +32,8 @@ public class HordeController : NetworkBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        // Needed for if we
+        AliveRatsChanged();
     }
 
     // Update is called once per frame
@@ -48,6 +44,15 @@ public class HordeController : NetworkBehaviour
 
     private void FixedUpdate()
     {
+        // Only spawn up to one rat each tick to avoid freezes
+        if (_ratsToSpawn != 0)
+        {
+            // Spawn a Rat
+            GameObject rat = Instantiate(ratPrefab, this.transform.position, Quaternion.identity, this.transform);
+            _spawnedRats.Add(rat);
+            _ratsToSpawn--;
+        }
+        
         foreach (GameObject rat in _spawnedRats)
         {
             // Slowly turn to face center of horde
