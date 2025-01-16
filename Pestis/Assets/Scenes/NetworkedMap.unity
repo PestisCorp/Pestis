@@ -171,7 +171,7 @@ MonoBehaviour:
   ClientStartDelay: 0.1
   ServerPort: 0
   DefaultRoomName: 
-  InitialScenePath: 
+  InitialScenePath: Assets/Scenes/NetworkedMap.unity
   _currentStage: 0
   AutoConnectVirtualInstances: 1
   VirtualInstanceConnectDelay: 1
