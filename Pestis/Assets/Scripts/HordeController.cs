@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
+using Random = System.Random;
 
 public class HordeController : NetworkBehaviour
 {
+    
     public GameObject ratPrefab;
 
     [Networked, OnChangedRender(nameof(AliveRatsChanged))]
@@ -12,6 +14,9 @@ public class HordeController : NetworkBehaviour
 
     private List<GameObject> _spawnedRats = new List<GameObject>();
     private int _ratsToSpawn = 0;
+    
+    
+    
     void AliveRatsChanged()
     {
         int difference = AliveRats - _spawnedRats.Count;
@@ -63,5 +68,40 @@ public class HordeController : NetworkBehaviour
             // Head forward
             rat.transform.Translate(Vector3.up * (0.3f * Time.deltaTime), Space.Self);
         }
+    }
+    
+    // Population manager. Update birth and death rates here.
+    public class PopulationController
+    {
+        private int _initialPopulation;
+        private double _birthRate;
+        private double _deathRate;
+        private HordeController _hordeController;
+        private Random _random;
+
+        public PopulationController(double birthRate, double deathRate, HordeController hordeController)
+        {
+            _birthRate = birthRate;
+            _deathRate = deathRate;
+            _hordeController = hordeController;
+            _random = new Random();
+        }
+
+        void PopulationEvent()
+        {
+            double rMax = _birthRate + _deathRate;
+            
+            double r = _random.NextDouble() * rMax;
+            if (r < _birthRate)
+            {
+                _hordeController.AliveRats++;
+            }
+
+            if ((_birthRate <= r) && (r < (_birthRate + _deathRate)))
+            {
+                _hordeController.AliveRats--;
+            }
+        }
+
     }
 }
