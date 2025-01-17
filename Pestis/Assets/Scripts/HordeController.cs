@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class HordeController : NetworkBehaviour
 {
@@ -12,6 +13,10 @@ public class HordeController : NetworkBehaviour
 
     private List<GameObject> _spawnedRats = new List<GameObject>();
     private int _ratsToSpawn = 0;
+
+    private bool _highlighted = false;
+    private Light2D _selectionLight;
+    
     void AliveRatsChanged()
     {
         int difference = AliveRats - _spawnedRats.Count;
@@ -32,14 +37,38 @@ public class HordeController : NetworkBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // Needed for if we
+        // Needed for if we join an in-progress game
         AliveRatsChanged();
+        _selectionLight = GetComponentInChildren<Light2D>();
     }
 
-    // Update is called once per frame
+    public void Highlight()
+    {
+        _highlighted = true;
+        _selectionLight.enabled = true;
+    }
+
+    public void UnHighlight()
+    {
+        _highlighted = false;
+        _selectionLight.enabled = false;
+    }
+
     void Update()
     {
-        
+        if (_highlighted)
+        {
+            // Calculate bounding box that contains all rats
+            Bounds b = new Bounds(transform.position, Vector2.zero);
+            foreach (SpriteRenderer rat in GetComponentsInChildren<SpriteRenderer>())
+            {
+                b.Encapsulate(rat.bounds);
+            }
+
+            _selectionLight.pointLightInnerRadius = b.extents.magnitude;
+            _selectionLight.pointLightOuterRadius = b.extents.magnitude + 1;
+            _selectionLight.transform.position = b.center;
+        }
     }
 
     private void FixedUpdate()
