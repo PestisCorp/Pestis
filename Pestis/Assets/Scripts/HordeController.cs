@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using Random = UnityEngine.Random;
+using Random = System.Random;
 
 public class HordeController : NetworkBehaviour
 {
+    
     public GameObject ratPrefab;
 
     [Networked, OnChangedRender(nameof(AliveRatsChanged))]
@@ -19,6 +20,9 @@ public class HordeController : NetworkBehaviour
 
     private bool _highlighted = false;
     private Light2D _selectionLight;
+    
+    private PopulationController _populationController;
+    
     
     void AliveRatsChanged()
     {
@@ -40,7 +44,12 @@ public class HordeController : NetworkBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (HasStateAuthority)
+        {
+            _populationController = new PopulationController(0.5, 0.1, this);
+        }
         // Needed for if we join an in-progress game
+
         AliveRatsChanged();
         _selectionLight = GetComponentInChildren<Light2D>();
         TargetLocation = transform.Find("TargetLocation");
@@ -82,7 +91,7 @@ public class HordeController : NetworkBehaviour
         {
             // Spawn a Rat
             GameObject rat = Instantiate(ratPrefab, this.transform.position, Quaternion.identity, this.transform);
-            rat.GetComponent<Rigidbody2D>().mass = Random.Range(0.8f, 1.2f); 
+            rat.GetComponent<Rigidbody2D>().mass = UnityEngine.Random.Range(0.8f, 1.2f); 
             _spawnedRats.Add(rat);
             _ratsToSpawn--;
         }
@@ -102,5 +111,46 @@ public class HordeController : NetworkBehaviour
     public void Move(Vector2 target)
     {
         TargetLocation.position = target;
+    }
+    
+    public override void FixedUpdateNetwork()
+    {
+        _populationController.PopulationEvent();
+    }
+
+    // Population manager. Update birth and death rates here
+    public class PopulationController
+    {
+        private int _initialPopulation;
+        private double _birthRate;
+        private double _deathRate;
+        private HordeController _hordeController;
+        private Random _random;
+
+        public PopulationController(double birthRate, double deathRate, HordeController hordeController)
+        {
+            _birthRate = birthRate;
+            _deathRate = deathRate;
+            _hordeController = hordeController;
+            _random = new Random();
+        }
+        
+        // Check for birth or death events
+        public void PopulationEvent()
+        {
+            double rMax = _birthRate + _deathRate;
+            
+            double r = _random.NextDouble() * rMax; // Pick which event should happen
+            // A birth event occurs here
+            if (r < _birthRate)
+            {
+                _hordeController.AliveRats++;
+            }
+            // Death event occurs here
+            if ((_birthRate <= r) && (r < (_birthRate + _deathRate)))
+            {
+                _hordeController.AliveRats--;
+            }
+        }
     }
 }
