@@ -38,8 +38,12 @@ public class HordeController : NetworkBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        
+        if (HasStateAuthority)
+        {
+            _populationController = new PopulationController(0.5, 0.1, this);
+        }
         // Needed for if we
-        _populationController = new PopulationController(0.5, 0.1, this);
         AliveRatsChanged();
     }
 
