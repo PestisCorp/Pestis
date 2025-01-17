@@ -11,6 +11,8 @@ public class HordeController : NetworkBehaviour
     [Networked, OnChangedRender(nameof(AliveRatsChanged))]
     public int AliveRats { get; set; } = 3;
 
+    public Transform TargetLocation;
+
     private List<GameObject> _spawnedRats = new List<GameObject>();
     private int _ratsToSpawn = 0;
 
@@ -40,6 +42,7 @@ public class HordeController : NetworkBehaviour
         // Needed for if we join an in-progress game
         AliveRatsChanged();
         _selectionLight = GetComponentInChildren<Light2D>();
+        TargetLocation = transform.Find("TargetLocation");
     }
 
     public void Highlight()
@@ -59,7 +62,7 @@ public class HordeController : NetworkBehaviour
         if (_highlighted)
         {
             // Calculate bounding box that contains all rats
-            Bounds b = new Bounds(transform.position, Vector2.zero);
+            Bounds b = new Bounds(GetComponentInChildren<SpriteRenderer>().transform.position, Vector2.zero);
             foreach (SpriteRenderer rat in GetComponentsInChildren<SpriteRenderer>())
             {
                 b.Encapsulate(rat.bounds);
@@ -85,12 +88,17 @@ public class HordeController : NetworkBehaviour
         foreach (GameObject rat in _spawnedRats)
         {
             // Slowly turn to face center of horde
-            Vector3 direction = (this.transform.position - rat.transform.position );
+            Vector3 direction = (TargetLocation.position - rat.transform.position );
             Vector3 rotatedVectorToTarget = Quaternion.Euler(0, 0, 0) * direction;
             Quaternion targetRotation = Quaternion.LookRotation(forward: Vector3.forward, upwards: rotatedVectorToTarget);
             rat.transform.rotation = Quaternion.RotateTowards(rat.transform.rotation, targetRotation, 90 * Time.deltaTime);
             // Head forward
             rat.transform.Translate(Vector3.up * (0.3f * Time.deltaTime), Space.Self);
         }
+    }
+
+    public void Move(Vector2 target)
+    {
+        TargetLocation.position = target;
     }
 }
