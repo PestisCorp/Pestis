@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using Random = UnityEngine.Random;
 
 public class HordeController : NetworkBehaviour
 {
@@ -81,6 +82,7 @@ public class HordeController : NetworkBehaviour
         {
             // Spawn a Rat
             GameObject rat = Instantiate(ratPrefab, this.transform.position, Quaternion.identity, this.transform);
+            rat.GetComponent<Rigidbody2D>().mass = Random.Range(0.8f, 1.2f); 
             _spawnedRats.Add(rat);
             _ratsToSpawn--;
         }

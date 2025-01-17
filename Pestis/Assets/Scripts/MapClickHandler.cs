@@ -16,7 +16,6 @@ public class MapClickHandler : MonoBehaviour
     
     private void OnMouseDown()
     {
-        Debug.Log("clicked");
         LocalPlayer?.DeselectHorde();
     }
     
