@@ -14,6 +14,7 @@ public class HordeController : NetworkBehaviour
 
     private List<GameObject> _spawnedRats = new List<GameObject>();
     private int _ratsToSpawn = 0;
+    private PopulationController _populationController;
     
     
     
@@ -38,6 +39,7 @@ public class HordeController : NetworkBehaviour
     void Start()
     {
         // Needed for if we
+        _populationController = new PopulationController(0.5, 0.1, this);
         AliveRatsChanged();
     }
 
@@ -69,8 +71,13 @@ public class HordeController : NetworkBehaviour
             rat.transform.Translate(Vector3.up * (0.3f * Time.deltaTime), Space.Self);
         }
     }
-    
-    // Population manager. Update birth and death rates here.
+
+    public override void FixedUpdateNetwork()
+    {
+        _populationController.PopulationEvent();
+    }
+
+    // Population manager. Update birth and death rates here
     public class PopulationController
     {
         private int _initialPopulation;
@@ -86,17 +93,19 @@ public class HordeController : NetworkBehaviour
             _hordeController = hordeController;
             _random = new Random();
         }
-
-        void PopulationEvent()
+        
+        // Check for birth or death events
+        public void PopulationEvent()
         {
             double rMax = _birthRate + _deathRate;
             
-            double r = _random.NextDouble() * rMax;
+            double r = _random.NextDouble() * rMax; // Pick which event should happen
+            // A birth event occurs here
             if (r < _birthRate)
             {
                 _hordeController.AliveRats++;
             }
-
+            // Death event occurs here
             if ((_birthRate <= r) && (r < (_birthRate + _deathRate)))
             {
                 _hordeController.AliveRats--;
