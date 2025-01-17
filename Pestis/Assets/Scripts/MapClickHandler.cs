@@ -40,6 +40,7 @@ public class MapClickHandler : MonoBehaviour
         if (mouse.rightButton.wasPressedThisFrame)
         {
             Vector2 position = m_Camera.ScreenToWorldPoint(mouse.position.value);
+            Debug.Log(LocalPlayer);
             LocalPlayer?.MoveHorde(position);
         }
     }

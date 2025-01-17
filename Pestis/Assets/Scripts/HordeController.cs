@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Fusion;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using Random = System.Random;
@@ -13,7 +14,7 @@ public class HordeController : NetworkBehaviour
     [Networked, OnChangedRender(nameof(AliveRatsChanged))]
     public int AliveRats { get; set; } = 3;
 
-    public Transform TargetLocation;
+    public NetworkTransform TargetLocation;
 
     private List<GameObject> _spawnedRats = new List<GameObject>();
     private int _ratsToSpawn = 0;
@@ -21,7 +22,7 @@ public class HordeController : NetworkBehaviour
     private bool _highlighted = false;
     private Light2D _selectionLight;
     
-    private PopulationController _populationController;
+    [CanBeNull] private PopulationController _populationController;
     
     
     void AliveRatsChanged()
@@ -52,7 +53,7 @@ public class HordeController : NetworkBehaviour
 
         AliveRatsChanged();
         _selectionLight = GetComponentInChildren<Light2D>();
-        TargetLocation = transform.Find("TargetLocation");
+        TargetLocation = transform.Find("TargetLocation").gameObject.GetComponent<NetworkTransform>();
     }
 
     public void Highlight()
@@ -99,7 +100,7 @@ public class HordeController : NetworkBehaviour
         foreach (GameObject rat in _spawnedRats)
         {
             // Slowly turn to face center of horde
-            Vector3 direction = (TargetLocation.position - rat.transform.position );
+            Vector3 direction = (TargetLocation.transform.position - rat.transform.position );
             Vector3 rotatedVectorToTarget = Quaternion.Euler(0, 0, 0) * direction;
             Quaternion targetRotation = Quaternion.LookRotation(forward: Vector3.forward, upwards: rotatedVectorToTarget);
             rat.transform.rotation = Quaternion.RotateTowards(rat.transform.rotation, targetRotation, 90 * Time.deltaTime);
@@ -110,12 +111,12 @@ public class HordeController : NetworkBehaviour
 
     public void Move(Vector2 target)
     {
-        TargetLocation.position = target;
+        TargetLocation.Teleport( target);
     }
     
     public override void FixedUpdateNetwork()
     {
-        _populationController.PopulationEvent();
+        _populationController?.PopulationEvent();
     }
 
     // Population manager. Update birth and death rates here
