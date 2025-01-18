@@ -37,10 +37,9 @@ public class MapClickHandler : MonoBehaviour
             }
         }
 
-        if (mouse.rightButton.wasPressedThisFrame)
+        if (mouse.rightButton.wasPressedThisFrame && (LocalPlayer?.SelectedHorde?.HasStateAuthority ?? false))
         {
             Vector2 position = m_Camera.ScreenToWorldPoint(mouse.position.value);
-            Debug.Log(LocalPlayer);
             LocalPlayer?.MoveHorde(position);
         }
     }

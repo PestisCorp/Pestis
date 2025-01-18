@@ -1,10 +1,11 @@
 using Fusion;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class HumanPlayer : MonoBehaviour
 {
-    [CanBeNull] private HordeController _selectedHorde = null;
+    [FormerlySerializedAs("_selectedHorde")] [CanBeNull] public HordeController SelectedHorde = null;
     // Whether this HumanPlayer is the one being controlled by the player on this machine.
     public bool IsLocal = false;
 
@@ -19,26 +20,26 @@ public class HumanPlayer : MonoBehaviour
     
     public void SelectHorde(HordeController horde)
     {
-        if (_selectedHorde && _selectedHorde != horde)
+        if (SelectedHorde && SelectedHorde != horde)
         {
-            _selectedHorde.UnHighlight();
+            SelectedHorde.UnHighlight();
         }
 
-        if (_selectedHorde != horde)
+        if (SelectedHorde != horde)
         {
-            _selectedHorde = horde;
-            _selectedHorde?.Highlight();
+            SelectedHorde = horde;
+            SelectedHorde?.Highlight();
         }
     }
 
     public void DeselectHorde()
     {
-        _selectedHorde?.UnHighlight();
-        _selectedHorde = null;
+        SelectedHorde?.UnHighlight();
+        SelectedHorde = null;
     }
 
     public void MoveHorde(Vector2 target)
     {
-        _selectedHorde?.Move(target);
+        SelectedHorde?.Move(target);
     }
 }

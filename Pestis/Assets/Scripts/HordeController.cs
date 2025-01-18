@@ -8,11 +8,12 @@ using Random = System.Random;
 
 public class HordeController : NetworkBehaviour
 {
+    private static int StartingRatCount = 5; 
     
     public GameObject ratPrefab;
 
     [Networked, OnChangedRender(nameof(AliveRatsChanged))]
-    public int AliveRats { get; set; } = 3;
+    public int AliveRats { get; set; }
 
     public NetworkTransform TargetLocation;
 
@@ -47,12 +48,16 @@ public class HordeController : NetworkBehaviour
     {
         if (HasStateAuthority)
         {
-            _populationController = new PopulationController(0.5, 0.1, this);
+            _populationController = new PopulationController(0.000000000005, 0.0000000000048, this);
         }
+        
         // Needed for if we join an in-progress game
-
         AliveRatsChanged();
         _selectionLight = GetComponentInChildren<Light2D>();
+        if (!HasStateAuthority)
+        {
+            _selectionLight.color = Color.red;
+        }
         TargetLocation = transform.Find("TargetLocation").gameObject.GetComponent<NetworkTransform>();
     }
 
@@ -139,11 +144,11 @@ public class HordeController : NetworkBehaviour
         // Check for birth or death events
         public void PopulationEvent()
         {
-            double rMax = _birthRate + _deathRate;
+            double rMax = 1;
             
             double r = _random.NextDouble() * rMax; // Pick which event should happen
             // A birth event occurs here
-            if (r < _birthRate)
+            if (r < _birthRate || _hordeController.AliveRats < StartingRatCount)
             {
                 _hordeController.AliveRats++;
             }
