@@ -4,6 +4,7 @@ using Fusion;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 using Random = System.Random;
 
 public class HordeController : NetworkBehaviour
@@ -15,16 +16,21 @@ public class HordeController : NetworkBehaviour
     [Networked, OnChangedRender(nameof(AliveRatsChanged))]
     public int AliveRats { get; set; }
 
-    public NetworkTransform TargetLocation;
+    public NetworkTransform targetLocation;
+    public float targetTolerance;
+    /// <summary>
+    /// Points in the horde that individual rats will cycle between moving towards, to create continuous movement
+    /// </summary>
+    public Vector2[] intraHordeTargets = new Vector2[4];
 
     private List<RatController> _spawnedRats = new List<RatController>();
     private int _ratsToSpawn = 0;
 
-    private bool _highlighted = false;
     private Light2D _selectionLight;
     
     [CanBeNull] private PopulationController _populationController;
-    
+
+
     
     void AliveRatsChanged()
     {
@@ -37,7 +43,7 @@ public class HordeController : NetworkBehaviour
             // Kill a Rat
             for (int i = 0; i > difference; i--)
             {
-                Destroy(_spawnedRats[_spawnedRats.Count - 1 + i].transform.parent.gameObject);
+                Destroy(_spawnedRats[_spawnedRats.Count - 1 + i].transform.gameObject);
                 _spawnedRats.RemoveAt(_spawnedRats.Count - 1 + i);
             }
         }
@@ -58,36 +64,42 @@ public class HordeController : NetworkBehaviour
         {
             _selectionLight.color = Color.red;
         }
-        TargetLocation = transform.Find("TargetLocation").gameObject.GetComponent<NetworkTransform>();
+        targetLocation = transform.Find("TargetLocation").gameObject.GetComponent<NetworkTransform>();
     }
 
     public void Highlight()
     {
-        _highlighted = true;
         _selectionLight.enabled = true;
     }
 
     public void UnHighlight()
     {
-        _highlighted = false;
         _selectionLight.enabled = false;
     }
 
     void Update()
     {
-        if (_highlighted)
+        if (_spawnedRats.Count == 0)
         {
-            // Calculate bounding box that contains all rats
-            Bounds b = new Bounds(GetComponentInChildren<SpriteRenderer>().transform.position, Vector2.zero);
-            foreach (SpriteRenderer rat in GetComponentsInChildren<SpriteRenderer>())
-            {
-                b.Encapsulate(rat.bounds);
-            }
-
-            _selectionLight.pointLightInnerRadius = b.extents.magnitude;
-            _selectionLight.pointLightOuterRadius = b.extents.magnitude + 1;
-            _selectionLight.transform.position = b.center;
+            return;
         }
+        
+        // Calculate bounding box that contains all rats
+        Bounds b = new Bounds(_spawnedRats[0].transform.position, Vector2.zero);
+        foreach (RatController rat in _spawnedRats)
+        {
+            b.Encapsulate(rat.GetBounds());
+        }
+
+        _selectionLight.pointLightInnerRadius = b.extents.magnitude*0.8f;
+        _selectionLight.pointLightOuterRadius = b.extents.magnitude*0.9f;
+        _selectionLight.transform.position = b.center;
+
+        intraHordeTargets[0] = new Vector2(targetLocation.transform.position.x - b.extents.x * 0.65f, targetLocation.transform.position.y + b.extents.y * 0.65f);
+        intraHordeTargets[1] = new Vector2(targetLocation.transform.position.x - b.extents.x * 0.65f, targetLocation.transform.position.y - b.extents.y * 0.65f);
+        intraHordeTargets[2] = new Vector2(targetLocation.transform.position.x + b.extents.x * 0.65f, targetLocation.transform.position.y - b.extents.y * 0.65f);
+        intraHordeTargets[3] = new Vector2(targetLocation.transform.position.x + b.extents.x * 0.65f, targetLocation.transform.position.y + b.extents.y * 0.65f);
+        targetTolerance = b.extents.magnitude * 0.1f;
     }
 
     private void FixedUpdate()
@@ -98,26 +110,16 @@ public class HordeController : NetworkBehaviour
             // Spawn a Rat
             GameObject rat = Instantiate(ratPrefab, this.transform.position, Quaternion.identity, this.transform);
             RatController ratController = rat.GetComponent<RatController>();
+            ratController.SetHordeController(this);
             ratController.Start();
             _spawnedRats.Add(ratController);
             _ratsToSpawn--;
-        }
-        
-        foreach (RatController rat in _spawnedRats)
-        {
-            // Slowly turn to face center of horde
-            Vector3 direction = (TargetLocation.transform.position - rat.transform.position );
-            Vector2 currentDirection = rat.AddForce(direction.normalized);
-            Quaternion targetRotation = Quaternion.LookRotation(forward: Vector3.forward, upwards: currentDirection);
-            
-            //rat.transform.rotation = Quaternion.RotateTowards(Quaternion.Euler(currentDirection.x, currentDirection.y, 0), targetRotation, 90 * Time.deltaTime);
-            rat.transform.rotation = targetRotation;
         }
     }
 
     public void Move(Vector2 target)
     {
-        TargetLocation.Teleport( target);
+        targetLocation.Teleport( target);
     }
     
     public override void FixedUpdateNetwork()
