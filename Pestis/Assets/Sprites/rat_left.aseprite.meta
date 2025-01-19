@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7bf2f5307466f9495a531b6bb6a3d85b
+guid: 3d770699a58e0209195682bfa1d11a38
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,9 +123,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: rat_upright_evil
+  - name: rat_left
     originalName: 
-    pivot: {x: 0.64948064, y: 0.5211476}
+    pivot: {x: 0.42685965, y: 0.4107792}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -133,9 +133,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 38
-      height: 34
-    spriteID: 4606568518418df04a91168d623c39f9
+      width: 48
+      height: 18
+    spriteID: 9c5b04e469dd3616fbf2059b78b61c2d
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -147,21 +147,21 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 953233414
-    name: rat_upright_evil
+    guid: -855414693
+    name: rat_left
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: rat_upright_evil
+    - name: rat_left
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 40
-        y: 45
-        width: 38
-        height: 34
-      spriteId: 4606568518418df04a91168d623c39f9
+        x: 43
+        y: 54
+        width: 48
+        height: 18
+      spriteId: 9c5b04e469dd3616fbf2059b78b61c2d
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -181,4 +181,4 @@ ScriptedImporter:
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 128, y: 128}
-  previousTextureSize: {x: 64, y: 64}
+  previousTextureSize: {x: 64, y: 32}

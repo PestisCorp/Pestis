@@ -125,7 +125,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: rat_flip
     originalName: 
-    pivot: {x: 0.32432434, y: -3.5555556}
+    pivot: {x: 0.6069978, y: 0.48340082}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 

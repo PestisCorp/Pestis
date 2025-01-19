@@ -125,7 +125,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: rat_down_right
     originalName: 
-    pivot: {x: 0.5714286, y: -2.65}
+    pivot: {x: 0.6077765, y: 0.48132586}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 

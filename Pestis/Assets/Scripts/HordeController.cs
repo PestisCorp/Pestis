@@ -17,7 +17,7 @@ public class HordeController : NetworkBehaviour
 
     public NetworkTransform TargetLocation;
 
-    private List<GameObject> _spawnedRats = new List<GameObject>();
+    private List<RatController> _spawnedRats = new List<RatController>();
     private int _ratsToSpawn = 0;
 
     private bool _highlighted = false;
@@ -37,7 +37,7 @@ public class HordeController : NetworkBehaviour
             // Kill a Rat
             for (int i = 0; i > difference; i--)
             {
-                Destroy(_spawnedRats[_spawnedRats.Count - 1 + i]);
+                Destroy(_spawnedRats[_spawnedRats.Count - 1 + i].transform.parent.gameObject);
                 _spawnedRats.RemoveAt(_spawnedRats.Count - 1 + i);
             }
         }
@@ -48,7 +48,7 @@ public class HordeController : NetworkBehaviour
     {
         if (HasStateAuthority)
         {
-            _populationController = new PopulationController(0.000000000005, 0.0000000000048, this);
+            _populationController = new PopulationController(0.001, 0.0009, this);
         }
         
         // Needed for if we join an in-progress game
@@ -97,20 +97,21 @@ public class HordeController : NetworkBehaviour
         {
             // Spawn a Rat
             GameObject rat = Instantiate(ratPrefab, this.transform.position, Quaternion.identity, this.transform);
-            rat.GetComponent<Rigidbody2D>().mass = UnityEngine.Random.Range(0.8f, 1.2f); 
-            _spawnedRats.Add(rat);
+            RatController ratController = rat.GetComponent<RatController>();
+            ratController.Start();
+            _spawnedRats.Add(ratController);
             _ratsToSpawn--;
         }
         
-        foreach (GameObject rat in _spawnedRats)
+        foreach (RatController rat in _spawnedRats)
         {
             // Slowly turn to face center of horde
             Vector3 direction = (TargetLocation.transform.position - rat.transform.position );
-            Vector3 rotatedVectorToTarget = Quaternion.Euler(0, 0, 0) * direction;
-            Quaternion targetRotation = Quaternion.LookRotation(forward: Vector3.forward, upwards: rotatedVectorToTarget);
-            rat.transform.rotation = Quaternion.RotateTowards(rat.transform.rotation, targetRotation, 90 * Time.deltaTime);
-            // Head forward
-            rat.transform.Translate(Vector3.up * (0.3f * Time.deltaTime), Space.Self);
+            Vector2 currentDirection = rat.AddForce(direction.normalized);
+            Quaternion targetRotation = Quaternion.LookRotation(forward: Vector3.forward, upwards: currentDirection);
+            
+            //rat.transform.rotation = Quaternion.RotateTowards(Quaternion.Euler(currentDirection.x, currentDirection.y, 0), targetRotation, 90 * Time.deltaTime);
+            rat.transform.rotation = targetRotation;
         }
     }
 

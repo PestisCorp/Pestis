@@ -125,7 +125,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: rat_up
     originalName: 
-    pivot: {x: 0.5, y: -1.8148148}
+    pivot: {x: 0.5, y: 0.5452717}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -135,7 +135,7 @@ ScriptedImporter:
       y: 4
       width: 22
       height: 27
-    spriteID: 51e0e01220f28c105a9a57f76625bcaa
+    spriteID: f2cd296b88914c1d297342a4723f65cf
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -161,7 +161,7 @@ ScriptedImporter:
         y: 49
         width: 22
         height: 27
-      spriteId: 51e0e01220f28c105a9a57f76625bcaa
+      spriteId: f2cd296b88914c1d297342a4723f65cf
     linkedCells: []
     parentIndex: -1
   platformSettings:
