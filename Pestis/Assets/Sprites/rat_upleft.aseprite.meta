@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 793c7d44a132e5072a814c8da8306943
+guid: 6ea2893aa13e707e8adc867c503c9843
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,9 +123,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: rat_upright
+  - name: rat_upleft
     originalName: 
-    pivot: {x: 0.5675676, y: -1.3939395}
+    pivot: {x: 0.32432434, y: -1.3939395}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -135,7 +135,7 @@ ScriptedImporter:
       y: 4
       width: 37
       height: 33
-    spriteID: f20875a144eae59a2bd269ae38f616c2
+    spriteID: 4d89155fe1eb9c1a5950f48bb727e97e
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -147,21 +147,21 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: -980367063
-    name: rat_upright
+    guid: 771918398
+    name: rat_upleft
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: rat_upright
+    - name: rat_upleft
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 43
+        x: 52
         y: 46
         width: 37
         height: 33
-      spriteId: f20875a144eae59a2bd269ae38f616c2
+      spriteId: 4d89155fe1eb9c1a5950f48bb727e97e
     linkedCells: []
     parentIndex: -1
   platformSettings:

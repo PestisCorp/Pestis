@@ -125,7 +125,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: rat_up
     originalName: 
-    pivot: {x: 0.64935064, y: -0.6727272}
+    pivot: {x: 0.5, y: -1.8148148}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -133,8 +133,8 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 77
-      height: 55
+      width: 22
+      height: 27
     spriteID: 51e0e01220f28c105a9a57f76625bcaa
     spriteBone: []
     spriteOutline: []
@@ -157,10 +157,10 @@ ScriptedImporter:
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 14
-        y: 37
-        width: 77
-        height: 55
+        x: 53
+        y: 49
+        width: 22
+        height: 27
       spriteId: 51e0e01220f28c105a9a57f76625bcaa
     linkedCells: []
     parentIndex: -1
@@ -181,4 +181,4 @@ ScriptedImporter:
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 128, y: 128}
-  previousTextureSize: {x: 128, y: 64}
+  previousTextureSize: {x: 32, y: 64}
