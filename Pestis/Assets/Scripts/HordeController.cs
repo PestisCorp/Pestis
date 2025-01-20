@@ -93,8 +93,8 @@ public class HordeController : NetworkBehaviour
             b.Encapsulate(rat.GetBounds());
         }
 
-        _selectionLight.pointLightInnerRadius = b.extents.magnitude*0.8f;
-        _selectionLight.pointLightOuterRadius = b.extents.magnitude*0.9f;
+        _selectionLight.pointLightInnerRadius = b.extents.magnitude*0.9f;
+        _selectionLight.pointLightOuterRadius = b.extents.magnitude*1.0f;
         _selectionLight.transform.position = b.center;
 
         intraHordeTargets[0] = new Vector2(targetLocation.transform.position.x - b.extents.x * 0.65f, targetLocation.transform.position.y + b.extents.y * 0.65f);
