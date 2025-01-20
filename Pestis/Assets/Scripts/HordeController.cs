@@ -82,6 +82,7 @@ public class HordeController : NetworkBehaviour
     {
         if (_spawnedRats.Count == 0)
         {
+            _hordeCenter = transform.position;
             return;
         }
         
