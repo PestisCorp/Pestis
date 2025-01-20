@@ -17,6 +17,7 @@ public class HordeController : NetworkBehaviour
     public int AliveRats { get; set; }
 
     public NetworkTransform targetLocation;
+    private Vector2 _hordeCenter;
     public float targetTolerance;
     /// <summary>
     /// Points in the horde that individual rats will cycle between moving towards, to create continuous movement
@@ -100,6 +101,8 @@ public class HordeController : NetworkBehaviour
         intraHordeTargets[2] = new Vector2(targetLocation.transform.position.x + b.extents.x * 0.65f, targetLocation.transform.position.y - b.extents.y * 0.65f);
         intraHordeTargets[3] = new Vector2(targetLocation.transform.position.x + b.extents.x * 0.65f, targetLocation.transform.position.y + b.extents.y * 0.65f);
         targetTolerance = b.extents.magnitude * 0.1f;
+
+        _hordeCenter = b.center;
     }
 
     private void FixedUpdate()
@@ -108,7 +111,7 @@ public class HordeController : NetworkBehaviour
         if (_ratsToSpawn != 0)
         {
             // Spawn a Rat
-            GameObject rat = Instantiate(ratPrefab, this.transform.position, Quaternion.identity, this.transform);
+            GameObject rat = Instantiate(ratPrefab, _hordeCenter, Quaternion.identity, this.transform);
             RatController ratController = rat.GetComponent<RatController>();
             ratController.SetHordeController(this);
             ratController.Start();

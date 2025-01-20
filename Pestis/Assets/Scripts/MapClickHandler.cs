@@ -26,14 +26,21 @@ public class MapClickHandler : MonoBehaviour
         {
             Vector3 mousePosition = mouse.position.ReadValue();
             Ray ray = m_Camera.ScreenPointToRay(mousePosition);
-            RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
+            int layerMask = LayerMask.GetMask("Selection Detection");
+            RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity, layerMask);
             if (hit)
             {
-                // If player clicked anything other 
-                if (! hit.collider.GetComponentInParent<RatController>())
+                RatController rat = hit.collider.GetComponentInParent<RatController>();
+                if (rat)
+                {
+                    LocalPlayer?.SelectHorde(rat.GetHordeController());
+                }
+                else
                 {
                     LocalPlayer?.DeselectHorde();
                 }
+            } else {
+                LocalPlayer?.DeselectHorde();
             }
         }
 
