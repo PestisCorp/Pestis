@@ -1,53 +1,62 @@
 // Population manager. Update birth and death rates here
 
 using System;
+using Fusion;
 
 namespace Horde
 {
-    public class PopulationController
+    public struct PopulationState: INetworkStruct
+    {
+        internal double BirthRate;
+        internal double DeathRate;
+        internal float HealthPerRat;
+    }
+    
+    public class PopulationController: NetworkBehaviour
     {
         private const int InitialPopulation = 5;
-        private double _birthRate;
-        private double _deathRate;
 
-        private float _healthPerRat;
+        [Networked] private ref PopulationState State => ref MakeRef<PopulationState>();
         
-        private HordeController _hordeController;
+        public  HordeController hordeController;
         private Random _random;
 
-        public PopulationController(double birthRate, double deathRate, HordeController hordeController)
+        public override void Spawned()
         {
-            _birthRate = birthRate;
-            _deathRate = deathRate;
-
-            _healthPerRat = 5.0f;
-            
-            _hordeController = hordeController;
             _random = new Random();
+
+            State.BirthRate = 0.001;
+            State.DeathRate = 0.0009;
+            State.HealthPerRat = 5.0f;
         }
-        
+
         // Check for birth or death events
-        public void PopulationEvent()
+        private void PopulationEvent()
         {
             double rMax = 1;
             
             double r = _random.NextDouble() * rMax; // Pick which event should happen
             // A birth event occurs here
-            if (r < _birthRate || _hordeController.AliveRats < InitialPopulation)
+            if (r < State.BirthRate || hordeController.AliveRats < InitialPopulation)
             {
-                _hordeController.AliveRats++;
+                hordeController.TotalHealth += State.HealthPerRat;
             }
             // Death event occurs here
-            if ((_birthRate <= r) && (r < (_birthRate + _deathRate)))
+            if ((State.BirthRate <= r) && (r < (State.BirthRate + State.DeathRate)))
             {
-                _hordeController.AliveRats--;
+                hordeController.TotalHealth -= State.HealthPerRat;
             }
         }
-
-        public float GetHealthPerRat()
-        {
-            return _healthPerRat;
-        }
         
+        // Only executed on State Authority
+        public override void FixedUpdateNetwork()
+        {
+            PopulationEvent();
+        }
+
+        public PopulationState GetState()
+        {
+            return State;
+        }
     }
 }

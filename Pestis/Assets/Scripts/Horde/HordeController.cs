@@ -10,24 +10,10 @@ namespace Horde
     {
         public GameObject ratPrefab;
 
-        [Networked, OnChangedRender(nameof(AliveRatsChanged))]
-        public int AliveRats
-        {
-            get
-            {
-                if (_populationController != null)
-                {
-                    return  (int)(_totalHealth / _populationController.GetHealthPerRat());
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-            set => _totalHealth += (value / _populationController?.GetHealthPerRat()) ?? 0;
-        }
+        public int AliveRats => (int)(TotalHealth / _populationController.GetState().HealthPerRat);
 
-        private float _totalHealth;
+        [Networked, OnChangedRender(nameof(TotalHealthChanged))] 
+        internal float TotalHealth { get; set; }
 
         public NetworkTransform targetLocation;
         private Vector2 _hordeCenter;
@@ -42,9 +28,9 @@ namespace Horde
 
         private Light2D _selectionLight;
     
-        [CanBeNull] private PopulationController _populationController;
+        private PopulationController _populationController;
     
-        void AliveRatsChanged()
+        internal void TotalHealthChanged()
         {
             int difference = AliveRats - _spawnedRats.Count;
             if (difference > 0)
@@ -64,13 +50,10 @@ namespace Horde
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            if (HasStateAuthority)
-            {
-                _populationController = new PopulationController(0.001, 0.0009, this);
-            }
-        
+            _populationController = GetComponent<PopulationController>();
+            
             // Needed for if we join an in-progress game
-            AliveRatsChanged();
+            TotalHealthChanged();
             _selectionLight = GetComponentInChildren<Light2D>();
             if (!HasStateAuthority)
             {
@@ -136,12 +119,11 @@ namespace Horde
         {
             targetLocation.Teleport( target);
         }
-    
-        public override void FixedUpdateNetwork()
+
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void DealDamageRpc(float damage)
         {
-            _populationController?.PopulationEvent();
+            TotalHealth -= damage;
         }
-
-
     }
 }
