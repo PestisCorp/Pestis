@@ -1,22 +1,36 @@
 using System;
 using System.Collections.Generic;
 using Fusion;
+using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 using Random = System.Random;
 
 public class HordeController : NetworkBehaviour
 {
+    private static int StartingRatCount = 5; 
     
     public GameObject ratPrefab;
 
     [Networked, OnChangedRender(nameof(AliveRatsChanged))]
-    public int AliveRats { get; set; } = 3;
+    public int AliveRats { get; set; }
 
-    private List<GameObject> _spawnedRats = new List<GameObject>();
+    public NetworkTransform targetLocation;
+    public float targetTolerance;
+    /// <summary>
+    /// Points in the horde that individual rats will cycle between moving towards, to create continuous movement
+    /// </summary>
+    public Vector2[] intraHordeTargets = new Vector2[4];
+
+    private List<RatController> _spawnedRats = new List<RatController>();
     private int _ratsToSpawn = 0;
-    private PopulationController _populationController;
+
+    private Light2D _selectionLight;
     
-    
+    [CanBeNull] private PopulationController _populationController;
+
+
     
     void AliveRatsChanged()
     {
@@ -29,7 +43,7 @@ public class HordeController : NetworkBehaviour
             // Kill a Rat
             for (int i = 0; i > difference; i--)
             {
-                Destroy(_spawnedRats[_spawnedRats.Count - 1 + i]);
+                Destroy(_spawnedRats[_spawnedRats.Count - 1 + i].transform.gameObject);
                 _spawnedRats.RemoveAt(_spawnedRats.Count - 1 + i);
             }
         }
@@ -38,19 +52,54 @@ public class HordeController : NetworkBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
         if (HasStateAuthority)
         {
-            _populationController = new PopulationController(0.5, 0.1, this);
+            _populationController = new PopulationController(0.001, 0.0009, this);
         }
-        // Needed for if we
+        
+        // Needed for if we join an in-progress game
         AliveRatsChanged();
+        _selectionLight = GetComponentInChildren<Light2D>();
+        if (!HasStateAuthority)
+        {
+            _selectionLight.color = Color.red;
+        }
+        targetLocation = transform.Find("TargetLocation").gameObject.GetComponent<NetworkTransform>();
     }
 
-    // Update is called once per frame
+    public void Highlight()
+    {
+        _selectionLight.enabled = true;
+    }
+
+    public void UnHighlight()
+    {
+        _selectionLight.enabled = false;
+    }
+
     void Update()
     {
+        if (_spawnedRats.Count == 0)
+        {
+            return;
+        }
         
+        // Calculate bounding box that contains all rats
+        Bounds b = new Bounds(_spawnedRats[0].transform.position, Vector2.zero);
+        foreach (RatController rat in _spawnedRats)
+        {
+            b.Encapsulate(rat.GetBounds());
+        }
+
+        _selectionLight.pointLightInnerRadius = b.extents.magnitude*0.8f;
+        _selectionLight.pointLightOuterRadius = b.extents.magnitude*0.9f;
+        _selectionLight.transform.position = b.center;
+
+        intraHordeTargets[0] = new Vector2(targetLocation.transform.position.x - b.extents.x * 0.65f, targetLocation.transform.position.y + b.extents.y * 0.65f);
+        intraHordeTargets[1] = new Vector2(targetLocation.transform.position.x - b.extents.x * 0.65f, targetLocation.transform.position.y - b.extents.y * 0.65f);
+        intraHordeTargets[2] = new Vector2(targetLocation.transform.position.x + b.extents.x * 0.65f, targetLocation.transform.position.y - b.extents.y * 0.65f);
+        intraHordeTargets[3] = new Vector2(targetLocation.transform.position.x + b.extents.x * 0.65f, targetLocation.transform.position.y + b.extents.y * 0.65f);
+        targetTolerance = b.extents.magnitude * 0.1f;
     }
 
     private void FixedUpdate()
@@ -60,25 +109,22 @@ public class HordeController : NetworkBehaviour
         {
             // Spawn a Rat
             GameObject rat = Instantiate(ratPrefab, this.transform.position, Quaternion.identity, this.transform);
-            _spawnedRats.Add(rat);
+            RatController ratController = rat.GetComponent<RatController>();
+            ratController.SetHordeController(this);
+            ratController.Start();
+            _spawnedRats.Add(ratController);
             _ratsToSpawn--;
-        }
-        
-        foreach (GameObject rat in _spawnedRats)
-        {
-            // Slowly turn to face center of horde
-            Vector3 direction = (this.transform.position - rat.transform.position );
-            Vector3 rotatedVectorToTarget = Quaternion.Euler(0, 0, 0) * direction;
-            Quaternion targetRotation = Quaternion.LookRotation(forward: Vector3.forward, upwards: rotatedVectorToTarget);
-            rat.transform.rotation = Quaternion.RotateTowards(rat.transform.rotation, targetRotation, 90 * Time.deltaTime);
-            // Head forward
-            rat.transform.Translate(Vector3.up * (0.3f * Time.deltaTime), Space.Self);
         }
     }
 
+    public void Move(Vector2 target)
+    {
+        targetLocation.Teleport( target);
+    }
+    
     public override void FixedUpdateNetwork()
     {
-        _populationController.PopulationEvent();
+        _populationController?.PopulationEvent();
     }
 
     // Population manager. Update birth and death rates here
@@ -101,11 +147,11 @@ public class HordeController : NetworkBehaviour
         // Check for birth or death events
         public void PopulationEvent()
         {
-            double rMax = _birthRate + _deathRate;
+            double rMax = 1;
             
             double r = _random.NextDouble() * rMax; // Pick which event should happen
             // A birth event occurs here
-            if (r < _birthRate)
+            if (r < _birthRate || _hordeController.AliveRats < StartingRatCount)
             {
                 _hordeController.AliveRats++;
             }
@@ -115,6 +161,5 @@ public class HordeController : NetworkBehaviour
                 _hordeController.AliveRats--;
             }
         }
-
     }
 }
