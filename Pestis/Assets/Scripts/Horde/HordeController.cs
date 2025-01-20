@@ -9,12 +9,26 @@ using Random = System.Random;
 
 public class HordeController : NetworkBehaviour
 {
-    private static int StartingRatCount = 5; 
-    
     public GameObject ratPrefab;
 
     [Networked, OnChangedRender(nameof(AliveRatsChanged))]
-    public int AliveRats { get; set; }
+    public int AliveRats
+    {
+        get
+        {
+            if (_populationController != null)
+            {
+                return  (int)(_totalHealth / _populationController.GetHealthPerRat());
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        set => _totalHealth += (value / _populationController?.GetHealthPerRat()) ?? 0;
+    }
+
+    private float _totalHealth;
 
     public NetworkTransform targetLocation;
     private Vector2 _hordeCenter;
@@ -30,8 +44,6 @@ public class HordeController : NetworkBehaviour
     private Light2D _selectionLight;
     
     [CanBeNull] private PopulationController _populationController;
-
-
     
     void AliveRatsChanged()
     {
@@ -131,39 +143,5 @@ public class HordeController : NetworkBehaviour
         _populationController?.PopulationEvent();
     }
 
-    // Population manager. Update birth and death rates here
-    public class PopulationController
-    {
-        private int _initialPopulation;
-        private double _birthRate;
-        private double _deathRate;
-        private HordeController _hordeController;
-        private Random _random;
 
-        public PopulationController(double birthRate, double deathRate, HordeController hordeController)
-        {
-            _birthRate = birthRate;
-            _deathRate = deathRate;
-            _hordeController = hordeController;
-            _random = new Random();
-        }
-        
-        // Check for birth or death events
-        public void PopulationEvent()
-        {
-            double rMax = 1;
-            
-            double r = _random.NextDouble() * rMax; // Pick which event should happen
-            // A birth event occurs here
-            if (r < _birthRate || _hordeController.AliveRats < StartingRatCount)
-            {
-                _hordeController.AliveRats++;
-            }
-            // Death event occurs here
-            if ((_birthRate <= r) && (r < (_birthRate + _deathRate)))
-            {
-                _hordeController.AliveRats--;
-            }
-        }
-    }
 }
