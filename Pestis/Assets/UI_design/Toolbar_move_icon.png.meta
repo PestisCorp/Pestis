@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 123c7846057264189bfe94ca92e0cbf7
+guid: b101320d368e74694961b1a7b39d4141
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1555837324805766356
-    second: Rat_mutation_bg_0
+      213: -5616670166899138167
+    second: Toolbar_move_icon_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Rat_mutation_bg_0
+      name: Toolbar_move_icon_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4dc7751cdc1779510800000000000000
-      internalID: 1555837324805766356
+      spriteID: 9816179dd349d02b0800000000000000
+      internalID: -5616670166899138167
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Rat_mutation_bg_0: 1555837324805766356
+      Toolbar_move_icon_0: -5616670166899138167
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
