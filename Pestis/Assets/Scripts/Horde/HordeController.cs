@@ -3,6 +3,7 @@ using Fusion;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 
 namespace Horde
 {
@@ -14,6 +15,17 @@ namespace Horde
 
         [Networked, OnChangedRender(nameof(TotalHealthChanged))] 
         internal float TotalHealth { get; set; }
+
+        // Do not use or edit yourself, used to expose internals to Editor
+        [SerializeField] private int devToolsTotalRats;
+        [SerializeField] private float devToolsTotalHealth;
+        [SerializeField] private Vector2 devToolsTargetLocation;
+
+        public void OnValidate()
+        {
+            TotalHealth = _populationController.GetState().HealthPerRat * devToolsTotalRats;
+            targetLocation.transform.position = devToolsTargetLocation;
+        }
 
         public NetworkTransform targetLocation;
         private Vector2 _hordeCenter;
@@ -32,6 +44,9 @@ namespace Horde
     
         internal void TotalHealthChanged()
         {
+            devToolsTotalRats = AliveRats;
+            devToolsTotalHealth = TotalHealth;
+            Debug.Log("Total health changed");
             int difference = AliveRats - _spawnedRats.Count;
             if (difference > 0)
             {
@@ -74,6 +89,7 @@ namespace Horde
 
         void Update()
         {
+            devToolsTargetLocation = targetLocation.transform.position;
             if (_spawnedRats.Count == 0)
             {
                 _hordeCenter = transform.position;
