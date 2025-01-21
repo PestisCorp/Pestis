@@ -37,7 +37,7 @@ public class InputHandler : MonoBehaviour
         if (scroll.y != 0)
         {
             Vector2 oldTarget = _mainCamera.ScreenToWorldPoint(mouse.position.ReadValue());
-            _mainCamera.orthographicSize = Mathf.Clamp(_mainCamera.orthographicSize - scroll.y, 1, Mathf.Infinity);
+            _mainCamera.orthographicSize = Mathf.Clamp(_mainCamera.orthographicSize - scroll.y, 1, 50);
             Vector2 newTarget = _mainCamera.ScreenToWorldPoint(mouse.position.ReadValue());
             
             _mainCamera.transform.Translate(oldTarget - newTarget);
