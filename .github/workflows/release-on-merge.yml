@@ -15,7 +15,7 @@ jobs:
       runs-on: self-hosted
       steps:
         - uses: rymndhng/release-on-push-action@master
-          name: release
+          id: release
           with:
             bump_version_scheme: minor
 
