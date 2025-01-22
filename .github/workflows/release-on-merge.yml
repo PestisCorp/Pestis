@@ -59,4 +59,7 @@ jobs:
 
         # Output
         - name: Copy build to hosting folder
-          run: cp -r build /home/mediaserver/configs/pestis-runner/builds/${{ steps.release.outputs.version }}
+          run: cp -r build/WebGL/WebGL /home/mediaserver/configs/pestis-runner/builds/${{ steps.release.outputs.version }}
+
+        - name: Symlink to latest
+          run: ln -s /home/mediaserver/configs/pestis-runner/builds/${{ steps.release.outputs.version }} /home/mediaserver/configs/pestis-runner/builds/latest
