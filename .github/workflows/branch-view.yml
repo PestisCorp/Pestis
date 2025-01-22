@@ -1,8 +1,7 @@
-name: Build on manual release
-
-on:
-  release:
-    types: [created]
+on: 
+    push:
+        branches:
+          - '**'
 
 jobs:
     build:
@@ -55,12 +54,12 @@ jobs:
           with:
             targetPlatform: WebGL
             versioning: Custom
-            version: ${{github.event.release.tag_name }}
+            version: ${{ github.ref_name }}
             projectPath: Pestis
 
         # Output
         - name: Copy build to hosting folder
-          run: cp -r build/WebGL/WebGL /home/mediaserver/configs/pestis-runner/builds/${{ github.event.release.tag_name }}
+          run: cp -rf build/WebGL/WebGL /home/mediaserver/configs/pestis-runner/builds/${{ github.ref_name  }}
 
         - name: Symlink to latest
-          run: ln -s /home/mediaserver/configs/pestis-runner/builds/${{ github.event.release.tag_name }} /home/mediaserver/configs/pestis-runner/builds/stable
+          run: ln -s /home/mediaserver/configs/pestis-runner/builds/${{ github.ref_name  }} /home/mediaserver/configs/pestis-runner/builds/${{github.ref_name }}
