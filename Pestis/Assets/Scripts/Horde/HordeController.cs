@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Fusion;
 using JetBrains.Annotations;
+using Players;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
@@ -9,6 +10,8 @@ namespace Horde
 {
     public class HordeController : NetworkBehaviour
     {
+        public Player Player;
+        
         public GameObject ratPrefab;
 
         public int AliveRats => (int)(TotalHealth / _populationController.GetState().HealthPerRat);
@@ -21,14 +24,29 @@ namespace Horde
         [SerializeField] private float devToolsTotalHealth;
         [SerializeField] private Vector2 devToolsTargetLocation;
 
+        // When inspector values change, update appropriate variables
         public void OnValidate()
         {
+            if (!Application.isPlaying)
+            {
+                return;
+            }
+            
             TotalHealth = _populationController.GetState().HealthPerRat * devToolsTotalRats;
             targetLocation.transform.position = devToolsTargetLocation;
         }
 
+        /// <summary>
+        /// Location rats are trying to get to, synced across network
+        /// </summary>
         public NetworkTransform targetLocation;
+        /// <summary>
+        /// Mid-point of all the rats in the horde
+        /// </summary>
         private Vector2 _hordeCenter;
+        /// <summary>
+        /// Distance a rat must get to its current intra-horde target to move onto the next one
+        /// </summary>
         public float targetTolerance;
         /// <summary>
         /// Points in the horde that individual rats will cycle between moving towards, to create continuous movement
@@ -36,17 +54,25 @@ namespace Horde
         public Vector2[] intraHordeTargets = new Vector2[4];
 
         private List<RatController> _spawnedRats = new List<RatController>();
+        /// <summary>
+        /// How many rats we need to spawn to have the correct amount visible.
+        /// </summary>
         private int _ratsToSpawn = 0;
 
         private Light2D _selectionLight;
     
         private PopulationController _populationController;
-    
+
+
+        /// <summary>
+        /// Update number of visible rats based on current health
+        /// </summary>
         internal void TotalHealthChanged()
         {
+            // Update values shown in inspector
             devToolsTotalRats = AliveRats;
             devToolsTotalHealth = TotalHealth;
-            Debug.Log("Total health changed");
+            
             int difference = AliveRats - _spawnedRats.Count;
             if (difference > 0)
             {
@@ -61,12 +87,15 @@ namespace Horde
                 }
             }
         }
+
+        public override void Spawned()
+        {
+            _populationController = GetComponent<PopulationController>();
+        }
     
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            _populationController = GetComponent<PopulationController>();
-            
             // Needed for if we join an in-progress game
             TotalHealthChanged();
             _selectionLight = GetComponentInChildren<Light2D>();

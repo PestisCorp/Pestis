@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2065030354367770915}
   - component: {fileID: 1733681384128497525}
   - component: {fileID: 6561989814985848091}
-  - component: {fileID: 6419548170277611464}
+  - component: {fileID: 1453762566741848107}
   m_Layer: 0
   m_Name: RatBaseCamp
   m_TagString: Untagged
@@ -110,6 +110,7 @@ MonoBehaviour:
   - {fileID: 6001773465433005753}
   NetworkedBehaviours:
   - {fileID: 6561989814985848091}
+  - {fileID: 1453762566741848107}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &6561989814985848091
 MonoBehaviour:
@@ -128,7 +129,7 @@ MonoBehaviour:
   SyncParent: 0
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
---- !u!114 &6419548170277611464
+--- !u!114 &1453762566741848107
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -137,11 +138,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6124682003357980499}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bff5fefdddaf4ba9087a814c451e953b, type: 3}
+  m_Script: {fileID: 11500000, guid: bed7fcd0df1c447fbde4f121a5841b1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectedHorde: {fileID: 0}
-  IsLocal: 0
+  Type: 0
 --- !u!1001 &2540703415486097592
 PrefabInstance:
   m_ObjectHideFlags: 0

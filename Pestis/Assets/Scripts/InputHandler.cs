@@ -2,6 +2,7 @@ using System;
 using System.IO.Pipes;
 using Horde;
 using JetBrains.Annotations;
+using Players;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -38,7 +39,7 @@ public class InputHandler : MonoBehaviour
         if (scroll.y != 0)
         {
             Vector2 oldTarget = _mainCamera.ScreenToWorldPoint(mouse.position.ReadValue());
-            _mainCamera.orthographicSize = Mathf.Clamp(_mainCamera.orthographicSize - scroll.y, 1, Mathf.Infinity);
+            _mainCamera.orthographicSize = Mathf.Clamp(_mainCamera.orthographicSize - scroll.y, 1, 50);
             Vector2 newTarget = _mainCamera.ScreenToWorldPoint(mouse.position.ReadValue());
             
             _mainCamera.transform.Translate(oldTarget - newTarget);
@@ -77,7 +78,7 @@ public class InputHandler : MonoBehaviour
             }
         }
 
-        if (mouse.rightButton.wasPressedThisFrame && (LocalPlayer?.SelectedHorde?.HasStateAuthority ?? false))
+        if (mouse.rightButton.wasPressedThisFrame && (LocalPlayer?.selectedHorde?.HasStateAuthority ?? false))
         {
             Vector2 position = _mainCamera.ScreenToWorldPoint(mouse.position.value);
             LocalPlayer?.MoveHorde(position);
