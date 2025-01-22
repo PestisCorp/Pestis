@@ -44,6 +44,7 @@ jobs:
             githubToken: ${{ secrets.GITHUB_TOKEN }}
             projectPath: Pestis
             runAsHostUser: true
+            chownFilesTo: mediaserver
 
         # Build
         - name: Build project
@@ -58,6 +59,7 @@ jobs:
             version: ${{ steps.release.outputs.version }}
             projectPath: Pestis
             runAsHostUser: true
+            chownFilesTo: mediaserver
 
 
         # Output
