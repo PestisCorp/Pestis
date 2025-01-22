@@ -15,10 +15,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       runs-on: self-hosted
       steps:
-        - uses: rymndhng/release-on-push-action@master
-          id: release
-          with:
-            bump_version_scheme: minor
 
         # Checkout
         - name: Checkout repository
