@@ -1,0 +1,50 @@
+name: Actions 😎
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    name: Build release
+    runs-on: self-hosted
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      # Cache
+      - uses: actions/cache@v3
+        with:
+          path: Pestis/Library
+          key: Pestis/Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Pestis/Library-
+
+      # Test
+      - name: Run tests
+        uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      # Build
+      - name: Build project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: WebGL
+          versioning: Custom
+          version: ${{ github.event.release.tag_name }}
+
+      # Output
+      - name: Copy build to hosting folder
+        run: cp -r build /home/mediaserver/configs/pestis-runner/builds/${{ github.event.release.tag_name }}
