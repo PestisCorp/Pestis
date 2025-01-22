@@ -38,6 +38,7 @@ jobs:
           with:
             githubToken: ${{ secrets.GITHUB_TOKEN }}
             projectPath: Pestis
+            runAsHostUser: true
 
         # Build
         - name: Build project
@@ -51,6 +52,8 @@ jobs:
             versioning: Custom
             version: ${{ github.ref_name }}
             projectPath: Pestis
+            runAsHostUser: true
+
 
         # Output
         - name: Copy build to hosting folder
