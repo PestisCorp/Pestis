@@ -31,6 +31,11 @@ public class RatController : MonoBehaviour
     {
         _hordeController = controller;
     }
+
+    public HordeController GetHordeController()
+    {
+        return _hordeController;
+    } 
     
     public void Start()
     {
@@ -77,13 +82,6 @@ public class RatController : MonoBehaviour
             _spriteRenderer.sprite = DirectionUpLeft;
         }
         _spriteRenderer.transform.localRotation = Quaternion.Euler(new Vector3(0,0,angle));
-    }
-    
-    private void OnMouseDown()
-    {
-        HordeController hordeController = GetComponentInParent<HordeController>();
-        HumanPlayer player = hordeController.GetComponentInParent<HumanPlayer>();
-        player.SelectHorde(hordeController);
     }
     
     /// <param name="force">The force to apply to the rat</param>

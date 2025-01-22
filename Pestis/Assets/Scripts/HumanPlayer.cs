@@ -14,7 +14,7 @@ public class HumanPlayer : MonoBehaviour
         IsLocal = GetComponent<NetworkObject>().HasStateAuthority;
         if (IsLocal)
         {
-            GameObject.FindAnyObjectByType<MapClickHandler>().LocalPlayer = this;
+            GameObject.FindAnyObjectByType<InputHandler>().LocalPlayer = this;
         }
     }
     
