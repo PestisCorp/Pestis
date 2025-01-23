@@ -1,0 +1,62 @@
+on: 
+    push:
+      branches:
+        - main
+
+jobs:
+    build:
+      permissions:
+        contents: write
+        checks: write
+        statuses: write
+      name: Build release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      runs-on: self-hosted
+      steps:
+        - uses: rymndhng/release-on-push-action@master
+          name: release
+          with:
+            bump_version_scheme: minor
+
+        # Checkout
+        - name: Checkout repository
+          uses: actions/checkout@v4
+          with:
+            lfs: true
+
+        # Cache
+        - uses: actions/cache@v3
+          with:
+            path: Pestis/Library
+            key: Pestis/Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+            restore-keys: |
+              Pestis/Library-
+
+        # Test
+        - name: Run tests
+          uses: game-ci/unity-test-runner@v4
+          env:
+            UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+            UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+            UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          with:
+            githubToken: ${{ secrets.GITHUB_TOKEN }}
+            projectPath: Pestis
+
+        # Build
+        - name: Build project
+          uses: game-ci/unity-builder@v4
+          env:
+            UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+            UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+            UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          with:
+            targetPlatform: WebGL
+            versioning: Custom
+            version: ${{ steps.release.outputs.version }}
+            projectPath: Pestis
+
+        # Output
+        - name: Copy build to hosting folder
+          run: cp -r build /home/mediaserver/configs/pestis-runner/builds/${{ steps.release.outputs.version }}
