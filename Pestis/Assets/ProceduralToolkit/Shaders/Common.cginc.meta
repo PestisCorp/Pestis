@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 01748d5f004612245a5fb7680e82312e
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Shaders/Common.cginc
+  uploadId: 371553

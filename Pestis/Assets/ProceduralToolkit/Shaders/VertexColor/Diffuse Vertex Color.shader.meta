@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: ed30f33ca046d494cb8f02a356e97613
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Shaders/VertexColor/Diffuse Vertex Color.shader
+  uploadId: 371553

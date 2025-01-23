@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: bec5a55c1d8cfb347b5eeab59c20493a
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Shaders/Debug/Debug Normals.shader
+  uploadId: 371553

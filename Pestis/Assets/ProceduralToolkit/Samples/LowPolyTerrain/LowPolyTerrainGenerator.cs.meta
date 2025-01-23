@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 2c0b83da005af044da00be885d08dd80
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Samples/LowPolyTerrain/LowPolyTerrainGenerator.cs
+  uploadId: 371553

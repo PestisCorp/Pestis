@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 40dd86119e3f8e74d8f7d84425c926aa
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Shaders/VertexColor/Standard Vertex Color.shader
+  uploadId: 371553
