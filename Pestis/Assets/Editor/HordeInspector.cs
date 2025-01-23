@@ -2,10 +2,10 @@ using Horde;
 using UnityEditor;
 using UnityEngine.UIElements;
 
-namespace Dev_Tools
+namespace Editor
 {
     [CustomEditor(typeof(HordeController))]
-    public class HordeInspector : Editor
+    public class HordeInspector : UnityEditor.Editor
     {
         public VisualTreeAsset m_InspectorXML;
 

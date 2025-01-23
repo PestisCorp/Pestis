@@ -6,6 +6,31 @@ using UnityEngine;
 
 namespace Horde
 {
+    /// <summary>
+    /// https://doc.photonengine.com/fusion/current/manual/fusion-types/network-collections#usage-in-inetworkstructs
+    /// </summary>
+    public struct CombatParticipant : INetworkStruct
+    {
+        public Player Player;
+        
+        [Networked, Capacity(5)] public NetworkLinkedList<NetworkBehaviourId> Hordes => default;
+
+        public CombatParticipant(Player player, HordeController hordeController)
+        {
+            Player = player;
+            Hordes.Add(hordeController);
+        }
+
+        public CombatParticipant(Player player)
+        {
+            Player = player;
+        }
+
+        public void AddHorde(HordeController horde)
+        {
+            Hordes.Add(horde);
+        }
+    }
     
     public class CombatController: NetworkBehaviour
     {
@@ -14,30 +39,34 @@ namespace Horde
         [Networked]
         private Player InitiatingPlayer { get; set; }
 
-        [Networked, Capacity(MaxParticipants)] private NetworkLinkedList<Player> Participators {get;}
-
         /// <summary>
-        ///  Instantiate new combat controller
+        /// Stores the involved players and a list of their HordeControllers (as NetworkBehaviourId so must be converted before use)
         /// </summary>
-        /// <param name="parent">The Horde Controller instantiating it</param>
-        /// <param name="otherParticipants">The other hordes that are participating in the combat</param>
-        /// <returns>New combat controller</returns>
-        public static CombatController Instantiate(Player parent, HashSet<Player> otherParticipants)
+        [Networked, Capacity(MaxParticipants)] public NetworkDictionary<Player, CombatParticipant> Participators {get; }
+        
+
+        public void AddHorde(HordeController horde)
         {
-            if (otherParticipants.Count > MaxParticipants - 1)
+            if (Participators.Count == 0)
             {
-                throw new Exception("Tried to start combat with more participants than allowed");
+                InitiatingPlayer = horde.Player;
             }
             
-            CombatController controller = parent.gameObject.AddComponent<CombatController>();
-            controller.InitiatingPlayer = parent;
-            
-            controller.Participators.Add(parent);
-            foreach (Player participant in otherParticipants)
+            if (!Participators.TryGet(horde.Player, out CombatParticipant participant))
             {
-                controller.Participators.Add(participant);
+                if (InitiatingPlayer != horde.Player)
+                {
+                    horde.Player.EnterCombatRpc(this);
+                }
+                Participators.Add(horde.Player, new CombatParticipant(horde.Player, horde));
             }
-            return controller;
+            else
+            {
+                // Operates on local copy
+                participant.AddHorde(horde);
+                // Update stored copy
+                Participators.Set(horde.Player, participant);
+            }
         }
     }
 }

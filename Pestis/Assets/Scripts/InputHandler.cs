@@ -26,6 +26,29 @@ public class InputHandler : MonoBehaviour
     {
         LocalPlayer?.DeselectHorde();
     }
+
+    /// <summary>
+    /// Returns horde under mouse position, or null if no horde
+    /// </summary>
+    /// <param name="mousePos"></param>
+    /// <returns></returns>
+    [CanBeNull]
+    public HordeController DidWeClickHorde(Vector3 mousePos)
+    {
+        Ray ray = _mainCamera.ScreenPointToRay(mousePos);
+        int layerMask = LayerMask.GetMask("Selection Detection");
+        RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity, layerMask);
+        if (hit)
+        {
+            RatController rat = hit.collider.GetComponentInParent<RatController>();
+            if (rat)
+            {
+                return rat.GetHordeController();
+            }
+        }
+
+        return null;
+    }
     
     void Update()
     {
@@ -59,29 +82,38 @@ public class InputHandler : MonoBehaviour
         if (mouse.leftButton.wasPressedThisFrame)
         {
             Vector3 mousePosition = mouse.position.ReadValue();
-            Ray ray = _mainCamera.ScreenPointToRay(mousePosition);
-            int layerMask = LayerMask.GetMask("Selection Detection");
-            RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity, layerMask);
-            if (hit)
+            HordeController horde = DidWeClickHorde(mousePosition);
+            if (horde)
             {
-                RatController rat = hit.collider.GetComponentInParent<RatController>();
-                if (rat)
-                {
-                    LocalPlayer?.SelectHorde(rat.GetHordeController());
-                }
-                else
-                {
-                    LocalPlayer?.DeselectHorde();
-                }
-            } else {
+                LocalPlayer?.SelectHorde(horde);
+            }
+            else
+            {
                 LocalPlayer?.DeselectHorde();
             }
         }
 
+        // If right-clicked, and local player is allowed to control the selected horde
         if (mouse.rightButton.wasPressedThisFrame && (LocalPlayer?.selectedHorde?.HasStateAuthority ?? false))
         {
-            Vector2 position = _mainCamera.ScreenToWorldPoint(mouse.position.value);
-            LocalPlayer?.MoveHorde(position);
+            Vector3 mousePos = mouse.position.ReadValue();
+
+            HordeController clickedHorde = DidWeClickHorde(mousePos);
+
+            if (clickedHorde)
+            {
+                if (!LocalPlayer!.player.InCombat())
+                {
+                    LocalPlayer?.player.JoinHordeToCombat(LocalPlayer?.selectedHorde);
+                }
+                LocalPlayer?.player.JoinHordeToCombat(clickedHorde);
+            }
+            else
+            {
+                Vector2 position = _mainCamera.ScreenToWorldPoint(mouse.position.value);
+                LocalPlayer?.MoveHorde(position);
+            }
+
         }
     }
 }

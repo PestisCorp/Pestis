@@ -6,8 +6,10 @@ namespace Players
     /// <summary>
     /// Controls a single AI player, responsible for deciding what actions to take
     /// </summary>
-    public class BotPlayer : NetworkBehaviour
+    public class BotPlayer : MonoBehaviour
     {
+        public Player player;
+
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {

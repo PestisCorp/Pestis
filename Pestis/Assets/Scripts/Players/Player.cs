@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Fusion;
 using Horde;
 using JetBrains.Annotations;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = System.Random;
 
@@ -20,38 +21,87 @@ namespace Players
         /// Human or Bot?
         /// </summary>
         public PlayerType Type;
-        public NetworkString<_16> UniqueIdentifier;
 
         [CanBeNull] private HumanPlayer _humanPlayer;
         [CanBeNull] private BotPlayer _botPlayer;
 
         [Capacity(32)]
-        private NetworkArray<HordeController> _hordes { get; set; }
+        private NetworkArray<HordeController> Hordes { get; set; }
 
-        public void Awake()
-        {
-            UniqueIdentifier = new NetworkString<_16>();
-        }
+        /// <summary>
+        /// Can only be in one combat instance at a time.
+        /// </summary>
+        [Networked]
+        [CanBeNull] private CombatController CurrentCombatController { get; set; }
+        
         
         public override void Spawned()
         {
-            Random rand = new Random();
-            String id = "";
-            for (byte i = 0; i < 15; i++)
-            {
-                id += Convert.ToChar(rand.Next(33, 126));
-            }
-
-            UniqueIdentifier = id;
-
             if (Type == PlayerType.Human)
             {
-                _humanPlayer = gameObject.AddComponent<HumanPlayer>();
+                _humanPlayer = this.AddComponent<HumanPlayer>();
+                _humanPlayer!.player = this;
+
+                if (HasStateAuthority)
+                {
+                    FindAnyObjectByType<Grid>().GetComponent<InputHandler>().LocalPlayer = _humanPlayer;
+                }
             }
             else
             {
-                _botPlayer = gameObject.AddComponent<BotPlayer>();
+                _botPlayer = this.AddComponent<BotPlayer>();
+                _botPlayer!.player = this;
             }
+        }
+
+        /// <summary>
+        /// Adds a horde to the combat we started, starting one if it doesn't exist.
+        /// This can add our hordes or enemy hordes.
+        /// </summary>
+        /// <param name="horde"></param>
+        public void JoinHordeToCombat(HordeController horde) 
+        {
+            if (CurrentCombatController == null)
+            {
+                CurrentCombatController = GetComponent<CombatController>();
+            }
+            
+            CurrentCombatController!.AddHorde(horde);
+        }
+
+        /// <summary>
+        /// Tell the player to enter combat.
+        /// Called by the combat initiator.
+        /// </summary>
+        /// <param name="combat"></param>
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void EnterCombatRpc(CombatController combat)
+        {
+            if (CurrentCombatController != null)
+            {
+                throw new Exception("Already in combat!");
+            }
+            else
+            {
+                CurrentCombatController = combat;
+            }
+        }
+
+        public ref HumanPlayer GetHumanPlayer()
+        {
+            if (Type == PlayerType.Human)
+            {
+                return ref _humanPlayer;
+            }
+            else
+            {
+                throw new NullReferenceException("Tried to get human player from a bot Player");
+            }
+        }
+
+        public bool InCombat()
+        {
+            return CurrentCombatController != null;
         }
     }
     

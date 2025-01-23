@@ -96,6 +96,8 @@ namespace Horde
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
+            Player = GetComponentInParent<Player>();
+            
             // Needed for if we join an in-progress game
             TotalHealthChanged();
             _selectionLight = GetComponentInChildren<Light2D>();

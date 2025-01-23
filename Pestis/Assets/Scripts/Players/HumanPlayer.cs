@@ -12,6 +12,8 @@ namespace Players
         // Whether this HumanPlayer is the one being controlled by the player on this machine.
         public bool IsLocal = false;
 
+        public Player player;
+
         void Start()
         {
             IsLocal = GetComponent<NetworkObject>().HasStateAuthority;
