@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
 using Fusion;
 using Horde;
 using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
-using Random = System.Random;
 
 namespace Players
 {
@@ -14,27 +12,28 @@ namespace Players
         Human,
         Bot
     }
-    
-    public class Player: NetworkBehaviour
+
+    public class Player : NetworkBehaviour
     {
         /// <summary>
-        /// Human or Bot?
+        ///     Human or Bot?
         /// </summary>
         public PlayerType Type;
 
-        [CanBeNull] private HumanPlayer _humanPlayer;
         [CanBeNull] private BotPlayer _botPlayer;
 
-        [Capacity(32)]
-        private NetworkArray<HordeController> Hordes { get; set; }
+        [CanBeNull] private HumanPlayer _humanPlayer;
+
+        [Capacity(32)] private NetworkArray<HordeController> Hordes { get; set; }
 
         /// <summary>
-        /// Can only be in one combat instance at a time.
+        ///     Can only be in one combat instance at a time.
         /// </summary>
         [Networked]
-        [CanBeNull] private CombatController CurrentCombatController { get; set; }
-        
-        
+        [CanBeNull]
+        private CombatController CurrentCombatController { get; set; }
+
+
         public override void Spawned()
         {
             if (Type == PlayerType.Human)
@@ -43,9 +42,7 @@ namespace Players
                 _humanPlayer!.player = this;
 
                 if (HasStateAuthority)
-                {
                     FindAnyObjectByType<Grid>().GetComponent<InputHandler>().LocalPlayer = _humanPlayer;
-                }
             }
             else
             {
@@ -55,54 +52,52 @@ namespace Players
         }
 
         /// <summary>
-        /// Adds a horde to the combat we started, starting one if it doesn't exist.
-        /// This can add our hordes or enemy hordes.
+        ///     Adds a horde to the combat we are in.
+        ///     This can add our hordes or enemy hordes.
         /// </summary>
         /// <param name="horde"></param>
-        public void JoinHordeToCombat(HordeController horde) 
+        public void JoinHordeToCombat(HordeController horde)
         {
-            if (CurrentCombatController == null)
-            {
-                CurrentCombatController = GetComponent<CombatController>();
-            }
-            
-            CurrentCombatController!.AddHorde(horde);
+            if (CurrentCombatController == null) CurrentCombatController = GetComponent<CombatController>();
+
+            CurrentCombatController!.AddHorde(horde, horde.Player == this);
         }
 
         /// <summary>
-        /// Tell the player to enter combat.
-        /// Called by the combat initiator.
+        ///     Tell the player to enter combat.
+        ///     Called by the combat initiator.
         /// </summary>
         /// <param name="combat"></param>
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void EnterCombatRpc(CombatController combat)
         {
-            if (CurrentCombatController != null)
-            {
-                throw new Exception("Already in combat!");
-            }
-            else
-            {
-                CurrentCombatController = combat;
-            }
+            if (CurrentCombatController != null) throw new Exception("Already in combat!");
+
+            CurrentCombatController = combat;
         }
 
         public ref HumanPlayer GetHumanPlayer()
         {
-            if (Type == PlayerType.Human)
-            {
-                return ref _humanPlayer;
-            }
-            else
-            {
-                throw new NullReferenceException("Tried to get human player from a bot Player");
-            }
+            if (Type == PlayerType.Human) return ref _humanPlayer;
+
+            throw new NullReferenceException("Tried to get human player from a bot Player");
         }
 
         public bool InCombat()
         {
-            return CurrentCombatController != null;
+            return CurrentCombatController;
+        }
+
+        public CombatController GetCombatController()
+        {
+            return CurrentCombatController;
+        }
+
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void LeaveCombatRpc()
+        {
+            CurrentCombatController = null;
+            foreach (var horde in Hordes) horde.HordeBeingDamaged = null;
         }
     }
-    
 }

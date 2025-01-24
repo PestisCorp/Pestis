@@ -94,41 +94,52 @@ namespace Horde
             return _rigidbody.linearVelocity;
         }
 
-        public Bounds GetBounds()
+        public Vector2 GetPosition()
         {
-            return _spriteRenderer.bounds;
+            return transform.position;
         }
 
         private void FixedUpdate()
         {
-            if (((Vector2)transform.position - _hordeController.intraHordeTargets[_currentIntraHordeTarget]).magnitude < _hordeController.targetTolerance)
+            Vector2 targetPoint;
+            
+            if (_hordeController.HordeBeingDamaged != null)
             {
-                if (_cycleIntraHordeTargetForwards)
-                {
-                    if (_currentIntraHordeTarget == 3)
-                    {
-                        _currentIntraHordeTarget = 0;
-                    }
-                    else
-                    {
-                        _currentIntraHordeTarget++;
-                    }
-                }
-                else
-                {
-                    if (_currentIntraHordeTarget == 0)
-                    {
-                        _currentIntraHordeTarget = 3;
-                    }
-                    else
-                    {
-                        _currentIntraHordeTarget--;
-                    }
-                }
+                targetPoint = _hordeController.HordeBeingDamaged.ClosestRat(transform.position).transform.position;
             }
-        
+            else
+            {
+                if (((Vector2)transform.position - _hordeController.intraHordeTargets[_currentIntraHordeTarget]).magnitude < _hordeController.targetTolerance)
+                {
+                    if (_cycleIntraHordeTargetForwards)
+                    {
+                        if (_currentIntraHordeTarget == 3)
+                        {
+                            _currentIntraHordeTarget = 0;
+                        }
+                        else
+                        {
+                            _currentIntraHordeTarget++;
+                        }
+                    }
+                    else
+                    {
+                        if (_currentIntraHordeTarget == 0)
+                        {
+                            _currentIntraHordeTarget = 3;
+                        }
+                        else
+                        {
+                            _currentIntraHordeTarget--;
+                        }
+                    }
+                }
+
+                targetPoint = _hordeController.intraHordeTargets[_currentIntraHordeTarget];
+            }
+            
             // Get desired direction
-            Vector2 direction = _hordeController.intraHordeTargets[_currentIntraHordeTarget] - (Vector2)transform.position;
+            Vector2 direction = targetPoint - (Vector2)transform.position;
             // Get desired rotation from desired direction
             Quaternion targetRotation = Quaternion.LookRotation(forward: Vector3.forward, upwards: direction);
             

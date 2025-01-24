@@ -13,7 +13,7 @@ namespace Editor
         {
             // Create a new VisualElement to be the root of our Inspector UI.
             VisualElement myInspector = new VisualElement();
-            m_InspectorXML = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Dev Tools/horde-inspector.uxml");
+            m_InspectorXML = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Editor/horde-inspector.uxml");
             myInspector = m_InspectorXML.Instantiate();
             return myInspector;
         }
