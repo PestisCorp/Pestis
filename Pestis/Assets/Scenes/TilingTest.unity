@@ -201,7 +201,7 @@ TilemapRenderer:
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
-  m_Mode: 0
+  m_Mode: 1
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
 --- !u!1839735485 &20129744
@@ -348,7 +348,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 1
+  orthographic size: 512
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -373,7 +373,7 @@ Transform:
   m_GameObject: {fileID: 139115115}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 256, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -411,8 +411,11 @@ MonoBehaviour:
   tilemap: {fileID: 20129744}
   width: 1024
   height: 1024
-  biome1Tile: {fileID: 11400000, guid: 773c1e7561469eb4f8c7dd2610edd3be, type: 2}
-  biome2Tile: {fileID: 11400000, guid: c56b1989483d0864e957f3a2e01895d6, type: 2}
+  tiles:
+  - {fileID: 11400000, guid: cab14d9d032db5776949d99fcbafeb09, type: 2}
+  - {fileID: 11400000, guid: b85b6c7b0af394f438789f6ceca17ae4, type: 2}
+  frequency: 0.001
+  steps: 5000000
 --- !u!4 &569886380
 Transform:
   m_ObjectHideFlags: 0
@@ -453,9 +456,9 @@ Grid:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1599435561}
   m_Enabled: 1
-  m_CellSize: {x: 1, y: 1, z: 1}
+  m_CellSize: {x: 1, y: 0.5, z: 1}
   m_CellGap: {x: 0, y: 0, z: 0}
-  m_CellLayout: 0
+  m_CellLayout: 2
   m_CellSwizzle: 0
 --- !u!4 &1599435563
 Transform:
