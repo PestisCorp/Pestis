@@ -15,7 +15,7 @@ jobs:
       runs-on: self-hosted
       steps:
         - uses: rymndhng/release-on-push-action@master
-          name: release
+          id: release
           with:
             bump_version_scheme: minor
 
@@ -43,6 +43,8 @@ jobs:
           with:
             githubToken: ${{ secrets.GITHUB_TOKEN }}
             projectPath: Pestis
+            runAsHostUser: true
+            chownFilesTo: mediaserver
 
         # Build
         - name: Build project
@@ -56,7 +58,13 @@ jobs:
             versioning: Custom
             version: ${{ steps.release.outputs.version }}
             projectPath: Pestis
+            runAsHostUser: true
+            chownFilesTo: mediaserver
+
 
         # Output
         - name: Copy build to hosting folder
-          run: cp -r build /home/mediaserver/configs/pestis-runner/builds/${{ steps.release.outputs.version }}
+          run: cp -r build/WebGL/WebGL /home/mediaserver/configs/pestis-runner/builds/${{ steps.release.outputs.version }}
+
+        - name: Symlink to latest
+          run: ln -s /home/mediaserver/configs/pestis-runner/builds/${{ steps.release.outputs.version }} /home/mediaserver/configs/pestis-runner/builds/latest
