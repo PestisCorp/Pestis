@@ -32,10 +32,11 @@ namespace Players
         [Networked]
         [CanBeNull]
         private CombatController CurrentCombatController { get; set; }
-		
-		// Cheese Management
-		[Networked] public int CurrentCheese { get; private set; } = 0;
-		[Networked] public int CheeseIncrementRate { get; private set; } = 1;
+
+        // Cheese Management
+
+        [Networked] public int CurrentCheese { get; private set; } = 0;
+        [Networked] public int CheeseIncrementRate { get; private set; } = 1;
 
 
         public override void Spawned()
@@ -54,8 +55,8 @@ namespace Players
                 _botPlayer!.player = this;
             }
         }
-		
-		// Manage Cheese
+
+        // Manage Cheese
         public void AddCheese(int amount)
         {
             CurrentCheese += amount;
