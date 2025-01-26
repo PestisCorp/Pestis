@@ -32,6 +32,10 @@ namespace Players
         [Networked]
         [CanBeNull]
         private CombatController CurrentCombatController { get; set; }
+		
+		// Cheese Management
+		[Networked] public int CurrentCheese { get; private set; } = 0;
+		[Networked] public int CheeseIncrementRate { get; private set; } = 1;
 
 
         public override void Spawned()
@@ -48,6 +52,31 @@ namespace Players
             {
                 _botPlayer = this.AddComponent<BotPlayer>();
                 _botPlayer!.player = this;
+            }
+        }
+		
+		// Manage Cheese
+        public void AddCheese(int amount)
+        {
+            CurrentCheese += amount;
+        }
+
+        public void RemoveCheese(int amount)
+        {
+            CurrentCheese = Mathf.Max(0, CurrentCheese - amount);
+        }
+
+        public void SetCheeseIncrementRate(int rate)
+        {
+            CheeseIncrementRate = rate;
+        }
+
+        public override void FixedUpdateNetwork()
+        {
+            if (HasStateAuthority)
+            {
+                // Add Cheese every tick based on the increment rate
+                CurrentCheese += CheeseIncrementRate;
             }
         }
 
