@@ -1,7 +1,11 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
-public class Terrain : MonoBehaviour
+[CreateAssetMenu]
+public class Terrain : IsometricRuleTile
 {
-    
+    public TileBase[] tiles;
+
+    public float walkingSpeed;
 
 }
