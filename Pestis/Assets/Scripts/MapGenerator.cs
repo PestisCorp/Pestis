@@ -1,43 +1,35 @@
 ﻿using System.Collections.Generic;
+using Math = System.Math;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using ProceduralToolkit;
 using ProceduralToolkit.FastNoiseLib;
-using Math = System.Math;
 
 public class MapGenerator : MonoBehaviour
 {
     public Tilemap tilemap;
-    public int width;
-    public int height;
-    public List<TileBase> tiles;
-    public float voronoiFrequency = 0.03f;
-    public int randomWalkSteps = 524288;
-    public int numberOfBiomes = 2;
+    public int width = 2048;
+    public int height = 2048;
+    public TileBase water;
+    public List<TileBase> landBiomes;
+    public float voronoiFrequency = 0.0025f;
+    public int randomWalkSteps = 5000000;
+    public int smoothing = 10;
 
     private FastNoise _noiseGenerator;
+    private enum TileType
+    {
+        Water = -2,
+        UnassignedLand = -1,
+        AssignedLand = 0
+    }
 
     private void Awake()
     {
-        int[,] landWaterSplit = RandomWalk();
-        var map = Dilation(landWaterSplit);
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                if (map[x, y] == 1)
-                {
-                    tilemap.SetTile(new Vector3Int(x, y), tiles[0]);
-                }
-                else
-                {
-                    tilemap.SetTile(new Vector3Int(x, y), tiles[1]);
-                }
-            }
-        }
+        Voronoi(Dilation(RandomWalk()));
     }
 
-    public void Voronoi()
+    private TileType[,] Voronoi(TileType[,] map)
     {
         _noiseGenerator = new FastNoise();
         _noiseGenerator.SetNoiseType(FastNoise.NoiseType.Cellular);
@@ -48,32 +40,51 @@ public class MapGenerator : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 float noiseVal = _noiseGenerator.GetNoise01(x, y);
-                float probability = 1.0f / tiles.Count;
-                for (int i = 0; i < tiles.Count; i++)
+                float probability = 1.0f / landBiomes.Count;
+                if (map[x, y] == TileType.UnassignedLand)
                 {
-                    if (noiseVal > probability * i && noiseVal < probability * (i + 1))
+                    for (int i = 0; i < landBiomes.Count; i++)
                     {
-                        tilemap.SetTile(new Vector3Int(x, y), tiles[i]);
+                        if (noiseVal > probability * i && noiseVal < probability * (i + 1))
+                        {
+                            map[x, y] = TileType.AssignedLand;
+                            tilemap.SetTile(new Vector3Int(x, y), landBiomes[i]);
+                        }
                     }
+                }
+                else if (map[x, y] == TileType.Water)
+                {
+                    tilemap.SetTile(new Vector3Int(x, y), water);
                 }
             }
         }
+
+        return map;
     }
 
     // Credit: https://www.noveltech.dev/procgen-random-walk
-    public int[,] RandomWalk()
+    // Splits land and water
+    private TileType[,] RandomWalk()
     {
         // create the grid, which will be filled with false value
         // true values define valid cells which are part of our visited map
-        int[,] grid = new int[width, height];
+        TileType[,] grid = new TileType[width, height];
+        
+        // fill with entirely water
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                grid[i, j] = TileType.Water;
+            }
+        }
 
         // choose a random starting point
         System.Random rnd = new System.Random();
         Vector2Int curr_pos = new Vector2Int(rnd.Next(width), rnd.Next(height));
 
-        // register this position in the grid
-        grid[curr_pos.x, curr_pos.y] = 1;
-        //tilemap.SetTile(new Vector3Int(curr_pos.x, curr_pos.y), tiles[0]);
+        // register this position in the grid as land
+        grid[curr_pos.x, curr_pos.y] = TileType.UnassignedLand;
 
         // define allowed movements: left, up, right, down
         List<Vector2Int> allowed_movements = new List<Vector2Int>
@@ -99,8 +110,7 @@ public class MapGenerator : MonoBehaviour
                 if (new_pos.x >= 0 && new_pos.x < width && new_pos.y >= 0 && new_pos.y < height)
                 {
                     // this is a valid position, we set it in the grid
-                    grid[new_pos.x, new_pos.y] = 1;
-                    //tilemap.SetTile(new Vector3Int(new_pos.x, new_pos.y), tiles[0]);
+                    grid[new_pos.x, new_pos.y] = TileType.UnassignedLand;
 
                     // replace curr_pos with new_pos
                     curr_pos = new_pos;
@@ -113,22 +123,14 @@ public class MapGenerator : MonoBehaviour
 
         return grid;
     }
-    public int[,] DiffusionAggregation()
+    
+    // Credit: https://www.noveltech.dev/unity-procgen-diffusion-aggregation
+    private int[,] DiffusionAggregation(int[,] map)
     {
-        int[,] grid = new int[width, height];
-
-        // fill with -1s to get the initial state 
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
-                grid[i, j] = -1;
-            }
-        }
-
-        // create a tracker for valid points by subsection for the diffusion process 
+        // at this point water = -2 and land = -1
+        // create a tracker for valid points by subsection for the diffusion process
         List<List<Vector2Int>> recorded_points = new();
-        for (int i = 0; i < numberOfBiomes; i++)
+        for (int i = 0; i < landBiomes.Count; i++)
         {
             recorded_points.Add(new());
         }
@@ -136,9 +138,9 @@ public class MapGenerator : MonoBehaviour
         // create a counter to keep track of the number of unallocated cells 
         int nb_free_cells = width * height;
 
-        // set up the initial points for the process 
+        // set up the initial points for the process
         System.Random rng = new();
-        for (int id_subsection = 0; id_subsection < numberOfBiomes; id_subsection++)
+        for (int id_subsection = 0; id_subsection < landBiomes.Count; id_subsection++)
         {
             while (true)
             {
@@ -148,11 +150,11 @@ public class MapGenerator : MonoBehaviour
                     rng.Next(height)
                 );
 
-                // check if it's free, else find another point
-                if (grid[point.x, point.y] == -1)
+                // check if it's land, else find another point
+                if (map[point.x, point.y] == -1)
                 {
-                    // if it is add it to tracking and grid then proceed to next subsection
-                    grid[point.x, point.y] = id_subsection;
+                    // if it is, add it to tracking and grid then proceed to next subsection
+                    map[point.x, point.y] = id_subsection;
                     recorded_points[id_subsection].Add(point);
                     nb_free_cells -= 1;
 
@@ -167,7 +169,7 @@ public class MapGenerator : MonoBehaviour
         // now we can start filling the grid 
         while (nb_free_cells > 0)
         {
-            for (int id_subsection = 0; id_subsection < numberOfBiomes; id_subsection++)
+            for (int id_subsection = 0; id_subsection < landBiomes.Count; id_subsection++)
             {
                 // check if there are tracked points for this subsection 
                 if (recorded_points[id_subsection].Count == 0)
@@ -190,45 +192,56 @@ public class MapGenerator : MonoBehaviour
                 }
 
                 // next check if the new point is already occupied and skip this direction if it is
-                if (grid[new_point.x, new_point.y] != -1)
+                if (map[new_point.x, new_point.y] != -1)
                 {
                     continue;
                 }
 
                 // else we can record this new point in our tracker and set it in the grid 
-                grid[new_point.x, new_point.y] = id_subsection;
+                map[new_point.x, new_point.y] = id_subsection;
                 recorded_points[id_subsection].Add(new_point);
                 nb_free_cells -= 1;
-
             }
         }
 
-        return grid;
+        return map;
     }
 
-    private int[,] Closing(int[,] map)
+    private TileType[,] Closing(TileType[,] map)
     {
         return Erosion(Dilation(map));
     }
     
-    private int[,] Dilation(int[,] map)
+    private TileType[,] Opening(TileType[,] map)
     {
-        int[,] result = new int[width, height];
+        return Dilation(Erosion(map));
+    }
+    
+    private TileType[,] Dilation(TileType[,] map)
+    {
+        TileType[,] result = new TileType[width, height];
 
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                int maxVal = map[x, y];
-                for (int i = -7; i <= 7; i++)
+                TileType maxVal = map[x, y];
+                for (int i = -smoothing; i <= smoothing; i++)
                 {
-                    for (int j = -7; j <= 7; j++)
+                    for (int j = -smoothing; j <= smoothing; j++)
                     {
                         int newX = x + i;
                         int newY = y + j;
                         if (newX >= 0 && newX < width && newY >= 0 && newY < height)
                         {
-                            maxVal = Math.Max(maxVal, map[newX, newY]);
+                            if (Math.Max((int)maxVal, (int)map[newX, newY]) == -1)
+                            {
+                                maxVal = TileType.UnassignedLand;
+                            }
+                            else if (Math.Max((int)maxVal, (int)map[newX, newY]) == -2)
+                            {
+                                maxVal = TileType.Water;
+                            }
                         }
                     }
                 }
@@ -239,24 +252,31 @@ public class MapGenerator : MonoBehaviour
         return result;
     }
     
-    private int[,] Erosion(int[,] map)
+    private TileType[,] Erosion(TileType[,] map)
     {
-        int[,] result = new int[width, height];
+        TileType[,] result = new TileType[width, height];
 
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                int minVal = map[x, y];
-                for (int i = -5; i <= 5; i++)
+                TileType minVal = map[x, y];
+                for (int i = -smoothing; i <= smoothing; i++)
                 {
-                    for (int j = -5; j <= 5; j++)
+                    for (int j = -smoothing; j <= smoothing; j++)
                     {
                         int newX = x + i;
                         int newY = y + j;
                         if (newX >= 0 && newX < width && newY >= 0 && newY < height)
                         {
-                            minVal = Math.Min(minVal, map[newX, newY]);
+                            if (Math.Min((int)minVal, (int)map[newX, newY]) == -2)
+                            {
+                                minVal = TileType.Water;
+                            }
+                            else if (Math.Min((int)minVal, (int)map[newX, newY]) == -1)
+                            {
+                                minVal = TileType.UnassignedLand;
+                            }
                         }
                     }
                 }

@@ -828,14 +828,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemap: {fileID: 1777609692}
-  width: 1024
+  width: 2048
   height: 1024
-  tiles:
+  water: {fileID: 11400000, guid: b85b6c7b0af394f438789f6ceca17ae4, type: 2}
+  landBiomes:
   - {fileID: 11400000, guid: cab14d9d032db5776949d99fcbafeb09, type: 2}
-  - {fileID: 11400000, guid: b85b6c7b0af394f438789f6ceca17ae4, type: 2}
-  voronoiFrequency: 0.03
-  randomWalkSteps: 5024288
-  numberOfBiomes: 2
+  - {fileID: 11400000, guid: 4dcb92363fb1b084fbd4e6b0f8893e02, type: 2}
+  - {fileID: 11400000, guid: e69c02d7559627b4980f932a14596f74, type: 2}
+  voronoiFrequency: 0.0025
+  randomWalkSteps: 5000000
+  smoothing: 10
 --- !u!4 &1984829073
 Transform:
   m_ObjectHideFlags: 0
