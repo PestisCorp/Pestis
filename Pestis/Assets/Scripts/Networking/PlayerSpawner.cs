@@ -1,4 +1,5 @@
 using Fusion;
+using Players;
 using UnityEngine;
 
 public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
