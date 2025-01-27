@@ -5,10 +5,7 @@ using UnityEngine.Tilemaps;
 [CreateAssetMenu]
 public class BiomeTile : IsometricRuleTile
 {
-    public int foodLevel, dangerLevel, climate = 0;
-    public Terrain[] CompatableTerrainTypes; //every type of terrain that this biome can grow on
-    public GameObject[] FeatureList; //set of features that spawn in this biome
-    List<IsometricRuleTile> tiles;
+    public int foodLevel, HumanLevel, climate = 0;
     public virtual void FeatureGeneration()
     {
         // Empty method
