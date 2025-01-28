@@ -1,22 +1,27 @@
+using Base: Stateful
 using StatsBase
 
-const POP_MAX = 20
-birth_rate = 0.2
+const POP_MAX = 1000
+birth_rate = 0.5
 death_rate = 0.05
 resources = 100
-pop_size = 10
+pop_size = 1
 
+function consume_resources(N, F)
+    F -= ceil(N * 0.4)
+    return max(0, F)
+end
 
-function use_resources(population, food)
+function resource_weight(population, food)
     return food / (food + population)
 end
 
 function α(b, F, N, w)
-    return b * use_resources(N, F) * w
+    return b * resource_weight(N, F) * w
 end
 
 function β(d, F, N, w)
-    return d * use_resources(N, F) * w
+    return d * resource_weight(N, F) * w
 end
 
 function generate_transition_matrix(W, NMax, N, F, b, d)
@@ -43,15 +48,16 @@ end
 
 function simulate_population(NMax, N, F, b, d)
     W = [5, 4, 3, 2, 1]
-    transition_matrix = generate_transition_matrix(W, NMax, N, F, b, d)
     while true
+        transition_matrix = generate_transition_matrix(W, NMax, N, F, b, d)
         if N <= 0
             println("Population has gone extinct.")
             return
         end
-        println("Population: ", N)
+        println("Population: ", N, "\nResources: ", F)
         probs = transition_matrix[N, :]
         next_state = StatsBase.sample(1:NMax, StatsBase.ProbabilityWeights(probs))
+        F = consume_resources(N, F)
         N = next_state
         sleep(1)
     end
