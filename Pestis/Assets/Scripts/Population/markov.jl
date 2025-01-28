@@ -1,4 +1,3 @@
-using Base: Stateful
 using StatsBase
 
 const POP_MAX = 1000
@@ -12,16 +11,20 @@ function consume_resources(N, F)
     return max(0, F)
 end
 
-function resource_weight(population, food)
+function resource_weight_growth(population, food)
     return food / (food + population)
 end
 
+function resource_weight_decline(population, food)
+    return population / (population + food)
+end
+
 function α(b, F, N, w)
-    return b * resource_weight(N, F) * w
+    return b * resource_weight_growth(N, F) * w
 end
 
 function β(d, F, N, w)
-    return d * resource_weight(N, F) * w
+    return d * resource_weight_decline(N, F) * w
 end
 
 function generate_transition_matrix(W, NMax, N, F, b, d)
