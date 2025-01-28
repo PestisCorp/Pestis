@@ -69,7 +69,7 @@ public class BiomeGenerator : MonoBehaviour
             while (valid == 0 && index < 4)
             {
                 Vector2Int newPosition = currentPosition + directions[index];
-                IsometricRuleTile newTile = map.GetTile(new Vector3Int(newPosition.x, newPosition.y, 0);
+                IsometricRuleTile newTile = (IsometricRuleTile)map.GetTile(new Vector3Int(newPosition.x, newPosition.y, 0));
 
                 if (biome.TileList.Contains(newTile))
                 {
@@ -81,7 +81,7 @@ public class BiomeGenerator : MonoBehaviour
                     valid = 2;
                     currentPosition = newPosition;
                     map.SetTile(new Vector3Int(newPosition.x, newPosition.y, 0), biome.getRandomBiomeTile());
-                    biome.addTile((IsometricRuleTile)newTile);
+                    biome.addTile(newTile);
 
                 }
                 index += 1;
