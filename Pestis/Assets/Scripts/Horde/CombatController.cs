@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Fusion;
+using JetBrains.Annotations;
 using Players;
+using POI;
 using UnityEngine;
 
 namespace Horde
@@ -55,7 +58,7 @@ namespace Horde
 
     public class CombatController : NetworkBehaviour
     {
-        public const int MaxParticipants = 6;
+        public const int MAX_PARTICIPANTS = 6;
 
         [Networked] private Player InitiatingPlayer { get; set; }
 
@@ -64,23 +67,28 @@ namespace Horde
         ///     use)
         /// </summary>
         [Networked]
-        [Capacity(MaxParticipants)]
+        [Capacity(MAX_PARTICIPANTS)]
         public NetworkDictionary<Player, CombatParticipant> Participators { get; }
+
+        /// <summary>
+        ///     The POI the fight is over (winner gains control).
+        ///     May be null if the fight isn't over a POI.
+        /// </summary>
+        [Networked]
+        [CanBeNull]
+        public POIController FightingOver { get; private set; }
 
         public override void FixedUpdateNetwork()
         {
-            // Check if any hordes need to retreat, and make them leave combat.
-            // If a player has no participating hordes, make them leave combat.
-
             List<HordeController> hordesToRemove = new();
             List<Player> playersToRemove = new();
-
             foreach (var kvp in Participators)
             {
                 var aliveHordes = 0;
                 foreach (var hordeID in kvp.Value.Hordes)
                 {
                     Runner.TryFindBehaviour(hordeID, out HordeController horde);
+                    // If horde is above 20% of it's starting health
                     if (horde.TotalHealth > kvp.Value.HordeStartingHealth.Get(hordeID) * 0.2f)
                     {
                         aliveHordes++;
@@ -93,6 +101,7 @@ namespace Horde
                     }
                 }
 
+                // If player has no hordes above 20% health participating
                 if (aliveHordes == 0) playersToRemove.Add(kvp.Key);
             }
 
@@ -112,9 +121,27 @@ namespace Horde
             // If there's only one person left in combat they are the winner! Reset controller.
             if (Participators.Count == 1)
             {
-                Participators.First().Key.LeaveCombatRpc();
+                var winner = Participators.First().Key;
+                // If the fight was over a POI, hand over control.
+                if (FightingOver && winner != FightingOver.ControlledBy)
+                {
+                    FightingOver.ChangeControllerRpc(winner);
+                    foreach (var hordeID in Participators.First().Value.Hordes)
+                    {
+                        Runner.TryFindBehaviour(hordeID, out HordeController horde);
+                        horde.targetLocation.Teleport(FightingOver.transform.position);
+                        horde.StationAtRpc(FightingOver);
+                    }
+
+                    foreach (var horde in FightingOver.StationedHordes) horde.UnStationAtRpc();
+                }
+
+                // Clear Combat Controller and end combat
+                winner.LeaveCombatRpc();
                 Participators.Clear();
                 InitiatingPlayer = null;
+
+                Debug.Log("Combat is over! Winner is ", winner);
             }
         }
 
@@ -177,6 +204,13 @@ namespace Horde
                     return true;
 
             return false;
+        }
+
+        public void SetFightingOver(POIController poi)
+        {
+            if (!HasStateAuthority)
+                throw new Exception(
+                    "Only State Authority of Combat Controller can change what POI the combat is over!");
         }
     }
 }

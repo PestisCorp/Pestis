@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using Fusion;
+using JetBrains.Annotations;
 using Players;
+using POI;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -32,6 +35,11 @@ namespace Horde
         /// </summary>
         public Vector2[] intraHordeTargets = new Vector2[4];
 
+        /// <summary>
+        ///     The horde we're currently damaging. Our rats will animate against them.
+        /// </summary>
+        [SerializeField] internal HordeController HordeBeingDamaged;
+
         private readonly List<RatController> _spawnedRats = new();
 
         /// <summary>
@@ -46,12 +54,9 @@ namespace Horde
         /// </summary>
         private int _ratsToSpawn;
 
-        private Light2D _selectionLight;
+        private Light2D _selectionLightPOI;
 
-        /// <summary>
-        ///     The horde we're currently damaging. Our rats will animate against them.
-        /// </summary>
-        internal HordeController HordeBeingDamaged;
+        private Light2D _selectionLightTerrain;
 
         public int AliveRats => (int)Mathf.Max(TotalHealth / _populationController.GetState().HealthPerRat, 1.0f);
 
@@ -64,6 +69,8 @@ namespace Horde
         /// </summary>
         [Networked]
         private Bounds _hordeBounds { set; get; }
+
+        [Networked] [CanBeNull] public POIController StationedAt { get; private set; }
 
         private void Awake()
         {
@@ -86,7 +93,7 @@ namespace Horde
                 _ratsToSpawn--;
             }
 
-            if (Player.InCombat() && Player.GetCombatController().HordeInCombat(this))
+            if (Player.InCombat && Player.GetCombatController().HordeInCombat(this))
             {
                 var combat = Player.GetCombatController();
                 var enemy = combat.GetNearestEnemy(this);
@@ -121,9 +128,14 @@ namespace Horde
             // If we're the owner of this Horde, we are the authoritative source for the horde bounds
             if (HasStateAuthority) _hordeBounds = b;
 
-            _selectionLight.pointLightInnerRadius = b.extents.magnitude * 0.9f + 0.5f;
-            _selectionLight.pointLightOuterRadius = b.extents.magnitude * 1.0f + 0.5f;
-            _selectionLight.transform.position = b.center;
+            _selectionLightTerrain.pointLightInnerRadius = b.extents.magnitude * 0.9f + 0.5f;
+            _selectionLightTerrain.pointLightOuterRadius = b.extents.magnitude * 1.0f + 0.5f;
+            _selectionLightTerrain.transform.position = b.center;
+
+
+            _selectionLightPOI.pointLightInnerRadius = b.extents.magnitude * 0.9f + 0.5f;
+            _selectionLightPOI.pointLightOuterRadius = b.extents.magnitude * 1.0f + 0.5f;
+            _selectionLightPOI.transform.position = b.center;
 
             intraHordeTargets[0] = new Vector2(targetLocation.transform.position.x - b.extents.x * 0.65f,
                 targetLocation.transform.position.y + b.extents.y * 0.65f);
@@ -144,10 +156,26 @@ namespace Horde
             if (!Application.isPlaying) return;
 
             // Don't allow changes, or it'll keep overwriting
-            if (Player.InCombat() && Player.GetCombatController().HordeInCombat(this)) return;
+            if (Player.InCombat && Player.GetCombatController().HordeInCombat(this)) return;
 
             TotalHealth = _populationController.GetState().HealthPerRat * devToolsTotalRats;
             targetLocation.transform.position = devToolsTargetLocation;
+        }
+
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void StationAtRpc(POIController poi)
+        {
+            poi.StationHordeRpc(this);
+            targetLocation.Teleport(poi.transform.position);
+            StationedAt = poi;
+        }
+
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void UnStationAtRpc()
+        {
+            if (!StationedAt) throw new Exception("Tried to unstation, but not stationed anywhere!");
+            StationedAt.UnStationHordeRpc(this);
+            StationedAt = null;
         }
 
 
@@ -181,8 +209,14 @@ namespace Horde
             _populationController = GetComponent<PopulationController>();
             Player = GetComponentInParent<Player>();
 
-            _selectionLight = GetComponentInChildren<Light2D>();
-            if (!HasStateAuthority) _selectionLight.color = Color.red;
+            _selectionLightTerrain = transform.Find("SelectionLightTerrain").gameObject.GetComponent<Light2D>();
+            _selectionLightPOI = transform.Find("SelectionLightPOI").gameObject.GetComponent<Light2D>();
+            if (!HasStateAuthority)
+            {
+                _selectionLightPOI.color = Color.red;
+                _selectionLightTerrain.color = Color.red;
+            }
+
             targetLocation = transform.Find("TargetLocation").gameObject.GetComponent<NetworkTransform>();
 
             // Needed to spawn in rats from joined session
@@ -192,12 +226,14 @@ namespace Horde
 
         public void Highlight()
         {
-            _selectionLight.enabled = true;
+            _selectionLightTerrain.enabled = true;
+            _selectionLightPOI.enabled = true;
         }
 
         public void UnHighlight()
         {
-            _selectionLight.enabled = false;
+            _selectionLightTerrain.enabled = false;
+            _selectionLightPOI.enabled = false;
         }
 
         public void Move(Vector2 target)
@@ -244,6 +280,31 @@ namespace Horde
             // For now just retreat to spawn base
             targetLocation.Teleport(transform.parent.position);
             HordeBeingDamaged = null;
+        }
+
+        public void AttackPoi(POIController poi)
+        {
+            Debug.Log("Attacking POI");
+
+            // TODO - Don't immediately take control just because it's unoccupied, need to find a way to wait until moved.
+            if (!poi.ControlledBy)
+            {
+                poi.ChangeControllerRpc(Player);
+                StationAtRpc(poi);
+                return;
+            }
+
+            // Add current horde to new battle
+            Player.JoinHordeToCombat(this);
+
+            Player.GetCombatController().SetFightingOver(poi);
+
+            // Add each enemy horde stationed at target POI to combat
+            foreach (var horde in poi.StationedHordes)
+            {
+                Debug.Log("Adding enemy horde to combat!");
+                Player.JoinHordeToCombat(horde);
+            }
         }
     }
 }

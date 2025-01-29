@@ -24,7 +24,7 @@ namespace Players
 
         [CanBeNull] private HumanPlayer _humanPlayer;
 
-        [Capacity(32)] private NetworkArray<HordeController> Hordes { get; set; }
+        [Networked] [Capacity(32)] private NetworkLinkedList<HordeController> Hordes { get; } = default;
 
         /// <summary>
         ///     Can only be in one combat instance at a time.
@@ -33,6 +33,7 @@ namespace Players
         [CanBeNull]
         private CombatController CurrentCombatController { get; set; }
 
+        public bool InCombat => CurrentCombatController;
 
         public override void Spawned()
         {
@@ -49,6 +50,8 @@ namespace Players
                 _botPlayer = this.AddComponent<BotPlayer>();
                 _botPlayer!.player = this;
             }
+
+            foreach (var horde in GetComponentsInChildren<HordeController>()) Hordes.Add(horde);
         }
 
         /// <summary>
@@ -58,7 +61,7 @@ namespace Players
         /// <param name="horde"></param>
         public void JoinHordeToCombat(HordeController horde)
         {
-            if (CurrentCombatController == null) CurrentCombatController = GetComponent<CombatController>();
+            if (!CurrentCombatController) CurrentCombatController = GetComponent<CombatController>();
 
             CurrentCombatController!.AddHorde(horde, horde.Player == this);
         }
@@ -71,7 +74,7 @@ namespace Players
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void EnterCombatRpc(CombatController combat)
         {
-            if (CurrentCombatController != null) throw new Exception("Already in combat!");
+            if (CurrentCombatController) throw new Exception("Already in combat!");
 
             CurrentCombatController = combat;
         }
@@ -83,10 +86,6 @@ namespace Players
             throw new NullReferenceException("Tried to get human player from a bot Player");
         }
 
-        public bool InCombat()
-        {
-            return CurrentCombatController;
-        }
 
         public CombatController GetCombatController()
         {
@@ -96,6 +95,7 @@ namespace Players
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void LeaveCombatRpc()
         {
+            Debug.Log("Leaving combat!");
             CurrentCombatController = null;
             foreach (var horde in Hordes) horde.HordeBeingDamaged = null;
         }

@@ -1,6 +1,10 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
-    <ui:Label text="Handles logic for the horde mechanic, calls out to PopulationController" style="white-space: normal;" />
-    <ui:IntegerField label="Current Rats" binding-path="devToolsTotalRats" />
-    <ui:FloatField label="Total Health" binding-path="devToolsTotalHealth" readonly="true" />
+    <ui:Label text="Handles logic for the horde mechanic, calls out to PopulationController"
+              style="white-space: normal;"/>
+    <ui:IntegerField label="Current Rats" binding-path="devToolsTotalRats"/>
+    <ui:FloatField label="Total Health" binding-path="devToolsTotalHealth" readonly="true"/>
     <ui:Vector2Field label="Move Target" binding-path="devToolsTargetLocation"/>
+    <uie:ObjectField label="Fighting Horde" allow-scene-objects="false"
+                     tooltip="The horde this horde is animating fighting" type="Horde.HordeController, Assembly-CSharp"
+                     readonly="true" binding-path="hordeBeingDamaged"/>
 </ui:UXML>
