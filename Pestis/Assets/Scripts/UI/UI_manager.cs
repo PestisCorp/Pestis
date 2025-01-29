@@ -4,6 +4,7 @@ public class UI_Manager : MonoBehaviour
 {
     // References to the canvas elements
     public GameObject infoPanel;
+    public GameObject attackPanel;
     public GameObject mutationPopUp;
 
     // Start is called before the first frame update
@@ -19,6 +20,7 @@ public class UI_Manager : MonoBehaviour
     public void ResetUI()
     {
         if (infoPanel != null) infoPanel.SetActive(false);
+        if (attackPanel != null) attackPanel.SetActive(false);
     }
 
     // Function to enable info panel
@@ -32,6 +34,19 @@ public class UI_Manager : MonoBehaviour
     public void DisableInfoPanel()
     {
         if (infoPanel != null) infoPanel.SetActive(false);
+    }
+    
+    // Function to enable attack panel
+    public void EnableAttackPanel()
+    {
+        ResetUI();
+        if (attackPanel != null) attackPanel.SetActive(true);
+    }
+    
+    // Function to disable attack panel
+    public void DisableAttackPanel()
+    {
+        if (attackPanel != null) attackPanel.SetActive(false);
     }
 
     // Function to enable mutation pop-up
