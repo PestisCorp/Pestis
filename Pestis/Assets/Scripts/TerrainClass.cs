@@ -5,7 +5,5 @@ using UnityEngine.Tilemaps;
 public class Terrain : IsometricRuleTile
 {
     public TileBase[] tiles;
-
     public float walkingSpeed;
-
 }

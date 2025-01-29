@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b8a1eb06362acd947b6d8b5d4e8ec91f
+guid: 2a2176dce327d4245aae682998a636a1
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,9 +123,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: human_hazmat_upright
+  - name: rat_right
     originalName: 
-    pivot: {x: 0.44, y: -0.9111111}
+    pivot: {x: 0.5416667, y: -3.0555556}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -133,9 +133,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 25
-      height: 45
-    spriteID: 503a583824d7ded44bb274977a0474a1
+      width: 48
+      height: 18
+    spriteID: 144b9c35e63e2a042ae811b5b58dfae3
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -147,21 +147,21 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 1574226429
-    name: human_hazmat_upright
+    guid: 751921540
+    name: rat_right
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: human_hazmat_upright
+    - name: rat_right
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 53
-        y: 41
-        width: 25
-        height: 45
-      spriteId: 503a583824d7ded44bb274977a0474a1
+        x: 38
+        y: 55
+        width: 48
+        height: 18
+      spriteId: 144b9c35e63e2a042ae811b5b58dfae3
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -181,4 +181,4 @@ ScriptedImporter:
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 128, y: 128}
-  previousTextureSize: {x: 64, y: 64}
+  previousTextureSize: {x: 64, y: 32}

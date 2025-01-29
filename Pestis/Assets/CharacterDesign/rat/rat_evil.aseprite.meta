@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1cdcb503b620bec4b8c2b25c3c139b5d
+guid: 113536ccdeaff4d43b939472d87561a7
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,9 +123,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: human_hazmat_downright
+  - name: rat_evil
     originalName: 
-    pivot: {x: 0.5, y: -0.8723404}
+    pivot: {x: 0.41666666, y: -2.8421054}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -133,9 +133,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 24
-      height: 47
-    spriteID: b9a2f1cfec6242543b49d8fbcbc8fc82
+      width: 36
+      height: 19
+    spriteID: b359295c3e6577f44ad193c5a82fed16
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -147,21 +147,21 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 1038689174
-    name: human_hazmat_downright
+    guid: 2128683924
+    name: rat_evil
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: human_hazmat_downright
+    - name: rat_evil
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 52
-        y: 41
-        width: 24
-        height: 47
-      spriteId: b9a2f1cfec6242543b49d8fbcbc8fc82
+        x: 49
+        y: 54
+        width: 36
+        height: 19
+      spriteId: b359295c3e6577f44ad193c5a82fed16
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -181,4 +181,4 @@ ScriptedImporter:
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 128, y: 128}
-  previousTextureSize: {x: 32, y: 64}
+  previousTextureSize: {x: 64, y: 32}

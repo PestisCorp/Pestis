@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using System.Collections.Generic;
-using System.Linq;
+using Random = UnityEngine.Random;
+
 public class BiomeGenerator : MonoBehaviour
 {
     public BiomeClass[] BiomeClasses; //every type of biome
@@ -10,7 +11,17 @@ public class BiomeGenerator : MonoBehaviour
     public Tilemap map;
     private int width;
 
-
+    private void Awake()
+    {
+        sowSeed();
+        foreach (var biome in BiomeList)
+        {
+            for (int i = 0; i < biome.iteration; i++)
+            {
+                RandomWalk(biome.seedPosition, biome);
+            }
+        }
+    }
 
     private void sowSeed()
     {
@@ -25,16 +36,16 @@ public class BiomeGenerator : MonoBehaviour
                 {
                     int randomX = Random.Range(bounds.xMin, bounds.xMax);
                     int randomY = Random.Range(bounds.yMin, bounds.yMax);
-                    Vector3Int randomPosition = new Vector3Int(randomX, randomY, 0);
-                    IsometricRuleTile currentTile = (IsometricRuleTile)map.GetTile(randomPosition);
+                    Vector3Int randomPosition = new Vector3Int(randomX, randomY);
+                    TileBase currentTile = (TileBase)map.GetTile(randomPosition);
                     // Check if the current tile is of a specific type (e.g., Grass)
                     if (BiomeClasses[0].CompatableTerrainTypes.Contains(currentTile))
                     {
                         map.SetTile(randomPosition, BiomeClasses[0].getRandomBiomeTile());
-                        new BiomeClass(BiomeClasses[i], currentTile);
+                        BiomeList.Add(new BiomeClass(BiomeClasses[i], new Vector2Int(randomPosition.x, randomPosition.y)));
+                        ScriptableObject.CreateInstance<BiomeClass>();
                         success = true;
                     }
-
                 }
             }
         }
@@ -69,7 +80,7 @@ public class BiomeGenerator : MonoBehaviour
             while (valid == 0 && index < 4)
             {
                 Vector2Int newPosition = currentPosition + directions[index];
-                IsometricRuleTile newTile = (IsometricRuleTile)map.GetTile(new Vector3Int(newPosition.x, newPosition.y, 0));
+                TileBase newTile = (TileBase)map.GetTile(new Vector3Int(newPosition.x, newPosition.y, 0));
 
                 if (biome.TileList.Contains(newTile))
                 {

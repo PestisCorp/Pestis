@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a70ad6055f59f904087a8a48c73e15c2
+guid: 23fd949ceb6a18845a1809a60680eb73
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,9 +123,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: human_hazmat_right
+  - name: human_hazmat_downleft
     originalName: 
-    pivot: {x: 0.33333334, y: -0.8723404}
+    pivot: {x: 0.4166667, y: -0.8510638}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -135,7 +135,7 @@ ScriptedImporter:
       y: 4
       width: 24
       height: 47
-    spriteID: 4f9159c96828eec49b80f9384df5af6b
+    spriteID: 147eeb3d815ec2b45b3f9d1c112df501
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -147,21 +147,21 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: -1931257258
-    name: human_hazmat_right
+    guid: 1008407133
+    name: human_hazmat_downleft
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: human_hazmat_right
+    - name: human_hazmat_downleft
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 56
-        y: 41
+        x: 54
+        y: 40
         width: 24
         height: 47
-      spriteId: 4f9159c96828eec49b80f9384df5af6b
+      spriteId: 147eeb3d815ec2b45b3f9d1c112df501
     linkedCells: []
     parentIndex: -1
   platformSettings:

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 77a460c541c9b7241b7f4973bea45e5f
+guid: f51c3aa4f9756a04a833b1e9ccf2f336
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,9 +123,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: human_normal_sym
+  - name: human_hazmat_left
     originalName: 
-    pivot: {x: 0, y: -0.516129}
+    pivot: {x: 0.33333334, y: -0.8723404}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -133,9 +133,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 16
-      height: 31
-    spriteID: eb848d0d8f7150f459bd5f709bcdf3fe
+      width: 24
+      height: 47
+    spriteID: b2f77fe7609072e499fc42e24ba7ff30
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -147,21 +147,21 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 1523292555
-    name: human_normal_sym
+    guid: -1096385761
+    name: human_hazmat_left
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: human_normal_sym
+    - name: human_hazmat_left
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 32
-        y: 16
-        width: 16
-        height: 31
-      spriteId: eb848d0d8f7150f459bd5f709bcdf3fe
+        x: 56
+        y: 41
+        width: 24
+        height: 47
+      spriteId: b2f77fe7609072e499fc42e24ba7ff30
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -180,5 +180,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 64, y: 64}
+  canvasSize: {x: 128, y: 128}
   previousTextureSize: {x: 32, y: 64}

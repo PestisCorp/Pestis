@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 05cee8f171a981a4ca6eda9706c0406c
+guid: 1f1bb724529bfcb4e9e62a1018810f4d
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,9 +123,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: rat_down
+  - name: human_normal
     originalName: 
-    pivot: {x: 0.52, y: -1.888889}
+    pivot: {x: 1, y: -0.516129}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -133,9 +133,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 25
-      height: 27
-    spriteID: 27036b54d3e759741af38015550a81e5
+      width: 16
+      height: 31
+    spriteID: 0d520e45fdbba1a4cb8d0aaada99ac36
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -147,21 +147,21 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: -1608281614
-    name: rat_down
+    guid: -2016282925
+    name: human_normal
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: rat_down
+    - name: human_normal
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 51
-        y: 51
-        width: 25
-        height: 27
-      spriteId: 27036b54d3e759741af38015550a81e5
+        x: 16
+        y: 16
+        width: 16
+        height: 31
+      spriteId: 0d520e45fdbba1a4cb8d0aaada99ac36
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -180,5 +180,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 128, y: 128}
-  previousTextureSize: {x: 64, y: 64}
+  canvasSize: {x: 64, y: 64}
+  previousTextureSize: {x: 32, y: 64}
