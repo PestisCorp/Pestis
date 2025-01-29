@@ -21,7 +21,7 @@ namespace Horde
     public class PopulationController : NetworkBehaviour
     {
         private const int InitialPopulation = 5;
-
+        private const int PopMax = 1000;
         public HordeController hordeController;
 
         /// <summary>
@@ -33,6 +33,26 @@ namespace Horde
 
         [Networked] private ref PopulationState State => ref MakeRef<PopulationState>();
 
+        private static float ResourceWeightGrowth(int population, int resources)
+        {
+            return (float)resources / (resources + population);
+        }
+
+        private static float ResourceWeightDecline(int population, int resources)
+        {
+            return (float)population / (resources + population);
+        }
+
+        private float Alpha(float b, int resources, int population, float weight)
+        {
+            return b * ResourceWeightGrowth(population, resources) * weight;
+        }
+
+        private float Beta(float d, int resources, int population, float weight)
+        {
+            return d * ResourceWeightDecline(population, resources) * weight;
+        }
+        
         public override void Spawned()
         {
             _random = new Random();
