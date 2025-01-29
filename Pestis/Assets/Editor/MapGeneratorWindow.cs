@@ -47,17 +47,17 @@ public class MapGeneratorWindow : EditorWindow
 
     private void OnEnable()
     {
-        _landBiomesList = FindObjectOfType<LandBiomesList>();
+        _landBiomesList = FindFirstObjectByType<LandBiomesList>();
 
         if (_landBiomesList)
         {
             _objectSO = new SerializedObject(_landBiomesList);
             _listRE = new ReorderableList(_objectSO, _objectSO.FindProperty("landTiles"), true, true, true, true);
-
+            
             _listRE.drawHeaderCallback = (rect) => EditorGUI.LabelField(rect, "Tiles");
             _listRE.drawElementCallback = (Rect rect, int index, bool isGenerating, bool isFocused) =>
             {
-                rect.y += 2f;
+                rect.y += 10f;
                 rect.height = EditorGUIUtility.singleLineHeight;
 
                 GUIContent tileLabel = new GUIContent($"Tile {index}");
@@ -74,6 +74,9 @@ public class MapGeneratorWindow : EditorWindow
 
     private void OnGUI()
     {
+        GUILayout.Space(100f);
+        EditorGUILayout.BeginVertical();
+        
         tilemap = (Tilemap)EditorGUILayout.ObjectField("Tilemap", tilemap, typeof(Tilemap));
         width = EditorGUILayout.IntField("Width", width);
         height = EditorGUILayout.IntField("Height", height);
@@ -81,7 +84,11 @@ public class MapGeneratorWindow : EditorWindow
         voronoiFrequency = EditorGUILayout.FloatField("Voronoi frequency", voronoiFrequency);
         randomWalkSteps = EditorGUILayout.IntField("Random walk steps", randomWalkSteps);
         smoothing = EditorGUILayout.IntField("Water-land Smoothing", smoothing);
+        
+        EditorGUILayout.EndVertical();
 
+        GUILayout.Space(20f);
+        
         if (_objectSO == null)
         {
             EditorGUI.HelpBox(_helpRect, _helpText, MessageType.Warning);
@@ -102,6 +109,8 @@ public class MapGeneratorWindow : EditorWindow
         {
             Voronoi(Dilation(RandomWalk()));
         }
+        
+        EditorGUILayout.EndHorizontal();
     }
 
     private TileType[,] Voronoi(TileType[,] map)
@@ -118,7 +127,7 @@ public class MapGeneratorWindow : EditorWindow
                 float probability = 1.0f / landBiomes.Count;
                 if (map[x, y] == TileType.UnassignedLand)
                 {
-                    for (int i = 0; i < landBiomes.Count; i++)
+                    for (int i = 0; i < _landBiomesList.GetList().Length; i++)
                     {
                         if (noiseVal > probability * i && noiseVal < probability * (i + 1))
                         {
