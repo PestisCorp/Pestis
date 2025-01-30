@@ -1,0 +1,542 @@
+fileFormatVersion: 2
+guid: d0de5ad3f6a329b4689973425d1bcd10
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3182460087075655320
+    second: stone_path_128x64_0
+  - first:
+      213: -2059458177972003877
+    second: stone_path_128x64_1
+  - first:
+      213: -644062767725382678
+    second: stone_path_128x64_2
+  - first:
+      213: 2245306249114880222
+    second: stone_path_128x64_3
+  - first:
+      213: -7146652114807315018
+    second: stone_path_128x64_4
+  - first:
+      213: 2206157170864010903
+    second: stone_path_128x64_5
+  - first:
+      213: -6039248554055648207
+    second: stone_path_128x64_6
+  - first:
+      213: 5531983867591286330
+    second: stone_path_128x64_7
+  - first:
+      213: -8190804938654557644
+    second: stone_path_128x64_8
+  - first:
+      213: 8228481325657725382
+    second: stone_path_128x64_9
+  - first:
+      213: -5269952528495982542
+    second: stone_path_128x64_10
+  - first:
+      213: 3297937576927574500
+    second: stone_path_128x64_11
+  - first:
+      213: 4744542313684023962
+    second: stone_path_128x64_12
+  - first:
+      213: -8832944396968332186
+    second: stone_path_128x64_13
+  - first:
+      213: 5620612698826096338
+    second: stone_path_128x64_14
+  - first:
+      213: -166886203768711612
+    second: stone_path_128x64_15
+  - first:
+      213: 4166717497253753481
+    second: stone_path_128x64_16
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: stone_path_128x64_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 193
+        width: 1024
+        height: 255
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89ec00a769e5a2c20800000000000000
+      internalID: 3182460087075655320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone_path_128x64_1
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 133
+        width: 121
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bdb9438d2b55b63e0800000000000000
+      internalID: -2059458177972003877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone_path_128x64_2
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 133
+        width: 119
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae37cac3354df07f0800000000000000
+      internalID: -644062767725382678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone_path_128x64_3
+      rect:
+        serializedVersion: 2
+        x: 266
+        y: 132
+        width: 119
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed8057e232ee82f10800000000000000
+      internalID: 2245306249114880222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone_path_128x64_4
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 132
+        width: 377
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b5ad9324cdf1dc90800000000000000
+      internalID: -7146652114807315018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone_path_128x64_5
+      rect:
+        serializedVersion: 2
+        x: 777
+        y: 127
+        width: 120
+        height: 125
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 796b7081248dd9e10800000000000000
+      internalID: 2206157170864010903
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone_path_128x64_6
+      rect:
+        serializedVersion: 2
+        x: 907
+        y: 127
+        width: 117
+        height: 125
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13cb839ff67403ca0800000000000000
+      internalID: -6039248554055648207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone_path_128x64_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 63
+        width: 118
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3e58f2940e85cc40800000000000000
+      internalID: 5531983867591286330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone_path_128x64_8
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 63
+        width: 121
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43adaf61e4a645e80800000000000000
+      internalID: -8190804938654557644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone_path_128x64_9
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 21
+        width: 258
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c993c85b20713270800000000000000
+      internalID: 8228481325657725382
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone_path_128x64_10
+      rect:
+        serializedVersion: 2
+        x: 518
+        y: 63
+        width: 110
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23843d3c81e5dd6b0800000000000000
+      internalID: -5269952528495982542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone_path_128x64_11
+      rect:
+        serializedVersion: 2
+        x: 651
+        y: 63
+        width: 106
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e93e24c0c0a4cd20800000000000000
+      internalID: 3297937576927574500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone_path_128x64_12
+      rect:
+        serializedVersion: 2
+        x: 767
+        y: 69
+        width: 94
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9a32fcb81008d140800000000000000
+      internalID: 4744542313684023962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone_path_128x64_13
+      rect:
+        serializedVersion: 2
+        x: 895
+        y: 69
+        width: 101
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 664fce1bed31b6580800000000000000
+      internalID: -8832944396968332186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone_path_128x64_14
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 5
+        width: 89
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2de3495687d600e40800000000000000
+      internalID: 5620612698826096338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone_path_128x64_15
+      rect:
+        serializedVersion: 2
+        x: 178
+        y: 5
+        width: 79
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 446d372c1e91fadf0800000000000000
+      internalID: -166886203768711612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone_path_128x64_16
+      rect:
+        serializedVersion: 2
+        x: 291
+        y: 15
+        width: 15
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 982f63fcc7723d930800000000000000
+      internalID: 4166717497253753481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable: {}
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
