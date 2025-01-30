@@ -4,6 +4,7 @@ using Fusion;
 using JetBrains.Annotations;
 using Players;
 using POI;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -125,6 +126,8 @@ namespace Horde
             var b = new Bounds(_spawnedRats[0].transform.position, Vector2.zero);
             foreach (var rat in _spawnedRats) b.Encapsulate(rat.GetPosition());
 
+            b.Expand(1.0f);
+
             // If we're the owner of this Horde, we are the authoritative source for the horde bounds
             if (HasStateAuthority) _hordeBounds = b;
 
@@ -149,6 +152,34 @@ namespace Horde
 
             _hordeCenter = b.center;
         }
+
+#if UNITY_EDITOR
+        [DrawGizmo(GizmoType.Selected ^ GizmoType.NonSelected)]
+        public void OnDrawGizmos()
+        {
+            if (Object.LastReceiveTick)
+            {
+                var centeredStyle = GUI.skin.GetStyle("Label");
+                centeredStyle.alignment = TextAnchor.MiddleCenter;
+
+                Gizmos.color = Color.blue;
+                Gizmos.DrawWireCube(_hordeBounds.center, _hordeBounds.size);
+                Handles.Label(_hordeBounds.center, $@"{Object.StateAuthority}
+{Object.Id}
+{(HasStateAuthority ? "Local" : "Remote")}
+Combat: {(Player.InCombat ? Player.GetCombatController().HordeInCombat(this) : "None")}
+Horde Target: {(HordeBeingDamaged ? HordeBeingDamaged.Object.Id : "None")}
+");
+                // Handles.Label(_hordeBounds.center, $"{Object.StateAuthority}");
+                // Handles.Label(_hordeBounds.center + new Vector3(0, -0.5f, 0), $"{Object.Id}");
+                // if (HasStateAuthority) Handles.Label(_hordeBounds.center + new Vector3(0, -0.75f, 0), "Local");
+                // if (HordeBeingDamaged)
+                //     Handles.Label(_hordeBounds.center + new Vector3(0, -1, 0),
+                //         $"Fighting {HordeBeingDamaged.Object.Id}");
+                HandleUtility.Repaint();
+            }
+        }
+#endif
 
         // When inspector values change, update appropriate variables
         public void OnValidate()

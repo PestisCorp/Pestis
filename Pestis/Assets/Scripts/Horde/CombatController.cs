@@ -5,6 +5,7 @@ using Fusion;
 using JetBrains.Annotations;
 using Players;
 using POI;
+using UnityEditor;
 using UnityEngine;
 
 namespace Horde
@@ -77,6 +78,36 @@ namespace Horde
         [Networked]
         [CanBeNull]
         public POIController FightingOver { get; private set; }
+
+#if UNITY_EDITOR
+        [DrawGizmo(GizmoType.Selected ^ GizmoType.NonSelected)]
+        public void OnDrawGizmos()
+        {
+            if (!Object.LastReceiveTick || !InitiatingPlayer) return;
+
+            var text = $@"Initiator: {InitiatingPlayer}
+POI: {FightingOver}
+";
+
+            var b = new Bounds();
+            foreach (var kvp in Participators)
+            {
+                text += $"\n{kvp.Key}:";
+                foreach (var hordeID in kvp.Value.Hordes)
+                {
+                    Runner.TryFindBehaviour(hordeID, out HordeController horde);
+                    if (b.size == new Vector3()) b.center = horde.GetBounds().center;
+
+                    b.Encapsulate(horde.GetBounds());
+                    text += $"\n  {hordeID}";
+                }
+            }
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(b.center, b.size);
+            Handles.Label(new Vector3(b.center.x - b.extents.x, b.center.y + b.extents.y), text);
+        }
+#endif
 
         public override void FixedUpdateNetwork()
         {
