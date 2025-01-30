@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - UI_stats_text
+  - UI_mutations_text
+  - Attack_slider_text
+  - Attack_slider
   layers:
   - Default
   - TransparentFX
