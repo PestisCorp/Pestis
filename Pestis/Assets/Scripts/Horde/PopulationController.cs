@@ -28,7 +28,7 @@ namespace Horde
         private const int InitialPopulation = 5;
         private const int PopMax = 1000;
         private const int resources = 100;
-        private const int MaxPopGrowth = 5;
+        private const int MaxPopGrowth = 1;
         public HordeController hordeController;
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Horde
                 double delta = 0;
                 for (int j = 0; j < MaxPopGrowth; j++)
                 {
-                    float w = (float)(weights[j] - wMin) / (wMax - wMin);
+                    float w = (wMin == wMax) ? 1 : (float)(weights[j] - wMin) / (wMax - wMin);
                     if (i + j <= PopMax)
                     {
                         double alphaj = Alpha(w);
@@ -104,15 +104,14 @@ namespace Horde
                 }
 
                 transitionMatrix[i, i] = Math.Max(1 - delta, 0.0);
-                NormalizeRows(transitionMatrix, PopMax);
+                
             }
+            NormalizeRows(transitionMatrix, PopMax);
             return transitionMatrix;
         }
         
         public override void Spawned()
         {
-            _random = new Random();
-
             State.BirthRate = 0.0015;
             State.DeathRate = 0.0009;
             State.HealthPerRat = 5.0f;
@@ -124,7 +123,7 @@ namespace Horde
         // Check for birth or death events
         private void PopulationEvent()
         {
-            int[] weights = { 5, 4, 3, 2, 1 };
+            int[] weights = Enumerable.Range(1, MaxPopGrowth).Reverse().ToArray();
             var transitionMatrix = GenerateTransitionMatrix(weights);
             double[] probabilities = new double[transitionMatrix.GetLength(1)];
             for (int j = 0; j < transitionMatrix.GetLength(1); j++)
