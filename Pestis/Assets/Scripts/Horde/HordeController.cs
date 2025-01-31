@@ -201,7 +201,7 @@ Horde Target: {(HordeBeingDamaged ? HordeBeingDamaged.Object.Id : "None")}
         {
             Debug.Log($"Adding myself (horde {Object.Id}) to POI: {poi.Object.Id}");
             poi.StationHordeRpc(this);
-            targetLocation.Teleport(poi.transform.position);
+            Move(poi.transform.position);
             StationedAt = poi;
         }
 
@@ -274,6 +274,11 @@ Horde Target: {(HordeBeingDamaged ? HordeBeingDamaged.Object.Id : "None")}
         public void Move(Vector2 target)
         {
             targetLocation.Teleport(target);
+            if (StationedAt)
+            {
+                StationedAt.UnStationHordeRpc(this);
+                StationedAt = null;
+            }
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -315,10 +320,17 @@ Horde Target: {(HordeBeingDamaged ? HordeBeingDamaged.Object.Id : "None")}
             // For now just retreat to spawn base
             targetLocation.Teleport(transform.parent.position);
             HordeBeingDamaged = null;
+            StationedAt = null;
         }
 
         public void AttackPoi(POIController poi)
         {
+            if (StationedAt)
+            {
+                StationedAt.UnStationHordeRpc(this);
+                StationedAt = null;
+            }
+
             // TODO - Don't immediately take control just because it's unoccupied, need to find a way to wait until moved.
             if (!poi.ControlledBy)
             {

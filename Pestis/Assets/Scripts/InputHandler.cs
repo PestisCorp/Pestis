@@ -77,6 +77,7 @@ public class InputHandler : MonoBehaviour
             }
             else if (clickedHorde)
             {
+                LocalPlayer?.selectedHorde.UnStationAtRpc();
                 if (!LocalPlayer!.player.InCombat) LocalPlayer?.player.JoinHordeToCombat(LocalPlayer?.selectedHorde);
                 LocalPlayer?.player.JoinHordeToCombat(clickedHorde);
             }
