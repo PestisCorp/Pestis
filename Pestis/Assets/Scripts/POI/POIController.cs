@@ -2,6 +2,7 @@ using System;
 using Fusion;
 using Horde;
 using Players;
+using UnityEngine;
 
 namespace POI
 {
@@ -15,6 +16,7 @@ namespace POI
         public void ChangeControllerRpc(Player player)
         {
             ControlledBy = player;
+            StationedHordes.Clear();
         }
 
         /// <summary>
@@ -26,6 +28,7 @@ namespace POI
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void StationHordeRpc(HordeController horde, RpcInfo rpcInfo = default)
         {
+            Debug.Log($"Adding horde {horde.Object.Id} to myself (POI): {Object.Id}");
             if (horde.Object.StateAuthority != rpcInfo.Source)
                 throw new Exception("Only the controlling player can station a horde!");
 

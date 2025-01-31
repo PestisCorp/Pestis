@@ -33,7 +33,15 @@ namespace Players
         [CanBeNull]
         private CombatController CurrentCombatController { get; set; }
 
-        public bool InCombat => CurrentCombatController;
+        public bool InCombat
+        {
+            get
+            {
+                if (CurrentCombatController) return true;
+                return false;
+                ;
+            }
+        }
 
         public override void Spawned()
         {
@@ -97,6 +105,7 @@ namespace Players
         {
             Debug.Log("Leaving combat!");
             CurrentCombatController = null;
+            Debug.Log($"Hordes: {Hordes}");
             foreach (var horde in Hordes) horde.HordeBeingDamaged = null;
         }
     }

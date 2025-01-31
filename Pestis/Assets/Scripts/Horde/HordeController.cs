@@ -36,11 +36,6 @@ namespace Horde
         /// </summary>
         public Vector2[] intraHordeTargets = new Vector2[4];
 
-        /// <summary>
-        ///     The horde we're currently damaging. Our rats will animate against them.
-        /// </summary>
-        [SerializeField] internal HordeController HordeBeingDamaged;
-
         private readonly List<RatController> _spawnedRats = new();
 
         /// <summary>
@@ -58,6 +53,12 @@ namespace Horde
         private Light2D _selectionLightPOI;
 
         private Light2D _selectionLightTerrain;
+
+        /// <summary>
+        ///     The horde we're currently damaging. Our rats will animate against them.
+        /// </summary>
+        [Networked]
+        internal HordeController HordeBeingDamaged { get; set; }
 
         public int AliveRats => (int)Mathf.Max(TotalHealth / _populationController.GetState().HealthPerRat, 1.0f);
 
@@ -80,7 +81,9 @@ namespace Horde
 
         private void FixedUpdate()
         {
-            if (_spawnedRats.Count == 0) _hordeCenter = transform.position;
+            // Spawn at center of horde if there is one, or base if there isn't one yet.
+            if (_spawnedRats.Count == 0)
+                _hordeCenter = _hordeBounds.center == new Vector3() ? transform.position : _hordeBounds.center;
 
             // Only spawn up to one rat each tick to avoid freezes
             if (_ratsToSpawn != 0)
@@ -196,6 +199,7 @@ Horde Target: {(HordeBeingDamaged ? HordeBeingDamaged.Object.Id : "None")}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void StationAtRpc(POIController poi)
         {
+            Debug.Log($"Adding myself (horde {Object.Id}) to POI: {poi.Object.Id}");
             poi.StationHordeRpc(this);
             targetLocation.Teleport(poi.transform.position);
             StationedAt = poi;
@@ -315,16 +319,16 @@ Horde Target: {(HordeBeingDamaged ? HordeBeingDamaged.Object.Id : "None")}
 
         public void AttackPoi(POIController poi)
         {
-            Debug.Log("Attacking POI");
-
             // TODO - Don't immediately take control just because it's unoccupied, need to find a way to wait until moved.
             if (!poi.ControlledBy)
             {
+                Debug.Log("Attacking Unowned POI");
                 poi.ChangeControllerRpc(Player);
                 StationAtRpc(poi);
                 return;
             }
 
+            Debug.Log("Attacking owned POI");
             // Add current horde to new battle
             Player.JoinHordeToCombat(this);
 

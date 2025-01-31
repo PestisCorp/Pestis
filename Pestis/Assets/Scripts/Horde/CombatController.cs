@@ -119,17 +119,12 @@ POI: {FightingOver}
                 foreach (var hordeID in kvp.Value.Hordes)
                 {
                     Runner.TryFindBehaviour(hordeID, out HordeController horde);
+                    var minimumHealth = kvp.Value.HordeStartingHealth.Get(hordeID) * 0.2f;
                     // If horde is above 20% of it's starting health
-                    if (horde.TotalHealth > kvp.Value.HordeStartingHealth.Get(hordeID) * 0.2f)
-                    {
+                    if (horde.TotalHealth > minimumHealth)
                         aliveHordes++;
-                    }
                     else
-                    {
                         hordesToRemove.Add(horde);
-                        // Tell horde to run away to nearest friendly POI
-                        horde.RetreatRpc();
-                    }
                 }
 
                 // If player has no hordes above 20% health participating
@@ -138,6 +133,8 @@ POI: {FightingOver}
 
             foreach (var horde in hordesToRemove)
             {
+                // Tell horde to run away to nearest friendly POI
+                horde.RetreatRpc();
                 var copy = Participators.Get(horde.Player);
                 copy.RemoveHorde(horde);
                 Participators.Set(horde.Player, copy);
@@ -156,6 +153,7 @@ POI: {FightingOver}
                 // If the fight was over a POI, hand over control.
                 if (FightingOver && winner != FightingOver.ControlledBy)
                 {
+                    Debug.Log($"Transferring POI Ownership to {winner.Object.StateAuthority}");
                     FightingOver.ChangeControllerRpc(winner);
                     foreach (var hordeID in Participators.First().Value.Hordes)
                     {
@@ -163,16 +161,14 @@ POI: {FightingOver}
                         horde.targetLocation.Teleport(FightingOver.transform.position);
                         horde.StationAtRpc(FightingOver);
                     }
-
-                    foreach (var horde in FightingOver.StationedHordes) horde.UnStationAtRpc();
                 }
 
                 // Clear Combat Controller and end combat
                 winner.LeaveCombatRpc();
-                Participators.Clear();
+                Participators.Remove(winner);
                 InitiatingPlayer = null;
 
-                Debug.Log("Combat is over! Winner is ", winner);
+                Debug.Log($"Combat is over! Winner is {winner.Object.StateAuthority}");
             }
         }
 
@@ -242,6 +238,8 @@ POI: {FightingOver}
             if (!HasStateAuthority)
                 throw new Exception(
                     "Only State Authority of Combat Controller can change what POI the combat is over!");
+
+            FightingOver = poi;
         }
     }
 }
