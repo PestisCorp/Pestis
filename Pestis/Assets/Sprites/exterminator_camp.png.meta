@@ -243,10 +243,10 @@ TextureImporter:
         serializedVersion: 2
         x: 24
         y: 364
-        width: 193
+        width: 64
         height: 64
       alignment: 9
-      pivot: {x: 0.005181347, y: 0.09375}
+      pivot: {x: 0, y: 0.1875}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -265,10 +265,10 @@ TextureImporter:
         serializedVersion: 2
         x: 24
         y: 300
-        width: 193
+        width: 128
         height: 64
       alignment: 9
-      pivot: {x: 1, y: 0.59375}
+      pivot: {x: 1, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -277,6 +277,50 @@ TextureImporter:
       bones: []
       spriteID: 57316df099a89d638aa2b71f9247d588
       internalID: 630813641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: exterminator_camp_7
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 364
+        width: 129
+        height: 64
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e2a7ac87a0a25ec318aca4d2db9230fd
+      internalID: -2061491852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: exterminator_camp_8
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 300
+        width: 65
+        height: 64
+      alignment: 9
+      pivot: {x: 1, y: 0.640625}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9732334ff82f391eeb236fa9cdeae7c5
+      internalID: -797346256
       vertices: []
       indices: 
       edges: []
@@ -304,6 +348,8 @@ TextureImporter:
       exterminator_camp_4: 8791283621583441874
       exterminator_camp_5: -7613977072253135894
       exterminator_camp_6: 630813641
+      exterminator_camp_7: -2061491852
+      exterminator_camp_8: -797346256
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
