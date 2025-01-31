@@ -60,6 +60,6 @@ jobs:
 
         # Output
         - name: Copy build to hosting folder
-          run: cp -rf build/WebGL/WebGL /home/mediaserver/configs/pestis-runner/builds/${{ github.ref_name  }}
+          run: cp -rfT build/WebGL/WebGL /home/mediaserver/configs/pestis-runner/builds/${{ github.ref_name  }}
 
      
