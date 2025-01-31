@@ -3,7 +3,6 @@
 using System;
 using System.Linq;
 using Fusion;
-using KaimiraGames;
 using Unity.VisualScripting;
 using UnityEngine;
 using Random = System.Random;
@@ -27,7 +26,7 @@ namespace Horde
     {
         private const int InitialPopulation = 5;
         private const int PopMax = 1000;
-        private const int resources = 100;
+        private const int resources = 10;
         private const int MaxPopGrowth = 1;
         public HordeController hordeController;
 
@@ -126,17 +125,20 @@ namespace Horde
             int[] weights = Enumerable.Range(1, MaxPopGrowth).Reverse().ToArray();
             var transitionMatrix = GenerateTransitionMatrix(weights);
             double[] probabilities = new double[transitionMatrix.GetLength(1)];
-            for (int j = 0; j < transitionMatrix.GetLength(1); j++)
+            var cumSumProbabilities = new double[probabilities.Length];
+            for (int j = 0; j < PopMax; j++)
             {
                 probabilities[j] = transitionMatrix[hordeController.AliveRats, j];
+                if (j != 0)
+                {
+                    cumSumProbabilities[j] = probabilities[j] + cumSumProbabilities[j-1];
+                }
             }
 
-            WeightedList<int> stateDist = new();
-            for (int i = 0; i < PopMax; i++)
-            {
-                stateDist.Add(i, (int)(probabilities[i] * 10000));
-            }
-            hordeController.TotalHealth = stateDist.Next() * State.HealthPerRat;
+            double r = _random.NextDouble();
+            int nextState = Array.BinarySearch(cumSumProbabilities, r);
+            if (nextState < 0) nextState = ~nextState;
+            hordeController.TotalHealth = nextState * State.HealthPerRat;
         }
 
         // Only executed on State Authority
