@@ -1,6 +1,10 @@
 // Population manager. Update birth and death rates here
 
+using System;
+using System.Linq;
 using Fusion;
+using KaimiraGames;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = System.Random;
 
@@ -12,6 +16,7 @@ namespace Horde
         internal double DeathRate;
         internal float HealthPerRat;
 
+
         /// <summary>
         ///     How much damage the horde does to other hordes per tick in combat
         /// </summary>
@@ -22,6 +27,8 @@ namespace Horde
     {
         private const int InitialPopulation = 5;
         private const int PopMax = 1000;
+        private const int resources = 100;
+        private const int MaxPopGrowth = 5;
         public HordeController hordeController;
 
         /// <summary>
@@ -33,24 +40,73 @@ namespace Horde
 
         [Networked] private ref PopulationState State => ref MakeRef<PopulationState>();
 
-        private static float ResourceWeightGrowth(int population, int resources)
+        private double ResourceWeightGrowth()
         {
-            return (float)resources / (resources + population);
+            return (double)resources / (resources + hordeController.AliveRats);
         }
 
-        private static float ResourceWeightDecline(int population, int resources)
+        private double ResourceWeightDecline()
         {
-            return (float)population / (resources + population);
+            return (double)hordeController.AliveRats / (resources + hordeController.AliveRats);
         }
 
-        private float Alpha(float b, int resources, int population, float weight)
+        private double Alpha(double weight)
         {
-            return b * ResourceWeightGrowth(population, resources) * weight;
+            return State.BirthRate * ResourceWeightGrowth() * weight;
         }
 
-        private float Beta(float d, int resources, int population, float weight)
+        private double Beta(double weight)
         {
-            return d * ResourceWeightDecline(population, resources) * weight;
+            return State.DeathRate * ResourceWeightDecline() * weight;
+        }
+        
+        static void NormalizeRows(double[,] matrix, int n)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                double rowSum = 0;
+                for (int j = 0; j < n; j++)
+                    rowSum += matrix[i, j];
+
+                if (rowSum > 0) 
+                    
+                {
+                    for (int j = 0; j < n; j++)
+                        matrix[i, j] /= rowSum; 
+                }
+            }
+        }
+        
+        private double[,] GenerateTransitionMatrix(int[] weights)
+        {
+            var transitionMatrix = new double[PopMax, PopMax];
+            int wMin = weights.Min();
+            int wMax = weights.Max();
+            for (int i = 0; i < PopMax; i++)
+            {
+                double delta = 0;
+                for (int j = 0; j < MaxPopGrowth; j++)
+                {
+                    float w = (float)(weights[j] - wMin) / (wMax - wMin);
+                    if (i + j <= PopMax)
+                    {
+                        double alphaj = Alpha(w);
+                        transitionMatrix[i, i + j] = alphaj;
+                        delta += alphaj;
+                    }
+
+                    if (i - j >= 1)
+                    {
+                        double betaj = Beta(w);
+                        transitionMatrix[i, i - j] = betaj;
+                        delta += betaj;
+                    }
+                }
+
+                transitionMatrix[i, i] = Math.Max(1 - delta, 0.0);
+                NormalizeRows(transitionMatrix, PopMax);
+            }
+            return transitionMatrix;
         }
         
         public override void Spawned()
@@ -68,15 +124,20 @@ namespace Horde
         // Check for birth or death events
         private void PopulationEvent()
         {
-            double rMax = 1;
+            int[] weights = { 5, 4, 3, 2, 1 };
+            var transitionMatrix = GenerateTransitionMatrix(weights);
+            double[] probabilities = new double[transitionMatrix.GetLength(1)];
+            for (int j = 0; j < transitionMatrix.GetLength(1); j++)
+            {
+                probabilities[j] = transitionMatrix[hordeController.AliveRats, j];
+            }
 
-            var r = _random.NextDouble() * rMax; // Pick which event should happen
-            // A birth event occurs here
-            if (r < State.BirthRate) hordeController.TotalHealth += State.HealthPerRat;
-            // Death event occurs here
-            if (State.BirthRate <= r && r < State.BirthRate + State.DeathRate &&
-                hordeController.TotalHealth > _highestHealth * 0.2f)
-                hordeController.TotalHealth -= State.HealthPerRat;
+            WeightedList<int> stateDist = new();
+            for (int i = 0; i < PopMax; i++)
+            {
+                stateDist.Add(i, (int)(probabilities[i] * 10000));
+            }
+            hordeController.TotalHealth = stateDist.Next() * State.HealthPerRat;
         }
 
         // Only executed on State Authority
