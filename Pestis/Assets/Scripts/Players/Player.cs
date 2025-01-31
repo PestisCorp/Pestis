@@ -36,9 +36,9 @@ namespace Players
         public bool InCombat => CurrentCombatController;
 
         // Cheese Management
-        [Networked] public int CurrentCheese { get; private set; } = 0;
+        [Networked] public float CurrentCheese { get; private set; }
 
-        [Networked] public int CheeseIncrementRate { get; private set; } = 1;
+        [Networked] public float CheeseIncrementRate { get; private set; } = 0.03f;
 
 
         public override void Spawned()
@@ -62,30 +62,31 @@ namespace Players
 
         // Manage Cheese
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void AddCheese(int amount)
+        public void AddCheeseRpc(float amount)
         {
             CurrentCheese += amount;
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void RemoveCheese(int amount)
+        public void RemoveCheeseRpc(float amount)
         {
             CurrentCheese = Mathf.Max(0, CurrentCheese - amount);
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void SetCheeseIncrementRate(int rate)
+        public void SetCheeseIncrementRateRpc(float rate)
         {
             CheeseIncrementRate = rate;
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void IncrementCheeseIncrementRate(int amount)
+        public void IncrementCheeseIncrementRateRpc(float amount)
         {
             CheeseIncrementRate += amount;
         }
 
-        public void DecrementCheeseIncrementRate(int amount)
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void DecrementCheeseIncrementRateRpc(float amount)
         {
             CheeseIncrementRate -= amount;
         }
@@ -93,10 +94,8 @@ namespace Players
         public override void FixedUpdateNetwork()
         {
             if (HasStateAuthority)
-            {
                 // Add Cheese every tick based on the increment rate
                 CurrentCheese += CheeseIncrementRate;
-            }
         }
 
         /// <summary>

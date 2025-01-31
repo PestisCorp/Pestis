@@ -8,6 +8,10 @@ namespace POI
 {
     public class POIController : NetworkBehaviour
     {
+        private readonly float _cheesePerTick = 0.3f;
+
+        public float CheesePerSecond => _cheesePerTick / Runner.DeltaTime;
+
         [Networked] public Player ControlledBy { get; private set; }
 
         [Networked] [Capacity(4)] public NetworkLinkedList<HordeController> StationedHordes { get; } = default;
@@ -15,7 +19,14 @@ namespace POI
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void ChangeControllerRpc(Player player)
         {
+            if (ControlledBy)
+                // Remove Cheese benefits from previous controller
+                ControlledBy.DecrementCheeseIncrementRateRpc(_cheesePerTick);
+
             ControlledBy = player;
+
+            // Add Cheese benefits to new controller
+            ControlledBy.IncrementCheeseIncrementRateRpc(_cheesePerTick);
             StationedHordes.Clear();
         }
 
