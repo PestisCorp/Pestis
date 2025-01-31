@@ -29,6 +29,8 @@ namespace Human
             {
                 _poiCenter = new Vector2(poi.transform.position.x, poi.transform.position.y);
             }
+
+            SpawnHumans();
         }
 
         private void Update()
