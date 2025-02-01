@@ -144,6 +144,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 0
+  _CurrentCheese: 0
+  _CheeseIncrementRate: 0.03
 --- !u!114 &5988577402246657143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,6 +160,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Participators:
     _items: []
+  _FightingOver: {fileID: 0}
 --- !u!1001 &2540703415486097592
 PrefabInstance:
   m_ObjectHideFlags: 0
