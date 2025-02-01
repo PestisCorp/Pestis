@@ -525,56 +525,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1772914295}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1150750444
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1150750445}
-  - component: {fileID: 1150750446}
-  m_Layer: 0
-  m_Name: Biome
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1150750445
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1150750444}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 76.6562, y: 205.49548, z: -0.754996}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1150750446
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1150750444}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35f80cf196507914fb785b8a95d85028, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  BiomeClasses:
-  - {fileID: 11400000, guid: 1bbbcbe0293066746b06a3ec919829a8, type: 2}
-  - {fileID: 11400000, guid: a2dc4dc507a1ee640935f5c11ce15a76, type: 2}
-  - {fileID: 11400000, guid: 89d38a0623e55134a97479a82e459f26, type: 2}
-  BiomeList: []
-  map: {fileID: 1084675015}
 --- !u!1 &1772914291
 GameObject:
   m_ObjectHideFlags: 0
@@ -857,7 +807,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2078710536}
-  - component: {fileID: 2078710537}
   - component: {fileID: 2078710538}
   m_Layer: 0
   m_Name: Map
@@ -881,22 +830,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2078710537
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2078710534}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b66b62fe65b4c60a70b1ef3c4623e9b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  landTiles:
-  - {fileID: 11400000, guid: cab14d9d032db5776949d99fcbafeb09, type: 2}
-  - {fileID: 11400000, guid: e69c02d7559627b4980f932a14596f74, type: 2}
-  - {fileID: 11400000, guid: 4dcb92363fb1b084fbd4e6b0f8893e02, type: 2}
 --- !u!114 &2078710538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -915,6 +848,8 @@ MonoBehaviour:
   water: {fileID: 11400000, guid: b85b6c7b0af394f438789f6ceca17ae4, type: 2}
   landBiomes:
   - {fileID: 11400000, guid: f9ba973c972f6a44bbda24e78f2e11c4, type: 2}
+  - {fileID: 11400000, guid: 8e7ccfaabc0a8d64ab7511c7767e25a9, type: 2}
+  - {fileID: 11400000, guid: 8d6a38d3283473542adaaaf2dd8cd88b, type: 2}
   voronoiFrequency: 0.025
   randomWalkSteps: 5000000
   smoothing: 10
@@ -928,4 +863,3 @@ SceneRoots:
   - {fileID: 1065116501}
   - {fileID: 1772914295}
   - {fileID: 2078710536}
-  - {fileID: 1150750445}
