@@ -1,6 +1,7 @@
 // Population manager. Update birth and death rates here
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Fusion;
 using Unity.VisualScripting;
@@ -25,8 +26,9 @@ namespace Horde
     public class PopulationController : NetworkBehaviour
     {
         private const int InitialPopulation = 5;
-        private const int PopMax = 1000;
+        private const int PopMax = 10;
         private const int resources = 10;
+        // The maximum change in a population per network tick
         private const int MaxPopGrowth = 1;
         public HordeController hordeController;
 
@@ -35,110 +37,115 @@ namespace Horde
         /// </summary>
         private float _highestHealth;
 
-        private Random _random;
+        private Random _random = new Random();
 
         [Networked] private ref PopulationState State => ref MakeRef<PopulationState>();
-
+        
+        
+        // Weight used in probability of population growth
         private double ResourceWeightGrowth()
         {
             return (double)resources / (resources + hordeController.AliveRats);
         }
-
+        
+        // Weight used in probability of population decline
         private double ResourceWeightDecline()
         {
             return (double)hordeController.AliveRats / (resources + hordeController.AliveRats);
         }
-
+        
+        // Calculate probability of population growth
         private double Alpha(double weight)
         {
             return State.BirthRate * ResourceWeightGrowth() * weight;
         }
-
+        
+        // Calculate probability of population decline
         private double Beta(double weight)
         {
             return State.DeathRate * ResourceWeightDecline() * weight;
         }
         
-        static void NormalizeRows(double[,] matrix, int n)
+        // Normalize rows of a matrix to be between 0 and 1.0
+        private static void NormalizeRows(double[][] matrix)
         {
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < PopMax; i++)
             {
-                double rowSum = 0;
-                for (int j = 0; j < n; j++)
-                    rowSum += matrix[i, j];
-
-                if (rowSum > 0) 
-                    
-                {
-                    for (int j = 0; j < n; j++)
-                        matrix[i, j] /= rowSum; 
-                }
+                double ratio = 1.0 / matrix[i].Sum();
+                matrix[i] = matrix[i].Select(o => o * ratio).ToArray();
             }
         }
         
-        private double[,] GenerateTransitionMatrix(int[] weights)
+        // Generate a PopMax x PopMax transition matrix
+        // The entry X[n][n] is the probability of the population staying the same
+        // The entry X[n][n+k] is the probability of the population growing by an amount k
+        // The entry X[n][n-k] is the probability of the population declining by an amount k
+        private double[][] GenerateTransitionMatrix(int[] weights)
         {
-            var transitionMatrix = new double[PopMax, PopMax];
+            var transitionMatrix = new double[PopMax][];
             int wMin = weights.Min();
             int wMax = weights.Max();
             for (int i = 0; i < PopMax; i++)
             {
+                // Delta is the probability of staying at the same population
                 double delta = 0;
+                var row = new double[PopMax];
                 for (int j = 0; j < MaxPopGrowth; j++)
                 {
-                    float w = (wMin == wMax) ? 1 : (float)(weights[j] - wMin) / (wMax - wMin);
-                    if (i + j <= PopMax)
+                    // Normalise w using MinMax rescaling
+                    double w = (wMin == wMax) ? 1 : (double)(weights[j] - wMin) / (wMax - wMin);
+                    if (i + j + 1 < PopMax)
                     {
-                        double alphaj = Alpha(w);
-                        transitionMatrix[i, i + j] = alphaj;
-                        delta += alphaj;
+                        double alpha = Alpha(w);
+                        row[i + j + 1] = alpha;
+                        delta += alpha;
                     }
 
-                    if (i - j >= 1)
+                    if (i - j - 1 >= 0)
                     {
-                        double betaj = Beta(w);
-                        transitionMatrix[i, i - j] = betaj;
-                        delta += betaj;
+                        double beta = Beta(w);
+                        row[i - j - 1] = beta;
+                        delta += beta;
                     }
                 }
-
-                transitionMatrix[i, i] = Math.Max(1 - delta, 0.0);
-                
+                row[i] = Math.Max(1 - delta, 0);
+                transitionMatrix[i] = row;
             }
-            NormalizeRows(transitionMatrix, PopMax);
+            NormalizeRows(transitionMatrix);
             return transitionMatrix;
         }
         
         public override void Spawned()
         {
-            State.BirthRate = 0.0015;
-            State.DeathRate = 0.0009;
+            State.BirthRate = 0.01;
+            State.DeathRate = 0.005;
             State.HealthPerRat = 5.0f;
             State.Damage = 0.5f;
-
             hordeController.TotalHealth = InitialPopulation * State.HealthPerRat;
         }
 
         // Check for birth or death events
         private void PopulationEvent()
         {
+            // Weights are reversed because weight decreases with distance from n
+            // e.g. the probability of going from population n to n + 5 should be
+            // smaller than going from n to n + 1, so the weight applied is smaller
+            // for the former transition
             int[] weights = Enumerable.Range(1, MaxPopGrowth).Reverse().ToArray();
             var transitionMatrix = GenerateTransitionMatrix(weights);
-            double[] probabilities = new double[transitionMatrix.GetLength(1)];
-            var cumSumProbabilities = new double[probabilities.Length];
-            for (int j = 0; j < PopMax; j++)
+            double[] probabilities = transitionMatrix[hordeController.AliveRats - 1];
+            // Use a CDF for doing a weighted sample of the transition states
+            double cumulative = 0.0f;
+            List<double> cdf = new List<double>(PopMax);
+            for (int i = 0; i < PopMax; i++)
             {
-                probabilities[j] = transitionMatrix[hordeController.AliveRats, j];
-                if (j != 0)
-                {
-                    cumSumProbabilities[j] = probabilities[j] + cumSumProbabilities[j-1];
-                }
+                cumulative += probabilities[i];
+                cdf.Add(cumulative);
             }
-
-            double r = _random.NextDouble();
-            int nextState = Array.BinarySearch(cumSumProbabilities, r);
+            double r = _random.NextDouble() * cumulative;
+            int nextState = cdf.BinarySearch(r);
             if (nextState < 0) nextState = ~nextState;
-            hordeController.TotalHealth = nextState * State.HealthPerRat;
+            hordeController.TotalHealth = (nextState + 1) * State.HealthPerRat;
         }
 
         // Only executed on State Authority
