@@ -24,7 +24,7 @@ namespace Players
 
         [CanBeNull] private HumanPlayer _humanPlayer;
 
-        [Capacity(32)] private NetworkArray<HordeController> Hordes { get; set; }
+        [Networked] [Capacity(32)] private NetworkLinkedList<HordeController> Hordes { get; } = default;
 
         /// <summary>
         ///     Can only be in one combat instance at a time.
@@ -33,10 +33,12 @@ namespace Players
         [CanBeNull]
         private CombatController CurrentCombatController { get; set; }
 
-        // Cheese Management
-        [Networked] public int CurrentCheese { get; private set; } = 0;
+        public bool InCombat => CurrentCombatController;
 
-        [Networked] public int CheeseIncrementRate { get; private set; } = 1;
+        // Cheese Management
+        [Networked] public float CurrentCheese { get; private set; }
+
+        [Networked] public float CheeseIncrementRate { get; private set; } = 0.03f;
 
 
         public override void Spawned()
@@ -54,34 +56,37 @@ namespace Players
                 _botPlayer = this.AddComponent<BotPlayer>();
                 _botPlayer!.player = this;
             }
+
+            foreach (var horde in GetComponentsInChildren<HordeController>()) Hordes.Add(horde);
         }
 
         // Manage Cheese
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void AddCheese(int amount)
+        public void AddCheeseRpc(float amount)
         {
             CurrentCheese += amount;
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void RemoveCheese(int amount)
+        public void RemoveCheeseRpc(float amount)
         {
             CurrentCheese = Mathf.Max(0, CurrentCheese - amount);
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void SetCheeseIncrementRate(int rate)
+        public void SetCheeseIncrementRateRpc(float rate)
         {
             CheeseIncrementRate = rate;
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void IncrementCheeseIncrementRate(int amount)
+        public void IncrementCheeseIncrementRateRpc(float amount)
         {
             CheeseIncrementRate += amount;
         }
 
-        public void DecrementCheeseIncrementRate(int amount)
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void DecrementCheeseIncrementRateRpc(float amount)
         {
             CheeseIncrementRate -= amount;
         }
@@ -89,10 +94,8 @@ namespace Players
         public override void FixedUpdateNetwork()
         {
             if (HasStateAuthority)
-            {
                 // Add Cheese every tick based on the increment rate
                 CurrentCheese += CheeseIncrementRate;
-            }
         }
 
         /// <summary>
@@ -102,7 +105,7 @@ namespace Players
         /// <param name="horde"></param>
         public void JoinHordeToCombat(HordeController horde)
         {
-            if (CurrentCombatController == null) CurrentCombatController = GetComponent<CombatController>();
+            if (!CurrentCombatController) CurrentCombatController = GetComponent<CombatController>();
 
             CurrentCombatController!.AddHorde(horde, horde.Player == this);
         }
@@ -115,7 +118,7 @@ namespace Players
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void EnterCombatRpc(CombatController combat)
         {
-            if (CurrentCombatController != null) throw new Exception("Already in combat!");
+            if (CurrentCombatController) throw new Exception("Already in combat!");
 
             CurrentCombatController = combat;
         }
@@ -127,10 +130,6 @@ namespace Players
             throw new NullReferenceException("Tried to get human player from a bot Player");
         }
 
-        public bool InCombat()
-        {
-            return CurrentCombatController;
-        }
 
         public CombatController GetCombatController()
         {
@@ -140,7 +139,9 @@ namespace Players
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void LeaveCombatRpc()
         {
+            Debug.Log("Leaving combat!");
             CurrentCombatController = null;
+            Debug.Log($"Hordes: {Hordes}");
             foreach (var horde in Hordes) horde.HordeBeingDamaged = null;
         }
     }

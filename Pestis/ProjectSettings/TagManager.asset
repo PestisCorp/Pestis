@@ -8,10 +8,10 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Selection Detection
+  - Rat Selection
   - Water
   - UI
-  - 
+  - POI Selection
   - 
   - 
   - 
@@ -43,6 +43,9 @@ TagManager:
     locked: 0
   - name: Characters
     uniqueID: 3816279439
+    locked: 0
+  - name: POIs
+    uniqueID: 2550426249
     locked: 0
   m_RenderingLayers:
   - Default
