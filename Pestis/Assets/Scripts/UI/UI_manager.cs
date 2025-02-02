@@ -14,6 +14,13 @@ public class UI_Manager : MonoBehaviour
     public GameObject attackPanel;
     public GameObject mutationPopUp;
     public GameObject toolbar;
+    
+    // References to the resource text fields
+    public TMPro.TextMeshProUGUI cheeseTotalText;
+    public TMPro.TextMeshProUGUI cheeseRateText;
+    public TMPro.TextMeshProUGUI popTotalText;
+    public TMPro.TextMeshProUGUI hordeTotalText;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +32,29 @@ public class UI_Manager : MonoBehaviour
     }
     
     // Update is called once per frame
+    void Update()
+    {
+        if (localPlayer != null)
+        {
+            // Update the cheese text fields
+            // Display total cheese up to 2 decimal places
+            if (cheeseTotalText != null)
+                cheeseTotalText.text = localPlayer?.player.CurrentCheese.ToString("F2");
+            
+            // Display cheese increment rate with a + sign and to 2 decimal places
+            if (cheeseRateText != null)
+                cheeseRateText.text = "+" + localPlayer?.player.CheeseIncrementRate.ToString("F2");
+
+            // Update total pop text field
+            // Update total horde text field
+        }
+        else
+        {
+            //Default values
+            cheeseTotalText.text = "0";
+            cheeseRateText.text = "+0";
+        }
+    }
 
     // Function to reset all referenced canvases to their default states to prevent UI clutter
     // Not including mutation Pop Up as this is not controlled by button presses
