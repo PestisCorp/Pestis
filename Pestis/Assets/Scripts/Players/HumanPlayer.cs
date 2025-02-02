@@ -1,3 +1,4 @@
+using System;
 using Fusion;
 using Horde;
 using JetBrains.Annotations;
@@ -14,12 +15,20 @@ namespace Players
 
         public Player player;
 
+        private UI_Manager UI_manager;
+
+        private void Awake()
+        {
+            UI_manager = GameObject.FindAnyObjectByType<UI_Manager>();
+        }
+
         void Start()
         {
             IsLocal = GetComponent<NetworkObject>().HasStateAuthority;
             if (IsLocal)
             {
                 GameObject.FindAnyObjectByType<InputHandler>().LocalPlayer = this;
+                GameObject.FindAnyObjectByType<UI_Manager>().localPlayer = this;
             }
         }
     
@@ -28,12 +37,14 @@ namespace Players
             if (selectedHorde && selectedHorde != horde)
             {
                 selectedHorde.UnHighlight();
+                UI_manager.EnableToolbar();
             }
 
             if (selectedHorde != horde)
             {
                 selectedHorde = horde;
                 selectedHorde?.Highlight();
+                UI_manager.EnableToolbar();
             }
         }
 
@@ -41,6 +52,7 @@ namespace Players
         {
             selectedHorde?.UnHighlight();
             selectedHorde = null;
+            UI_manager.DisableToolbar();
         }
 
         public void MoveHorde(Vector2 target)

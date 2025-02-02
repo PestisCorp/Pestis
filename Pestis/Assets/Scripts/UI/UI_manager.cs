@@ -1,13 +1,13 @@
 using Horde;
+using JetBrains.Annotations;
 using Players;
 using UnityEngine;
 
 public class UI_Manager : MonoBehaviour
 {
     // References to the game managers and objects to view in UI
-    // Temporarily set to null to prevent errors until it can be hooked up properly
-    private GameObject inputHandler = null;
-    private HumanPlayer localPlayer = null;
+    public GameObject inputHandler;
+    [CanBeNull] public HumanPlayer localPlayer;
 
     // References to the canvas elements
     public GameObject infoPanel;
@@ -21,7 +21,10 @@ public class UI_Manager : MonoBehaviour
         // Ensure appropriate canvases are set to default at the start of the game
         ResetUI();
         if (mutationPopUp != null) mutationPopUp.SetActive(false);
+        if (toolbar != null) toolbar.SetActive(false);
     }
+    
+    // Update is called once per frame
 
     // Function to reset all referenced canvases to their default states to prevent UI clutter
     // Not including mutation Pop Up as this is not controlled by button presses
@@ -137,6 +140,7 @@ public class UI_Manager : MonoBehaviour
     // Function to disable toolbar
     public void DisableToolbar()
     {
+        ResetUI();
         if (toolbar != null) toolbar.SetActive(false);
     }
 

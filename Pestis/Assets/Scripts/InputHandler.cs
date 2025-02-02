@@ -4,6 +4,8 @@ using Players;
 using POI;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
+
 
 public class InputHandler : MonoBehaviour
 {
@@ -30,7 +32,8 @@ public class InputHandler : MonoBehaviour
         _mainCamera.transform.Translate(moveCam * (0.01f * _mainCamera.orthographicSize));
 
         var scroll = _cameraZoom.ReadValue<Vector2>();
-        if (scroll.y != 0)
+        // Map should not zoom if we are hovering over a UI element since we are using scroll boxes
+        if (scroll.y != 0 && !EventSystem.current.IsPointerOverGameObject())
         {
             Vector2 oldTarget = _mainCamera.ScreenToWorldPoint(mouse.position.ReadValue());
             _mainCamera.orthographicSize = Mathf.Clamp(_mainCamera.orthographicSize - scroll.y, 1, 50);
@@ -53,11 +56,17 @@ public class InputHandler : MonoBehaviour
         if (mouse.leftButton.wasPressedThisFrame)
         {
             Vector3 mousePosition = mouse.position.ReadValue();
-            var horde = DidWeClickHorde(mousePosition);
-            if (horde)
-                LocalPlayer?.SelectHorde(horde);
-            else
-                LocalPlayer?.DeselectHorde();
+            
+            // Only select and deselect horde if we are not clicking on a UI element
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                var horde = DidWeClickHorde(mousePosition);
+                if (horde)
+                    LocalPlayer?.SelectHorde(horde);
+                else
+                    LocalPlayer?.DeselectHorde();
+            }
+            
         }
 
         // If right-clicked, and local player is allowed to control the selected horde

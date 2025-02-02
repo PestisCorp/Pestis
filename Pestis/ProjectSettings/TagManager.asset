@@ -8,6 +8,7 @@ TagManager:
   - UI_mutations_text
   - Attack_slider_text
   - Attack_slider
+  - UI_Manager
   layers:
   - Default
   - TransparentFX
