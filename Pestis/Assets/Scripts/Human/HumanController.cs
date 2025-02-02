@@ -23,7 +23,7 @@ namespace Human
         private Transform _poiCenter;
 
         //reference to point of interest
-        [SerializeField] private POIController poi;
+        [SerializeField] private GameObject poi;
 
 
         public override void Spawned()
