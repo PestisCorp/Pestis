@@ -69,17 +69,11 @@ public class InputHandler : MonoBehaviour
 
             if (DidWeClickPOI(mousePos, out var poiController))
             {
-                if (poiController.ControlledBy == LocalPlayer.player) return;
-
-                if (LocalPlayer.player.InCombat) return;
-
                 LocalPlayer.selectedHorde.AttackPoi(poiController);
             }
             else if (clickedHorde)
             {
-                LocalPlayer?.selectedHorde.UnStationAtRpc();
-                if (!LocalPlayer!.player.InCombat) LocalPlayer?.player.JoinHordeToCombat(LocalPlayer?.selectedHorde);
-                LocalPlayer?.player.JoinHordeToCombat(clickedHorde);
+                LocalPlayer?.selectedHorde.AttackHorde(clickedHorde);
             }
             else
             {
