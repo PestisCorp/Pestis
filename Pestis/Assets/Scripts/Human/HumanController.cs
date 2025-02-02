@@ -79,16 +79,19 @@ namespace Human
             {
                 GameObject human = _spawnedHumans[i];
 
-                //Move towards target position
-                human.transform.position = Vector3.Lerp(_poiCenter.position, human.transform.position,
-                    patrolSpeed * Time.deltaTime);
+                // Keep a continuously increasing angle
+                float angle = Mathf.Repeat(Time.time * patrolSpeed + i * (2 * Mathf.PI / humanCount), 2 * Mathf.PI);
 
-                //if close to the target position, move towards a new position
-                if (Vector3.Distance(human.transform.position, _targetPositions[i]) < 0.5f)
-                {
-                    _targetPositions[i] = GetRandomPatrolPosition();
-                }
+                // Calculate new position
+                Vector2 newPosition = (Vector2)_poiCenter.position + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * patrolRadius;
+        
+                // Move human
+                human.transform.position = newPosition;
+
+                // Rotate human to face movement direction
+                human.transform.up = (newPosition - (Vector2)human.transform.position).normalized;
             }
         }
+
     }
 }
