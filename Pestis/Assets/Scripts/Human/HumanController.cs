@@ -78,20 +78,10 @@ namespace Human
             for (int i = 0; i < _spawnedHumans.Count; i++)
             {
                 GameObject human = _spawnedHumans[i];
-
-                // Keep a continuously increasing angle
-                float angle = Mathf.Repeat(Time.time * patrolSpeed + i * (2 * Mathf.PI / humanCount), 2 * Mathf.PI);
-
-                // Calculate new position
+                float angle = Time.time * patrolSpeed + i * (2 * Mathf.PI / humanCount);
                 Vector2 newPosition = (Vector2)_poiCenter.position + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * patrolRadius;
-        
-                // Move human
                 human.transform.position = newPosition;
-
-                // Rotate human to face movement direction
-                human.transform.up = (newPosition - (Vector2)human.transform.position).normalized;
             }
         }
-
     }
 }
