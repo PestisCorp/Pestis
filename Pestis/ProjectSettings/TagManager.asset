@@ -9,6 +9,7 @@ TagManager:
   - Attack_slider_text
   - Attack_slider
   - UI_Manager
+  - UI_button_action
   layers:
   - Default
   - TransparentFX

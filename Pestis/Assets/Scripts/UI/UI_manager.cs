@@ -2,6 +2,7 @@ using Horde;
 using JetBrains.Annotations;
 using Players;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class UI_Manager : MonoBehaviour
 {
@@ -14,12 +15,15 @@ public class UI_Manager : MonoBehaviour
     public GameObject attackPanel;
     public GameObject mutationPopUp;
     public GameObject toolbar;
+    public GameObject resourceStats;
     
     // References to the resource text fields
     public TMPro.TextMeshProUGUI cheeseTotalText;
     public TMPro.TextMeshProUGUI cheeseRateText;
     public TMPro.TextMeshProUGUI popTotalText;
     public TMPro.TextMeshProUGUI hordeTotalText;
+    
+    private bool displayResourceInfo;
     
 
     // Start is called before the first frame update
@@ -29,12 +33,15 @@ public class UI_Manager : MonoBehaviour
         ResetUI();
         if (mutationPopUp != null) mutationPopUp.SetActive(false);
         if (toolbar != null) toolbar.SetActive(false);
+        if (resourceStats != null) resourceStats.SetActive(false);
+        displayResourceInfo = false;
     }
     
     // Update is called once per frame
     void Update()
     {
-        if (localPlayer != null)
+        //Only display resources if they player hasn't opted to show info
+        if (localPlayer != null && !displayResourceInfo )
         {
             // Update the cheese text fields
             // Display total cheese up to 2 decimal places
@@ -46,22 +53,30 @@ public class UI_Manager : MonoBehaviour
                 cheeseRateText.text = "+" + localPlayer?.player.CheeseIncrementRate.ToString("F2");
 
             // Update total pop text field
+            if (popTotalText != null)
+                popTotalText.text = "0";
+            
             // Update total horde text field
-        }
-        else
-        {
-            //Default values
-            cheeseTotalText.text = "0";
-            cheeseRateText.text = "+0";
+            if (hordeTotalText != null)
+                hordeTotalText.text = "0";
         }
     }
 
     // Function to reset all referenced canvases to their default states to prevent UI clutter
     // Not including mutation Pop Up as this is not controlled by button presses
+    // Not including toolbar as this is controlled by the player selecting a horde
     public void ResetUI()
     {
         if (infoPanel != null) infoPanel.SetActive(false);
         if (attackPanel != null) attackPanel.SetActive(false);
+        
+        // Ignoring the state of the tool bar, ensuring the default buttons are visible
+        GameObject[] toolbarButtons = GameObject.FindGameObjectsWithTag("UI_button_action");
+        foreach (GameObject obj in toolbarButtons)
+        {
+            obj.GetComponent<UnityEngine.UI.Image>().enabled = true;
+
+        }
     }
 
     // Function to enable info panel
@@ -173,6 +188,18 @@ public class UI_Manager : MonoBehaviour
         ResetUI();
         if (toolbar != null) toolbar.SetActive(false);
     }
+    
+    // Function to enable resource stats display
+    public void EnableResourceStats()
+    {
+        if (resourceStats != null) resourceStats.SetActive(true);
+    }
+    
+    // Function to disable resource stats display
+    public void DisableResourceStats()
+    {
+        if (resourceStats != null) resourceStats.SetActive(false);
+    }
 
     //To display the correct UI the LocalPlayer will be monitored and when they select a horde the toolbar will be displayed
     //The selected horde game object will also be acquired so the horde statistics can be retrieved and displayed
@@ -282,6 +309,37 @@ public class UI_Manager : MonoBehaviour
             {
                 obj.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = selectedPopulation.ToString();
             }
+        }
+    }
+    
+    // Function to toggle resource info display boolean
+    public void ToggleResourceInfoDisplay()
+    {
+        displayResourceInfo = !displayResourceInfo;
+    }
+    
+    // Function to change resource text fields to display info about what they show
+    public void ResourceInfoDisplay()
+    {
+        if (displayResourceInfo) 
+        {
+            cheeseTotalText.text = "Total Cheese";
+            cheeseRateText.text = "Cheese Increment Rate";
+            popTotalText.text = "Total Population";
+            hordeTotalText.text = "Total Hordes";
+        }
+    }
+    
+    // Function to toggle toolbar to display info or buttons by toggling the buttons tagged "UI_button_action"
+    // Allowing the hidden button_info's to be seen instead
+    public void ToolbarInfoDisplay()
+    {
+        // Inactive game objects can't be found so instead just disable their image component
+        GameObject[] toolbarButtons = GameObject.FindGameObjectsWithTag("UI_button_action");
+        foreach (GameObject obj in toolbarButtons)
+        {
+            obj.GetComponent<UnityEngine.UI.Image>().enabled = !obj.GetComponent<UnityEngine.UI.Image>().enabled;
+            
         }
     }
 }

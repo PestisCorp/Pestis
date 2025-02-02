@@ -28,8 +28,11 @@ namespace Players
             if (IsLocal)
             {
                 GameObject.FindAnyObjectByType<InputHandler>().LocalPlayer = this;
-                GameObject.FindAnyObjectByType<UI_Manager>().localPlayer = this;
+                UI_manager.localPlayer = this;
             }
+            
+            //Enable resource stats upon loading in
+            UI_manager.EnableResourceStats();
         }
     
         public void SelectHorde(HordeController horde)
