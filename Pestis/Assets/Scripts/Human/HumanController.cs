@@ -1,33 +1,43 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Fusion;
+using POI;
 
 namespace Human
 {
-    public class HumanPatrolController : MonoBehaviour
+    public class HumanPatrolController : NetworkBehaviour
     {
-        public GameObject humanPrefab;
+        [SerializeField] private GameObject humanPrefab;
 
         //number of human patrolling
-        public int humanCount = 6;
+        [SerializeField] private int humanCount = 6;
 
         //radius of human patrol
-        public float patrolRadius = 5.0f;
+        [SerializeField] private float patrolRadius = 5.0f;
 
         //speed of human patrol
-        public float patrolSpeed = 1.0f;
+        [SerializeField] private float patrolSpeed = 1.0f;
         private List<GameObject> _spawnedHumans = new();
+        private List<Vector3> _targetPositions = new();
 
-        private Vector2 _poiCenter;
+        private Transform _poiCenter;
 
-        //point of interest
-        public POI poi = null; //point of interest which can be added later
+        //reference to point of interest
+        [SerializeField] private POIController poi;
 
 
-        private void Start()
+        public override void Spawned()
         {
+            base.Spawned();
+
             if (poi != null)
             {
-                _poiCenter = new Vector2(poi.transform.position.x, poi.transform.position.y);
+                _poiCenter = poi.transform;
+            }
+            else
+            {
+                Debug.LogWarning("No poi center");
+                return;
             }
 
             SpawnHumans();
@@ -43,25 +53,41 @@ namespace Human
         {
             for (int i = 0; i < humanCount; i++)
             {
-                //randomly spawn human in the area specified
-                Vector2 spawnPosition = _poiCenter + Random.insideUnitCircle * patrolRadius;
-                GameObject human = Instantiate(humanPrefab, new Vector3(spawnPosition.x, spawnPosition.y, 0),
-                    Quaternion.identity);
+                Vector3 spawnPosition = GetRandomPatrolPosition();
+                GameObject human = Instantiate(humanPrefab, spawnPosition, Quaternion.identity);
                 _spawnedHumans.Add(human);
+                _targetPositions.Add(spawnPosition);
             }
+        }
+
+        private Vector3 GetRandomPatrolPosition()
+        {
+            if (_poiCenter == null)
+            {
+                return Vector3.zero;
+            }
+
+            Vector3 randomPatrolPosition = _poiCenter.position + Random.insideUnitSphere * patrolRadius;
+            //y = 0 as 2D
+            randomPatrolPosition.y = 0;
+            return randomPatrolPosition;
         }
 
         private void PatrolHumans()
         {
-            //humans orbiting around
             for (int i = 0; i < _spawnedHumans.Count; i++)
             {
                 GameObject human = _spawnedHumans[i];
-                //time-based dynamic angle update, also ensures that humans face different directions
-                float angle = Time.time * patrolSpeed + i * (2 * Mathf.PI / humanCount);
-                //calculate new position based on angle and radius
-                Vector2 newPosition = _poiCenter + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * patrolRadius;
-                human.transform.position = newPosition;
+
+                //Move towards target position
+                human.transform.position = Vector3.Lerp(_poiCenter.position, human.transform.position,
+                    patrolSpeed * Time.deltaTime);
+
+                //if close to the target position, move towards a new position
+                if (Vector3.Distance(human.transform.position, _targetPositions[i]) < 0.5f)
+                {
+                    _targetPositions[i] = GetRandomPatrolPosition();
+                }
             }
         }
     }
