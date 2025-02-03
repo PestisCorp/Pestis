@@ -9,15 +9,12 @@ using UnityEditorInternal;
 
 public class MapGeneratorWindow : EditorWindow
 {
-    public Tilemap tilemap;
-    public int width;
-    public int height;
-    public TileBase water;
-    public List<TileBase> landBiomes;
-    public float voronoiFrequency;
-    public int randomWalkSteps;
-    public int smoothing;
-
+    private enum TileType
+    {
+        Water = -2,
+        UnassignedLand = -1,
+        AssignedLand = 0
+    }
     private FastNoise _noiseGenerator;
     // Editor variables
     private const string _helpText = "Cannot find 'Land Biomes List' component on any GameObject in the scene!";
@@ -31,13 +28,6 @@ public class MapGeneratorWindow : EditorWindow
     private SerializedObject _objectSO = null;
     private ReorderableList _listRE = null;
     LandBiomesList _landBiomesList;
-    
-    private enum TileType
-    {
-        Water = -2,
-        UnassignedLand = -1,
-        AssignedLand = 0
-    }
 
     [MenuItem("Window/Map Generator")]
     public static void ShowWindow()
@@ -77,13 +67,13 @@ public class MapGeneratorWindow : EditorWindow
         GUILayout.Space(100f);
         EditorGUILayout.BeginVertical();
         
-        tilemap = (Tilemap)EditorGUILayout.ObjectField("Tilemap", tilemap, typeof(Tilemap));
-        width = EditorGUILayout.IntField("Width", width);
-        height = EditorGUILayout.IntField("Height", height);
-        water = (TileBase)EditorGUILayout.ObjectField("Water tile", water, typeof(TileBase));
-        voronoiFrequency = EditorGUILayout.FloatField("Voronoi frequency", voronoiFrequency);
-        randomWalkSteps = EditorGUILayout.IntField("Random walk steps", randomWalkSteps);
-        smoothing = EditorGUILayout.IntField("Water-land Smoothing", smoothing);
+        Map.instance.tilemap = (Tilemap)EditorGUILayout.ObjectField("Tilemap", Map.instance.tilemap, typeof(Tilemap));
+        Map.instance.width = EditorGUILayout.IntField("Width", Map.instance.width);
+        Map.instance.height = EditorGUILayout.IntField("Height", Map.instance.height);
+        Map.instance.water = (TileBase)EditorGUILayout.ObjectField("Water tile", Map.instance.water, typeof(TileBase));
+        Map.instance.voronoiFrequency = EditorGUILayout.FloatField("Voronoi frequency", Map.instance.voronoiFrequency);
+        Map.instance.randomWalkSteps = EditorGUILayout.IntField("Random walk steps", Map.instance.randomWalkSteps);
+        Map.instance.smoothing = EditorGUILayout.IntField("Water-land Smoothing", Map.instance.smoothing);
         
         EditorGUILayout.EndVertical();
 
@@ -107,43 +97,44 @@ public class MapGeneratorWindow : EditorWindow
         
         if (GUILayout.Button("Generate Map"))
         {
+            _isGenerating = true;
             Voronoi(Dilation(RandomWalk()));
         }
         
         EditorGUILayout.EndHorizontal();
     }
-
-    private TileType[,] Voronoi(TileType[,] map)
+    
+    private TileType[,] Voronoi(TileType[,] grid)
     {
         _noiseGenerator = new FastNoise();
         _noiseGenerator.SetNoiseType(FastNoise.NoiseType.Cellular);
-        _noiseGenerator.SetFrequency(voronoiFrequency);
+        _noiseGenerator.SetFrequency(Map.instance.voronoiFrequency);
 
-        for (int x = 0; x < width; x++)
+        for (int x = 0; x < Map.instance.width; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < Map.instance.height; y++)
             {
                 float noiseVal = _noiseGenerator.GetNoise01(x, y);
-                float probability = 1.0f / landBiomes.Count;
-                if (map[x, y] == TileType.UnassignedLand)
+                float probability = 1.0f / Map.instance.landBiomes.Count;
+                if (grid[x, y] == TileType.UnassignedLand)
                 {
-                    for (int i = 0; i < _landBiomesList.GetList().Length; i++)
+                    for (int i = 0; i < Map.instance.landBiomes.Count; i++)
                     {
                         if (noiseVal > probability * i && noiseVal < probability * (i + 1))
                         {
-                            map[x, y] = TileType.AssignedLand;
-                            tilemap.SetTile(new Vector3Int(x, y), landBiomes[i]);
+                            grid[x, y] = TileType.AssignedLand;
+                            Map.instance.tilemap.SetTile(new Vector3Int(x, y), Map.instance.landBiomes[i]);
                         }
                     }
                 }
-                else if (map[x, y] == TileType.Water)
+                else if (grid[x, y] == TileType.Water)
                 {
-                    tilemap.SetTile(new Vector3Int(x, y), water);
+                    Map.instance.tilemap.SetTile(new Vector3Int(x, y), Map.instance.water);
                 }
             }
         }
 
-        return map;
+        return grid;
     }
 
     // Credit: https://www.noveltech.dev/procgen-random-walk
@@ -152,12 +143,12 @@ public class MapGeneratorWindow : EditorWindow
     {
         // create the grid, which will be filled with false value
         // true values define valid cells which are part of our visited map
-        TileType[,] grid = new TileType[width, height];
+        TileType[,] grid = new TileType[Map.instance.width, Map.instance.height];
         
         // fill with entirely water
-        for (int i = 0; i < width; i++)
+        for (int i = 0; i < Map.instance.width; i++)
         {
-            for (int j = 0; j < height; j++)
+            for (int j = 0; j < Map.instance.height; j++)
             {
                 grid[i, j] = TileType.Water;
             }
@@ -165,7 +156,7 @@ public class MapGeneratorWindow : EditorWindow
 
         // choose a random starting point
         System.Random rnd = new System.Random();
-        Vector2Int curr_pos = new Vector2Int(rnd.Next(width), rnd.Next(height));
+        Vector2Int curr_pos = new Vector2Int(rnd.Next(Map.instance.width), rnd.Next(Map.instance.height));
 
         // register this position in the grid as land
         grid[curr_pos.x, curr_pos.y] = TileType.UnassignedLand;
@@ -180,7 +171,7 @@ public class MapGeneratorWindow : EditorWindow
         };
 
         // iterate on the number of steps and move around
-        for (int id_step = 0; id_step < randomWalkSteps; id_step++)
+        for (int id_step = 0; id_step < Map.instance.randomWalkSteps; id_step++)
         {
             // for each step, we try to find a new cell to go to.
             // We are not guaranteed to find a position that is valid (i.e. inside the grid)
@@ -191,7 +182,7 @@ public class MapGeneratorWindow : EditorWindow
                 // choose a random direction
                 Vector2Int new_pos = curr_pos + allowed_movements[rnd.Next(allowed_movements.Count)];
                 // check if the new position is in the grid
-                if (new_pos.x >= 0 && new_pos.x < width && new_pos.y >= 0 && new_pos.y < height)
+                if (new_pos.x >= 0 && new_pos.x < Map.instance.width && new_pos.y >= 0 && new_pos.y < Map.instance.height)
                 {
                     // this is a valid position, we set it in the grid
                     grid[new_pos.x, new_pos.y] = TileType.UnassignedLand;
@@ -209,36 +200,36 @@ public class MapGeneratorWindow : EditorWindow
     }
     
     // Credit: https://www.noveltech.dev/unity-procgen-diffusion-aggregation
-    private int[,] DiffusionAggregation(int[,] map)
+    private int[,] DiffusionAggregation(int[,] grid)
     {
         // at this point water = -2 and land = -1
         // create a tracker for valid points by subsection for the diffusion process
         List<List<Vector2Int>> recorded_points = new();
-        for (int i = 0; i < landBiomes.Count; i++)
+        for (int i = 0; i < Map.instance.landBiomes.Count; i++)
         {
             recorded_points.Add(new());
         }
 
         // create a counter to keep track of the number of unallocated cells 
-        int nb_free_cells = width * height;
+        int nb_free_cells = Map.instance.width * Map.instance.height;
 
         // set up the initial points for the process
         System.Random rng = new();
-        for (int id_subsection = 0; id_subsection < landBiomes.Count; id_subsection++)
+        for (int id_subsection = 0; id_subsection < Map.instance.landBiomes.Count; id_subsection++)
         {
             while (true)
             {
                 // find a random point 
                 Vector2Int point = new(
-                    rng.Next(width),
-                    rng.Next(height)
+                    rng.Next(Map.instance.width),
+                    rng.Next(Map.instance.height)
                 );
 
                 // check if it's land, else find another point
-                if (map[point.x, point.y] == -1)
+                if (grid[point.x, point.y] == -1)
                 {
                     // if it is, add it to tracking and grid then proceed to next subsection
-                    map[point.x, point.y] = id_subsection;
+                    grid[point.x, point.y] = id_subsection;
                     recorded_points[id_subsection].Add(point);
                     nb_free_cells -= 1;
 
@@ -253,7 +244,7 @@ public class MapGeneratorWindow : EditorWindow
         // now we can start filling the grid 
         while (nb_free_cells > 0)
         {
-            for (int id_subsection = 0; id_subsection < landBiomes.Count; id_subsection++)
+            for (int id_subsection = 0; id_subsection < Map.instance.landBiomes.Count; id_subsection++)
             {
                 // check if there are tracked points for this subsection 
                 if (recorded_points[id_subsection].Count == 0)
@@ -270,59 +261,59 @@ public class MapGeneratorWindow : EditorWindow
                 Vector2Int new_point = curr_point + directions[rng.Next(4)];
 
                 // check if the new point is in the grid
-                if (new_point.x < 0 || new_point.y < 0 || new_point.x >= width || new_point.y >= height)
+                if (new_point.x < 0 || new_point.y < 0 || new_point.x >= Map.instance.width || new_point.y >= Map.instance.height)
                 {
                     continue;
                 }
 
                 // next check if the new point is already occupied and skip this direction if it is
-                if (map[new_point.x, new_point.y] != -1)
+                if (grid[new_point.x, new_point.y] != -1)
                 {
                     continue;
                 }
 
                 // else we can record this new point in our tracker and set it in the grid 
-                map[new_point.x, new_point.y] = id_subsection;
+                grid[new_point.x, new_point.y] = id_subsection;
                 recorded_points[id_subsection].Add(new_point);
                 nb_free_cells -= 1;
             }
         }
 
-        return map;
+        return grid;
     }
 
-    private TileType[,] Closing(TileType[,] map)
+    private TileType[,] Closing(TileType[,] grid)
     {
-        return Erosion(Dilation(map));
+        return Erosion(Dilation(grid));
     }
     
-    private TileType[,] Opening(TileType[,] map)
+    private TileType[,] Opening(TileType[,] grid)
     {
-        return Dilation(Erosion(map));
+        return Dilation(Erosion(grid));
     }
     
-    private TileType[,] Dilation(TileType[,] map)
+    private TileType[,] Dilation(TileType[,] grid)
     {
-        TileType[,] result = new TileType[width, height];
+        TileType[,] result = new TileType[Map.instance.width, Map.instance.height];
 
-        for (int x = 0; x < width; x++)
+        for (int x = 0; x < Map.instance.width; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < Map.instance.height; y++)
             {
-                TileType maxVal = map[x, y];
-                for (int i = -smoothing; i <= smoothing; i++)
+                TileType maxVal = grid[x, y];
+                for (int i = -Map.instance.smoothing; i <= Map.instance.smoothing; i++)
                 {
-                    for (int j = -smoothing; j <= smoothing; j++)
+                    for (int j = -Map.instance.smoothing; j <= Map.instance.smoothing; j++)
                     {
                         int newX = x + i;
                         int newY = y + j;
-                        if (newX >= 0 && newX < width && newY >= 0 && newY < height)
+                        if (newX >= 0 && newX < Map.instance.width && newY >= 0 && newY < Map.instance.height)
                         {
-                            if (Math.Max((int)maxVal, (int)map[newX, newY]) == -1)
+                            if (Math.Max((int)maxVal, (int)grid[newX, newY]) == -1)
                             {
                                 maxVal = TileType.UnassignedLand;
                             }
-                            else if (Math.Max((int)maxVal, (int)map[newX, newY]) == -2)
+                            else if (Math.Max((int)maxVal, (int)grid[newX, newY]) == -2)
                             {
                                 maxVal = TileType.Water;
                             }
@@ -336,28 +327,28 @@ public class MapGeneratorWindow : EditorWindow
         return result;
     }
     
-    private TileType[,] Erosion(TileType[,] map)
+    private TileType[,] Erosion(TileType[,] grid)
     {
-        TileType[,] result = new TileType[width, height];
+        TileType[,] result = new TileType[Map.instance.width, Map.instance.height];
 
-        for (int x = 0; x < width; x++)
+        for (int x = 0; x < Map.instance.width; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < Map.instance.height; y++)
             {
-                TileType minVal = map[x, y];
-                for (int i = -smoothing; i <= smoothing; i++)
+                TileType minVal = grid[x, y];
+                for (int i = -Map.instance.smoothing; i <= Map.instance.smoothing; i++)
                 {
-                    for (int j = -smoothing; j <= smoothing; j++)
+                    for (int j = -Map.instance.smoothing; j <= Map.instance.smoothing; j++)
                     {
                         int newX = x + i;
                         int newY = y + j;
-                        if (newX >= 0 && newX < width && newY >= 0 && newY < height)
+                        if (newX >= 0 && newX < Map.instance.width && newY >= 0 && newY < Map.instance.height)
                         {
-                            if (Math.Min((int)minVal, (int)map[newX, newY]) == -2)
+                            if (Math.Min((int)minVal, (int)grid[newX, newY]) == -2)
                             {
                                 minVal = TileType.Water;
                             }
-                            else if (Math.Min((int)minVal, (int)map[newX, newY]) == -1)
+                            else if (Math.Min((int)minVal, (int)grid[newX, newY]) == -1)
                             {
                                 minVal = TileType.UnassignedLand;
                             }
