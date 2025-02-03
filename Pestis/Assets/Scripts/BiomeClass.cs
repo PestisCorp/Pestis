@@ -14,15 +14,8 @@ public class BiomeClass : ScriptableObject
     public int iteration = 0;
     public int strength = 0;
     //in game stuff
-    public Vector2Int seedPosition;
-    List<TileBase> tiles;
-    
-    public BiomeClass(BiomeClass other, Vector2Int seedPosition)
-    {
-        //tiles = new List<TileBase> { seedTile };
-        this.seedPosition = seedPosition;
-    }
-    
+
+
     public BiomeTile getRandomBiomeTile()
     {
         int index = Random.Range(0, TileList.Length);
@@ -35,11 +28,7 @@ public class BiomeClass : ScriptableObject
         return FeatureList[index];
     }
 
-    public void addTile(TileBase tile)
-    {
-        tiles.Add(tile);
-    }
-    public virtual void FeatureGeneration()
+    public virtual void FeatureGeneration(Tilemap map)
     {
         // Empty method
     }
@@ -49,8 +38,31 @@ public class BiomeClass : ScriptableObject
         // Empty method
     }
 
-    public virtual void CellGeneration()//generate biomes by seeding 1 biomeTile and then repeatedly "growing" it
+    public virtual void CellGeneration(Tilemap map)//generate biomes by seeding 1 biomeTile and then repeatedly "growing" it
     {
         // Empty method
     }
 }
+public class BiomeInstance
+{
+    public BiomeClass template;  // Reference to the template (BiomeClass)
+    public Vector2Int seedPosition;
+    public int seedCount;
+    public int walkLength;
+    public int iteration;
+    public int strength;
+
+    public List<Vector2Int> tilePositions = new List<Vector2Int>(); // Stores generated tiles for this biome
+
+    public BiomeInstance(BiomeClass template, Vector2Int position)
+    {
+        this.template = template;
+        this.seedPosition = position;
+        this.seedCount = template.seedCount;
+        this.walkLength = template.walkLength;
+        this.iteration = template.iteration;
+        this.strength = template.strength;
+    }
+
+}
+

@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 public class BiomeGenerator : MonoBehaviour
 {
     public BiomeClass[] BiomeClasses; //every type of biome
-    public List<BiomeClass> BiomeList; //every instance of each biome
+    public List<BiomeInstance> BiomeList; //every instance of each biome
     public Tilemap map;
     private int width;
 
@@ -41,9 +41,8 @@ public class BiomeGenerator : MonoBehaviour
                     // Check if the current tile is of a specific type (e.g., Grass)
                     if (BiomeClasses[0].CompatableTerrainTypes.Contains(currentTile))
                     {
-                        map.SetTile(randomPosition, BiomeClasses[0].getRandomBiomeTile());
-                        BiomeList.Add(new BiomeClass(BiomeClasses[i], new Vector2Int(randomPosition.x, randomPosition.y)));
-                        ScriptableObject.CreateInstance<BiomeClass>();
+                        map.SetTile(randomPosition, BiomeClasses[i].getRandomBiomeTile());
+                        BiomeList.Add(new BiomeInstance(BiomeClasses[i], new Vector2Int(randomX, randomY)));
                         success = true;
                     }
                 }
@@ -62,15 +61,12 @@ public class BiomeGenerator : MonoBehaviour
         }
     }
 
-    private void RandomWalk(Vector2Int currentPosition, BiomeClass biome)
+    private void RandomWalk(Vector2Int currentPosition, BiomeInstance biome)
     {
-        HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
         BoundsInt bounds = map.cellBounds;
         // Perform the drunkard's walk
         for (int i = 0; i < biome.walkLength; i++)
         {
-            // Mark this position as floor
-            floorPositions.Add(currentPosition);
 
             // Pick a random direction (Up, Down, Left, Right)
             Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
@@ -80,19 +76,18 @@ public class BiomeGenerator : MonoBehaviour
             while (valid == 0 && index < 4)
             {
                 Vector2Int newPosition = currentPosition + directions[index];
-                TileBase newTile = (TileBase)map.GetTile(new Vector3Int(newPosition.x, newPosition.y, 0));
 
-                if (biome.TileList.Contains(newTile))
+                if (biome.tilePositions.Contains(newPosition))
                 {
                     valid = 1;
                     currentPosition = newPosition;
                 }
-                else if (biome.CompatableTerrainTypes.Contains(newTile))
+                else if (biome.template.CompatableTerrainTypes.Contains((TileBase)map.GetTile(new Vector3Int(newPosition.x, newPosition.y, 0))))
                 {
                     valid = 2;
                     currentPosition = newPosition;
-                    map.SetTile(new Vector3Int(newPosition.x, newPosition.y, 0), biome.getRandomBiomeTile());
-                    biome.addTile(newTile);
+                    map.SetTile(new Vector3Int(newPosition.x, newPosition.y, 0), biome.template.getRandomBiomeTile());
+                    biome.tilePositions.Add(currentPosition);
 
                 }
                 index += 1;
@@ -107,3 +102,4 @@ public class BiomeGenerator : MonoBehaviour
         }
     }
 }
+
