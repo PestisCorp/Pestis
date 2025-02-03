@@ -19,6 +19,6 @@ MonoBehaviour:
   CompatableTerrainTypes:
   - {fileID: 11400000, guid: d5663722ef831e9459ebdfa710eba22c, type: 2}
   seedCount: 15
-  walkLength: 20
+  walkLength: 70
   iteration: 30
   strength: 0

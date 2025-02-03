@@ -462,10 +462,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BiomeClasses:
-  - {fileID: 11400000, guid: 30e4e16fb87360642b9943101d93c20d, type: 2}
   - {fileID: 11400000, guid: 55d21574e3c3e2d44babc3ccb3848260, type: 2}
   - {fileID: 11400000, guid: 7c8a718d666296940a5a0168169f80b9, type: 2}
   - {fileID: 11400000, guid: 35428bc3879f77f479236b513dec1caa, type: 2}
+  - {fileID: 11400000, guid: 30e4e16fb87360642b9943101d93c20d, type: 2}
   map: {fileID: 20129744}
 --- !u!4 &830260517
 Transform:
