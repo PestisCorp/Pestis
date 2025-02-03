@@ -29,10 +29,11 @@ namespace Players
             {
                 GameObject.FindAnyObjectByType<InputHandler>().LocalPlayer = this;
                 UI_manager.localPlayer = this;
+                
+                //Enable resource stats upon loading in
+                UI_manager.EnableResourceStats();
             }
             
-            //Enable resource stats upon loading in
-            UI_manager.EnableResourceStats();
         }
     
         public void SelectHorde(HordeController horde)
@@ -40,14 +41,15 @@ namespace Players
             if (selectedHorde && selectedHorde != horde)
             {
                 selectedHorde.UnHighlight();
-                UI_manager.EnableToolbar();
+                UI_manager.DisableToolbar();
             }
 
             if (selectedHorde != horde)
             {
                 selectedHorde = horde;
                 selectedHorde?.Highlight();
-                UI_manager.EnableToolbar();
+                if(selectedHorde.HasStateAuthority)
+                    UI_manager.EnableToolbar();
             }
         }
 

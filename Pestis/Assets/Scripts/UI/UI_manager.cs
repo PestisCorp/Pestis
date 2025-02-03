@@ -2,7 +2,8 @@ using Horde;
 using JetBrains.Annotations;
 using Players;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
+using Color = UnityEngine.Color;
 
 public class UI_Manager : MonoBehaviour
 {
@@ -23,7 +24,14 @@ public class UI_Manager : MonoBehaviour
     public TMPro.TextMeshProUGUI popTotalText;
     public TMPro.TextMeshProUGUI hordeTotalText;
     
+    // References to the buttons that need some added function
+    // Button type wouldn't show in inspector so using GameObject instead
+    public GameObject moveButton;
+    public GameObject moveButtonInfo;
+    
     private bool displayResourceInfo;
+
+    public bool moveFunctionality;
     
 
     // Start is called before the first frame update
@@ -35,6 +43,7 @@ public class UI_Manager : MonoBehaviour
         if (toolbar != null) toolbar.SetActive(false);
         if (resourceStats != null) resourceStats.SetActive(false);
         displayResourceInfo = false;
+        moveFunctionality = false;
     }
     
     // Update is called once per frame
@@ -77,6 +86,11 @@ public class UI_Manager : MonoBehaviour
             obj.GetComponent<UnityEngine.UI.Image>().enabled = true;
 
         }
+
+        //Change colour to normal
+        Color colour = Color.white;
+        moveButton.GetComponent<UnityEngine.UI.Image>().color = colour;
+        moveButtonInfo.GetComponent<UnityEngine.UI.Image>().color = new Color(colour.r * 0.75f, colour.g * 0.75f, colour.b * 0.75f, 1);
     }
 
     // Function to enable info panel
@@ -340,6 +354,23 @@ public class UI_Manager : MonoBehaviour
         {
             obj.GetComponent<UnityEngine.UI.Image>().enabled = !obj.GetComponent<UnityEngine.UI.Image>().enabled;
             
+        }
+    }
+
+    
+    // Toggles if move function is active
+    public void MoveButtonFunction()
+    {
+        moveFunctionality = !moveFunctionality;
+        ResetUI();
+
+        if (moveFunctionality)
+        {
+            //Change colour to 75% darker
+            Color colour = moveButton.GetComponent<UnityEngine.UI.Image>().color;
+            moveButton.GetComponent<UnityEngine.UI.Image>().color = new Color(colour.r * 0.75f, colour.g * 0.75f, colour.b * 0.75f, 1);
+            colour = moveButtonInfo.GetComponent<UnityEngine.UI.Image>().color;
+            moveButtonInfo.GetComponent<UnityEngine.UI.Image>().color = new Color(colour.r * 0.75f, colour.g * 0.75f, colour.b * 0.75f, 1);
         }
     }
 }

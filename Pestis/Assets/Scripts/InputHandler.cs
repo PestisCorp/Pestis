@@ -11,6 +11,7 @@ public class InputHandler : MonoBehaviour
 {
     [CanBeNull] public HumanPlayer LocalPlayer;
     private InputAction _cameraZoom;
+    public UI_Manager UIManager;
 
     private Camera _mainCamera;
 
@@ -63,9 +64,19 @@ public class InputHandler : MonoBehaviour
                 var horde = DidWeClickHorde(mousePosition);
                 if (horde)
                     LocalPlayer?.SelectHorde(horde);
+                else if (UIManager.moveFunctionality)
+                {
+                    Vector2 position = _mainCamera.ScreenToWorldPoint(mouse.position.value);
+                    UIManager.moveFunctionality = false;
+                    UIManager.ResetUI();
+                    LocalPlayer?.MoveHorde(position);
+                    
+                }
                 else
                     LocalPlayer?.DeselectHorde();
+                
             }
+            
             
         }
 
