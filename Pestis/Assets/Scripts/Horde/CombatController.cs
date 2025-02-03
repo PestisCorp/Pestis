@@ -83,7 +83,7 @@ namespace Horde
         [DrawGizmo(GizmoType.Selected ^ GizmoType.NonSelected)]
         public void OnDrawGizmos()
         {
-            if (!Object.LastReceiveTick || !InitiatingPlayer) return;
+            if (!Object || !InitiatingPlayer) return;
 
             var text = $@"Initiator: {InitiatingPlayer}
 POI: {FightingOver}

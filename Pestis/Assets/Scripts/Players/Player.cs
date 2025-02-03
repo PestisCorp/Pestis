@@ -24,7 +24,11 @@ namespace Players
 
         [CanBeNull] private HumanPlayer _humanPlayer;
 
+        public bool IsLocal => Type != PlayerType.Bot && HasStateAuthority;
+
         [Networked] [Capacity(32)] private NetworkLinkedList<HordeController> Hordes { get; } = default;
+
+        [Networked] public string Username { get; private set; }
 
 
         // Cheese Management
@@ -42,11 +46,15 @@ namespace Players
 
                 if (HasStateAuthority)
                     FindAnyObjectByType<Grid>().GetComponent<InputHandler>().LocalPlayer = _humanPlayer;
+
+                Username = $"{Object.StateAuthority}";
             }
             else
             {
                 _botPlayer = this.AddComponent<BotPlayer>();
                 _botPlayer!.player = this;
+
+                Username = $"Bot {Object.Id}";
             }
 
             foreach (var horde in GetComponentsInChildren<HordeController>()) Hordes.Add(horde);

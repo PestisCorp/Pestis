@@ -4,6 +4,7 @@ using Fusion;
 using JetBrains.Annotations;
 using Players;
 using POI;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -37,11 +38,14 @@ namespace Horde
         public Vector2[] intraHordeTargets = new Vector2[4];
 
         private readonly List<RatController> _spawnedRats = new();
+        private Camera _camera;
 
         /// <summary>
         ///     Mid-point of all the rats in the horde
         /// </summary>
         private Vector2 _hordeCenter;
+
+        private GameObject _playerText;
 
         private PopulationController _populationController;
 
@@ -83,18 +87,28 @@ namespace Horde
         [CanBeNull]
         private CombatController CurrentCombatController { get; set; }
 
-        public bool InCombat => CurrentCombatController ? CurrentCombatController.Participators.Count != 0 : false;
+        public bool InCombat => CurrentCombatController && CurrentCombatController.Participators.Count != 0;
 
         private void Awake()
         {
             _hordeCenter = transform.position;
+            _camera = Camera.main;
+        }
+
+        private void Update()
+        {
+            if (_playerText)
+                _playerText.transform.position = _camera.WorldToScreenPoint(HordeBounds.center);
         }
 
         private void FixedUpdate()
         {
+            // If not spawned yet
+            if (!Object.IsValid) return;
+
             // Spawn at center of horde if there is one, or base if there isn't one yet.
             if (_spawnedRats.Count == 0)
-                _hordeCenter = HordeBounds.center == new Vector3() ? transform.position : HordeBounds.center;
+                _hordeCenter = HordeBounds.center == Vector3.zero ? transform.position : HordeBounds.center;
 
             // Only spawn up to one rat each tick to avoid freezes
             if (_ratsToSpawn != 0)
@@ -149,14 +163,13 @@ namespace Horde
         [DrawGizmo(GizmoType.Selected ^ GizmoType.NonSelected)]
         public void OnDrawGizmos()
         {
-            if (Object.LastReceiveTick)
-            {
-                var centeredStyle = GUI.skin.GetStyle("Label");
-                centeredStyle.alignment = TextAnchor.MiddleCenter;
+            if (!Object) return;
+            var centeredStyle = GUI.skin.GetStyle("Label");
+            centeredStyle.alignment = TextAnchor.MiddleCenter;
 
-                Gizmos.color = Color.blue;
-                Gizmos.DrawWireCube(HordeBounds.center, HordeBounds.size);
-                Handles.Label(HordeBounds.center, $@"{Object.StateAuthority}
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireCube(HordeBounds.center, HordeBounds.size);
+            Handles.Label(HordeBounds.center, $@"{Object.StateAuthority}
 {Object.Id}
 {(HasStateAuthority ? "Local" : "Remote")}
 Combat: {InCombat}
@@ -164,8 +177,7 @@ Horde Target: {(HordeBeingDamaged ? HordeBeingDamaged.Object.Id : "None")}
 Stationed At {(StationedAt ? StationedAt.Object.Id : "None")}
 POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
 ");
-                HandleUtility.Repaint();
-            }
+            HandleUtility.Repaint();
         }
 #endif
 
@@ -302,6 +314,11 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             }
 
             targetLocation = transform.Find("TargetLocation").gameObject.GetComponent<NetworkTransform>();
+
+            _playerText = transform.Find("Canvas/PlayerName").gameObject;
+            var text = _playerText.GetComponentInChildren<TMP_Text>();
+            text.text = Player.Username;
+            if (Player.IsLocal) text.color = Color.red;
 
             // Needed to spawn in rats from joined session
             TotalHealthChanged();
