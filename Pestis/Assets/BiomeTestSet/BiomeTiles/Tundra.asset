@@ -15,4 +15,4 @@ MonoBehaviour:
   foodLevel: 0
   HumanLevel: 0
   climate: 0
-  tile: {fileID: -692436959, guid: 57f8284f8056a0f4c94bc0b7fdf61fa7, type: 3}
+  tile: {fileID: 13889604, guid: b7400920ee93ffd47b893856fb5649b4, type: 3}

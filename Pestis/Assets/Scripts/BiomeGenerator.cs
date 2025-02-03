@@ -7,13 +7,13 @@ using Random = UnityEngine.Random;
 public class BiomeGenerator : MonoBehaviour
 {
     public BiomeClass[] BiomeClasses; //every type of biome
-    public List<BiomeInstance> BiomeList; //every instance of each biome
+    public List<BiomeInstance> BiomeList = new List<BiomeInstance>(); //every instance of each biome
     public Tilemap map;
     private int width;
 
     private void Awake()
     {
-        sowSeed();
+        this.sowSeed();
         foreach (var biome in BiomeList)
         {
             for (int i = 0; i < biome.iteration; i++)

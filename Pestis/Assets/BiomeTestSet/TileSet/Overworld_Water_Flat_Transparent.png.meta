@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7c807e803d1d78e46af22b26d58624b0
+guid: b7400920ee93ffd47b893856fb5649b4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3608638829936725298
-    second: Overworld - Terrain 1 - Flat 128x64_0
+      213: 1848960223738811375
+    second: Overworld_Water_Flat_Transparent_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,397 +100,397 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Overworld - Terrain 1 - Flat 128x64_0
+      name: Overworld_Water_Flat_Transparent_0
       rect:
         serializedVersion: 2
         x: 0
         y: 320
         width: 128
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e257ed6eb1c6f7d42bf71177c7e11bf6
-      internalID: 853006819
+      spriteID: 851a037b7819bfa47aa24e6c231cead0
+      internalID: -1426327306
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Overworld - Terrain 1 - Flat 128x64_1
+      name: Overworld_Water_Flat_Transparent_1
       rect:
         serializedVersion: 2
         x: 128
         y: 320
         width: 128
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 127ec1fdf41155d469964bfdf92479eb
-      internalID: 863235299
+      spriteID: 555a607f3154f7641a7f7ea2fe3ac04b
+      internalID: 1440757584
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Overworld - Terrain 1 - Flat 128x64_2
+      name: Overworld_Water_Flat_Transparent_2
       rect:
         serializedVersion: 2
         x: 256
         y: 320
         width: 128
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 263355475f0e52441a61786485429e35
-      internalID: 1823283490
+      spriteID: 4e9f1019ef687754f938be39265fb05e
+      internalID: 373683771
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Overworld - Terrain 1 - Flat 128x64_3
+      name: Overworld_Water_Flat_Transparent_3
       rect:
         serializedVersion: 2
         x: 0
         y: 256
         width: 128
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a25bb3aeaad41a44eaaa063a66154ded
-      internalID: -306274584
+      spriteID: f9e0d93945801054a828b38563d795e2
+      internalID: 1671225707
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Overworld - Terrain 1 - Flat 128x64_4
+      name: Overworld_Water_Flat_Transparent_4
       rect:
         serializedVersion: 2
         x: 128
         y: 256
         width: 128
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e69e0fd900f8c6840942e890783b748b
-      internalID: -1698229711
+      spriteID: 0444fe6b3906fff46b22e5235e6643df
+      internalID: -304521496
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Overworld - Terrain 1 - Flat 128x64_5
+      name: tundra
       rect:
         serializedVersion: 2
         x: 256
         y: 256
         width: 128
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3a31a63e2272d7d4c91a40555b82b0b0
-      internalID: -586589268
+      spriteID: 5fbca09103ef448408651c2ada2f4e46
+      internalID: 13889604
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Overworld - Terrain 1 - Flat 128x64_6
+      name: Overworld_Water_Flat_Transparent_6
       rect:
         serializedVersion: 2
         x: 0
         y: 192
         width: 128
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6d2adc5e77181204ebd856c116765294
-      internalID: -184044722
+      spriteID: b43851ef1f2f0e249b8ce713cf878167
+      internalID: -134987793
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Overworld - Terrain 1 - Flat 128x64_7
+      name: Overworld_Water_Flat_Transparent_7
       rect:
         serializedVersion: 2
         x: 128
         y: 192
         width: 128
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4a24b3cd7085ccd4da9736c85749d2f6
-      internalID: -966600409
+      spriteID: 3b4878a61c0a3b8478ca29125c7bedd6
+      internalID: 554727744
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Overworld - Terrain 1 - Flat 128x64_8
+      name: Overworld_Water_Flat_Transparent_8
       rect:
         serializedVersion: 2
         x: 256
         y: 192
         width: 128
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: df23fe6b6980f3846b4996a956a15486
-      internalID: -225449516
+      spriteID: b3b8bcf8f2f016248a60318ed664e55e
+      internalID: -534496715
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Overworld - Terrain 1 - Flat 128x64_9
+      name: stone
       rect:
         serializedVersion: 2
         x: 0
         y: 128
         width: 128
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bd4726ddb87710848b32fa0ace2ab713
-      internalID: 1898237280
+      spriteID: 52b69d0eea0129c4cbb8a3eaa91941c8
+      internalID: 1705640873
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Overworld - Terrain 1 - Flat 128x64_10
+      name: sand
       rect:
         serializedVersion: 2
         x: 128
         y: 128
         width: 128
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0f805d0496530df43be47d413474949f
-      internalID: -876564355
+      spriteID: ce3af29b0a9e3904db2efc99769d5411
+      internalID: -1638915526
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Overworld - Terrain 1 - Flat 128x64_11
+      name: Overworld_Water_Flat_Transparent_11
       rect:
         serializedVersion: 2
         x: 256
         y: 128
         width: 128
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 60223fc999ced5c4e94843049cf73d12
-      internalID: -1529356232
+      spriteID: 048c3c6b7fdfc18418eaca0203c4d705
+      internalID: -930319886
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Overworld - Terrain 1 - Flat 128x64_12
+      name: Overworld_Water_Flat_Transparent_12
       rect:
         serializedVersion: 2
         x: 0
         y: 64
         width: 128
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 57537d299994e834ebbef8fb44a30dca
-      internalID: -1083450950
+      spriteID: 747938c7f342112449f27cc5e123ed48
+      internalID: -421436322
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Overworld - Terrain 1 - Flat 128x64_13
+      name: Overworld_Water_Flat_Transparent_13
       rect:
         serializedVersion: 2
         x: 128
         y: 64
         width: 128
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b9889f608e4c42445959bc2afc660816
-      internalID: -1030546167
+      spriteID: 700b0c4e4b3fccc488754ec23dab833b
+      internalID: 1220296188
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Overworld - Terrain 1 - Flat 128x64_14
+      name: ocean
       rect:
         serializedVersion: 2
         x: 256
         y: 64
         width: 128
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0a74e209ca48b6d45a08fe62e36ce8f3
-      internalID: -1448274725
+      spriteID: 3238c5d978c6a674a818abf391825a36
+      internalID: 694830555
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: default
+      name: Overworld_Water_Flat_Transparent_15
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 128
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fdeef48c873eea849b761d275d4fc277
-      internalID: 54769227
+      spriteID: 3ef6d3f381c66aa409f08449003e4df0
+      internalID: 1072895015
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Overworld - Terrain 1 - Flat 128x64_16
+      name: Overworld_Water_Flat_Transparent_16
       rect:
         serializedVersion: 2
         x: 128
         y: 0
         width: 128
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a07124782f38c5b46a354fd7d54eb8bf
-      internalID: -1566241981
+      spriteID: 3783472b085dba74892b8a7a8da4ffb7
+      internalID: 1191585807
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Overworld - Terrain 1 - Flat 128x64_17
+      name: Overworld_Water_Flat_Transparent_17
       rect:
         serializedVersion: 2
         x: 256
         y: 0
         width: 128
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 49c486a5a409205408c87cfbd67b3c56
-      internalID: -760923629
+      spriteID: 82573dfc2b898b047882a4ea35c189ba
+      internalID: 1331789474
       vertices: []
       indices: 
       edges: []
@@ -499,7 +499,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 9fc58e1066a5ec44aa301caabd2409f8
+    spriteID: cc1e3f1b548a1d34096a30f845530eaf
     internalID: 0
     vertices: []
     indices: 
@@ -509,24 +509,24 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Overworld - Terrain 1 - Flat 128x64_0: 853006819
-      Overworld - Terrain 1 - Flat 128x64_1: 863235299
-      Overworld - Terrain 1 - Flat 128x64_10: -876564355
-      Overworld - Terrain 1 - Flat 128x64_11: -1529356232
-      Overworld - Terrain 1 - Flat 128x64_12: -1083450950
-      Overworld - Terrain 1 - Flat 128x64_13: -1030546167
-      Overworld - Terrain 1 - Flat 128x64_14: -1448274725
-      Overworld - Terrain 1 - Flat 128x64_16: -1566241981
-      Overworld - Terrain 1 - Flat 128x64_17: -760923629
-      Overworld - Terrain 1 - Flat 128x64_2: 1823283490
-      Overworld - Terrain 1 - Flat 128x64_3: -306274584
-      Overworld - Terrain 1 - Flat 128x64_4: -1698229711
-      Overworld - Terrain 1 - Flat 128x64_5: -586589268
-      Overworld - Terrain 1 - Flat 128x64_6: -184044722
-      Overworld - Terrain 1 - Flat 128x64_7: -966600409
-      Overworld - Terrain 1 - Flat 128x64_8: -225449516
-      Overworld - Terrain 1 - Flat 128x64_9: 1898237280
-      default: 54769227
+      Overworld_Water_Flat_Transparent_0: -1426327306
+      Overworld_Water_Flat_Transparent_1: 1440757584
+      Overworld_Water_Flat_Transparent_11: -930319886
+      Overworld_Water_Flat_Transparent_12: -421436322
+      Overworld_Water_Flat_Transparent_13: 1220296188
+      Overworld_Water_Flat_Transparent_15: 1072895015
+      Overworld_Water_Flat_Transparent_16: 1191585807
+      Overworld_Water_Flat_Transparent_17: 1331789474
+      Overworld_Water_Flat_Transparent_2: 373683771
+      Overworld_Water_Flat_Transparent_3: 1671225707
+      Overworld_Water_Flat_Transparent_4: -304521496
+      Overworld_Water_Flat_Transparent_6: -134987793
+      Overworld_Water_Flat_Transparent_7: 554727744
+      Overworld_Water_Flat_Transparent_8: -534496715
+      ocean: 694830555
+      sand: -1638915526
+      stone: 1705640873
+      tundra: 13889604
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

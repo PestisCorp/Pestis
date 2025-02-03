@@ -409,13 +409,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemap: {fileID: 20129744}
-  width: 1024
-  height: 1024
-  water: {fileID: 0}
-  landBiomes: []
-  voronoiFrequency: 0.0025
-  randomWalkSteps: 5000000
-  smoothing: 10
+  width: 256
+  height: 256
+  water: {fileID: 11400000, guid: ff5dd6f895688a245aef45af817a9bc8, type: 2}
+  landBiomes:
+  - {fileID: 11400000, guid: d5663722ef831e9459ebdfa710eba22c, type: 2}
+  voronoiFrequency: 7
+  randomWalkSteps: 100000
+  smoothing: 7
 --- !u!4 &569886380
 Transform:
   m_ObjectHideFlags: 0
@@ -426,6 +427,56 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 688.3569, y: 160.76262, z: -13.736438}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &830260515
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 830260517}
+  - component: {fileID: 830260516}
+  m_Layer: 0
+  m_Name: biome
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &830260516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830260515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35f80cf196507914fb785b8a95d85028, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BiomeClasses:
+  - {fileID: 11400000, guid: 30e4e16fb87360642b9943101d93c20d, type: 2}
+  - {fileID: 11400000, guid: 55d21574e3c3e2d44babc3ccb3848260, type: 2}
+  - {fileID: 11400000, guid: 7c8a718d666296940a5a0168169f80b9, type: 2}
+  - {fileID: 11400000, guid: 35428bc3879f77f479236b513dec1caa, type: 2}
+  map: {fileID: 20129744}
+--- !u!4 &830260517
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830260515}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.457603, y: -4.1518087, z: 0.50138843}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -483,3 +534,4 @@ SceneRoots:
   - {fileID: 139115119}
   - {fileID: 569886380}
   - {fileID: 1599435563}
+  - {fileID: 830260517}
