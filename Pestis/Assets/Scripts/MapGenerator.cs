@@ -8,11 +8,11 @@ using ProceduralToolkit.FastNoiseLib;
 public class MapGenerator : MonoBehaviour
 {
     public Tilemap tilemap;
-    public int width = 2048;
-    public int height = 2048;
+    public int width = 1024;
+    public int height = 1024;
     public TileBase water;
     public List<TileBase> landBiomes;
-    public float voronoiFrequency = 0.0025f;
+    public float voronoiFrequency = 0.025f;
     public int randomWalkSteps = 5000000;
     public int smoothing = 10;
 
