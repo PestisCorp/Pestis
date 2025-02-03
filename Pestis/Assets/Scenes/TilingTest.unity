@@ -411,11 +411,11 @@ MonoBehaviour:
   tilemap: {fileID: 20129744}
   width: 1024
   height: 1024
-  tiles:
-  - {fileID: 11400000, guid: cab14d9d032db5776949d99fcbafeb09, type: 2}
-  - {fileID: 11400000, guid: b85b6c7b0af394f438789f6ceca17ae4, type: 2}
-  frequency: 0.001
-  steps: 5000000
+  water: {fileID: 0}
+  landBiomes: []
+  voronoiFrequency: 0.0025
+  randomWalkSteps: 5000000
+  smoothing: 10
 --- !u!4 &569886380
 Transform:
   m_ObjectHideFlags: 0
