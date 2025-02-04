@@ -16,7 +16,7 @@ namespace Human
         [Networked]
         [OnChangedRender(nameof(OnHumanCountChanged))]
 
-        private int HumanCount { get; set; } = 6; // Networked human count
+        public int HumanCount { get; private set; } = 6; // Networked human count
 
         public override void Spawned()
         {
