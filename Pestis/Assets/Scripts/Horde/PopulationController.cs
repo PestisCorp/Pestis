@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Fusion;
+using Players;
 using Unity.VisualScripting;
 using UnityEngine;
 using Random = System.Random;
@@ -25,8 +26,9 @@ namespace Horde
     public class PopulationController : NetworkBehaviour
     {
         private const int InitialPopulation = 5;
+        // Soft population limit, should be extremely difficult for the player to grow beyond this, but still possible
         private const int PopMax = 1000;
-        private const int resources = 10;
+        
 
         private List<double[]> _transitionMatrix;
 
@@ -46,23 +48,29 @@ namespace Horde
         
         
         // Weight used in probability of population growth
+        // W > 1 if R > P
+        // W = 1 if R == P
+        // W < 1 if R < P
         private double ResourceWeightGrowth()
         {
-            return 1 + 0.5 * (1.0 - Math.Exp(-((double)resources / hordeController.AliveRats - 1)));
+            return 1 + 0.5 * (1.0 - Math.Exp(-(hordeController.Player.CurrentCheese / hordeController.AliveRats - 1)));
         }
         
         // Weight used in probability of population decline
+        // W = 1 if R >= P
+        // W > 1 if R < P
         private double ResourceWeightDecline()
         {
-            if (resources >= hordeController.AliveRats)
+            if (hordeController.Player.CurrentCheese >= hordeController.AliveRats)
             {
                 return 1.0;
             }
-            return Math.Exp(1.0 - (double)resources / hordeController.AliveRats);
+            return Math.Exp(1.0 - hordeController.Player.CurrentCheese / hordeController.AliveRats);
             
         }
         
         // Calculate probability of population growth
+        // Tapers off as population approaches PopMax
         private double Alpha(double weight, int population)
         {
             return State.BirthRate * weight * ((double)PopMax / (population + PopMax));
@@ -84,7 +92,8 @@ namespace Horde
             }
         }
         
-        // Generate a PopMax x PopMax transition matrix
+        // Generate an InitialPopulation x (MaxPopGrowth * 2) + 1 transition matrix
+        // Uses a list type so that rows can be added when a new populationPeak is reached
         // The entry X[n][n] is the probability of the population staying the same
         // The entry X[n][n+k] is the probability of the population growing by an amount k
         // The entry X[n][n-k] is the probability of the population declining by an amount k
@@ -119,7 +128,9 @@ namespace Horde
             return transitionMatrix;
         }
         
-        
+        // Update the transition matrix when a new population peak is achieved
+        // Logic is mostly similar to GenerateTransitionMatrix, except that you are
+        // operating on a single row here
         private void UpdateTransitionMatrix(int[] weights)
         {
             var row = new double[(MaxPopGrowth * 2) + 1];
@@ -140,6 +151,7 @@ namespace Horde
                 
             }
             row[MaxPopGrowth] = Math.Max(1 - delta, 0);
+            // Normalize row
             double ratio = 1.0 / row.Sum();
             row = row.Select(o => o * ratio).ToArray();
             _transitionMatrix.Add(row);
@@ -168,6 +180,7 @@ namespace Horde
                 _populationPeak = hordeController.AliveRats;
                 UpdateTransitionMatrix(weights);
             }
+            // Lookup the relevant probabilities for the current population
             double[] probabilities = _transitionMatrix[hordeController.AliveRats - 1];
             for (int i = 0; i < ((MaxPopGrowth * 2) + 1); i++)
             {
@@ -191,6 +204,7 @@ namespace Horde
                 cumulative += probabilities[i];
                 cdf.Add(cumulative);
             }
+            // Randomly pick a number and do a binary search for it in CDF, returns the closest match
             double r = _random.NextDouble() * cumulative;
             int nextState = cdf.BinarySearch(r);
             if (nextState < 0) nextState = ~nextState;
