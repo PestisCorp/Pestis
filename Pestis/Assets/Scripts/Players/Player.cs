@@ -119,14 +119,17 @@ namespace Players
             var populationState = toSplit.GetPopulationState();
             var newHorde = Runner.Spawn(hordePrefab, Vector3.zero,
                     Quaternion.identity,
-                    null, (runner, NO) => NO.transform.parent = transform)
+                    null, (runner, NO) =>
+                    {
+                        NO.transform.parent = transform;
+                        // Ensure new horde spawns in at current location
+                        NO.transform.position = toSplit.GetBounds().center;
+                    })
                 .GetComponent<HordeController>();
             newHorde.TotalHealth = totalHealth / 2.0f;
             toSplit.TotalHealth = totalHealth / 2.0f;
             // Ensure new horde rats try to move to correct location
             newHorde.Move(toSplit.targetLocation.transform.position);
-            // Ensure new horde spawns in at current location
-            newHorde.transform.position = toSplit.GetBounds().center;
             // Ensure genetics are transferred
             newHorde.SetPopulationState(populationState);
 

@@ -464,5 +464,10 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         {
             _populationController.SetState(newState);
         }
+
+        public void Select()
+        {
+            FindAnyObjectByType<InputHandler>().LocalPlayer?.SelectHorde(this);
+        }
     }
 }
