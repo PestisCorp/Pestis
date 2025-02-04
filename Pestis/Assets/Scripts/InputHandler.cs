@@ -3,15 +3,14 @@ using JetBrains.Annotations;
 using Players;
 using POI;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
-
+using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
 {
     [CanBeNull] public HumanPlayer LocalPlayer;
-    private InputAction _cameraZoom;
     public UI_Manager UIManager;
+    private InputAction _cameraZoom;
 
     private Camera _mainCamera;
 
@@ -57,27 +56,31 @@ public class InputHandler : MonoBehaviour
         if (mouse.leftButton.wasPressedThisFrame)
         {
             Vector3 mousePosition = mouse.position.ReadValue();
-            
+
             // Only select and deselect horde if we are not clicking on a UI element
             if (!EventSystem.current.IsPointerOverGameObject())
             {
                 var horde = DidWeClickHorde(mousePosition);
                 if (horde)
+                {
                     LocalPlayer?.SelectHorde(horde);
+                }
                 else if (UIManager.moveFunctionality)
                 {
-                    Vector2 position = _mainCamera.ScreenToWorldPoint(mouse.position.value);
                     UIManager.moveFunctionality = false;
                     UIManager.ResetUI();
-                    LocalPlayer?.MoveHorde(position);
-                    
+
+                    if (!MoveToPoiIfClicked(mouse.position.ReadValue()))
+                    {
+                        Vector2 position = _mainCamera.ScreenToWorldPoint(mouse.position.value);
+                        LocalPlayer?.MoveHorde(position);
+                    }
                 }
                 else
+                {
                     LocalPlayer?.DeselectHorde();
-                
+                }
             }
-            
-            
         }
 
         // If right-clicked, and local player is allowed to control the selected horde
@@ -87,11 +90,8 @@ public class InputHandler : MonoBehaviour
 
             var clickedHorde = DidWeClickHorde(mousePos);
 
-            if (DidWeClickPOI(mousePos, out var poiController))
-            {
-                LocalPlayer.selectedHorde.AttackPoi(poiController);
-            }
-            else if (clickedHorde)
+            if (MoveToPoiIfClicked(mousePos)) return;
+            if (clickedHorde && clickedHorde.Player != LocalPlayer?.selectedHorde.Player)
             {
                 LocalPlayer?.selectedHorde.AttackHorde(clickedHorde);
             }
@@ -150,6 +150,21 @@ public class InputHandler : MonoBehaviour
         }
 
         poiController = null;
+        return false;
+    }
+
+    public bool MoveToPoiIfClicked(Vector2 mousePos)
+    {
+        if (DidWeClickPOI(mousePos, out var poiController))
+        {
+            // Already stationed at POI
+            if (poiController.StationedHordes.Contains(LocalPlayer?.selectedHorde)) return false;
+
+            LocalPlayer?.selectedHorde?.AttackPoi(poiController);
+
+            return true;
+        }
+
         return false;
     }
 }

@@ -15,10 +15,14 @@ namespace Players
 
     public class Player : NetworkBehaviour
     {
+        public delegate void OnBeforeSpawned(NetworkRunner runner, NetworkObject obj);
+
         /// <summary>
         ///     Human or Bot?
         /// </summary>
         public PlayerType Type;
+
+        public GameObject hordePrefab;
 
         [CanBeNull] private BotPlayer _botPlayer;
 
@@ -104,6 +108,29 @@ namespace Players
             if (Type == PlayerType.Human) return ref _humanPlayer;
 
             throw new NullReferenceException("Tried to get human player from a bot Player");
+        }
+
+        public void SplitHorde(HordeController toSplit)
+        {
+            if (!HasStateAuthority) throw new Exception("Only State Authority can split a horde");
+
+
+            var totalHealth = toSplit.TotalHealth;
+            var populationState = toSplit.GetPopulationState();
+            var newHorde = Runner.Spawn(hordePrefab, Vector3.zero,
+                    Quaternion.identity,
+                    null, (runner, NO) => NO.transform.parent = transform)
+                .GetComponent<HordeController>();
+            newHorde.TotalHealth = totalHealth / 2.0f;
+            toSplit.TotalHealth = totalHealth / 2.0f;
+            // Ensure new horde rats try to move to correct location
+            newHorde.Move(toSplit.targetLocation.transform.position);
+            // Ensure new horde spawns in at current location
+            newHorde.transform.position = toSplit.GetBounds().center;
+            // Ensure genetics are transferred
+            newHorde.SetPopulationState(populationState);
+
+            Debug.Log($"Split Horde {Object.Id}, creating new Horde {newHorde.Object.Id}");
         }
     }
 }

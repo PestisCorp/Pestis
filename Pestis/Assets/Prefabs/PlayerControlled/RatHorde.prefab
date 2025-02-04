@@ -198,7 +198,7 @@ GameObject:
   - component: {fileID: 6619829849645989142}
   - component: {fileID: 4419380376764164480}
   - component: {fileID: 8072967729009948161}
-  - component: {fileID: 7468465082037442285}
+  - component: {fileID: 2822140812086679925}
   m_Layer: 0
   m_Name: RatHorde
   m_TagString: Untagged
@@ -283,10 +283,10 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 6619829849645989142}
   - {fileID: 4419380376764164480}
-  - {fileID: 7468465082037442285}
+  - {fileID: 2822140812086679925}
   - {fileID: 6270358088513742782}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &7468465082037442285
+--- !u!114 &2822140812086679925
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -295,12 +295,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2093969167296477126}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fc0f394f1d4433faea6b58a882e00ed, type: 3}
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Participators:
-    _items: []
-  _FightingOver: {fileID: 0}
+  _stateAuthorityChangeErrorCorrectionDelta: 0.15
+  SyncScale: 0
+  SyncParent: 1
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
 --- !u!1 &3577181395217153104
 GameObject:
   m_ObjectHideFlags: 0

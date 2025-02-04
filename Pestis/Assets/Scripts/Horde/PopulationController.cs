@@ -70,5 +70,10 @@ namespace Horde
         {
             return State;
         }
+
+        public void SetState(PopulationState newState)
+        {
+            State = newState;
+        }
     }
 }
