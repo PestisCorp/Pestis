@@ -2,6 +2,7 @@ on:
     push:
         branches:
           - '**'
+          - '!main'
 
 jobs:
     build:
@@ -61,5 +62,4 @@ jobs:
         - name: Copy build to hosting folder
           run: cp -rf build/WebGL/WebGL /home/mediaserver/configs/pestis-runner/builds/${{ github.ref_name  }}
 
-        - name: Symlink to latest
-          run: ln -s /home/mediaserver/configs/pestis-runner/builds/${{ github.ref_name  }} /home/mediaserver/configs/pestis-runner/builds/${{github.ref_name }}
+     

@@ -33,6 +33,11 @@ namespace Players
         [CanBeNull]
         private CombatController CurrentCombatController { get; set; }
 
+        // Cheese Management
+        [Networked] public int CurrentCheese { get; private set; } = 0;
+
+        [Networked] public int CheeseIncrementRate { get; private set; } = 1;
+
 
         public override void Spawned()
         {
@@ -48,6 +53,45 @@ namespace Players
             {
                 _botPlayer = this.AddComponent<BotPlayer>();
                 _botPlayer!.player = this;
+            }
+        }
+
+        // Manage Cheese
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void AddCheese(int amount)
+        {
+            CurrentCheese += amount;
+        }
+
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void RemoveCheese(int amount)
+        {
+            CurrentCheese = Mathf.Max(0, CurrentCheese - amount);
+        }
+
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void SetCheeseIncrementRate(int rate)
+        {
+            CheeseIncrementRate = rate;
+        }
+
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void IncrementCheeseIncrementRate(int amount)
+        {
+            CheeseIncrementRate += amount;
+        }
+
+        public void DecrementCheeseIncrementRate(int amount)
+        {
+            CheeseIncrementRate -= amount;
+        }
+
+        public override void FixedUpdateNetwork()
+        {
+            if (HasStateAuthority)
+            {
+                // Add Cheese every tick based on the increment rate
+                CurrentCheese += CheeseIncrementRate;
             }
         }
 
