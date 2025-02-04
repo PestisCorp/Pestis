@@ -15,7 +15,6 @@ namespace Horde
         internal double BirthRate;
         internal double DeathRate;
         internal float HealthPerRat;
-        internal int PopulationPeak;
 
         /// <summary>
         ///     How much damage the horde does to other hordes per tick in combat
@@ -26,10 +25,12 @@ namespace Horde
     public class PopulationController : NetworkBehaviour
     {
         private const int InitialPopulation = 5;
-        private const int PopMax = 10;
+        private const int PopMax = 1000;
         private const int resources = 10;
 
-        private double[][] _transitionMatrix;
+        private List<double[]> _transitionMatrix;
+
+        private int _populationPeak = InitialPopulation;
         // The maximum change in a population per network tick
         private const int MaxPopGrowth = 1;
         public HordeController hordeController;
@@ -47,31 +48,36 @@ namespace Horde
         // Weight used in probability of population growth
         private double ResourceWeightGrowth()
         {
-            return (double)resources / (resources + hordeController.AliveRats);
+            return 1 + 0.5 * (1.0 - Math.Exp(-((double)resources / hordeController.AliveRats - 1)));
         }
         
         // Weight used in probability of population decline
         private double ResourceWeightDecline()
         {
-            return (double)hordeController.AliveRats / (resources + hordeController.AliveRats);
+            if (resources >= hordeController.AliveRats)
+            {
+                return 1.0;
+            }
+            return Math.Exp(1.0 - (double)resources / hordeController.AliveRats);
+            
         }
         
         // Calculate probability of population growth
-        private double Alpha(double weight)
+        private double Alpha(double weight, int population)
         {
-            return State.BirthRate * ResourceWeightGrowth() * weight;
+            return State.BirthRate * weight * ((double)PopMax / (population + PopMax));
         }
         
         // Calculate probability of population decline
-        private double Beta(double weight)
+        private double Beta(double weight, int population)
         {
-            return State.DeathRate * ResourceWeightDecline() * weight;
+            return State.DeathRate * weight * ((double)PopMax / (population + PopMax));
         }
         
         // Normalize rows of a matrix to be between 0 and 1.0
-        private void NormalizeRows(double[][] matrix)
+        private void NormalizeRows(List<double[]> matrix)
         {
-            for (int i = 0; i < State.PopulationPeak; i++)
+            for (int i = 0; i < _populationPeak; i++)
             {
                 double ratio = 1.0 / matrix[i].Sum();
                 matrix[i] = matrix[i].Select(o => o * ratio).ToArray();
@@ -82,12 +88,12 @@ namespace Horde
         // The entry X[n][n] is the probability of the population staying the same
         // The entry X[n][n+k] is the probability of the population growing by an amount k
         // The entry X[n][n-k] is the probability of the population declining by an amount k
-        private double[][] GenerateTransitionMatrix(int[] weights)
+        private List<double[]> GenerateTransitionMatrix(int[] weights)
         {
-            var transitionMatrix = new double[State.PopulationPeak][];
+            var transitionMatrix = new List<double[]>(_populationPeak);
             int wMin = weights.Min();
             int wMax = weights.Max();
-            for (int i = 0; i < State.PopulationPeak; i++)
+            for (int i = 0; i < _populationPeak; i++)
             {
                 // Delta is the probability of staying at the same population
                 double delta = 0;
@@ -97,17 +103,17 @@ namespace Horde
                     // Normalise w using MinMax rescaling
                     double w = (wMin == wMax) ? 1 : (double)(weights[j] - wMin) / (wMax - wMin);
                     
-                    double alpha = Alpha(w);
+                    double alpha = Alpha(w, i + 1);
                     row[MaxPopGrowth + j + 1] = alpha;
                     delta += alpha;
                     
-                    double beta = Beta(w);
+                    double beta = Beta(w, i + 1);
                     row[MaxPopGrowth - j - 1] = beta;
                     delta += beta;
                     
                 }
                 row[MaxPopGrowth] = Math.Max(1 - delta, 0);
-                transitionMatrix[i] = row;
+                transitionMatrix.Add(row);
             }
             NormalizeRows(transitionMatrix);
             return transitionMatrix;
@@ -124,11 +130,11 @@ namespace Horde
             {
                 double w = (wMin == wMax) ? 1 : (double)(weights[i] - wMin) / (wMax - wMin);
                 
-                double alpha = Alpha(w);
+                double alpha = Alpha(w, _populationPeak);
                 row[MaxPopGrowth + i + 1] = alpha;
                 delta += alpha;
                 
-                double beta = Beta(w);
+                double beta = Beta(w, _populationPeak);
                 row[MaxPopGrowth - i - 1] = beta;
                 delta += beta;
                 
@@ -136,7 +142,7 @@ namespace Horde
             row[MaxPopGrowth] = Math.Max(1 - delta, 0);
             double ratio = 1.0 / row.Sum();
             row = row.Select(o => o * ratio).ToArray();
-            _transitionMatrix[State.PopulationPeak] = row;
+            _transitionMatrix.Add(row);
         }
         
         public override void Spawned()
@@ -145,7 +151,6 @@ namespace Horde
             State.DeathRate = 0.005;
             State.HealthPerRat = 5.0f;
             State.Damage = 0.5f;
-            State.PopulationPeak = InitialPopulation;
             hordeController.TotalHealth = InitialPopulation * State.HealthPerRat;
             _transitionMatrix = GenerateTransitionMatrix(Enumerable.Range(1, MaxPopGrowth).Reverse().ToArray());
         }
@@ -158,7 +163,26 @@ namespace Horde
             // smaller than going from n to n + 1, so the weight applied is smaller
             // for the former transition
             int[] weights = Enumerable.Range(1, MaxPopGrowth).Reverse().ToArray();
-            double[] probabilities = _transitionMatrix[(MaxPopGrowth * 2) + 1];
+            if ((hordeController.AliveRats) > _populationPeak)
+            {
+                _populationPeak = hordeController.AliveRats;
+                UpdateTransitionMatrix(weights);
+            }
+            double[] probabilities = _transitionMatrix[hordeController.AliveRats - 1];
+            for (int i = 0; i < ((MaxPopGrowth * 2) + 1); i++)
+            {
+                if ((MaxPopGrowth - i) < 0)
+                {
+                    probabilities[i] *= ResourceWeightGrowth();
+                }
+
+                if ((MaxPopGrowth - i) > 0)
+                {
+                    probabilities[i] *= ResourceWeightDecline();
+                }
+            }
+            double ratio = 1.0 / probabilities.Sum();
+            probabilities = probabilities.Select(o => o * ratio).ToArray();
             // Use a CDF for doing a weighted sample of the transition states
             double cumulative = 0.0f;
             List<double> cdf = new List<double>((MaxPopGrowth * 2) + 1);
@@ -171,11 +195,6 @@ namespace Horde
             int nextState = cdf.BinarySearch(r);
             if (nextState < 0) nextState = ~nextState;
             hordeController.TotalHealth = (nextState - MaxPopGrowth + hordeController.AliveRats) * State.HealthPerRat;
-            if ((nextState + 1) > State.PopulationPeak)
-            {
-                State.PopulationPeak = nextState + 1;
-                UpdateTransitionMatrix(weights);
-            }
         }
 
         // Only executed on State Authority
