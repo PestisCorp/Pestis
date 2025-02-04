@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 316745215717936070}
   - component: {fileID: -3302365406761766389}
+  - component: {fileID: -5832458111095189548}
+  - component: {fileID: -2901218194222220756}
   m_Layer: 0
   m_Name: Human
   m_TagString: Untagged
@@ -87,3 +89,54 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-5832458111095189548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6463158892316126659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c31b1f797462433081d407bdbb19b621, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DirectionUp: {fileID: -1419505909908453992, guid: c90f6b6824ad5a16c9cbb22e8628e55f, type: 3}
+  DirectionUpLeft: {fileID: 7349939629791252368, guid: f4ebd54cc4b156b80ad911438441d553, type: 3}
+  DirectionUpRight: {fileID: 3219200771165772678, guid: a6b7bdc16ccb7cfb38cc5870f2767aad, type: 3}
+  DirectionLeft: {fileID: -6291976758827329823, guid: 83cefb5f2ecc2a6c88300bb56b413ca2, type: 3}
+  DirectionRight: {fileID: 3036650517285136012, guid: af3e71026cef200fd8f057b2178c1291, type: 3}
+  DirectionDownLeft: {fileID: -6173445390909923849, guid: 42d77c3a652d71b0abce6c5b62f7b617, type: 3}
+  DirectionDown: {fileID: 2538333210578293319, guid: 97cf51599cb862c9e90ad63d84cab099, type: 3}
+  DirectionDownRight: {fileID: -5779950980032319109, guid: 2720dd9ed78fdec56a868ced65ea074f, type: 3}
+  patrolRadius: 5
+  patrolSpeed: 1
+  rotationSpeed: 360
+  targetTolerance: 0.5
+--- !u!50 &-2901218194222220756
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6463158892316126659}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 1.5
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
