@@ -50,6 +50,7 @@ namespace Human
                 for (int i = 0; i < difference; i++)
                 {
                     Vector3 spawnPosition = _poiCenter.position + (Vector3)Random.insideUnitCircle * patrolRadius;
+                    spawnPosition.z = 0;
                     GameObject human = Instantiate(humanPrefab, spawnPosition, Quaternion.identity);
                     _spawnedHumans.Add(human);
 

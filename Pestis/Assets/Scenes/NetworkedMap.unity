@@ -170,7 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   humanPrefab: {fileID: 6463158892316126659, guid: 4264f97e4dd0548a499c2bc2f37b319a, type: 3}
   poi: {fileID: 1246157612}
-  patrolRadius: 5
+  patrolRadius: 6
 --- !u!4 &580114
 Transform:
   m_ObjectHideFlags: 0
