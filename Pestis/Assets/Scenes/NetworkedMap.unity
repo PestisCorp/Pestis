@@ -22457,7 +22457,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 321.5001, y: -35.99999}
+  m_AnchoredPosition: {x: 321.5, y: -36}
   m_SizeDelta: {x: 73, y: 72}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &473991559
@@ -28619,7 +28619,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 20}
+  m_SizeDelta: {x: 200, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1594191113
 MonoBehaviour:
@@ -32239,6 +32239,7 @@ MonoBehaviour:
   selectedAmountText: {fileID: 1594191113}
   maxAmountText: {fileID: 1165730358}
   slider: {fileID: 1485174128}
+  button: {fileID: 473991559}
 --- !u!1 &2012056629
 GameObject:
   m_ObjectHideFlags: 0

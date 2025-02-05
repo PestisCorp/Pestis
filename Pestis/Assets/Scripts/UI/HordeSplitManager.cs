@@ -1,3 +1,4 @@
+using Horde;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +10,7 @@ namespace UI
         public TMP_Text selectedAmountText;
         public TMP_Text maxAmountText;
         public Slider slider;
+        public Button button;
         private float _splitPercentage;
 
         private int SplitAmount =>
@@ -17,12 +19,25 @@ namespace UI
         private void Update()
         {
             if (!InputHandler.Instance.LocalPlayer || !InputHandler.Instance.LocalPlayer!.selectedHorde) return;
-            maxAmountText.text = $"{InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats}";
+
+            if (InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats <
+                2 * PopulationController.INITIAL_POPULATION)
+            {
+                selectedAmountText.text = "Too small to split";
+                button.interactable = false;
+                return;
+            }
+
+            button.interactable = true;
+
             selectedAmountText.text = $"{SplitAmount}";
-            // Minimum 1 rat in new horde
-            slider.minValue = 1.0f / InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats;
-            // Minimum 1 rat in old horde
-            slider.maxValue = (InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats - 1.0f) /
+            maxAmountText.text = $"{InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats}";
+
+            // Both hordes must stay above initial population!
+            slider.minValue = (float)PopulationController.INITIAL_POPULATION /
+                              InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats;
+            slider.maxValue = (float)(InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats -
+                                      PopulationController.INITIAL_POPULATION) /
                               InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats;
         }
 

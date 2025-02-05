@@ -20,7 +20,7 @@ namespace Horde
 
     public class PopulationController : NetworkBehaviour
     {
-        private const int InitialPopulation = 5;
+        public const int INITIAL_POPULATION = 5;
 
         public HordeController hordeController;
 
@@ -42,7 +42,7 @@ namespace Horde
             State.HealthPerRat = 5.0f;
             State.Damage = 0.5f;
 
-            hordeController.TotalHealth = InitialPopulation * State.HealthPerRat;
+            hordeController.TotalHealth = INITIAL_POPULATION * State.HealthPerRat;
         }
 
         // Check for birth or death events
