@@ -21,6 +21,9 @@ namespace UI
             selectedAmountText.text = $"{SplitAmount}";
             // Minimum 1 rat in new horde
             slider.minValue = 1.0f / InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats;
+            // Minimum 1 rat in old horde
+            slider.maxValue = (InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats - 1.0f) /
+                              InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats;
         }
 
         private void OnEnable()
