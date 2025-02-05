@@ -8,6 +8,8 @@ using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
 {
+    public static InputHandler Instance;
+
     [CanBeNull] public HumanPlayer LocalPlayer;
     public UI_Manager UIManager;
     private InputAction _cameraZoom;
@@ -18,6 +20,7 @@ public class InputHandler : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         _mainCamera = Camera.main;
         _moveCamAction = InputSystem.actions.FindAction("Navigate");
         _cameraZoom = InputSystem.actions.FindAction("ScrollWheel");

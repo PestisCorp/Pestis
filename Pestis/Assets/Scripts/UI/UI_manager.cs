@@ -18,6 +18,7 @@ public class UI_Manager : MonoBehaviour
     public GameObject mutationPopUp;
     public GameObject toolbar;
     public GameObject resourceStats;
+    public GameObject hordeSplitPanel;
 
     // References to the resource text fields
     public TextMeshProUGUI cheeseTotalText;
@@ -355,9 +356,8 @@ public class UI_Manager : MonoBehaviour
         }
     }
 
-    public void SplitHorde()
+    public void ToggleHordeSplitPanel()
     {
-        var horde = GetSelectedHorde();
-        horde.Player.SplitHorde(horde);
+        hordeSplitPanel.SetActive(!hordeSplitPanel.activeSelf);
     }
 }

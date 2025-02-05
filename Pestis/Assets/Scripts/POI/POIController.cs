@@ -27,7 +27,7 @@ namespace POI
         [DrawGizmo(GizmoType.Selected ^ GizmoType.NonSelected)]
         public void OnDrawGizmos()
         {
-            if (Application.isPlaying && Object.LastReceiveTick)
+            if (Application.isPlaying && Object)
             {
                 var centeredStyle = GUI.skin.GetStyle("Label");
                 centeredStyle.alignment = TextAnchor.MiddleCenter;

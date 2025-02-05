@@ -110,7 +110,7 @@ namespace Players
             throw new NullReferenceException("Tried to get human player from a bot Player");
         }
 
-        public void SplitHorde(HordeController toSplit)
+        public void SplitHorde(HordeController toSplit, float splitPercentage)
         {
             if (!HasStateAuthority) throw new Exception("Only State Authority can split a horde");
 
@@ -126,14 +126,17 @@ namespace Players
                         NO.transform.position = toSplit.GetBounds().center;
                     })
                 .GetComponent<HordeController>();
-            newHorde.TotalHealth = totalHealth / 2.0f;
-            toSplit.TotalHealth = totalHealth / 2.0f;
-            // Ensure new horde rats try to move to correct location
-            newHorde.Move(toSplit.targetLocation.transform.position);
+            newHorde.TotalHealth = totalHealth * splitPercentage;
+            toSplit.TotalHealth = totalHealth * (1.0f - splitPercentage);
+            // Move two hordes slightly apart
+            newHorde.Move(toSplit.targetLocation.transform.position - toSplit.GetBounds().extents);
+            toSplit.Move(toSplit.targetLocation.transform.position + toSplit.GetBounds().extents);
             // Ensure genetics are transferred
             newHorde.SetPopulationState(populationState);
+            if (Type == PlayerType.Human) _humanPlayer?.SelectHorde(newHorde);
 
-            Debug.Log($"Split Horde {Object.Id}, creating new Horde {newHorde.Object.Id}");
+            Debug.Log(
+                $"Split Horde {Object.Id}, creating new Horde {newHorde.Object.Id} with {splitPercentage}x health");
         }
     }
 }
