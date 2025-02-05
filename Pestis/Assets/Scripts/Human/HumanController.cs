@@ -19,7 +19,7 @@ namespace Human
         private Vector2 targetPosition;
 
 
-        [SerializeField] private float patrolRadius = 5.0f;
+        [SerializeField] private float patrolRadius = 2f;
         [SerializeField] private float patrolSpeed = 1.0f;
         [SerializeField] private float rotationSpeed = 360.0f; // Rotation speed (degrees per second)
         [SerializeField] private float targetTolerance = 0.5f; // Distance before choosing a new target
@@ -44,7 +44,8 @@ namespace Human
             if (poiCenter == null) return;
 
             // Check if the human has reached the patrol target
-            if (Vector2.Distance(transform.position, targetPosition) < targetTolerance || rb.linearVelocity.magnitude < 0.3 )
+            if (Vector2.Distance(transform.position, targetPosition) < targetTolerance ||
+                rb.linearVelocity.magnitude < 0.3)
             {
                 PickNewTarget();
             }
@@ -62,8 +63,14 @@ namespace Human
             Vector2 randomOffset = Random.insideUnitCircle * patrolRadius;
             targetPosition = (Vector2)poiCenter.position + randomOffset;
         }
-        
-        
+
+        public void UpdatePatrolRadius(float newRadius)
+        {
+            patrolRadius = newRadius;
+            PickNewTarget(); // Immediately update to new radius
+        }
+
+
         private void OnCollisionEnter2D(Collision2D collision)
         {
             if (collision.gameObject == poiCenter.gameObject) // If the human collides with the POI, pick a new target
@@ -89,7 +96,8 @@ namespace Human
             }
 
             // Smoothly rotate towards the target
-            Quaternion newRotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            Quaternion newRotation =
+                Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
             transform.rotation = newRotation;
 
             // Apply movement in the new direction

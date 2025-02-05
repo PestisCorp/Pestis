@@ -8,15 +8,17 @@ namespace Human
     {
         [SerializeField] private GameObject humanPrefab;
         [SerializeField] private GameObject poi; // POI reference (van)
-        [SerializeField] private float patrolRadius = 5.0f;
 
         private Transform _poiCenter;
         private List<GameObject> _spawnedHumans = new();
 
         [Networked]
         [OnChangedRender(nameof(OnHumanCountChanged))]
-
         public int HumanCount { get; private set; } = 6; // Networked human count
+
+        [Networked]
+        [OnChangedRender(nameof(OnPatrolRadiusChanged))]
+        public float PatrolRadius { get; private set; } = 5.0f; // Networked patrol radius
 
         public override void Spawned()
         {
@@ -36,8 +38,24 @@ namespace Human
 
         private void OnHumanCountChanged()
         {
-            Debug.Log($"[Network] humanCount changed to {HumanCount}");
             AdjustHumanCount();
+        }
+
+        private void OnPatrolRadiusChanged()
+        {
+            AdjustPatrolRadius();
+        }
+
+        private void AdjustPatrolRadius()
+        {
+            // Update the patrol radius for all humans
+            foreach (var human in _spawnedHumans)
+            {
+                if (human.TryGetComponent<HumanController>(out HumanController humanScript))
+                {
+                    humanScript.UpdatePatrolRadius(PatrolRadius);
+                }
+            }
         }
 
         private void AdjustHumanCount()
@@ -49,7 +67,7 @@ namespace Human
                 // Spawn more humans
                 for (int i = 0; i < difference; i++)
                 {
-                    Vector3 spawnPosition = _poiCenter.position + (Vector3)Random.insideUnitCircle * patrolRadius;
+                    Vector3 spawnPosition = _poiCenter.position + (Vector3)Random.insideUnitCircle * PatrolRadius;
                     spawnPosition.z = 0;
                     GameObject human = Instantiate(humanPrefab, spawnPosition, Quaternion.identity);
                     _spawnedHumans.Add(human);
@@ -58,6 +76,7 @@ namespace Human
                     if (human.TryGetComponent<HumanController>(out HumanController humanScript))
                     {
                         humanScript.SetPOI(_poiCenter);
+                        humanScript.UpdatePatrolRadius(PatrolRadius);
                     }
                 }
             }
@@ -76,7 +95,7 @@ namespace Human
             }
         }
 
-        //can be used when dynamic change of human count is needed, for example, buttons on the UI
+        // Can be used when dynamically changing human count is needed (e.g., UI buttons)
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void UpdateHumanCountRpc(int newCount)
         {
