@@ -454,5 +454,20 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         {
             CurrentCombatController = combat;
         }
+
+        public PopulationState GetPopulationState()
+        {
+            return _populationController.GetState();
+        }
+
+        public void SetPopulationState(PopulationState newState)
+        {
+            _populationController.SetState(newState);
+        }
+
+        public void Select()
+        {
+            FindAnyObjectByType<InputHandler>().LocalPlayer?.SelectHorde(this);
+        }
     }
 }

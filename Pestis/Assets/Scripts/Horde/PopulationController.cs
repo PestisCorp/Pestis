@@ -25,14 +25,15 @@ namespace Horde
 
     public class PopulationController : NetworkBehaviour
     {
-        private const int InitialPopulation = 5;
+        public const int INITIAL_POPULATION = 5;
+
         // Soft population limit, should be extremely difficult for the player to grow beyond this, but still possible
         private const int PopMax = 1000;
         
 
         private List<double[]> _transitionMatrix;
 
-        private int _populationPeak = InitialPopulation;
+        private int _populationPeak = INITIAL_POPULATION;
         // Weights are reversed because weight decreases with distance from n
         // e.g. the probability of going from population n to n + 5 should be
         // smaller than going from n to n + 1, so the weight applied is smaller
@@ -168,7 +169,9 @@ namespace Horde
             State.DeathRate = 0.005;
             State.HealthPerRat = 5.0f;
             State.Damage = 0.5f;
-            hordeController.TotalHealth = InitialPopulation * State.HealthPerRat;
+
+            hordeController.TotalHealth = INITIAL_POPULATION * State.HealthPerRat;
+
             _transitionMatrix = GenerateTransitionMatrix();
         }
 
@@ -223,6 +226,11 @@ namespace Horde
         public PopulationState GetState()
         {
             return State;
+        }
+
+        public void SetState(PopulationState newState)
+        {
+            State = newState;
         }
     }
 }
