@@ -1,5 +1,4 @@
 using UnityEngine;
-using Fusion;
 
 namespace Human
 {
@@ -45,7 +44,7 @@ namespace Human
             if (poiCenter == null) return;
 
             // Check if the human has reached the patrol target
-            if (Vector2.Distance(transform.position, targetPosition) < targetTolerance)
+            if (Vector2.Distance(transform.position, targetPosition) < targetTolerance || rb.linearVelocity.magnitude < 0.3 )
             {
                 PickNewTarget();
             }
@@ -63,19 +62,39 @@ namespace Human
             Vector2 randomOffset = Random.insideUnitCircle * patrolRadius;
             targetPosition = (Vector2)poiCenter.position + randomOffset;
         }
+        
+        
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.gameObject == poiCenter.gameObject) // If the human collides with the POI, pick a new target
+            {
+                Debug.Log("Human collided with POI, changing direction!");
+                PickNewTarget();
+            }
+        }
 
         private void MoveTowardsTarget()
         {
             // Get direction vector
             Vector2 direction = (targetPosition - (Vector2)transform.position).normalized;
 
-            // Rotate smoothly towards movement direction
-            float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
-            float angle = Mathf.LerpAngle(transform.eulerAngles.z, targetAngle, rotationSpeed * Time.fixedDeltaTime);
-            transform.rotation = Quaternion.Euler(0, 0, angle);
+            // Get desired rotation from desired direction
+            Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, direction);
 
-            // Apply movement
-            rb.linearVelocity = direction * patrolSpeed;
+            // If the human is facing exactly away from the target, Unity might fumble the calculation
+            if (Quaternion.Inverse(targetRotation) == transform.rotation)
+            {
+                var degrees = targetRotation.eulerAngles.z;
+                targetRotation = Quaternion.Euler(0, 0, degrees + 90); // Offset rotation to fix issue
+            }
+
+            // Smoothly rotate towards the target
+            Quaternion newRotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            transform.rotation = newRotation;
+
+            // Apply movement in the new direction
+            Vector2 headingIn = newRotation * Vector2.up;
+            rb.linearVelocity = headingIn.normalized * patrolSpeed;
         }
 
         private void UpdateSpriteDirection()
