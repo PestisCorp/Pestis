@@ -409,13 +409,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemap: {fileID: 20129744}
-  width: 256
-  height: 256
+  width: 512
+  height: 512
   water: {fileID: 11400000, guid: ff5dd6f895688a245aef45af817a9bc8, type: 2}
   landBiomes:
   - {fileID: 11400000, guid: d5663722ef831e9459ebdfa710eba22c, type: 2}
-  voronoiFrequency: 7
-  randomWalkSteps: 100000
+  voronoiFrequency: 10
+  randomWalkSteps: 600000
   smoothing: 7
 --- !u!4 &569886380
 Transform:
