@@ -94,7 +94,7 @@ PlayerSettings:
   bakeCollisionMeshes: 1
   forceSingleInstance: 0
   useFlipModelSwapchain: 1
-  resizableWindow: 0
+  resizableWindow: 1
   useMacAppStoreValidation: 0
   macAppStoreCategory: public.app-category.games
   gpuSkinning: 0
@@ -142,7 +142,7 @@ PlayerSettings:
   tvOSBundleVersion: 1.0
   bundleVersion: 1.0
   preloadedAssets:
-  - {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  - {fileID: 0}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -589,7 +589,8 @@ PlayerSettings:
   scriptingBackend:
     Android: 1
   il2cppCompilerConfiguration: {}
-  il2cppCodeGeneration: {}
+  il2cppCodeGeneration:
+    WebGL: 1
   il2cppStacktraceInformation: {}
   managedStrippingLevel:
     Android: 1
