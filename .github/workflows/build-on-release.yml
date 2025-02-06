@@ -63,4 +63,4 @@ jobs:
           run: cp -rfT build/WebGL/WebGL /home/mediaserver/configs/pestis-runner/builds/${{ github.event.release.tag_name }}
 
         - name: Symlink to latest
-          run: ln -s /home/mediaserver/configs/pestis-runner/builds/${{ github.event.release.tag_name }} /home/mediaserver/configs/pestis-runner/builds/stable
+          run: ln -sfn /home/mediaserver/configs/pestis-runner/builds/${{ github.event.release.tag_name }} /home/mediaserver/configs/pestis-runner/builds/stable
