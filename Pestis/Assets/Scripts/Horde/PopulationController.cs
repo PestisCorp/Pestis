@@ -213,8 +213,8 @@ namespace Horde
         // Only executed on State Authority
         public override void FixedUpdateNetwork()
         {
-            // Suspend population simulation during combat to avoid interference
-            if (!hordeController.InCombat) PopulationEvent();
+            // Suspend population simulation during combat or retreat to avoid interference
+            if (!hordeController.InCombat && hordeController.PopulationCooldown == 0) PopulationEvent();
             _highestHealth = Mathf.Max(hordeController.TotalHealth, _highestHealth);
         }
 

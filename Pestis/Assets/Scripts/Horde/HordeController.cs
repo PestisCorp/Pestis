@@ -37,6 +37,11 @@ namespace Horde
         /// </summary>
         public Vector2[] intraHordeTargets = new Vector2[4];
 
+        /// <summary>
+        ///     Seconds until we can start simulating population again after combat.
+        /// </summary>
+        public float PopulationCooldown;
+
         private readonly List<RatController> _spawnedRats = new();
         private Camera _camera;
 
@@ -57,6 +62,8 @@ namespace Horde
         private Light2D _selectionLightPoi;
 
         private Light2D _selectionLightTerrain;
+
+        [CanBeNull] private Action OnArriveAtTarget;
 
         /// <summary>
         ///     The horde we're currently damaging. Our rats will animate against them.
@@ -105,6 +112,16 @@ namespace Horde
         {
             // If not spawned yet
             if (!Object.IsValid) return;
+
+            if (PopulationCooldown > 0)
+                PopulationCooldown -= Time.deltaTime;
+            else if (PopulationCooldown < 0) PopulationCooldown = 0;
+
+            if (OnArriveAtTarget != null && HordeBounds.Contains(targetLocation.transform.position))
+            {
+                OnArriveAtTarget();
+                OnArriveAtTarget = null;
+            }
 
             // Spawn at center of horde if there is one, or base if there isn't one yet.
             if (_spawnedRats.Count == 0)
@@ -399,6 +416,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             HordeBeingDamaged = null;
             StationedAt = null;
             CurrentCombatController = null;
+            PopulationCooldown = 15.0f;
         }
 
         public void AttackPoi(POIController poi)
@@ -454,6 +472,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             Debug.Log($"We ({Object.Id}) won combat!");
             CurrentCombatController = null;
             HordeBeingDamaged = null;
+            PopulationCooldown = 20.0f;
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
