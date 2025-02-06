@@ -421,6 +421,9 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
 
         public void AttackHorde(HordeController target)
         {
+            // We're already fighting that horde!
+            if (CurrentCombatController && CurrentCombatController.HordeInCombat(target)) return;
+
             if (CurrentCombatController)
                 // Leave current combat
                 CurrentCombatController.EventRetreatRpc(this);
