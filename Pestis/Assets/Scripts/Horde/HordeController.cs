@@ -317,6 +317,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
                     .Select((rat, i) => new KeyValuePair<int, RatController>(i, rat)).OrderBy(kvp =>
                         -((Vector2)kvp.Value.transform.position - kvp.Value.targetPoint).sqrMagnitude).ToList();
 
+                List<int> indexesToRemove = new();
                 // Kill a Rat
                 for (var i = 0; i > difference; i--)
                 {
@@ -325,7 +326,14 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
                         sortedByDistanceFromEnemy[sortedByDistanceFromEnemy.Count - 1 + i].Value.Kill();
                     else
                         sortedByDistanceFromEnemy[sortedByDistanceFromEnemy.Count - 1 + i].Value.KillInstant();
-                    _spawnedRats.RemoveAt(sortedByDistanceFromEnemy[sortedByDistanceFromEnemy.Count - 1 + i].Key);
+                    indexesToRemove.Add(sortedByDistanceFromEnemy[sortedByDistanceFromEnemy.Count - 1 + i].Key);
+                }
+
+                indexesToRemove.Sort();
+                indexesToRemove.Reverse();
+                foreach (int index in indexesToRemove)
+                {
+                    _spawnedRats.RemoveAt(index);
                 }
             }
         }
