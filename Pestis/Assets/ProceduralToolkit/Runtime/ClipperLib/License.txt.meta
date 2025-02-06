@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 09aab208e06a6d842a1b5eb706c0f6bc
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Runtime/ClipperLib/License.txt
+  uploadId: 371553

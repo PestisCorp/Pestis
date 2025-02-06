@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 36c4504a6b8181d409abfb9c51cf869d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Runtime/Geometry/Intersections/IntersectionRaySegment2.cs
+  uploadId: 371553

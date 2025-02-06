@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 7e6803b5127cb5a45a5400e9fcdfa294
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Runtime/ClipperLib/ProceduralToolkit.ClipperLib.asmdef
+  uploadId: 371553

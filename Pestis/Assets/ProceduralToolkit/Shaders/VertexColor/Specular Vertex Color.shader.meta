@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 33193f8d8bf73874eb14f10521bd852d
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Shaders/VertexColor/Specular Vertex Color.shader
+  uploadId: 371553

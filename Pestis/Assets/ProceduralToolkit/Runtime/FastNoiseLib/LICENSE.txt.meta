@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a92249263441e4f4a9de40f985168808
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Runtime/FastNoiseLib/LICENSE.txt
+  uploadId: 371553

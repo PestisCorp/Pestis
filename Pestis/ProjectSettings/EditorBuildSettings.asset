@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/NetworkedMap.unity
     guid: 3e8d9765f05eecfa9a87f11b88c95909
   - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 92bf175f878c34c9ca23e4695c4c0cd4, type: 3}

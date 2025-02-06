@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 1aea65d08bd033b47b319a62ed056c89
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Samples/SDF/Animation.shader
+  uploadId: 371553

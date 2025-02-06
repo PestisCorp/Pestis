@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 3e5ad99bd67007c4f932f9f01060e15d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Runtime/Buildings/Interfaces/ILayoutElement.cs
+  uploadId: 371553

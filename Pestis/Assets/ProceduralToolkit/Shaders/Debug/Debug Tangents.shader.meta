@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 983d15af482c62944b1c3393d1dfa0e5
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Shaders/Debug/Debug Tangents.shader
+  uploadId: 371553
