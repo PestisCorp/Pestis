@@ -3,7 +3,7 @@ using UnityEngine.Tilemaps;
 
 public class LandBiomesList : MonoBehaviour
 {
-    [HideInInspector] public TileBase[] landTiles = new TileBase[] { };
+    [HideInInspector] public TileBase[] landTiles;
 
     public TileBase[] GetList()
     {
