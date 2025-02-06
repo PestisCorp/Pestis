@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 1733681384128497525}
   - component: {fileID: 6561989814985848091}
   - component: {fileID: -5284016957979711463}
-  - component: {fileID: 5988577402246657143}
   m_Layer: 0
   m_Name: RatBaseCamp
   m_TagString: Untagged
@@ -112,7 +111,6 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 6561989814985848091}
   - {fileID: -5284016957979711463}
-  - {fileID: 5988577402246657143}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &6561989814985848091
 MonoBehaviour:
@@ -144,23 +142,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 0
+  hordePrefab: {fileID: 2093969167296477126, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
+  _Username: 
   _CurrentCheese: 0
   _CheeseIncrementRate: 0.03
---- !u!114 &5988577402246657143
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6124682003357980499}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fc0f394f1d4433faea6b58a882e00ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Participators:
-    _items: []
-  _FightingOver: {fileID: 0}
 --- !u!1001 &2540703415486097592
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -235,14 +220,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8072967729009948161, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
       propertyPath: NetworkedBehaviours.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8072967729009948161, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
       propertyPath: 'NetworkedBehaviours.Array.data[1]'
       value: 
       objectReference: {fileID: 2168112969231597880}
     - target: {fileID: 8072967729009948161, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
-      propertyPath: 'NetworkedBehaviours.Array.data[2]'
+      propertyPath: 'NetworkedBehaviours.Array.data[3]'
       value: 
       objectReference: {fileID: 8378574639641677574}
     m_RemovedComponents: []

@@ -1,0 +1,133 @@
+using UnityEngine;
+
+namespace Human
+{
+    public class HumanController : MonoBehaviour
+    {
+        public Sprite DirectionUp;
+        public Sprite DirectionUpLeft;
+        public Sprite DirectionUpRight;
+        public Sprite DirectionLeft;
+        public Sprite DirectionRight;
+        public Sprite DirectionDownLeft;
+        public Sprite DirectionDown;
+        public Sprite DirectionDownRight;
+
+        private Rigidbody2D rb;
+        private SpriteRenderer spriteRenderer;
+        private Transform poiCenter; // Center of patrol area (Van)
+        private Vector2 targetPosition;
+
+
+        [SerializeField] private float patrolRadius = 2f;
+        [SerializeField] private float patrolSpeed = 1.0f;
+        [SerializeField] private float rotationSpeed = 360.0f; // Rotation speed (degrees per second)
+        [SerializeField] private float targetTolerance = 0.5f; // Distance before choosing a new target
+
+        private void Start()
+        {
+            rb = GetComponent<Rigidbody2D>();
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+
+            rb.mass = Random.Range(0.8f, 1.2f);
+            PickNewTarget();
+        }
+
+        public void SetPOI(Transform poi)
+        {
+            poiCenter = poi;
+            PickNewTarget();
+        }
+
+        private void FixedUpdate()
+        {
+            if (poiCenter == null) return;
+
+            // Check if the human has reached the patrol target
+            if (Vector2.Distance(transform.position, targetPosition) < targetTolerance ||
+                rb.linearVelocity.magnitude < 0.3)
+            {
+                PickNewTarget();
+            }
+
+            // Move towards the target
+            MoveTowardsTarget();
+
+            // Update sprite direction
+            UpdateSpriteDirection();
+        }
+
+        private void PickNewTarget()
+        {
+            // Select a new patrol point around the POI
+            Vector2 randomOffset = Random.insideUnitCircle * patrolRadius;
+            targetPosition = (Vector2)poiCenter.position + randomOffset;
+        }
+
+        public void UpdatePatrolRadius(float newRadius)
+        {
+            patrolRadius = newRadius;
+            PickNewTarget(); // Immediately update to new radius
+        }
+
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.gameObject == poiCenter.gameObject) // If the human collides with the POI, pick a new target
+            {
+                Debug.Log("Human collided with POI, changing direction!");
+                PickNewTarget();
+            }
+        }
+
+        private void MoveTowardsTarget()
+        {
+            // Get direction vector
+            Vector2 direction = (targetPosition - (Vector2)transform.position).normalized;
+
+            // Get desired rotation from desired direction
+            Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, direction);
+
+            // If the human is facing exactly away from the target, Unity might fumble the calculation
+            if (Quaternion.Inverse(targetRotation) == transform.rotation)
+            {
+                var degrees = targetRotation.eulerAngles.z;
+                targetRotation = Quaternion.Euler(0, 0, degrees + 90); // Offset rotation to fix issue
+            }
+
+            // Smoothly rotate towards the target
+            Quaternion newRotation =
+                Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            transform.rotation = newRotation;
+
+            // Apply movement in the new direction
+            Vector2 headingIn = newRotation * Vector2.up;
+            rb.linearVelocity = headingIn.normalized * patrolSpeed;
+        }
+
+        private void UpdateSpriteDirection()
+        {
+            float angle = Vector2.SignedAngle(transform.up, Vector2.up);
+            if (angle < 0) angle += 360f; // Normalize angle to 0-360 degrees
+
+            if (angle < 22.5f)
+                spriteRenderer.sprite = DirectionUp;
+            else if (angle < 67.5)
+                spriteRenderer.sprite = DirectionUpRight;
+            else if (angle < 112.5)
+                spriteRenderer.sprite = DirectionRight;
+            else if (angle < 157.5)
+                spriteRenderer.sprite = DirectionDownRight;
+            else if (angle < 202.5)
+                spriteRenderer.sprite = DirectionDown;
+            else if (angle < 247.5)
+                spriteRenderer.sprite = DirectionDownLeft;
+            else if (angle < 292.5)
+                spriteRenderer.sprite = DirectionLeft;
+            else
+                spriteRenderer.sprite = DirectionUpLeft;
+
+            spriteRenderer.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        }
+    }
+}
