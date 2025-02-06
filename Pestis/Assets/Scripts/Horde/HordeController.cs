@@ -295,7 +295,11 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
                 // Kill a Rat
                 for (var i = 0; i > difference; i--)
                 {
-                    Destroy(_spawnedRats[_spawnedRats.Count - 1 + i].transform.gameObject);
+                    // Only leave corpse if in combat
+                    if (InCombat)
+                        _spawnedRats[_spawnedRats.Count - 1 + i].Kill();
+                    else
+                        _spawnedRats[_spawnedRats.Count - 1 + i].KillInstant();
                     _spawnedRats.RemoveAt(_spawnedRats.Count - 1 + i);
                 }
         }

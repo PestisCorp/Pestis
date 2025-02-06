@@ -82,6 +82,7 @@ MonoBehaviour:
   DirectionDownLeft: {fileID: -2694355759020723325, guid: d93c7989abb0c5d8eb82f3f79e746a42, type: 3}
   DirectionDown: {fileID: 2744072961811698543, guid: a4f1b5ab03587f9ac83cf8c82d2345af, type: 3}
   DirectionDownRight: {fileID: -16738531109823586, guid: bc3eb020be9376f61a09d99e47b121ff, type: 3}
+  Corpse: {fileID: -1664028933851132051, guid: 4cc09e621480d91dd84eafedef89df06, type: 3}
 --- !u!60 &1092586688933452333
 PolygonCollider2D:
   m_ObjectHideFlags: 0
