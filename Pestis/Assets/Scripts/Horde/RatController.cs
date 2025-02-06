@@ -22,6 +22,8 @@ namespace Horde
         /// </summary>
         public float deathCountdown = -1;
 
+        public Vector2 targetPoint;
+
         private byte _currentIntraHordeTarget;
 
         /// <summary>
@@ -84,7 +86,6 @@ namespace Horde
                 return;
             }
 
-            Vector2 targetPoint;
 
             if (_hordeController.HordeBeingDamaged)
             {

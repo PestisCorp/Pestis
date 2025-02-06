@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Fusion;
 using JetBrains.Annotations;
 using Players;
@@ -307,18 +308,26 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
 
             var difference = AliveRats - _spawnedRats.Count;
             if (difference > 0)
+            {
                 _ratsToSpawn = difference;
+            }
             else if (difference < 0)
+            {
+                var sortedByDistanceFromEnemy = _spawnedRats
+                    .Select((rat, i) => new KeyValuePair<int, RatController>(i, rat)).OrderBy(kvp =>
+                        -((Vector2)kvp.Value.transform.position - kvp.Value.targetPoint).sqrMagnitude).ToList();
+
                 // Kill a Rat
                 for (var i = 0; i > difference; i--)
                 {
                     // Only leave corpse if in combat
                     if (InCombat)
-                        _spawnedRats[_spawnedRats.Count - 1 + i].Kill();
+                        sortedByDistanceFromEnemy[sortedByDistanceFromEnemy.Count - 1 + i].Value.Kill();
                     else
-                        _spawnedRats[_spawnedRats.Count - 1 + i].KillInstant();
-                    _spawnedRats.RemoveAt(_spawnedRats.Count - 1 + i);
+                        sortedByDistanceFromEnemy[sortedByDistanceFromEnemy.Count - 1 + i].Value.KillInstant();
+                    _spawnedRats.RemoveAt(sortedByDistanceFromEnemy[sortedByDistanceFromEnemy.Count - 1 + i].Key);
                 }
+            }
         }
 
         public override void Spawned()
