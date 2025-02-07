@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 316745215717936070}
   - component: {fileID: -5832458111095189548}
   - component: {fileID: -2901218194222220756}
+  - component: {fileID: 4136702521592255032}
   m_Layer: 0
   m_Name: Human
   m_TagString: Untagged
@@ -46,14 +47,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c31b1f797462433081d407bdbb19b621, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DirectionUp: {fileID: -1419505909908453992, guid: c90f6b6824ad5a16c9cbb22e8628e55f, type: 3}
-  DirectionUpLeft: {fileID: 7349939629791252368, guid: f4ebd54cc4b156b80ad911438441d553, type: 3}
-  DirectionUpRight: {fileID: 3219200771165772678, guid: a6b7bdc16ccb7cfb38cc5870f2767aad, type: 3}
-  DirectionLeft: {fileID: -6291976758827329823, guid: 83cefb5f2ecc2a6c88300bb56b413ca2, type: 3}
-  DirectionRight: {fileID: 3036650517285136012, guid: af3e71026cef200fd8f057b2178c1291, type: 3}
-  DirectionDownLeft: {fileID: -6173445390909923849, guid: 42d77c3a652d71b0abce6c5b62f7b617, type: 3}
-  DirectionDown: {fileID: 2538333210578293319, guid: 97cf51599cb862c9e90ad63d84cab099, type: 3}
-  DirectionDownRight: {fileID: -5779950980032319109, guid: 2720dd9ed78fdec56a868ced65ea074f, type: 3}
+  DirectionUp: {fileID: 8885742753366190714, guid: 7c3b7bf56af3441c4a63aca71794ed70, type: 3}
+  DirectionUpLeft: {fileID: 3761070606887460069, guid: b2708fa1641aa470cada575d8d08d18f, type: 3}
+  DirectionUpRight: {fileID: 4363260538075741992, guid: 81fe6bbc41baa457db6c8b453af2097b, type: 3}
+  DirectionLeft: {fileID: -6601382080011168780, guid: 0ea3821dea8394f28992ae83d0d1a82d, type: 3}
+  DirectionRight: {fileID: 42184211435398924, guid: ff078e6a57c7e4d05b1293a638435e43, type: 3}
+  DirectionDownLeft: {fileID: 5905342107496090946, guid: 16ac2ce10c131408c92542d7bf48a678, type: 3}
+  DirectionDown: {fileID: 4528050091651495707, guid: d953275c9718c4246bb17510069433ab, type: 3}
+  DirectionDownRight: {fileID: 2582433425464949377, guid: 6de9038b6e2fe4e85b934101fe7ce60e, type: 3}
   patrolRadius: 2
   patrolSpeed: 0.4
   rotationSpeed: 360
@@ -85,6 +86,42 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!58 &4136702521592255032
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6463158892316126659}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0.2}
+  m_Radius: 0.2
 --- !u!1 &6930358889210797458
 GameObject:
   m_ObjectHideFlags: 0
@@ -112,8 +149,8 @@ Transform:
   m_GameObject: {fileID: 6930358889210797458}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0263, y: -0.0464, z: 0}
-  m_LocalScale: {x: 1.2386615, y: 1.0539612, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 316745215717936070}
@@ -162,7 +199,7 @@ SpriteRenderer:
   m_SortingLayerID: -478687857
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 2538333210578293319, guid: 97cf51599cb862c9e90ad63d84cab099, type: 3}
+  m_Sprite: {fileID: 8885742753366190714, guid: 7c3b7bf56af3441c4a63aca71794ed70, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
