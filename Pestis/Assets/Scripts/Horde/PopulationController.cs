@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Fusion;
-using Players;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = System.Random;
 
@@ -37,7 +35,7 @@ namespace Horde
         // e.g. the probability of going from population n to n + 5 should be
         // smaller than going from n to n + 1, so the weight applied is smaller
         // for the former transition
-        private int[] _weights = Enumerable.Range(1, MaxPopGrowth).Reverse().ToArray();
+        private readonly int[] _weights = Enumerable.Range(1, MaxPopGrowth).Reverse().ToArray();
         // The maximum change in a population per network tick
         private const int MaxPopGrowth = 1;
         public HordeController hordeController;
