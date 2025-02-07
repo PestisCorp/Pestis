@@ -331,10 +331,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
 
                 indexesToRemove.Sort();
                 indexesToRemove.Reverse();
-                foreach (int index in indexesToRemove)
-                {
-                    _spawnedRats.RemoveAt(index);
-                }
+                foreach (var index in indexesToRemove) _spawnedRats.RemoveAt(index);
             }
         }
 
@@ -345,7 +342,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
 
             _selectionLightTerrain = transform.Find("SelectionLightTerrain").gameObject.GetComponent<Light2D>();
             _selectionLightPoi = transform.Find("SelectionLightPOI").gameObject.GetComponent<Light2D>();
-            if (!HasStateAuthority)
+            if (!Player.IsLocal)
             {
                 _selectionLightPoi.color = Color.red;
                 _selectionLightTerrain.color = Color.red;
