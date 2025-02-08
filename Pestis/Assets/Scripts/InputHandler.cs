@@ -3,11 +3,15 @@ using JetBrains.Annotations;
 using Players;
 using POI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
 {
+    public static InputHandler Instance;
+
     [CanBeNull] public HumanPlayer LocalPlayer;
+    public UI_Manager UIManager;
     private InputAction _cameraZoom;
 
     private Camera _mainCamera;
@@ -16,6 +20,7 @@ public class InputHandler : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         _mainCamera = Camera.main;
         _moveCamAction = InputSystem.actions.FindAction("Navigate");
         _cameraZoom = InputSystem.actions.FindAction("ScrollWheel");
@@ -30,7 +35,8 @@ public class InputHandler : MonoBehaviour
         _mainCamera.transform.Translate(moveCam * (0.01f * _mainCamera.orthographicSize));
 
         var scroll = _cameraZoom.ReadValue<Vector2>();
-        if (scroll.y != 0)
+        // Map should not zoom if we are hovering over a UI element since we are using scroll boxes
+        if (scroll.y != 0 && !EventSystem.current.IsPointerOverGameObject())
         {
             Vector2 oldTarget = _mainCamera.ScreenToWorldPoint(mouse.position.ReadValue());
             _mainCamera.orthographicSize = Mathf.Clamp(_mainCamera.orthographicSize - scroll.y, 1, 50);
@@ -53,11 +59,31 @@ public class InputHandler : MonoBehaviour
         if (mouse.leftButton.wasPressedThisFrame)
         {
             Vector3 mousePosition = mouse.position.ReadValue();
-            var horde = DidWeClickHorde(mousePosition);
-            if (horde)
-                LocalPlayer?.SelectHorde(horde);
-            else
-                LocalPlayer?.DeselectHorde();
+
+            // Only select and deselect horde if we are not clicking on a UI element
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                var horde = DidWeClickHorde(mousePosition);
+                if (horde)
+                {
+                    LocalPlayer?.SelectHorde(horde);
+                }
+                else if (UIManager.moveFunctionality)
+                {
+                    UIManager.moveFunctionality = false;
+                    UIManager.ResetUI();
+
+                    if (!MoveToPoiIfClicked(mouse.position.ReadValue()))
+                    {
+                        Vector2 position = _mainCamera.ScreenToWorldPoint(mouse.position.value);
+                        LocalPlayer?.MoveHorde(position);
+                    }
+                }
+                else
+                {
+                    LocalPlayer?.DeselectHorde();
+                }
+            }
         }
 
         // If right-clicked, and local player is allowed to control the selected horde
@@ -67,19 +93,10 @@ public class InputHandler : MonoBehaviour
 
             var clickedHorde = DidWeClickHorde(mousePos);
 
-            if (DidWeClickPOI(mousePos, out var poiController))
+            if (MoveToPoiIfClicked(mousePos)) return;
+            if (clickedHorde && clickedHorde.Player != LocalPlayer?.selectedHorde.Player)
             {
-                if (poiController.ControlledBy == LocalPlayer.player) return;
-
-                if (LocalPlayer.player.InCombat) return;
-
-                LocalPlayer.selectedHorde.AttackPoi(poiController);
-            }
-            else if (clickedHorde)
-            {
-                LocalPlayer?.selectedHorde.UnStationAtRpc();
-                if (!LocalPlayer!.player.InCombat) LocalPlayer?.player.JoinHordeToCombat(LocalPlayer?.selectedHorde);
-                LocalPlayer?.player.JoinHordeToCombat(clickedHorde);
+                LocalPlayer?.selectedHorde.AttackHorde(clickedHorde);
             }
             else
             {
@@ -136,6 +153,21 @@ public class InputHandler : MonoBehaviour
         }
 
         poiController = null;
+        return false;
+    }
+
+    public bool MoveToPoiIfClicked(Vector2 mousePos)
+    {
+        if (DidWeClickPOI(mousePos, out var poiController))
+        {
+            // Already stationed at POI
+            if (poiController.StationedHordes.Contains(LocalPlayer?.selectedHorde)) return false;
+
+            LocalPlayer?.selectedHorde?.AttackPoi(poiController);
+
+            return true;
+        }
+
         return false;
     }
 }

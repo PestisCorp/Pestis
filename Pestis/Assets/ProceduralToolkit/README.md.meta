@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 76b441c7d05f6d747a37fe762d58f7bd
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/README.md
+  uploadId: 371553

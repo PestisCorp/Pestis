@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a2a25eccfa4a8f847b30fbeb06499514
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Runtime/LibTessDotNet/README.md
+  uploadId: 371553

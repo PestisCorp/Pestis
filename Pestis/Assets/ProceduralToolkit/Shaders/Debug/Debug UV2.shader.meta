@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 4c8710ecf6e757a4b92212d84d255009
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Shaders/Debug/Debug UV2.shader
+  uploadId: 371553

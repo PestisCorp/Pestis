@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a38f1a7ea7d890447af8f49190cc420c
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/CHANGELOG.md
+  uploadId: 371553

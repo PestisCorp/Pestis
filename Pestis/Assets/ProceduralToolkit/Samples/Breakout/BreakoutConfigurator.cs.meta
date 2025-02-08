@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 1f49f0848e8ed4740bafa54c631440ef
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Samples/Breakout/BreakoutConfigurator.cs
+  uploadId: 371553

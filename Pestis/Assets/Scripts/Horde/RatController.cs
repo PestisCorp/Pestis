@@ -15,6 +15,14 @@ namespace Horde
         public Sprite DirectionDownLeft;
         public Sprite DirectionDown;
         public Sprite DirectionDownRight;
+        public Sprite Corpse;
+
+        /// <summary>
+        ///     If > 0, decrement each physics tick until reaches 0 then destroy self.
+        /// </summary>
+        public float deathCountdown = -1;
+
+        public Vector2 targetPoint;
 
         private byte _currentIntraHordeTarget;
 
@@ -39,6 +47,8 @@ namespace Horde
 
         private void Update()
         {
+            if (deathCountdown != -1) return;
+
             var angle = Vector2.SignedAngle(transform.up, Vector2.up);
 
             // Normalise to clockwise
@@ -65,7 +75,17 @@ namespace Horde
 
         private void FixedUpdate()
         {
-            Vector2 targetPoint;
+            if (deathCountdown != -1)
+            {
+                _spriteRenderer.transform.localRotation = Quaternion.Euler(Vector3.zero);
+                transform.rotation = Quaternion.Euler(Vector3.zero);
+                _rigidbody.freezeRotation = true;
+                _rigidbody.linearDamping = 15;
+                deathCountdown -= Time.deltaTime;
+                if (deathCountdown <= 0) Destroy(gameObject);
+                return;
+            }
+
 
             if (_hordeController.HordeBeingDamaged)
             {
@@ -137,7 +157,7 @@ namespace Horde
 
         /// <param name="force">The force to apply to the rat</param>
         /// <returns>New velocity</returns>
-        public Vector2 _addForce(Vector2 force)
+        private Vector2 _addForce(Vector2 force)
         {
             _rigidbody.AddForce(force);
             _rigidbody.linearVelocity = Vector2.ClampMagnitude(_rigidbody.linearVelocity, 0.6f);
@@ -147,6 +167,25 @@ namespace Horde
         public Vector2 GetPosition()
         {
             return transform.position;
+        }
+
+        /// <summary>
+        ///     Kill rat and leave corpse
+        /// </summary>
+        public void Kill()
+        {
+            _rigidbody.linearVelocity = Vector2.zero;
+            _spriteRenderer.sprite = Corpse;
+            // Stay dead for 60 seconds, then disappear.
+            deathCountdown = 60.0f;
+        }
+
+        /// <summary>
+        ///     Kill Rat and leave no corpse
+        /// </summary>
+        public void KillInstant()
+        {
+            Destroy(gameObject);
         }
     }
 }

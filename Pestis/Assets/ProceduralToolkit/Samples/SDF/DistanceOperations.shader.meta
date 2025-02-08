@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: e230cf0790157f44ea0e4b6413621fea
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Samples/SDF/DistanceOperations.shader
+  uploadId: 371553

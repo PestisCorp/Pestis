@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 7b125bb51660cb24da5d58eba53a543f
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Shaders/Debug/Debug Bitangents.shader
+  uploadId: 371553

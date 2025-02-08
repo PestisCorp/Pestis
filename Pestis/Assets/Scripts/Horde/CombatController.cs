@@ -83,7 +83,7 @@ namespace Horde
         [DrawGizmo(GizmoType.Selected ^ GizmoType.NonSelected)]
         public void OnDrawGizmos()
         {
-            if (!Object.LastReceiveTick || !InitiatingPlayer) return;
+            if (!Object || !InitiatingPlayer) return;
 
             var text = $@"Initiator: {InitiatingPlayer}
 POI: {FightingOver}
@@ -111,6 +111,8 @@ POI: {FightingOver}
 
         public override void FixedUpdateNetwork()
         {
+            if (Participators.Count == 0) return;
+
             List<HordeController> hordesToRemove = new();
             List<Player> playersToRemove = new();
             foreach (var kvp in Participators)
@@ -140,47 +142,68 @@ POI: {FightingOver}
                 Participators.Set(horde.Player, copy);
             }
 
+            if (Participators.Count == playersToRemove.Count)
+                throw new Exception("Tried to remove all players from combat at once");
+
             foreach (var player in playersToRemove)
             {
+                Debug.Log($"Removing {player.Object.Id} from participators");
                 Participators.Remove(player);
-                player.LeaveCombatRpc();
             }
 
             // If there's only one person left in combat they are the winner! Reset controller.
             if (Participators.Count == 1)
             {
                 var winner = Participators.First().Key;
+                Debug.Log($"Combat is over! Winner is {winner.Object.StateAuthority}");
+                var winnerParticipant = Participators.First().Value;
+
+                // Tell each winning horde that they won.
+                foreach (var hordeID in winnerParticipant.Hordes)
+                {
+                    Runner.TryFindBehaviour(hordeID, out HordeController horde);
+                    horde.EventWonCombatRpc();
+                }
+
+                if (FightingOver)
+                {
+                    FightingOver.EventCombatOverRpc();
+                    Debug.Log($"COMBAT: Current Controller {FightingOver.ControlledBy.Id}, winner is {winner.Id}");
+                }
+
                 // If the fight was over a POI, hand over control.
                 if (FightingOver && winner != FightingOver.ControlledBy)
                 {
                     Debug.Log($"Transferring POI Ownership to {winner.Object.StateAuthority}");
                     FightingOver.ChangeControllerRpc(winner);
-                    foreach (var hordeID in Participators.First().Value.Hordes)
+                    foreach (var hordeID in winnerParticipant.Hordes)
                     {
                         Runner.TryFindBehaviour(hordeID, out HordeController horde);
                         horde.targetLocation.Teleport(FightingOver.transform.position);
                         horde.StationAtRpc(FightingOver);
                     }
                 }
+                else if (FightingOver && winner == FightingOver.ControlledBy)
+                {
+                    Debug.Log("POI successfully defended");
+                }
 
-                // Clear Combat Controller and end combat
-                winner.LeaveCombatRpc();
+                // Clear Combat Controller
                 Participators.Remove(winner);
                 InitiatingPlayer = null;
-
-                Debug.Log($"Combat is over! Winner is {winner.Object.StateAuthority}");
+                FightingOver = null;
             }
         }
 
-        public void AddHorde(HordeController horde, bool voluntary)
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void AddHordeRpc(HordeController horde, bool voluntary)
         {
             if (Participators.Count == 0) InitiatingPlayer = horde.Player;
 
             if (!Participators.TryGet(horde.Player, out var participant))
             {
-                if (!voluntary) horde.Player.EnterCombatRpc(this);
-
                 Participators.Add(horde.Player, new CombatParticipant(horde.Player, horde, voluntary));
+                if (!voluntary) horde.EventAttackedRpc(this);
             }
             else
             {
@@ -221,7 +244,8 @@ POI: {FightingOver}
 
         public bool HordeIsVoluntary(HordeController horde)
         {
-            return Participators.Get(horde.Player).Voluntary.Get(horde);
+            var participant = Participators.Get(horde.Player);
+            return participant.Voluntary.Get(horde);
         }
 
         public bool HordeInCombat(HordeController horde)
@@ -233,13 +257,24 @@ POI: {FightingOver}
             return false;
         }
 
-        public void SetFightingOver(POIController poi)
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void SetFightingOverRpc(POIController poi)
         {
-            if (!HasStateAuthority)
-                throw new Exception(
-                    "Only State Authority of Combat Controller can change what POI the combat is over!");
-
+            Debug.Log("COMBAT: Setting FightingOver");
             FightingOver = poi;
+        }
+
+        /// <summary>
+        ///     Called by a horde when it wants to leave this combat.
+        /// </summary>
+        /// <param name="horde"></param>
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void EventRetreatRpc(HordeController horde)
+        {
+            Debug.Log($"Horde retreating from combat: {horde.Object.Id}");
+            var copy = Participators.Get(horde.Player);
+            copy.RemoveHorde(horde);
+            Participators.Set(horde.Player, copy);
         }
     }
 }
