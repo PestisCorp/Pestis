@@ -3,12 +3,13 @@ using UnityEngine.Tilemaps;
 using UnityEditor;
 using UnityEditorInternal;
 
+// Credit: https://medium.com/nerd-for-tech/how-to-create-a-list-in-a-custom-editor-window-in-unity-e6856e78adfc
 namespace Editor
 {
     public class MapGeneratorWindow : EditorWindow
     {
         private Map.Map _map;
-        private MapGenerator _mapGenerator;
+        private Map.Generator _mapGenerator;
         private SerializedObject _serializedBiomeList;
         private ReorderableList _reorderableBiomeList;
         private const string HelpText = "Cannot find 'Land Biomes List' component on any GameObject in the scene";
@@ -24,10 +25,10 @@ namespace Editor
         private void OnEnable()
         {
             _map = FindFirstObjectByType<Map.Map>();
-            _mapGenerator = new MapGenerator();
-            _mapGenerator.map = _map;
-            _map.landBiomes = FindFirstObjectByType<LandBiomesList>();
-            _map.savedTiles = new int[_map.width * _map.height];
+            _mapGenerator = new Map.Generator();
+            _mapGenerator.Map = _map;
+            _map.landBiomes = FindFirstObjectByType<Map.LandBiomesList>();
+            _map.tileIndices = new int[_map.width * _map.height];
 
             if (_map.landBiomes)
             {
@@ -75,11 +76,11 @@ namespace Editor
             _map.width = EditorGUILayout.IntField("Width", _map.width);
             _map.height = EditorGUILayout.IntField("Height", _map.height);
             _map.water = (TileBase)EditorGUILayout.ObjectField("Water tile", _map.water, typeof(TileBase), true);
-            _mapGenerator.voronoiFrequency =
-                EditorGUILayout.FloatField("Voronoi frequency", _mapGenerator.voronoiFrequency);
-            _mapGenerator.randomWalkSteps =
-                EditorGUILayout.IntField("Random walk steps", _mapGenerator.randomWalkSteps);
-            _mapGenerator.smoothing = EditorGUILayout.IntField("Water-land smoothing", _mapGenerator.smoothing);
+            _mapGenerator.VoronoiFrequency =
+                EditorGUILayout.FloatField("Voronoi frequency", _mapGenerator.VoronoiFrequency);
+            _mapGenerator.RandomWalkSteps =
+                EditorGUILayout.IntField("Random walk steps", _mapGenerator.RandomWalkSteps);
+            _mapGenerator.Smoothing = EditorGUILayout.IntField("Water-land smoothing", _mapGenerator.Smoothing);
 
             EditorGUILayout.EndVertical();
 

@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class LandBiomesList : MonoBehaviour
+namespace Map
 {
-    [HideInInspector] public TileBase[] landTiles;
-
-    public TileBase[] GetList()
+    public class LandBiomesList : MonoBehaviour
     {
-        return landTiles;
+        [HideInInspector] public TileBase[] landTiles;
+
+        public TileBase[] GetList()
+        {
+            return landTiles;
+        }
     }
 }

@@ -1,11 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using Fusion;
-using ProceduralToolkit;
-using ProceduralToolkit.FastNoiseLib;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -18,7 +13,7 @@ namespace Map
         public int height = 1024;
         public TileBase water;
         public LandBiomesList landBiomes;
-        [HideInInspector] public int[] savedTiles;
+        [HideInInspector] public int[] tileIndices;
     
         private static readonly string FilePath = $"{Application.dataPath}/Scripts/Map/SavedMap.dat";
         
@@ -27,12 +22,7 @@ namespace Map
         {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Create(FilePath);
-            SaveData data = new();
-            data.width = width;
-            data.height = height;
-            data.water = water;
-            data.landBiomes = landBiomes;
-            data.tiles = savedTiles;
+            SaveData data = new(width, height, tileIndices);
             bf.Serialize(file, data);
             file.Close();
             Debug.Log("Map saved");
@@ -48,9 +38,21 @@ namespace Map
                 file.Close();
                 width = data.width;
                 height = data.height;
-                water = data.water;
-                landBiomes = data.landBiomes;
-                savedTiles = data.tiles;
+                tileIndices = data.tiles;
+                for (int x = 0; x < width; ++x)
+                {
+                    for (int y = 0; y < height; ++y)
+                    {
+                        if (tileIndices[y * height + x] == -2)
+                        {
+                            tilemap.SetTile(new Vector3Int(x, y), water);
+                        }
+                        else
+                        {
+                            tilemap.SetTile(new Vector3Int(x, y), landBiomes.GetList()[tileIndices[y * height + x]]);
+                        }
+                    }
+                }
                 Debug.Log("Map save loaded");
             }
             else
@@ -78,8 +80,13 @@ namespace Map
     {
         public int width;
         public int height;
-        public TileBase water;
-        public LandBiomesList landBiomes;
         public int[] tiles;
+        
+        public SaveData(int width, int height, int[] tiles)
+        {
+            this.width = width;
+            this.height = height;
+            this.tiles = tiles;
+        }
     }
 }
