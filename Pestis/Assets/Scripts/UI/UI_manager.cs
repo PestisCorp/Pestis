@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using Horde;
 using JetBrains.Annotations;
 using Players;
@@ -19,13 +21,12 @@ public class UI_Manager : MonoBehaviour
     public GameObject toolbar;
     public GameObject resourceStats;
     public GameObject hordeSplitPanel;
-
+    public GameObject passiveMutationNotification;
     // References to the resource text fields
     public TextMeshProUGUI cheeseTotalText;
     public TextMeshProUGUI cheeseRateText;
     public TextMeshProUGUI popTotalText;
     public TextMeshProUGUI hordeTotalText;
-
     // References to the buttons that need some added function
     // Button type wouldn't show in inspector so using GameObject instead
     public GameObject moveButton;
@@ -33,8 +34,22 @@ public class UI_Manager : MonoBehaviour
 
     public bool moveFunctionality;
 
+    public GameObject messagePrefab;
+    public Transform parentTransform;
+    public float displayTime = 5f;
+    public float fadeDuration = 1f;
+    public float verticalSpacing = 30f;
+
+    private List<TextMeshProUGUI> _activeNotifications = new List<TextMeshProUGUI>();
+    
     private bool displayResourceInfo;
 
+    public void AddNotification(string message)
+    {
+        GameObject newMessage = Instantiate(messagePrefab, parentTransform);
+        newMessage.SetActive(true);
+        newMessage.GetComponent<TMP_Text>().text = message;
+    }
 
     // Start is called before the first frame update
     private void Start()
@@ -360,4 +375,7 @@ public class UI_Manager : MonoBehaviour
     {
         hordeSplitPanel.SetActive(!hordeSplitPanel.activeSelf);
     }
+    
+    
+    
 }

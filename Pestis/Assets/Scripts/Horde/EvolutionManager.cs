@@ -1,9 +1,7 @@
 using Fusion;
 using System.Collections.Generic;
 using System.Globalization;
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.UI;
+using UI;
 using Random = System.Random;
 
 namespace Horde
@@ -19,11 +17,14 @@ namespace Horde
         private Dictionary<string, float[]> _passiveEvolutions = new Dictionary<string, float[]>();
         private float _multiplier = 1.1f;
         private readonly Random _random = new Random();
+        
+        
         private void UpdateRatStats(string mutation)
         {
             float mutEffect = _passiveEvolutions[mutation][1];
             string text = ("Your " + mutation.ToLower() + " has improved by " +
                                          (mutEffect * 100).ToString(CultureInfo.CurrentCulture) + "%.");
+            FindFirstObjectByType<UI_Manager>().AddNotification(text);
             switch (mutation)
             {
                 case "Attack":

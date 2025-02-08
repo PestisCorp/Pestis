@@ -41,6 +41,7 @@ namespace Horde
         /// <summary>
         ///     Seconds until we can start simulating population again after combat.
         /// </summary>
+        
         public float PopulationCooldown;
 
         private readonly List<RatController> _spawnedRats = new();

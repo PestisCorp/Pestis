@@ -32,7 +32,7 @@ namespace Horde
 
         // The maximum change in a population per network tick
         private const int MaxPopGrowth = 1;
-        public HordeController hordeController;
+        private HordeController _hordeController;
 
         private readonly Random _random = new();
 
@@ -69,8 +69,8 @@ namespace Horde
         // W > 1 if R < P
         private double ResourceWeightDecline()
         {
-            if (hordeController.Player.CurrentCheese >= hordeController.AliveRats) return 1.0;
-            return Math.Exp(1.0 - hordeController.Player.CurrentCheese / hordeController.AliveRats);
+            if (_hordeController.Player.CurrentCheese >= _hordeController.AliveRats) return 1.0;
+            return Math.Exp(1.0 - _hordeController.Player.CurrentCheese / _hordeController.AliveRats);
         }
 
         // Calculate probability of population growth
@@ -170,7 +170,7 @@ namespace Horde
             State.HealthPerRat = 5.0f;
             State.Damage = 0.5f;
 
-            hordeController.TotalHealth = INITIAL_POPULATION * State.HealthPerRat;
+            _hordeController.TotalHealth = INITIAL_POPULATION * State.HealthPerRat;
 
             _transitionMatrix = GenerateTransitionMatrix();
         }
@@ -178,14 +178,14 @@ namespace Horde
         // Check for birth or death events
         private void PopulationEvent()
         {
-            if (hordeController.AliveRats > _populationPeak)
+            if (_hordeController.AliveRats > _populationPeak)
             {
                 _populationPeak = _hordeController.AliveRats;
                 UpdateTransitionMatrix();
             }
 
             // Lookup the relevant probabilities for the current population
-            var probabilities = _transitionMatrix[hordeController.AliveRats - 1];
+            var probabilities = _transitionMatrix[_hordeController.AliveRats - 1];
             var growthWeight = ResourceWeightGrowth();
             var declineWeight = ResourceWeightDecline();
             for (var i = 0; i < MaxPopGrowth * 2 + 1; i++)
@@ -217,8 +217,8 @@ namespace Horde
         public override void FixedUpdateNetwork()
         {
             // Suspend population simulation during combat or retreat to avoid interference
-            if (!hordeController.InCombat && hordeController.PopulationCooldown == 0) PopulationEvent();
-            _highestHealth = Mathf.Max(hordeController.TotalHealth, _highestHealth);
+            if (!_hordeController.InCombat && _hordeController.PopulationCooldown == 0) PopulationEvent();
+            _highestHealth = Mathf.Max(_hordeController.TotalHealth, _highestHealth);
         }
 
         public void SetDamage(float damage)
