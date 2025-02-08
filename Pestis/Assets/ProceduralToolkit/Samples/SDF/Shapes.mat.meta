@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1174b67f0c62652458346df24729b730
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Samples/SDF/Shapes.mat
+  uploadId: 371553

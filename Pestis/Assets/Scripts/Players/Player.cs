@@ -15,10 +15,14 @@ namespace Players
 
     public class Player : NetworkBehaviour
     {
+        public delegate void OnBeforeSpawned(NetworkRunner runner, NetworkObject obj);
+
         /// <summary>
         ///     Human or Bot?
         /// </summary>
         public PlayerType Type;
+
+        public GameObject hordePrefab;
 
         [CanBeNull] private BotPlayer _botPlayer;
 
@@ -104,6 +108,35 @@ namespace Players
             if (Type == PlayerType.Human) return ref _humanPlayer;
 
             throw new NullReferenceException("Tried to get human player from a bot Player");
+        }
+
+        public void SplitHorde(HordeController toSplit, float splitPercentage)
+        {
+            if (!HasStateAuthority) throw new Exception("Only State Authority can split a horde");
+
+
+            var totalHealth = toSplit.TotalHealth;
+            var populationState = toSplit.GetPopulationState();
+            var newHorde = Runner.Spawn(hordePrefab, Vector3.zero,
+                    Quaternion.identity,
+                    null, (runner, NO) =>
+                    {
+                        NO.transform.parent = transform;
+                        // Ensure new horde spawns in at current location
+                        NO.transform.position = toSplit.GetBounds().center;
+                    })
+                .GetComponent<HordeController>();
+            newHorde.TotalHealth = totalHealth * splitPercentage;
+            toSplit.TotalHealth = totalHealth * (1.0f - splitPercentage);
+            // Move two hordes slightly apart
+            newHorde.Move(toSplit.targetLocation.transform.position - toSplit.GetBounds().extents);
+            toSplit.Move(toSplit.targetLocation.transform.position + toSplit.GetBounds().extents);
+            // Ensure genetics are transferred
+            newHorde.SetPopulationState(populationState);
+            if (Type == PlayerType.Human) _humanPlayer?.SelectHorde(newHorde);
+
+            Debug.Log(
+                $"Split Horde {Object.Id}, creating new Horde {newHorde.Object.Id} with {splitPercentage}x health");
         }
     }
 }

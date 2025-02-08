@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 71b132047b3f1fb4eb7c48750ef1f94e
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Samples/Buildings/Buildings.unity
+  uploadId: 371553

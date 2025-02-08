@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Fusion;
 using JetBrains.Annotations;
 using Players;
@@ -37,6 +38,11 @@ namespace Horde
         /// </summary>
         public Vector2[] intraHordeTargets = new Vector2[4];
 
+        /// <summary>
+        ///     Seconds until we can start simulating population again after combat.
+        /// </summary>
+        public float PopulationCooldown;
+
         private readonly List<RatController> _spawnedRats = new();
         private Camera _camera;
 
@@ -57,6 +63,8 @@ namespace Horde
         private Light2D _selectionLightPoi;
 
         private Light2D _selectionLightTerrain;
+
+        [CanBeNull] private Action OnArriveAtTarget;
 
         /// <summary>
         ///     The horde we're currently damaging. Our rats will animate against them.
@@ -105,6 +113,16 @@ namespace Horde
         {
             // If not spawned yet
             if (!Object.IsValid) return;
+
+            if (PopulationCooldown > 0)
+                PopulationCooldown -= Time.deltaTime;
+            else if (PopulationCooldown < 0) PopulationCooldown = 0;
+
+            if (OnArriveAtTarget != null && HordeBounds.Contains(targetLocation.transform.position))
+            {
+                OnArriveAtTarget();
+                OnArriveAtTarget = null;
+            }
 
             // Spawn at center of horde if there is one, or base if there isn't one yet.
             if (_spawnedRats.Count == 0)
@@ -290,14 +308,34 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
 
             var difference = AliveRats - _spawnedRats.Count;
             if (difference > 0)
+            {
                 _ratsToSpawn = difference;
+            }
             else if (difference < 0)
+            {
+                var sortedByDistanceFromEnemy = _spawnedRats
+                    .Select((rat, i) => new KeyValuePair<int, RatController>(i, rat)).OrderBy(kvp =>
+                        -((Vector2)kvp.Value.transform.position - kvp.Value.targetPoint).sqrMagnitude).ToList();
+
+                List<int> indexesToRemove = new();
                 // Kill a Rat
                 for (var i = 0; i > difference; i--)
                 {
-                    Destroy(_spawnedRats[_spawnedRats.Count - 1 + i].transform.gameObject);
-                    _spawnedRats.RemoveAt(_spawnedRats.Count - 1 + i);
+                    // Only leave corpse if in combat
+                    if (InCombat)
+                        sortedByDistanceFromEnemy[sortedByDistanceFromEnemy.Count - 1 + i].Value.Kill();
+                    else
+                        sortedByDistanceFromEnemy[sortedByDistanceFromEnemy.Count - 1 + i].Value.KillInstant();
+                    indexesToRemove.Add(sortedByDistanceFromEnemy[sortedByDistanceFromEnemy.Count - 1 + i].Key);
                 }
+
+                indexesToRemove.Sort();
+                indexesToRemove.Reverse();
+                foreach (int index in indexesToRemove)
+                {
+                    _spawnedRats.RemoveAt(index);
+                }
+            }
         }
 
         public override void Spawned()
@@ -395,6 +433,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             HordeBeingDamaged = null;
             StationedAt = null;
             CurrentCombatController = null;
+            PopulationCooldown = 15.0f;
         }
 
         public void AttackPoi(POIController poi)
@@ -417,6 +456,9 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
 
         public void AttackHorde(HordeController target)
         {
+            // We're already fighting that horde!
+            if (CurrentCombatController && CurrentCombatController.HordeInCombat(target)) return;
+
             if (CurrentCombatController)
                 // Leave current combat
                 CurrentCombatController.EventRetreatRpc(this);
@@ -447,12 +489,28 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             Debug.Log($"We ({Object.Id}) won combat!");
             CurrentCombatController = null;
             HordeBeingDamaged = null;
+            PopulationCooldown = 20.0f;
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void EventAttackedRpc(CombatController combat)
         {
             CurrentCombatController = combat;
+        }
+
+        public PopulationState GetPopulationState()
+        {
+            return _populationController.GetState();
+        }
+
+        public void SetPopulationState(PopulationState newState)
+        {
+            _populationController.SetState(newState);
+        }
+
+        public void Select()
+        {
+            FindAnyObjectByType<InputHandler>().LocalPlayer?.SelectHorde(this);
         }
     }
 }

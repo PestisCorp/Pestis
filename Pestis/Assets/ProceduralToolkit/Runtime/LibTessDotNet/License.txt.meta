@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 14461f4b0ecc34d40bf117467c6a304b
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Runtime/LibTessDotNet/License.txt
+  uploadId: 371553

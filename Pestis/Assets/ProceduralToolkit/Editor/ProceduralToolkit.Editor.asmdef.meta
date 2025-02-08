@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 97ec812b2c74f6c44882da9cd3f1170f
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Editor/ProceduralToolkit.Editor.asmdef
+  uploadId: 371553

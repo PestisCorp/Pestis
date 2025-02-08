@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 05631ea81b09d1f4fa8885bd25ecd4ce
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16508
+  packageName: Procedural Toolkit
+  packageVersion: 0.2.3
+  assetPath: Assets/ProceduralToolkit/Shaders/VertexColor/Unlit Vertex Color.shader
+  uploadId: 371553
