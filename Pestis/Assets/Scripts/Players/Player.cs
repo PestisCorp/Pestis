@@ -30,7 +30,7 @@ namespace Players
 
         public bool IsLocal => Type != PlayerType.Bot && HasStateAuthority;
 
-        [Networked] [Capacity(32)] private NetworkLinkedList<HordeController> Hordes { get; } = default;
+        [Networked] [Capacity(32)] public NetworkLinkedList<HordeController> Hordes { get; } = default;
 
         [Networked] public string Username { get; private set; }
 
