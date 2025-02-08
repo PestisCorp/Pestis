@@ -25,6 +25,7 @@ namespace Editor
         private void OnEnable()
         {
             _map = FindFirstObjectByType<Map.Map>();
+            if (!_map) return;
             _mapGenerator = new Map.Generator();
             _mapGenerator.Map = _map;
             _map.landBiomes = FindFirstObjectByType<Map.LandBiomesList>();
