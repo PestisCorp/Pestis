@@ -16,7 +16,12 @@ namespace Map
         [HideInInspector] public int[] tileIndices;
     
         private static readonly string FilePath = $"{Application.dataPath}/Scripts/Map/SavedMap.dat";
-        
+
+        private void Start()
+        {
+            Load();
+        }
+
         // Credit: https://www.red-gate.com/simple-talk/development/dotnet-development/saving-game-data-with-unity/
         public void Save()
         {
