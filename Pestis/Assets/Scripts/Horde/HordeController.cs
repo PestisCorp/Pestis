@@ -74,6 +74,8 @@ namespace Horde
 
         [Networked] [CanBeNull] public POIController StationedAt { get; private set; }
 
+        [Networked] private Color _hordeColor { get; set; }
+
         private void Awake()
         {
             _hordeCenter = transform.position;
@@ -92,6 +94,7 @@ namespace Horde
                 var rat = Instantiate(ratPrefab, _hordeCenter, Quaternion.identity, transform);
                 var ratController = rat.GetComponent<RatController>();
                 ratController.SetHordeController(this);
+                ratController.SetColor(_hordeColor); //Apply horde color
                 ratController.Start();
                 _spawnedRats.Add(ratController);
                 _ratsToSpawn--;
@@ -244,6 +247,13 @@ Horde Target: {(HordeBeingDamaged ? HordeBeingDamaged.Object.Id : "None")}
             _populationController = GetComponent<PopulationController>();
             Player = GetComponentInParent<Player>();
 
+            _hordeColor = new Color(
+                UnityEngine.Random.Range(0.6f, 1.0f),
+                UnityEngine.Random.Range(0.6f, 1.0f),
+                UnityEngine.Random.Range(0.6f, 1.0f),
+                1.0f
+            );
+
             _selectionLightTerrain = transform.Find("SelectionLightTerrain").gameObject.GetComponent<Light2D>();
             _selectionLightPOI = transform.Find("SelectionLightPOI").gameObject.GetComponent<Light2D>();
             if (!HasStateAuthority)
@@ -290,6 +300,12 @@ Horde Target: {(HordeBeingDamaged ? HordeBeingDamaged.Object.Id : "None")}
         public Bounds GetBounds()
         {
             return _hordeBounds;
+        }
+
+        //get the color of the horde
+        public Color GetHordeColor()
+        {
+            return _hordeColor;
         }
 
         public RatController ClosestRat(Vector2 pos)

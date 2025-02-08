@@ -119,6 +119,12 @@ namespace Horde
             transform.rotation = currentRotation;
         }
 
+        public void SetColor(Color color)
+        {
+            if (_spriteRenderer == null) _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            _spriteRenderer.color = color;
+        }
+
         public void SetHordeController(HordeController controller)
         {
             _hordeController = controller;
