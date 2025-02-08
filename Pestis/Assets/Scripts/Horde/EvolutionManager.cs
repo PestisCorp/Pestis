@@ -15,15 +15,15 @@ namespace Horde
         private PopulationController _populationController;
         // Key : [Chance of acquisition, Effect on stats, Acquired or not]
         private Dictionary<string, float[]> _passiveEvolutions = new Dictionary<string, float[]>();
-        private float _multiplier = 1.1f;
+        private readonly float _multiplier = 1.1f;
         private readonly Random _random = new Random();
         
         
         private void UpdateRatStats(string mutation)
         {
             float mutEffect = _passiveEvolutions[mutation][1];
-            string text = ("Your " + mutation.ToLower() + " has improved by " +
-                                         (mutEffect * 100).ToString(CultureInfo.CurrentCulture) + "%.");
+            string text = ("A horde's " + mutation.ToLower() + " has improved by " +
+                                         (_multiplier * 100 - 100).ToString(CultureInfo.CurrentCulture) + "%.");
             FindFirstObjectByType<UI_Manager>().AddNotification(text);
             switch (mutation)
             {
@@ -41,14 +41,9 @@ namespace Horde
         
         private void EvolutionaryEvent()
         {
-            double r = _random.NextDouble();
-            if (r < 0.0005)
-            {
-                _multiplier *= _multiplier;
-            }
             foreach (var ele in _passiveEvolutions)
             {
-                r = _random.NextDouble();
+                double r = _random.NextDouble();
                 string mutation = ele.Key;
                 float p = _passiveEvolutions[mutation][0];
                 float mutEffect = _passiveEvolutions[mutation][1];
@@ -68,7 +63,7 @@ namespace Horde
             _populationController = GetComponent<PopulationController>();
             _passiveEvolutions["Attack"] = new []{0.001f, _populationController.GetState().Damage, 0.0f};
             _passiveEvolutions["Health"] = new []{0.001f, _populationController.GetState().HealthPerRat, 0.0f};
-            _passiveEvolutions["Defense"] = new []{ 0.005f, _populationController.GetState().DamageReduction, 0.0f};
+            _passiveEvolutions["Defense"] = new []{ 0.0005f, _populationController.GetState().DamageReduction, 0.0f};
         }
         public override void FixedUpdateNetwork()
         {

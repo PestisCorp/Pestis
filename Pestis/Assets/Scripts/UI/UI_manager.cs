@@ -49,8 +49,24 @@ public class UI_Manager : MonoBehaviour
         GameObject newMessage = Instantiate(messagePrefab, parentTransform);
         newMessage.SetActive(true);
         newMessage.GetComponent<TMP_Text>().text = message;
+        StartCoroutine(RemoveMessage(newMessage));
     }
 
+    private IEnumerator RemoveMessage(GameObject message)
+    {
+        yield return new WaitForSeconds(displayTime);
+        TMP_Text textComponent = message.GetComponent<TMP_Text>();
+        CanvasGroup canvasGroup = message.AddComponent<CanvasGroup>();
+        float elapsedTime = 0f;
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            canvasGroup.alpha = 1 - (elapsedTime / fadeDuration);
+            yield return null;
+        }
+        Destroy(message);
+    }
+    
     // Start is called before the first frame update
     private void Start()
     {
