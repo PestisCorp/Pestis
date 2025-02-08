@@ -19,6 +19,8 @@ namespace Horde
         ///     How much damage the horde does to other hordes per tick in combat
         /// </summary>
         internal float Damage;
+
+        internal float DamageReduction;
     }
 
     public class PopulationController : NetworkBehaviour
@@ -38,7 +40,7 @@ namespace Horde
         private readonly int[] _weights = Enumerable.Range(1, MaxPopGrowth).Reverse().ToArray();
         // The maximum change in a population per network tick
         private const int MaxPopGrowth = 1;
-        public HordeController hordeController;
+        private HordeController _hordeController;
 
         /// <summary>
         ///     Stores the highest health this horde has achieved. Used to stop the player losing too much progress.
@@ -56,7 +58,7 @@ namespace Horde
         // W < 1 if R < P
         private double ResourceWeightGrowth()
         {
-            return 1 + 0.5 * (1.0 - Math.Exp(-(hordeController.Player.CurrentCheese / hordeController.AliveRats - 1)));
+            return 1 + 0.5 * (1.0 - Math.Exp(-(_hordeController.Player.CurrentCheese / _hordeController.AliveRats - 1)));
         }
         
         // Weight used in probability of population decline
@@ -64,11 +66,11 @@ namespace Horde
         // W > 1 if R < P
         private double ResourceWeightDecline()
         {
-            if (hordeController.Player.CurrentCheese >= hordeController.AliveRats)
+            if (_hordeController.Player.CurrentCheese >= _hordeController.AliveRats)
             {
                 return 1.0;
             }
-            return Math.Exp(1.0 - hordeController.Player.CurrentCheese / hordeController.AliveRats);
+            return Math.Exp(1.0 - _hordeController.Player.CurrentCheese / _hordeController.AliveRats);
             
         }
         
@@ -162,24 +164,26 @@ namespace Horde
         
         public override void Spawned()
         {
+            _hordeController = GetComponent<HordeController>();
             State.BirthRate = 0.01;
             State.DeathRate = 0.005;
             State.HealthPerRat = 5.0f;
             State.Damage = 0.5f;
-            hordeController.TotalHealth = InitialPopulation * State.HealthPerRat;
+            State.DamageReduction = 1.0f;
+            _hordeController.TotalHealth = InitialPopulation * State.HealthPerRat;
             _transitionMatrix = GenerateTransitionMatrix();
         }
 
         // Check for birth or death events
         private void PopulationEvent()
         {
-            if ((hordeController.AliveRats) > _populationPeak)
+            if ((_hordeController.AliveRats) > _populationPeak)
             {
-                _populationPeak = hordeController.AliveRats;
+                _populationPeak = _hordeController.AliveRats;
                 UpdateTransitionMatrix();
             }
             // Lookup the relevant probabilities for the current population
-            double[] probabilities = _transitionMatrix[hordeController.AliveRats - 1];
+            double[] probabilities = _transitionMatrix[_hordeController.AliveRats - 1];
             double growthWeight = ResourceWeightGrowth();
             double declineWeight = ResourceWeightDecline();
             for (int i = 0; i < ((MaxPopGrowth * 2) + 1); i++)
@@ -208,14 +212,29 @@ namespace Horde
             double r = _random.NextDouble() * cumulative;
             int nextState = cdf.BinarySearch(r);
             if (nextState < 0) nextState = ~nextState;
-            hordeController.TotalHealth = (nextState - MaxPopGrowth + hordeController.AliveRats) * State.HealthPerRat;
+            _hordeController.TotalHealth = (nextState - MaxPopGrowth + _hordeController.AliveRats) * State.HealthPerRat;
         }
 
         // Only executed on State Authority
         public override void FixedUpdateNetwork()
         {
             PopulationEvent();
-            _highestHealth = Mathf.Max(hordeController.TotalHealth, _highestHealth);
+            _highestHealth = Mathf.Max(_hordeController.TotalHealth, _highestHealth);
+        }
+
+        public void SetDamage(float damage)
+        {
+            State.Damage = damage;
+        }
+
+        public void SetHealthPerRat(float healthPerRat)
+        {
+            State.HealthPerRat = healthPerRat;
+        }
+
+        public void SetDamageReduction(float damageReduction)
+        {
+            State.DamageReduction /= damageReduction;
         }
 
         public PopulationState GetState()

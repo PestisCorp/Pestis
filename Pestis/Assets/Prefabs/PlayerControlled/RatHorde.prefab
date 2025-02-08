@@ -197,6 +197,7 @@ GameObject:
   - component: {fileID: 3670710804318574543}
   - component: {fileID: 6619829849645989142}
   - component: {fileID: 4419380376764164480}
+  - component: {fileID: -7073726608519572895}
   - component: {fileID: 8072967729009948161}
   - component: {fileID: 7468465082037442285}
   m_Layer: 0
@@ -263,7 +264,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21056fc1ac164f62ab126c09e6e0ed46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hordeController: {fileID: 6619829849645989142}
+--- !u!114 &-7073726608519572895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2093969167296477126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd776c19415ef16be8690d1dc9bb6b77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8072967729009948161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,6 +295,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 6619829849645989142}
   - {fileID: 4419380376764164480}
+  - {fileID: -7073726608519572895}
   - {fileID: 7468465082037442285}
   - {fileID: 6270358088513742782}
   ForceRemoteRenderTimeframe: 0

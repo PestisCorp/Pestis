@@ -20408,6 +20408,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ControlledBy: {fileID: 0}
   _StationedHordes: []
+  _Combat: {fileID: 0}
 --- !u!1 &1812747568
 GameObject:
   m_ObjectHideFlags: 0
