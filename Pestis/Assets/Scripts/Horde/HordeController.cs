@@ -67,6 +67,11 @@ namespace Horde
         [CanBeNull] private Action OnArriveAtTarget;
 
         /// <summary>
+        ///     Time in seconds since game start when the horde last finished combat
+        /// </summary>
+        public float lastInCombat { get; private set; }
+
+        /// <summary>
         ///     The horde we're currently damaging. Our rats will animate against them.
         /// </summary>
         [Networked]
@@ -431,6 +436,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             StationedAt = null;
             CurrentCombatController = null;
             PopulationCooldown = 15.0f;
+            lastInCombat = Time.time;
         }
 
         public void AttackPoi(POIController poi)
@@ -453,6 +459,9 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
 
         public void AttackHorde(HordeController target)
         {
+            // Don't fight if we're below 10 rats
+            if (TotalHealth < 10 * _populationController.GetState().HealthPerRat) return;
+
             // We're already fighting that horde!
             if (CurrentCombatController && CurrentCombatController.HordeInCombat(target)) return;
 
@@ -487,6 +496,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             CurrentCombatController = null;
             HordeBeingDamaged = null;
             PopulationCooldown = 20.0f;
+            lastInCombat = Time.time;
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]

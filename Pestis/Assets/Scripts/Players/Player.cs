@@ -51,14 +51,14 @@ namespace Players
                 if (HasStateAuthority)
                     FindAnyObjectByType<Grid>().GetComponent<InputHandler>().LocalPlayer = _humanPlayer;
 
-                Username = $"{Object.StateAuthority}";
+                Username = $"Player {Object.StateAuthority.PlayerId}";
             }
             else
             {
                 _botPlayer = this.AddComponent<BotPlayer>();
                 _botPlayer!.player = this;
 
-                Username = $"Bot {Object.Id}";
+                Username = $"Bot {Object.Id.Raw}";
             }
 
             foreach (var horde in GetComponentsInChildren<HordeController>()) Hordes.Add(horde);
