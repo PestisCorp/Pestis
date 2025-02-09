@@ -1,6 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Horde;
+using MoreLinq.Extensions;
+using POI;
+using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -14,17 +18,25 @@ namespace Players
         public Player player;
 
         /// <summary>
-        ///     Float between 0.0 and 1.0, the higher it is the more likely a horde is to attack a nearby horde instead of running
-        ///     away
-        /// </summary>
-        public float aggression;
-
-        /// <summary>
         ///     Squared distance below which a horde will be considered a problem and either attacked or moved away from
         /// </summary>
         public float territorialDistance = 100;
 
         private float _timeSinceLastUpdate;
+
+        /// <summary>
+        ///     Multiplier to current `aggressionUncapped`, makes a horde more likely to take offensive action at all times
+        /// </summary>
+        public float BaseAggression { get; private set; } = 1.0f;
+
+        /// <summary>
+        ///     Arbitrary float, starts at 0.0, and increases over time - increasing desire to take offensive action. Reset to zero
+        ///     when offensive action taken.
+        ///     away
+        /// </summary>
+        public float AggressionUncapped { get; private set; }
+
+        public float AggressionRange => 400.0f * AggressionUncapped * BaseAggression;
 
         /// <summary>
         ///     True if this instance is the one that should handle the bot
@@ -34,7 +46,7 @@ namespace Players
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         private void Start()
         {
-            aggression = Random.Range(0.2f, 0.8f);
+            BaseAggression = Random.Range(0.5f, 1.5f);
             territorialDistance = Random.Range(2.0f, 20.0f);
         }
 
@@ -49,6 +61,9 @@ namespace Players
 
             var allHordes =
                 FindObjectsByType<HordeController>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).ToList();
+
+            var allPoi =
+                FindObjectsByType<POIController>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).ToList();
 
             // Check possible actions for each horde, exiting when a horde takes an action
             foreach (var myHorde in player.Hordes)
@@ -72,7 +87,9 @@ namespace Players
                                                           .extents.sqrMagnitude -
                                                       myHorde.GetBounds().extents.sqrMagnitude;
 
-                // If nearest horde is too close, either attack or move away
+                // DEFENSIVE ACTIONS
+
+                // If nearest horde is too close, either attack or run away
                 if (distFromHordeEdgeToClosestHorde < territorialDistance)
                 {
                     var closestHordeIsFriendly = closestHorde.Player == myHorde.Player;
@@ -99,8 +116,67 @@ namespace Players
                     // Return because we only want to take one action each second
                     return;
                 }
+
+                // MANAGEMENT ACTIONS
+
+                // TODO - Split horde logic
+
+                // If we're the sole defender of a POI, don't make any offensive actions
+                if (myHorde.StationedAt && myHorde.StationedAt.StationedHordes.Count == 1) return;
+
+                // OFFENSIVE ACTIONS
+
+                // OFFENSIVE ACTIONS - POI TARGETING
+                Dictionary<POIController, float> poiDesirabilities = new();
+                foreach (var poi in allPoi)
+                {
+                    // Skip POI if too far away
+                    var sqrDistance = (poi.transform.position - myHorde.GetBounds().center).sqrMagnitude;
+                    if (sqrDistance > AggressionRange) continue;
+
+                    var desirability = 1.0f;
+                    foreach (var enemy in poi.StationedHordes)
+                        desirability *= CalcCombatDesirability(myHorde, enemy);
+
+                    desirability *= 1.0f - sqrDistance / AggressionRange;
+
+                    poiDesirabilities.Add(poi, desirability);
+                }
+
+                if (poiDesirabilities.Count != 0)
+                {
+                    var mostDesirable = poiDesirabilities.Maxima(kvp => kvp.Value).First();
+
+                    if (Random.Range(0.0f, 1.0f) < mostDesirable.Value)
+                    {
+                        myHorde.AttackPoi(mostDesirable.Key);
+                        AggressionUncapped = 0.0f;
+                        return;
+                    }
+                }
+
+                // TODO - Attack horde logic
             }
+
+            // We took no actions, increase aggression
+            AggressionUncapped += 0.01f;
         }
+
+#if UNITY_EDITOR
+        public void OnDrawGizmosSelected()
+        {
+            foreach (var horde in player.Hordes)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(horde.GetBounds().center,
+                    Mathf.Sqrt(territorialDistance) + horde.GetBounds().extents.magnitude);
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawWireSphere(horde.GetBounds().center, Mathf.Sqrt(AggressionRange));
+            }
+
+            HandleUtility.Repaint();
+        }
+#endif
 
         /// <summary>
         /// </summary>
@@ -122,13 +198,8 @@ namespace Players
             // If less than 60 seconds since the horde has been in combat,
             // reduce desirability by a nice curve that heavily discourages early re-engagement, but reduces effects closer to 60
             if (Time.time - myHorde.lastInCombat < 60)
-            {
                 desirability += Mathf.Cos(_timeSinceLastUpdate / 20.0f + 3.14f) / 3.0f - 0.35f;
-                Debug.Log(
-                    $"Time since last combat: {Time.time - myHorde.lastInCombat}, curve is {Mathf.Cos(_timeSinceLastUpdate / 20.0f + 3.14f) / 3.0f - 0.35f}");
-            }
 
-            Debug.Log($"Unclamped Combat Desirability {desirability}");
             return Mathf.Clamp(desirability, 0.0f, 1.0f);
         }
     }

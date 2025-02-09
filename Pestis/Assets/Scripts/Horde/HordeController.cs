@@ -100,7 +100,7 @@ namespace Horde
         [CanBeNull]
         private CombatController CurrentCombatController { get; set; }
 
-        public bool InCombat => CurrentCombatController && CurrentCombatController.Participators.Count != 0;
+        public bool InCombat => CurrentCombatController && CurrentCombatController.HordeInCombat(this);
 
         private void Awake()
         {
@@ -267,7 +267,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             // If the POI isn't being defended, we can just take over without combat.
             if (TargetPoi.StationedHordes.Count == 0)
             {
-                TargetPoi.ChangeControllerRpc(Player);
+                TargetPoi.ChangeController(Player);
                 StationAtRpc(TargetPoi);
                 return;
             }
@@ -282,7 +282,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         public void StationAtRpc(POIController poi)
         {
             Debug.Log($"Adding myself (horde {Object.Id}) to POI: {poi.Object.Id}");
-            poi.StationHordeRpc(this);
+            poi.AttackRpc(this);
             Move(poi.transform.position);
             StationedAt = poi;
             // We're not targeting a POI if we've just taken one over.
