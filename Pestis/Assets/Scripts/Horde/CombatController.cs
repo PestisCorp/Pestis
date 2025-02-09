@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Fusion;
@@ -135,15 +134,10 @@ POI: {FightingOver}
 
             foreach (var horde in hordesToRemove)
             {
-                // Tell horde to run away to nearest friendly POI
-                horde.RetreatRpc();
                 var copy = Participators.Get(horde.Player);
                 copy.RemoveHorde(horde);
                 Participators.Set(horde.Player, copy);
             }
-
-            if (Participators.Count == playersToRemove.Count)
-                throw new Exception("Tried to remove all players from combat at once");
 
             foreach (var player in playersToRemove)
             {
@@ -151,7 +145,20 @@ POI: {FightingOver}
                 Participators.Remove(player);
             }
 
-            // If there's only one person left in combat they are the winner! Reset controller.
+
+            // Combat still going
+            if (Participators.Count > 1)
+            {
+                // It's safe to call the RPCs now
+                foreach (var horde in hordesToRemove)
+                    // Tell horde to run away to nearest friendly POI
+                    horde.RetreatRpc();
+                return;
+            }
+
+            ;
+
+            // If there's only one person left in combat they are the winner! Otherwise we tied
             if (Participators.Count == 1)
             {
                 var winner = Participators.First().Key;
@@ -188,11 +195,19 @@ POI: {FightingOver}
                     Debug.Log("POI successfully defended");
                 }
 
-                // Clear Combat Controller
                 Participators.Remove(winner);
-                InitiatingPlayer = null;
-                FightingOver = null;
             }
+
+            // Clear Combat Controller
+            InitiatingPlayer = null;
+            FightingOver = null;
+
+            Participators.Clear();
+
+            // It's safe to call the RPCs now
+            foreach (var horde in hordesToRemove)
+                // Tell horde to run away to nearest friendly POI
+                horde.RetreatRpc();
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -202,6 +217,7 @@ POI: {FightingOver}
 
             if (!Participators.TryGet(horde.Player, out var participant))
             {
+                Debug.Log("COMBAT: Adding player");
                 Participators.Add(horde.Player, new CombatParticipant(horde.Player, horde, voluntary));
                 if (!voluntary) horde.EventAttackedRpc(this);
             }
