@@ -8,7 +8,7 @@ namespace Editor
 {
     public class MapGeneratorWindow : EditorWindow
     {
-        private Map.Map _map;
+        private Map.MapBehaviour _map;
         private Map.Generator _mapGenerator;
         private SerializedObject _serializedBiomeList;
         private ReorderableList _reorderableBiomeList;
@@ -24,7 +24,7 @@ namespace Editor
 
         private void OnEnable()
         {
-            _map = FindFirstObjectByType<Map.Map>();
+            _map = FindFirstObjectByType<Map.MapBehaviour>();
             if (!_map) return;
             _mapGenerator = new Map.Generator();
             _mapGenerator.Map = _map;
@@ -73,9 +73,9 @@ namespace Editor
             EditorGUILayout.BeginVertical();
 
             _map.tilemap = (Tilemap)EditorGUILayout.ObjectField("Tilemap", _map.tilemap, typeof(Tilemap), true);
-            _map.width = EditorGUILayout.IntField("Width", _map.width);
-            _map.height = EditorGUILayout.IntField("Height", _map.height);
-            _map.water = (TileBase)EditorGUILayout.ObjectField("Water tile", _map.water, typeof(TileBase), true);
+            _map.mapObject.width = EditorGUILayout.IntField("Width", _map.mapObject.width);
+            _map.mapObject.height = EditorGUILayout.IntField("Height", _map.mapObject.height);
+            _map.mapObject.water = (TileBase)EditorGUILayout.ObjectField("Water tile", _map.mapObject.water, typeof(TileBase), true);
             _mapGenerator.VoronoiFrequency =
                 EditorGUILayout.FloatField("Voronoi frequency", _mapGenerator.VoronoiFrequency);
             _mapGenerator.RandomWalkSteps =
@@ -95,12 +95,13 @@ namespace Editor
 
             if (GUILayout.Button("Save Map"))
             {
-                _map.Save();
+                _map.mapObject.Save();
+                _map.tilemap.ClearAllTiles();
             }
 
             if (GUILayout.Button("Load Map"))
             {
-                _map.LoadEditor();
+                _map.mapObject.LoadEditor();
             }
 
             EditorGUILayout.EndHorizontal();
