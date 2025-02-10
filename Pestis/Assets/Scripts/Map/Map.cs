@@ -27,6 +27,6 @@ namespace Map
             PrefabUtility.RecordPrefabInstancePropertyModifications(this);
             Debug.Log("Map saved");
         }
-    }
 #endif
+    }
 }
