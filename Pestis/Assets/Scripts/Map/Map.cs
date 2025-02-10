@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-using Unity.Collections;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -11,17 +8,14 @@ namespace Map
     [CreateAssetMenu(fileName = "MapData", menuName = "ScriptableObjects/MapData", order = 1)]
     public class MapScriptableObject : ScriptableObject
     {
+        internal const int WaterValue = int.MaxValue;
         public int width = 1024;
         public int height = 1024;
         public TileBase water;
+        public TileBase[] landTiles;
         [HideInInspector] public int[] tileIndices;
         [HideInInspector] public byte[] mapBytes;
-        
-        
-        internal const int WaterValue = Int32.MaxValue;
-        
-        
-
+#if UNITY_EDITOR
         public void Save()
         {
             SaveData data = new(width, height, tileIndices);
@@ -32,4 +26,5 @@ namespace Map
             Debug.Log("Map saved");
         }
     }
+#endif
 }
