@@ -88,6 +88,8 @@ namespace Horde
 
         [Networked] [CanBeNull] public POIController TargetPoi { get; private set; }
 
+        [Networked] private Color _hordeColor { get; set; }
+
         /// <summary>
         ///     Can only be in one combat instance at a time.
         /// </summary>
@@ -135,6 +137,7 @@ namespace Horde
                 var rat = Instantiate(ratPrefab, _hordeCenter, Quaternion.identity, transform);
                 var ratController = rat.GetComponent<RatController>();
                 ratController.SetHordeController(this);
+                ratController.SetColor(_hordeColor); //Apply horde color
                 ratController.Start();
                 _spawnedRats.Add(ratController);
                 _ratsToSpawn--;
@@ -343,6 +346,13 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             _populationController = GetComponent<PopulationController>();
             Player = GetComponentInParent<Player>();
 
+            _hordeColor = new Color(
+                UnityEngine.Random.Range(0.6f, 1.0f),
+                UnityEngine.Random.Range(0.6f, 1.0f),
+                UnityEngine.Random.Range(0.6f, 1.0f),
+                1.0f
+            );
+
             _selectionLightTerrain = transform.Find("SelectionLightTerrain").gameObject.GetComponent<Light2D>();
             _selectionLightPoi = transform.Find("SelectionLightPOI").gameObject.GetComponent<Light2D>();
             if (!HasStateAuthority)
@@ -400,6 +410,12 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         public Bounds GetBounds()
         {
             return HordeBounds;
+        }
+
+        //get the color of the horde
+        public Color GetHordeColor()
+        {
+            return _hordeColor;
         }
 
         public RatController ClosestRat(Vector2 pos)
