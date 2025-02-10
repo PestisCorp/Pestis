@@ -29,7 +29,6 @@ namespace Editor
             _mapGenerator = new Map.Generator();
             _mapGenerator.Map = _map;
             _map.landBiomes = FindFirstObjectByType<Map.LandBiomesList>();
-            _map.tileIndices = new int[_map.width * _map.height];
 
             if (_map.landBiomes)
             {
@@ -101,7 +100,7 @@ namespace Editor
 
             if (GUILayout.Button("Load Map"))
             {
-                _map.Load();
+                _map.LoadEditor();
             }
 
             EditorGUILayout.EndHorizontal();
