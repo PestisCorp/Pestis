@@ -80,6 +80,7 @@ public class UI_Manager : MonoBehaviour
     {
         if (infoPanel != null) infoPanel.SetActive(false);
         if (attackPanel != null) attackPanel.SetActive(false);
+        if (hordeSplitPanel != null) hordeSplitPanel.SetActive(false);
 
         // Ignoring the state of the tool bar, ensuring the default buttons are visible
         var toolbarButtons = GameObject.FindGameObjectsWithTag("UI_button_action");
