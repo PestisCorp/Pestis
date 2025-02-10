@@ -8,7 +8,7 @@ namespace Map
 {
     public class Generator
     {
-        public Map Map;
+        public MapBehaviour Map;
         public float VoronoiFrequency = 0.025f;
         public int RandomWalkSteps = 5000000;
         public int Smoothing = 10;
@@ -24,7 +24,7 @@ namespace Map
 
         public void GenerateMap()
         {
-            Map.tileIndices = new int[Map.width * Map.height];
+            Map.mapObject.tileIndices = new int[Map.mapObject.width * Map.mapObject.height];
             Voronoi(Dilation(RandomWalk()));
         }
 
@@ -34,9 +34,9 @@ namespace Map
             _noiseGenerator.SetNoiseType(FastNoise.NoiseType.Cellular);
             _noiseGenerator.SetFrequency(VoronoiFrequency);
 
-            for (int x = 0; x < Map.width; x++)
+            for (int x = 0; x < Map.mapObject.width; x++)
             {
-                for (int y = 0; y < Map.height; y++)
+                for (int y = 0; y < Map.mapObject.height; y++)
                 {
                     float noiseVal = _noiseGenerator.GetNoise01(x, y);
                     float probability = 1.0f / Map.landBiomes.GetList().Length;
@@ -48,14 +48,14 @@ namespace Map
                             {
                                 grid[x, y] = TileType.AssignedLand;
                                 Map.tilemap.SetTile(new Vector3Int(x, y), Map.landBiomes.GetList()[i]);
-                                Map.tileIndices[Map.width * y + x] = i;
+                                Map.mapObject.tileIndices[Map.mapObject.width * y + x] = i;
                             }
                         }
                     }
                     else if (grid[x, y] == TileType.Water)
                     {
-                        Map.tilemap.SetTile(new Vector3Int(x, y), Map.water);
-                        Map.tileIndices[Map.width * y + x] = Map.WaterValue;
+                        Map.tilemap.SetTile(new Vector3Int(x, y), Map.mapObject.water);
+                        Map.mapObject.tileIndices[Map.mapObject.width * y + x] = MapScriptableObject.WaterValue;
                     }
                 }
             }
@@ -69,12 +69,12 @@ namespace Map
         {
             // create the grid, which will be filled with false value
             // true values define valid cells which are part of our visited map
-            TileType[,] grid = new TileType[Map.width, Map.height];
+            TileType[,] grid = new TileType[Map.mapObject.width, Map.mapObject.height];
 
             // fill with entirely water
-            for (int x = 0; x < Map.width; x++)
+            for (int x = 0; x < Map.mapObject.width; x++)
             {
-                for (int y = 0; y < Map.height; y++)
+                for (int y = 0; y < Map.mapObject.height; y++)
                 {
                     grid[x, y] = TileType.Water;
                 }
@@ -82,7 +82,7 @@ namespace Map
 
             // choose a random starting point
             System.Random rnd = new System.Random();
-            Vector2Int curr_pos = new Vector2Int(rnd.Next(Map.width), rnd.Next(Map.height));
+            Vector2Int curr_pos = new Vector2Int(rnd.Next(Map.mapObject.width), rnd.Next(Map.mapObject.height));
 
             // register this position in the grid as land
             grid[curr_pos.x, curr_pos.y] = TileType.UnassignedLand;
@@ -108,7 +108,7 @@ namespace Map
                     // choose a random direction
                     Vector2Int new_pos = curr_pos + allowed_movements[rnd.Next(allowed_movements.Count)];
                     // check if the new position is in the grid
-                    if (new_pos.x >= 0 && new_pos.x < Map.width && new_pos.y >= 0 && new_pos.y < Map.height)
+                    if (new_pos.x >= 0 && new_pos.x < Map.mapObject.width && new_pos.y >= 0 && new_pos.y < Map.mapObject.height)
                     {
                         // this is a valid position, we set it in the grid
                         grid[new_pos.x, new_pos.y] = TileType.UnassignedLand;
@@ -137,7 +137,7 @@ namespace Map
             }
 
             // create a counter to keep track of the number of unallocated cells 
-            int nb_free_cells = Map.width * Map.height;
+            int nb_free_cells = Map.mapObject.width * Map.mapObject.height;
 
             // set up the initial points for the process
             System.Random rng = new();
@@ -147,8 +147,8 @@ namespace Map
                 {
                     // find a random point 
                     Vector2Int point = new(
-                        rng.Next(Map.width),
-                        rng.Next(Map.height)
+                        rng.Next(Map.mapObject.width),
+                        rng.Next(Map.mapObject.height)
                     );
 
                     // check if it's land, else find another point
@@ -187,7 +187,7 @@ namespace Map
                     Vector2Int new_point = curr_point + directions[rng.Next(4)];
 
                     // check if the new point is in the grid
-                    if (new_point.x < 0 || new_point.y < 0 || new_point.x >= Map.width || new_point.y >= Map.height)
+                    if (new_point.x < 0 || new_point.y < 0 || new_point.x >= Map.mapObject.width || new_point.y >= Map.mapObject.height)
                     {
                         continue;
                     }
@@ -220,11 +220,11 @@ namespace Map
 
         private TileType[,] Dilation(TileType[,] grid)
         {
-            TileType[,] result = new TileType[Map.width, Map.height];
+            TileType[,] result = new TileType[Map.mapObject.width, Map.mapObject.height];
 
-            for (int x = 0; x < Map.width; x++)
+            for (int x = 0; x < Map.mapObject.width; x++)
             {
-                for (int y = 0; y < Map.height; y++)
+                for (int y = 0; y < Map.mapObject.height; y++)
                 {
                     TileType maxVal = grid[x, y];
                     for (int i = -Smoothing; i <= Smoothing; i++)
@@ -233,7 +233,7 @@ namespace Map
                         {
                             int newX = x + i;
                             int newY = y + j;
-                            if (newX >= 0 && newX < Map.width && newY >= 0 && newY < Map.height)
+                            if (newX >= 0 && newX < Map.mapObject.width && newY >= 0 && newY < Map.mapObject.height)
                             {
                                 if (Math.Max((int)maxVal, (int)grid[newX, newY]) == -1)
                                 {
@@ -256,11 +256,11 @@ namespace Map
 
         private TileType[,] Erosion(TileType[,] grid)
         {
-            TileType[,] result = new TileType[Map.width, Map.height];
+            TileType[,] result = new TileType[Map.mapObject.width, Map.mapObject.height];
 
-            for (int x = 0; x < Map.width; x++)
+            for (int x = 0; x < Map.mapObject.width; x++)
             {
-                for (int y = 0; y < Map.height; y++)
+                for (int y = 0; y < Map.mapObject.height; y++)
                 {
                     TileType minVal = grid[x, y];
                     for (int i = -Smoothing; i <= Smoothing; i++)
@@ -269,7 +269,7 @@ namespace Map
                         {
                             int newX = x + i;
                             int newY = y + j;
-                            if (newX >= 0 && newX < Map.width && newY >= 0 && newY < Map.height)
+                            if (newX >= 0 && newX < Map.mapObject.width && newY >= 0 && newY < Map.mapObject.height)
                             {
                                 if (Math.Min((int)minVal, (int)grid[newX, newY]) == -2)
                                 {
