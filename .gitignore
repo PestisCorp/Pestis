@@ -82,3 +82,7 @@ Pestis/.idea/
 .idea/
 
 *mono_crash*
+
+*.asmdef
+
+Pestis/Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset

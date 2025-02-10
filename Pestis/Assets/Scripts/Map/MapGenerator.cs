@@ -3,24 +3,17 @@ using System.Collections.Generic;
 using ProceduralToolkit;
 using ProceduralToolkit.FastNoiseLib;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Map
 {
     public class Generator
     {
+        private FastNoise _noiseGenerator;
         public MapBehaviour Map;
-        public float VoronoiFrequency = 0.025f;
         public int RandomWalkSteps = 5000000;
         public int Smoothing = 10;
-        
-        internal enum TileType
-        {
-            Water = -2,
-            UnassignedLand = -1,
-            AssignedLand = 0
-        }
-        
-        private FastNoise _noiseGenerator;
+        public float VoronoiFrequency = 0.025f;
 
         public void GenerateMap()
         {
@@ -34,29 +27,25 @@ namespace Map
             _noiseGenerator.SetNoiseType(FastNoise.NoiseType.Cellular);
             _noiseGenerator.SetFrequency(VoronoiFrequency);
 
-            for (int x = 0; x < Map.mapObject.width; x++)
+            for (var x = 0; x < Map.mapObject.width; x++)
+            for (var y = 0; y < Map.mapObject.height; y++)
             {
-                for (int y = 0; y < Map.mapObject.height; y++)
+                var noiseVal = _noiseGenerator.GetNoise01(x, y);
+                var probability = 1.0f / Map.mapObject.landTiles.Length;
+                if (grid[x, y] == TileType.UnassignedLand)
                 {
-                    float noiseVal = _noiseGenerator.GetNoise01(x, y);
-                    float probability = 1.0f / Map.landBiomes.GetList().Length;
-                    if (grid[x, y] == TileType.UnassignedLand)
-                    {
-                        for (int i = 0; i < Map.landBiomes.GetList().Length; i++)
+                    for (var i = 0; i < Map.mapObject.landTiles.Length; i++)
+                        if (noiseVal > probability * i && noiseVal < probability * (i + 1))
                         {
-                            if (noiseVal > probability * i && noiseVal < probability * (i + 1))
-                            {
-                                grid[x, y] = TileType.AssignedLand;
-                                Map.tilemap.SetTile(new Vector3Int(x, y), Map.landBiomes.GetList()[i]);
-                                Map.mapObject.tileIndices[Map.mapObject.width * y + x] = i;
-                            }
+                            grid[x, y] = TileType.AssignedLand;
+                            Map.tilemap.SetTile(new Vector3Int(x, y), Map.mapObject.landTiles[i]);
+                            Map.mapObject.tileIndices[Map.mapObject.width * y + x] = i;
                         }
-                    }
-                    else if (grid[x, y] == TileType.Water)
-                    {
-                        Map.tilemap.SetTile(new Vector3Int(x, y), Map.mapObject.water);
-                        Map.mapObject.tileIndices[Map.mapObject.width * y + x] = MapScriptableObject.WaterValue;
-                    }
+                }
+                else if (grid[x, y] == TileType.Water)
+                {
+                    Map.tilemap.SetTile(new Vector3Int(x, y), Map.mapObject.water);
+                    Map.mapObject.tileIndices[Map.mapObject.width * y + x] = MapScriptableObject.WaterValue;
                 }
             }
 
@@ -69,26 +58,22 @@ namespace Map
         {
             // create the grid, which will be filled with false value
             // true values define valid cells which are part of our visited map
-            TileType[,] grid = new TileType[Map.mapObject.width, Map.mapObject.height];
+            var grid = new TileType[Map.mapObject.width, Map.mapObject.height];
 
             // fill with entirely water
-            for (int x = 0; x < Map.mapObject.width; x++)
-            {
-                for (int y = 0; y < Map.mapObject.height; y++)
-                {
-                    grid[x, y] = TileType.Water;
-                }
-            }
+            for (var x = 0; x < Map.mapObject.width; x++)
+            for (var y = 0; y < Map.mapObject.height; y++)
+                grid[x, y] = TileType.Water;
 
             // choose a random starting point
-            System.Random rnd = new System.Random();
-            Vector2Int curr_pos = new Vector2Int(rnd.Next(Map.mapObject.width), rnd.Next(Map.mapObject.height));
+            var rnd = new Random();
+            var curr_pos = new Vector2Int(rnd.Next(Map.mapObject.width), rnd.Next(Map.mapObject.height));
 
             // register this position in the grid as land
             grid[curr_pos.x, curr_pos.y] = TileType.UnassignedLand;
 
             // define allowed movements: left, up, right, down
-            List<Vector2Int> allowed_movements = new List<Vector2Int>
+            var allowed_movements = new List<Vector2Int>
             {
                 Vector2Int.left,
                 Vector2Int.up,
@@ -97,8 +82,7 @@ namespace Map
             };
 
             // iterate on the number of steps and move around
-            for (int id_step = 0; id_step < RandomWalkSteps; id_step++)
-            {
+            for (var id_step = 0; id_step < RandomWalkSteps; id_step++)
                 // for each step, we try to find a new cell to go to.
                 // We are not guaranteed to find a position that is valid (i.e. inside the grid)
                 // So we use a while loop to allow us to check multiple positions and break out of it
@@ -106,9 +90,10 @@ namespace Map
                 while (true)
                 {
                     // choose a random direction
-                    Vector2Int new_pos = curr_pos + allowed_movements[rnd.Next(allowed_movements.Count)];
+                    var new_pos = curr_pos + allowed_movements[rnd.Next(allowed_movements.Count)];
                     // check if the new position is in the grid
-                    if (new_pos.x >= 0 && new_pos.x < Map.mapObject.width && new_pos.y >= 0 && new_pos.y < Map.mapObject.height)
+                    if (new_pos.x >= 0 && new_pos.x < Map.mapObject.width && new_pos.y >= 0 &&
+                        new_pos.y < Map.mapObject.height)
                     {
                         // this is a valid position, we set it in the grid
                         grid[new_pos.x, new_pos.y] = TileType.UnassignedLand;
@@ -120,7 +105,6 @@ namespace Map
                         break;
                     }
                 }
-            }
 
             return grid;
         }
@@ -131,18 +115,14 @@ namespace Map
             // at this point water = -2 and land = -1
             // create a tracker for valid points by subsection for the diffusion process
             List<List<Vector2Int>> recorded_points = new();
-            for (int i = 0; i < Map.landBiomes.GetList().Length; i++)
-            {
-                recorded_points.Add(new());
-            }
+            for (var i = 0; i < Map.mapObject.landTiles.Length; i++) recorded_points.Add(new List<Vector2Int>());
 
             // create a counter to keep track of the number of unallocated cells 
-            int nb_free_cells = Map.mapObject.width * Map.mapObject.height;
+            var nb_free_cells = Map.mapObject.width * Map.mapObject.height;
 
             // set up the initial points for the process
-            System.Random rng = new();
-            for (int id_subsection = 0; id_subsection < Map.landBiomes.GetList().Length; id_subsection++)
-            {
+            Random rng = new();
+            for (var id_subsection = 0; id_subsection < Map.mapObject.landTiles.Length; id_subsection++)
                 while (true)
                 {
                     // find a random point 
@@ -162,48 +142,37 @@ namespace Map
                         break;
                     }
                 }
-            }
 
             // Diffusion process moves from a given point to another point in a one cell movement so we're setting the directions here as a reusable element
             Vector2Int[] directions = { Vector2Int.left, Vector2Int.up, Vector2Int.right, Vector2Int.down };
 
             // now we can start filling the grid 
             while (nb_free_cells > 0)
-            {
-                for (int id_subsection = 0; id_subsection < Map.landBiomes.GetList().Length; id_subsection++)
+                for (var id_subsection = 0; id_subsection < Map.mapObject.landTiles.Length; id_subsection++)
                 {
                     // check if there are tracked points for this subsection 
-                    if (recorded_points[id_subsection].Count == 0)
-                    {
-                        continue;
-                    }
+                    if (recorded_points[id_subsection].Count == 0) continue;
 
                     // choose a random point from the tracked points 
-                    int id_curr_point = rng.Next(recorded_points[id_subsection].Count);
+                    var id_curr_point = rng.Next(recorded_points[id_subsection].Count);
 
-                    Vector2Int curr_point = recorded_points[id_subsection][id_curr_point];
+                    var curr_point = recorded_points[id_subsection][id_curr_point];
 
                     // choose a direction at random
-                    Vector2Int new_point = curr_point + directions[rng.Next(4)];
+                    var new_point = curr_point + directions[rng.Next(4)];
 
                     // check if the new point is in the grid
-                    if (new_point.x < 0 || new_point.y < 0 || new_point.x >= Map.mapObject.width || new_point.y >= Map.mapObject.height)
-                    {
-                        continue;
-                    }
+                    if (new_point.x < 0 || new_point.y < 0 || new_point.x >= Map.mapObject.width ||
+                        new_point.y >= Map.mapObject.height) continue;
 
                     // next check if the new point is already occupied and skip this direction if it is
-                    if (grid[new_point.x, new_point.y] != -1)
-                    {
-                        continue;
-                    }
+                    if (grid[new_point.x, new_point.y] != -1) continue;
 
                     // else we can record this new point in our tracker and set it in the grid 
                     grid[new_point.x, new_point.y] = id_subsection;
                     recorded_points[id_subsection].Add(new_point);
                     nb_free_cells--;
                 }
-            }
 
             return grid;
         }
@@ -220,35 +189,26 @@ namespace Map
 
         private TileType[,] Dilation(TileType[,] grid)
         {
-            TileType[,] result = new TileType[Map.mapObject.width, Map.mapObject.height];
+            var result = new TileType[Map.mapObject.width, Map.mapObject.height];
 
-            for (int x = 0; x < Map.mapObject.width; x++)
+            for (var x = 0; x < Map.mapObject.width; x++)
+            for (var y = 0; y < Map.mapObject.height; y++)
             {
-                for (int y = 0; y < Map.mapObject.height; y++)
+                var maxVal = grid[x, y];
+                for (var i = -Smoothing; i <= Smoothing; i++)
+                for (var j = -Smoothing; j <= Smoothing; j++)
                 {
-                    TileType maxVal = grid[x, y];
-                    for (int i = -Smoothing; i <= Smoothing; i++)
+                    var newX = x + i;
+                    var newY = y + j;
+                    if (newX >= 0 && newX < Map.mapObject.width && newY >= 0 && newY < Map.mapObject.height)
                     {
-                        for (int j = -Smoothing; j <= Smoothing; j++)
-                        {
-                            int newX = x + i;
-                            int newY = y + j;
-                            if (newX >= 0 && newX < Map.mapObject.width && newY >= 0 && newY < Map.mapObject.height)
-                            {
-                                if (Math.Max((int)maxVal, (int)grid[newX, newY]) == -1)
-                                {
-                                    maxVal = TileType.UnassignedLand;
-                                }
-                                else if (Math.Max((int)maxVal, (int)grid[newX, newY]) == -2)
-                                {
-                                    maxVal = TileType.Water;
-                                }
-                            }
-                        }
+                        if (Math.Max((int)maxVal, (int)grid[newX, newY]) == -1)
+                            maxVal = TileType.UnassignedLand;
+                        else if (Math.Max((int)maxVal, (int)grid[newX, newY]) == -2) maxVal = TileType.Water;
                     }
-
-                    result[x, y] = maxVal;
                 }
+
+                result[x, y] = maxVal;
             }
 
             return result;
@@ -256,38 +216,36 @@ namespace Map
 
         private TileType[,] Erosion(TileType[,] grid)
         {
-            TileType[,] result = new TileType[Map.mapObject.width, Map.mapObject.height];
+            var result = new TileType[Map.mapObject.width, Map.mapObject.height];
 
-            for (int x = 0; x < Map.mapObject.width; x++)
+            for (var x = 0; x < Map.mapObject.width; x++)
+            for (var y = 0; y < Map.mapObject.height; y++)
             {
-                for (int y = 0; y < Map.mapObject.height; y++)
+                var minVal = grid[x, y];
+                for (var i = -Smoothing; i <= Smoothing; i++)
+                for (var j = -Smoothing; j <= Smoothing; j++)
                 {
-                    TileType minVal = grid[x, y];
-                    for (int i = -Smoothing; i <= Smoothing; i++)
+                    var newX = x + i;
+                    var newY = y + j;
+                    if (newX >= 0 && newX < Map.mapObject.width && newY >= 0 && newY < Map.mapObject.height)
                     {
-                        for (int j = -Smoothing; j <= Smoothing; j++)
-                        {
-                            int newX = x + i;
-                            int newY = y + j;
-                            if (newX >= 0 && newX < Map.mapObject.width && newY >= 0 && newY < Map.mapObject.height)
-                            {
-                                if (Math.Min((int)minVal, (int)grid[newX, newY]) == -2)
-                                {
-                                    minVal = TileType.Water;
-                                }
-                                else if (Math.Min((int)minVal, (int)grid[newX, newY]) == -1)
-                                {
-                                    minVal = TileType.UnassignedLand;
-                                }
-                            }
-                        }
+                        if (Math.Min((int)minVal, (int)grid[newX, newY]) == -2)
+                            minVal = TileType.Water;
+                        else if (Math.Min((int)minVal, (int)grid[newX, newY]) == -1) minVal = TileType.UnassignedLand;
                     }
-
-                    result[x, y] = minVal;
                 }
+
+                result[x, y] = minVal;
             }
 
             return result;
+        }
+
+        internal enum TileType
+        {
+            Water = -2,
+            UnassignedLand = -1,
+            AssignedLand = 0
         }
     }
 }
