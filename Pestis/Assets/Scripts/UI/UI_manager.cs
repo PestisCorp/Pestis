@@ -33,39 +33,17 @@ public class UI_Manager : MonoBehaviour
     public GameObject moveButtonInfo;
 
     public bool moveFunctionality;
-
+    
+    // References to notification system objects
     public GameObject messagePrefab;
     public Transform parentTransform;
     public float displayTime = 5f;
     public float fadeDuration = 1f;
-    public float verticalSpacing = 30f;
-
-    private List<TextMeshProUGUI> _activeNotifications = new List<TextMeshProUGUI>();
     
     private bool displayResourceInfo;
-
-    public void AddNotification(string message)
-    {
-        GameObject newMessage = Instantiate(messagePrefab, parentTransform);
-        newMessage.SetActive(true);
-        newMessage.GetComponent<TMP_Text>().text = message;
-        StartCoroutine(RemoveMessage(newMessage));
-    }
-
-    private IEnumerator RemoveMessage(GameObject message)
-    {
-        yield return new WaitForSeconds(displayTime);
-        TMP_Text textComponent = message.GetComponent<TMP_Text>();
-        CanvasGroup canvasGroup = message.AddComponent<CanvasGroup>();
-        float elapsedTime = 0f;
-        while (elapsedTime < fadeDuration)
-        {
-            elapsedTime += Time.deltaTime;
-            canvasGroup.alpha = 1 - (elapsedTime / fadeDuration);
-            yield return null;
-        }
-        Destroy(message);
-    }
+    
+    // Called by EvolutionManager every time a new mutation is acquired
+    
     
     // Start is called before the first frame update
     private void Start()
@@ -390,6 +368,30 @@ public class UI_Manager : MonoBehaviour
     public void ToggleHordeSplitPanel()
     {
         hordeSplitPanel.SetActive(!hordeSplitPanel.activeSelf);
+    }
+    
+    public void AddNotification(string message, Color hordeColor)
+    {
+        GameObject newMessage = Instantiate(messagePrefab, parentTransform);
+        newMessage.SetActive(true);
+        newMessage.GetComponent<TMP_Text>().color = hordeColor;
+        newMessage.GetComponent<TMP_Text>().text = message;
+        StartCoroutine(RemoveMessage(newMessage));
+    }
+    
+    // Removes a notification after 5 seconds, during which it fades out
+    private IEnumerator RemoveMessage(GameObject message)
+    {
+        yield return new WaitForSeconds(displayTime);
+        CanvasGroup canvasGroup = message.AddComponent<CanvasGroup>();
+        float elapsedTime = 0f;
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            canvasGroup.alpha = 1 - (elapsedTime / fadeDuration);
+            yield return null;
+        }
+        Destroy(message);
     }
     
     

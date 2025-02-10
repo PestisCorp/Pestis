@@ -236,6 +236,11 @@ namespace Horde
             State.DamageReduction /= damageReduction;
         }
 
+        public void SetBirthRate(double birthRate)
+        {
+            State.BirthRate = birthRate;
+        }
+
         public PopulationState GetState()
         {
             return State;

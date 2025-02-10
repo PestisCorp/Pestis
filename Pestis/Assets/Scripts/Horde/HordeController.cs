@@ -346,7 +346,6 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         {
             _populationController = GetComponent<PopulationController>();
             Player = GetComponentInParent<Player>();
-
             _hordeColor = new Color(
                 UnityEngine.Random.Range(0.6f, 1.0f),
                 UnityEngine.Random.Range(0.6f, 1.0f),
