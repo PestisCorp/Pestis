@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -13,85 +13,68 @@ namespace Map
         public int height = 1024;
         public TileBase water;
         public LandBiomesList landBiomes;
+        [HideInInspector] public TextAsset savedMap;
         [HideInInspector] public int[] tileIndices;
-    
-        private static readonly string FilePath = $"{Application.dataPath}/Scripts/Map/SavedMap.dat";
+        
+        internal const int WaterValue = Int32.MaxValue;
 
         private void Start()
         {
-            Load();
+            LoadRuntime();
         }
-
-        // Credit: https://www.red-gate.com/simple-talk/development/dotnet-development/saving-game-data-with-unity/
+        
         public void Save()
         {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Create(FilePath);
             SaveData data = new(width, height, tileIndices);
-            bf.Serialize(file, data);
-            file.Close();
+            savedMap = data.MapBytesFile;
+            File.WriteAllBytes("Assets/Map/map.map", savedMap.bytes);
             Debug.Log("Map saved");
         }
-    
-        public void Load()
+
+        public void LoadEditor()
         {
-            if (File.Exists(FilePath))
+            byte[] fileBytes = File.ReadAllBytes("Assets/Map/map.map");
+            savedMap = new TextAsset(fileBytes);
+        }
+    
+        public void LoadRuntime()
+        {
+            tilemap.transform.position = new Vector2(0, -height / 4.0f);
+            
+            if (savedMap)
             {
-                BinaryFormatter bf = new();
-                FileStream file = File.Open(FilePath, FileMode.Open);
-                SaveData data = (SaveData)bf.Deserialize(file);
-                file.Close();
-                width = data.width;
-                height = data.height;
-                tileIndices = data.tiles;
+                var biomeList = landBiomes.GetList();
+                
+                width = BitConverter.ToInt32(savedMap.bytes, 0);
+                height = BitConverter.ToInt32(savedMap.bytes, 4);
+
+                var mapBytes = savedMap.GetData<byte>();
+                
+                int startIndex = 8;
                 for (int x = 0; x < width; ++x)
                 {
                     for (int y = 0; y < height; ++y)
                     {
-                        if (tileIndices[y * height + x] == -2)
+                        int currentTileIndex = BitConverter.ToInt32(mapBytes.Slice(startIndex, 4).ToArray(), 0);
+                        if (currentTileIndex == WaterValue)
                         {
                             tilemap.SetTile(new Vector3Int(x, y), water);
                         }
                         else
                         {
-                            tilemap.SetTile(new Vector3Int(x, y), landBiomes.GetList()[tileIndices[y * height + x]]);
+                            tilemap.SetTile(new Vector3Int(x, y), biomeList[currentTileIndex]);
                         }
+
+                        startIndex += 4;
                     }
                 }
-                Debug.Log("Map save loaded");
+                
+                Debug.Log("Map loaded");
             }
             else
             {
-                Debug.LogError("No map save found");
+                Debug.LogError("No map file found");
             }
-        }
-        
-        public void Reset()
-        {
-            if (File.Exists(FilePath))
-            {
-                File.Delete(FilePath);
-                Debug.Log("Map save reset");
-            }
-            else
-            {
-                Debug.LogError("No map save found to reset");
-            }
-        }
-    }
-    
-    [Serializable]
-    public struct SaveData
-    {
-        public int width;
-        public int height;
-        public int[] tiles;
-        
-        public SaveData(int width, int height, int[] tiles)
-        {
-            this.width = width;
-            this.height = height;
-            this.tiles = tiles;
         }
     }
 }

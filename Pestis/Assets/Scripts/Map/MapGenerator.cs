@@ -13,16 +13,18 @@ namespace Map
         public int RandomWalkSteps = 5000000;
         public int Smoothing = 10;
         
-        private enum TileType
+        internal enum TileType
         {
             Water = -2,
             UnassignedLand = -1,
             AssignedLand = 0
         }
+        
         private FastNoise _noiseGenerator;
 
         public void GenerateMap()
         {
+            Map.tileIndices = new int[Map.width * Map.height];
             Voronoi(Dilation(RandomWalk()));
         }
 
@@ -46,14 +48,14 @@ namespace Map
                             {
                                 grid[x, y] = TileType.AssignedLand;
                                 Map.tilemap.SetTile(new Vector3Int(x, y), Map.landBiomes.GetList()[i]);
-                                Map.tileIndices[Map.height * y + x] = i;
+                                Map.tileIndices[Map.width * y + x] = i;
                             }
                         }
                     }
                     else if (grid[x, y] == TileType.Water)
                     {
                         Map.tilemap.SetTile(new Vector3Int(x, y), Map.water);
-                        Map.tileIndices[Map.height * y + x] = (int)TileType.Water;
+                        Map.tileIndices[Map.width * y + x] = Map.WaterValue;
                     }
                 }
             }
