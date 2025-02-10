@@ -80,5 +80,8 @@ Pestis/.vscode/
 Pestis/.idea/
 
 .idea/
+/[Aa]ssets/charactor_design.meta
+/[Aa]ssets/charactor_design/archive.meta
+/[Aa]ssets/charactor_design/rat.meta
 
 *mono_crash*
