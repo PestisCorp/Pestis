@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5474678161016888885
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6611579154936153208}
+  - component: {fileID: 3644322278170520092}
+  m_Layer: 0
+  m_Name: UI_manager
+  m_TagString: UI_Manager
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6611579154936153208
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5474678161016888885}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3644322278170520092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5474678161016888885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 633f174f8c9ce49e194d06a6e828db3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputHandler: {fileID: 0}
+  localPlayer: {fileID: 0}
+  infoPanel: {fileID: 0}
+  attackPanel: {fileID: 0}
+  mutationPopUp: {fileID: 0}
+  toolbar: {fileID: 0}
+  resourceStats: {fileID: 0}
+  hordeSplitPanel: {fileID: 0}
+  cheeseTotalText: {fileID: 0}
+  cheeseRateText: {fileID: 0}
+  popTotalText: {fileID: 0}
+  hordeTotalText: {fileID: 0}
+  moveButton: {fileID: 0}
+  moveButtonInfo: {fileID: 0}
+  moveFunctionality: 0
