@@ -98,12 +98,7 @@ namespace Editor
                 _map.mapObject.Save();
                 _map.tilemap.ClearAllTiles();
             }
-
-            if (GUILayout.Button("Load Map"))
-            {
-                _map.mapObject.LoadEditor();
-            }
-
+            
             EditorGUILayout.EndHorizontal();
         }
     }

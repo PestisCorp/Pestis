@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -15,15 +16,15 @@ namespace Map
         {
             tilemap.transform.position = new Vector2(0, -mapObject.height / 4.0f);
 
-            mapObject.savedMap = new TextAsset(mapObject.mapBytes);
-            if (mapObject.savedMap)
+            if (mapObject.mapBytes.Count() != 0)
             {
                 var biomeList = landBiomes.GetList();
-                
-                mapObject.width = BitConverter.ToInt32(mapObject.savedMap.bytes, 0);
-                mapObject.height = BitConverter.ToInt32(mapObject.savedMap.bytes, 4);
 
-                var mapBytes = mapObject.savedMap.GetData<byte>();
+                var mapBytes = new NativeArray<byte>(mapObject.mapBytes, Allocator.Persistent);
+                
+                mapObject.width = BitConverter.ToInt32(mapBytes.Slice(0, 4).ToArray(), 0);
+                mapObject.height = BitConverter.ToInt32(mapBytes.Slice(4, 4).ToArray(), 0);
+
                 
                 int startIndex = 8;
                 for (int x = 0; x < mapObject.width; ++x)

@@ -14,7 +14,6 @@ namespace Map
         public int width = 1024;
         public int height = 1024;
         public TileBase water;
-        [HideInInspector] public TextAsset savedMap;
         [HideInInspector] public int[] tileIndices;
         [HideInInspector] public byte[] mapBytes;
         
@@ -26,25 +25,11 @@ namespace Map
         public void Save()
         {
             SaveData data = new(width, height, tileIndices);
-            savedMap = data.MapBytesFile;
             mapBytes = data.MapBytesFile.bytes;
-            File.WriteAllBytes("Assets/Map/map.map", savedMap.bytes);
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
             EditorUtility.SetDirty(this);
             PrefabUtility.RecordPrefabInstancePropertyModifications(this);
             Debug.Log("Map saved");
         }
-
-        public void LoadEditor()
-        {
-            byte[] fileBytes = File.ReadAllBytes("Assets/Map/map.map");
-            savedMap = new TextAsset(fileBytes);
-            EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
-            EditorUtility.SetDirty(this);
-            PrefabUtility.RecordPrefabInstancePropertyModifications(this);
-            Debug.Log("Map loaded");
-        }
-    
-
     }
 }
