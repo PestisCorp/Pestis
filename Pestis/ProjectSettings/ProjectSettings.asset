@@ -50,7 +50,7 @@ PlayerSettings:
   m_ActiveColorSpace: 1
   unsupportedMSAAFallback: 0
   m_SpriteBatchMaxVertexCount: 65535
-  m_SpriteBatchVertexThreshold: 300
+  m_SpriteBatchVertexThreshold: 8000
   m_MTRendering: 1
   mipStripping: 0
   numberOfMipsStripped: 0
@@ -97,8 +97,8 @@ PlayerSettings:
   resizableWindow: 1
   useMacAppStoreValidation: 0
   macAppStoreCategory: public.app-category.games
-  gpuSkinning: 0
-  meshDeformation: 0
+  gpuSkinning: 1
+  meshDeformation: 2
   xboxPIXTextureCapture: 0
   xboxEnableAvatar: 0
   xboxEnableKinect: 0
@@ -185,7 +185,7 @@ PlayerSettings:
   CreateWallpaper: 0
   androidSplitApplicationBinary: 0
   keepLoadedShadersAlive: 0
-  StripUnusedMeshComponents: 0
+  StripUnusedMeshComponents: 1
   strictShaderVariantMatching: 0
   VertexChannelCompressionMask: 4054
   iPhoneSdkVersion: 988
@@ -290,9 +290,14 @@ PlayerSettings:
   androidSymbolsSizeThreshold: 800
   m_BuildTargetIcons: []
   m_BuildTargetPlatformIcons: []
-  m_BuildTargetBatching: []
+  m_BuildTargetBatching:
+  - m_BuildTarget: WebGL
+    m_StaticBatching: 1
+    m_DynamicBatching: 1
   m_BuildTargetShaderSettings: []
-  m_BuildTargetGraphicsJobs: []
+  m_BuildTargetGraphicsJobs:
+  - m_BuildTarget: WebGLSupport
+    m_GraphicsJobs: 1
   m_BuildTargetGraphicsJobMode: []
   m_BuildTargetGraphicsAPIs: []
   m_BuildTargetVRSettings: []
@@ -582,9 +587,10 @@ PlayerSettings:
   webGLWebAssemblyTable: 0
   webGLWebAssemblyBigInt: 1
   webGLCloseOnQuit: 0
-  webWasm2023: 0
+  webWasm2023: 1
   scriptingDefineSymbols:
     Standalone: FUSION_LOGLEVEL_INFO;FUSION_WEAVER;FUSION2
+    WebGL: FUSION_WEAVER;FUSION2;FUSION_LOGLEVEL_INFO
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
