@@ -49,6 +49,9 @@ namespace Map
             {
                 Debug.LogError("No map file found");
             }
+
+            // Enable static batching for all tilemaps
+            StaticBatchingUtility.Combine(tilemap.gameObject.transform.parent.gameObject);
         }
     }
 }
