@@ -9,6 +9,7 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using Random = UnityEngine.Random;
 
 namespace Horde
 {
@@ -55,7 +56,6 @@ namespace Horde
         /// <summary>
         ///     Seconds until we can start simulating population again after combat.
         /// </summary>
-        
         public float PopulationCooldown;
 
         private readonly List<RatController> _spawnedRats = new();
@@ -80,6 +80,11 @@ namespace Horde
         private Light2D _selectionLightTerrain;
 
         [CanBeNull] private Action OnArriveAtTarget;
+
+        /// <summary>
+        ///     Time in seconds since game start when the horde last finished combat
+        /// </summary>
+        public float lastInCombat { get; private set; }
 
         /// <summary>
         ///     The horde we're currently damaging. Our rats will animate against them.
@@ -114,7 +119,7 @@ namespace Horde
         [CanBeNull]
         private CombatController CurrentCombatController { get; set; }
 
-        public bool InCombat => CurrentCombatController && CurrentCombatController.Participators.Count != 0;
+        public bool InCombat => CurrentCombatController && CurrentCombatController.HordeInCombat(this);
 
         private void Awake()
         {
@@ -207,7 +212,7 @@ namespace Horde
 
             Gizmos.color = Color.blue;
             Gizmos.DrawWireCube(HordeBounds.center, HordeBounds.size);
-            Handles.Label(HordeBounds.center, $@"{Object.StateAuthority}
+            Handles.Label(HordeBounds.center, $@"{Player.Username}
 {Object.Id}
 {(HasStateAuthority ? "Local" : "Remote")}
 Combat: {InCombat}
@@ -240,20 +245,23 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             {
                 var enemy = CurrentCombatController!.GetNearestEnemy(this);
 
-                // If we chose to be in combat, move towards enemy
-                if (CurrentCombatController.HordeIsVoluntary(this))
-                    // Teleports target, not us
-                    targetLocation.Teleport(enemy.GetBounds().center);
+                if (enemy) // Could be no enemy if we just joined it
+                {
+                    // If we chose to be in combat, move towards enemy
+                    if (CurrentCombatController.HordeIsVoluntary(this))
+                        // Teleports target, not us
+                        targetLocation.Teleport(enemy.GetBounds().center);
 
-                // If close enough, start dealing damage, and animating rats.
-                if (enemy.GetBounds().Intersects(HordeBounds))
-                {
-                    enemy.DealDamageRpc(_populationController.GetState().Damage);
-                    HordeBeingDamaged = enemy;
-                }
-                else
-                {
-                    HordeBeingDamaged = null;
+                    // If close enough, start dealing damage, and animating rats.
+                    if (enemy.GetBounds().Intersects(HordeBounds))
+                    {
+                        enemy.DealDamageRpc(_populationController.GetState().Damage);
+                        HordeBeingDamaged = enemy;
+                    }
+                    else
+                    {
+                        HordeBeingDamaged = null;
+                    }
                 }
             }
         }
@@ -283,7 +291,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             // If the POI isn't being defended, we can just take over without combat.
             if (TargetPoi.StationedHordes.Count == 0)
             {
-                TargetPoi.ChangeControllerRpc(Player);
+                TargetPoi.ChangeController(Player);
                 StationAtRpc(TargetPoi);
                 return;
             }
@@ -298,7 +306,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         public void StationAtRpc(POIController poi)
         {
             Debug.Log($"Adding myself (horde {Object.Id}) to POI: {poi.Object.Id}");
-            poi.StationHordeRpc(this);
+            poi.AttackRpc(this);
             Move(poi.transform.position);
             StationedAt = poi;
             // We're not targeting a POI if we've just taken one over.
@@ -361,6 +369,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             _populationController = GetComponent<PopulationController>();
             Player = GetComponentInParent<Player>();
 
+
             if (HasStateAuthority) // Ensure only the host assigns colors
             {
                 HordeColorIndex = Object.StateAuthority.PlayerId + Player.GetHordeCount() - 1;
@@ -371,7 +380,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
 
             _selectionLightTerrain = transform.Find("SelectionLightTerrain").gameObject.GetComponent<Light2D>();
             _selectionLightPoi = transform.Find("SelectionLightPOI").gameObject.GetComponent<Light2D>();
-            if (!HasStateAuthority)
+            if (!Player.IsLocal)
             {
                 _selectionLightPoi.color = Color.red;
                 _selectionLightTerrain.color = Color.red;
@@ -420,6 +429,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void DealDamageRpc(float damage)
         {
+            Debug.Log($"Damage Reduction: {_populationController.GetState().DamageReduction}");
             TotalHealth -= damage * _populationController.GetState().DamageReduction;
         }
 
@@ -466,6 +476,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             StationedAt = null;
             CurrentCombatController = null;
             PopulationCooldown = 15.0f;
+            lastInCombat = Time.time;
         }
 
         public void AttackPoi(POIController poi)
@@ -488,6 +499,9 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
 
         public void AttackHorde(HordeController target)
         {
+            // Don't fight if we're below 10 rats
+            if (TotalHealth < 10 * _populationController.GetState().HealthPerRat) return;
+
             // We're already fighting that horde!
             if (CurrentCombatController && CurrentCombatController.HordeInCombat(target)) return;
 
@@ -522,6 +536,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             CurrentCombatController = null;
             HordeBeingDamaged = null;
             PopulationCooldown = 20.0f;
+            lastInCombat = Time.time;
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]

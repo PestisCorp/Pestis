@@ -87,7 +87,7 @@ public class InputHandler : MonoBehaviour
         }
 
         // If right-clicked, and local player is allowed to control the selected horde
-        if (mouse.rightButton.wasPressedThisFrame && (LocalPlayer?.selectedHorde?.HasStateAuthority ?? false))
+        if (mouse.rightButton.wasPressedThisFrame && (LocalPlayer?.selectedHorde?.Player.IsLocal ?? false))
         {
             Vector3 mousePos = mouse.position.ReadValue();
 
@@ -96,6 +96,7 @@ public class InputHandler : MonoBehaviour
             if (MoveToPoiIfClicked(mousePos)) return;
             if (clickedHorde && clickedHorde.Player != LocalPlayer?.selectedHorde.Player)
             {
+                Debug.Log("Attacking horde");
                 LocalPlayer?.selectedHorde.AttackHorde(clickedHorde);
             }
             else
