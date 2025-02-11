@@ -390,9 +390,14 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
 
         private int GetNextAvailableColorIndex()
         {
-            int assignedIndex = nextColorIndex;
-            nextColorIndex += 1;
-            return assignedIndex;
+            if (HasStateAuthority)
+            {
+                int assignedIndex = GameManager.Instance.nextHordeColorIndex;
+                GameManager.Instance.nextHordeColorIndex += 1;
+                return assignedIndex;
+            }
+
+            return 0;
         }
 
 
