@@ -13,7 +13,21 @@ using UnityEngine.Rendering.Universal;
 namespace Horde
 {
     public class HordeController : NetworkBehaviour
+
     {
+        private static readonly Color[] predefinedHordeColors =
+        {
+            new(1.0f, 0.0f, 0.0f, 1.0f), // Red
+            new(0.0f, 1.0f, 0.0f, 1.0f), // Green
+            new(0.0f, 0.0f, 1.0f, 1.0f), // Blue
+            new(1.0f, 1.0f, 0.0f, 1.0f), // Yellow
+            new(1.0f, 0.5f, 0.0f, 1.0f), // Orange
+            new(0.5f, 0.0f, 0.5f, 1.0f), // Purple
+            new(0.0f, 1.0f, 1.0f, 1.0f), // Cyan
+            new(1.0f, 0.0f, 1.0f, 1.0f) // Magenta
+        };
+
+        private static int nextColorIndex; // Tracks the next color index
         public Player Player;
 
         public GameObject ratPrefab;
@@ -90,7 +104,7 @@ namespace Horde
 
         [Networked] private Color _hordeColor { get; set; }
 
-        [Networked] private int HordeColorIndex { get; set; } = -1; // Track assigned color index
+        [Networked] private int HordeColorIndex { get; set; } // Track assigned color index
 
         /// <summary>
         ///     Can only be in one combat instance at a time.
@@ -100,20 +114,6 @@ namespace Horde
         private CombatController CurrentCombatController { get; set; }
 
         public bool InCombat => CurrentCombatController && CurrentCombatController.Participators.Count != 0;
-
-        private static readonly Color[] predefinedHordeColors =
-        {
-            new Color(1.0f, 0.0f, 0.0f, 1.0f), // Red
-            new Color(0.0f, 1.0f, 0.0f, 1.0f), // Green
-            new Color(0.0f, 0.0f, 1.0f, 1.0f), // Blue
-            new Color(1.0f, 1.0f, 0.0f, 1.0f), // Yellow
-            new Color(1.0f, 0.5f, 0.0f, 1.0f), // Orange
-            new Color(0.5f, 0.0f, 0.5f, 1.0f), // Purple
-            new Color(0.0f, 1.0f, 1.0f, 1.0f), // Cyan
-            new Color(1.0f, 0.0f, 1.0f, 1.0f) // Magenta
-        };
-
-        private static int nextColorIndex; // Tracks the next color index
 
         private void Awake()
         {
@@ -229,6 +229,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             TotalHealth = _populationController.GetState().HealthPerRat * devToolsTotalRats;
             targetLocation.transform.position = devToolsTargetLocation;
         }
+
 
         public override void FixedUpdateNetwork()
         {
@@ -350,10 +351,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
 
                 indexesToRemove.Sort();
                 indexesToRemove.Reverse();
-                foreach (int index in indexesToRemove)
-                {
-                    _spawnedRats.RemoveAt(index);
-                }
+                foreach (var index in indexesToRemove) _spawnedRats.RemoveAt(index);
             }
         }
 
@@ -364,9 +362,10 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
 
             if (HasStateAuthority) // Ensure only the host assigns colors
             {
-                HordeColorIndex = GetNextAvailableColorIndex();
-                Debug.Log(HordeColorIndex);
-                _hordeColor = predefinedHordeColors[HordeColorIndex]; // Assign color based on index
+                HordeColorIndex = Object.StateAuthority.PlayerId + Player.GetHordeCount() - 1;
+                _hordeColor =
+                    predefinedHordeColors
+                        [HordeColorIndex % predefinedHordeColors.Length]; // Assign color based on index
             }
 
             _selectionLightTerrain = transform.Find("SelectionLightTerrain").gameObject.GetComponent<Light2D>();
@@ -386,18 +385,6 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
 
             // Needed to spawn in rats from joined session
             TotalHealthChanged();
-        }
-
-        private int GetNextAvailableColorIndex()
-        {
-            if (HasStateAuthority)
-            {
-                int assignedIndex = GameManager.Instance.nextHordeColorIndex;
-                GameManager.Instance.nextHordeColorIndex += 1;
-                return assignedIndex;
-            }
-
-            return 0;
         }
 
 
