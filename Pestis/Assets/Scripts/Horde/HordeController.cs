@@ -192,7 +192,7 @@ namespace Horde
 
             Gizmos.color = Color.blue;
             Gizmos.DrawWireCube(HordeBounds.center, HordeBounds.size);
-            Handles.Label(HordeBounds.center, $@"{Object.StateAuthority}
+            Handles.Label(HordeBounds.center, $@"{Player.Username}
 {Object.Id}
 {(HasStateAuthority ? "Local" : "Remote")}
 Combat: {InCombat}

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Horde;
+using MathNet.Numerics.Statistics;
 using MoreLinq.Extensions;
 using POI;
 using UnityEditor;
@@ -65,6 +66,8 @@ namespace Players
             var allPoi =
                 FindObjectsByType<POIController>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).ToList();
 
+            var medianHordeSize = allHordes.Select(horde => horde.TotalHealth).Median();
+
             // Check possible actions for each horde, exiting when a horde takes an action
             foreach (var myHorde in player.Hordes)
             {
@@ -119,7 +122,11 @@ namespace Players
 
                 // MANAGEMENT ACTIONS
 
-                // TODO - Split horde logic
+                if (myHorde.TotalHealth > 3 * medianHordeSize)
+                {
+                    player.SplitHorde(myHorde, 0.5f);
+                    return;
+                }
 
                 // If we're the sole defender of a POI, don't make any offensive actions
                 if (myHorde.StationedAt && myHorde.StationedAt.StationedHordes.Count == 1) return;
