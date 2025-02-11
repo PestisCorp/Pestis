@@ -122,7 +122,8 @@ namespace Players
 
                 // MANAGEMENT ACTIONS
 
-                if (myHorde.TotalHealth > 3 * medianHordeSize)
+                if (myHorde.TotalHealth > 3 * medianHordeSize &&
+                    myHorde.TotalHealth / myHorde.GetPopulationState().HealthPerRat > 10)
                 {
                     player.SplitHorde(myHorde, 0.5f);
                     return;
@@ -137,6 +138,8 @@ namespace Players
                 Dictionary<POIController, float> poiDesirabilities = new();
                 foreach (var poi in allPoi)
                 {
+                    if (poi.ControlledBy == player) continue;
+
                     // Skip POI if too far away
                     var sqrDistance = (poi.transform.position - myHorde.GetBounds().center).sqrMagnitude;
                     if (sqrDistance > AggressionRange) continue;
@@ -162,7 +165,36 @@ namespace Players
                     }
                 }
 
-                // TODO - Attack horde logic
+                // OFFENSIVE ACTIONS - HORDE TARGETING
+
+                Dictionary<HordeController, float> hordeDesirabilities = new();
+                foreach (var horde in allHordes)
+                {
+                    if (horde.Player == player) return;
+
+                    // Skip Horde if too far away
+                    var sqrDistance = (horde.transform.position - myHorde.GetBounds().center).sqrMagnitude;
+                    if (sqrDistance > AggressionRange) continue;
+
+                    var desirability = CalcCombatDesirability(myHorde, horde);
+
+                    desirability *= 1.0f - sqrDistance / AggressionRange;
+
+                    hordeDesirabilities.Add(horde, desirability);
+                }
+
+                if (hordeDesirabilities.Count != 0)
+                {
+                    var mostDesirable = hordeDesirabilities.Maxima(kvp => kvp.Value).First();
+
+                    if (Random.Range(0.0f, 1.0f) < mostDesirable.Value)
+                    {
+                        Debug.Log("Offensive attack");
+                        myHorde.AttackHorde(mostDesirable.Key);
+                        AggressionUncapped = 0.0f;
+                        return;
+                    }
+                }
             }
 
             // We took no actions, increase aggression

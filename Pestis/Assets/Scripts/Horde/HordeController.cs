@@ -9,6 +9,7 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using Random = UnityEngine.Random;
 
 namespace Horde
 {
@@ -41,7 +42,6 @@ namespace Horde
         /// <summary>
         ///     Seconds until we can start simulating population again after combat.
         /// </summary>
-        
         public float PopulationCooldown;
 
         private readonly List<RatController> _spawnedRats = new();
@@ -228,20 +228,23 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             {
                 var enemy = CurrentCombatController!.GetNearestEnemy(this);
 
-                // If we chose to be in combat, move towards enemy
-                if (CurrentCombatController.HordeIsVoluntary(this))
-                    // Teleports target, not us
-                    targetLocation.Teleport(enemy.GetBounds().center);
+                if (enemy) // Could be no enemy if we just joined it
+                {
+                    // If we chose to be in combat, move towards enemy
+                    if (CurrentCombatController.HordeIsVoluntary(this))
+                        // Teleports target, not us
+                        targetLocation.Teleport(enemy.GetBounds().center);
 
-                // If close enough, start dealing damage, and animating rats.
-                if (enemy.GetBounds().Intersects(HordeBounds))
-                {
-                    enemy.DealDamageRpc(_populationController.GetState().Damage);
-                    HordeBeingDamaged = enemy;
-                }
-                else
-                {
-                    HordeBeingDamaged = null;
+                    // If close enough, start dealing damage, and animating rats.
+                    if (enemy.GetBounds().Intersects(HordeBounds))
+                    {
+                        enemy.DealDamageRpc(_populationController.GetState().Damage);
+                        HordeBeingDamaged = enemy;
+                    }
+                    else
+                    {
+                        HordeBeingDamaged = null;
+                    }
                 }
             }
         }
@@ -349,9 +352,9 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             _populationController = GetComponent<PopulationController>();
             Player = GetComponentInParent<Player>();
             _hordeColor = new Color(
-                UnityEngine.Random.Range(0.6f, 1.0f),
-                UnityEngine.Random.Range(0.6f, 1.0f),
-                UnityEngine.Random.Range(0.6f, 1.0f),
+                Random.Range(0.6f, 1.0f),
+                Random.Range(0.6f, 1.0f),
+                Random.Range(0.6f, 1.0f),
                 1.0f
             );
 
