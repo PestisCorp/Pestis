@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[CreateAssetMenu]
+[CreateAssetMenu] [System.Serializable]
 public class BiomeClass : ScriptableObject
 {
     public BiomeTile[] TileList;
@@ -14,6 +14,7 @@ public class BiomeClass : ScriptableObject
     public int walkLength = 0;
     public int iteration = 0;
     public int strength = 0;
+
     //in game stuff
 
 

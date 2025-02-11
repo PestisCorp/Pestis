@@ -2880,7 +2880,7 @@ TilemapRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 1.5, y: 0.5, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 3
@@ -9448,7 +9448,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1770658069}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.33333334
+  m_Size: 0.3333333
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10000,7 +10000,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1102728857}
   m_HandleRect: {fileID: 1102728856}
   m_Direction: 2
-  m_Value: 0.9999998
+  m_Value: 1
   m_Size: 0.3333333
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -11902,8 +11902,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: i
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -13909,3 +13909,4 @@ SceneRoots:
   - {fileID: 228076841}
   - {fileID: 2006098371}
   - {fileID: 924928365}
+  - {fileID: 954311490}
