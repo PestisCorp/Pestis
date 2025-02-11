@@ -18,7 +18,7 @@ public class UI_Manager : MonoBehaviour
     public GameObject mutationPopUp;
     public GameObject toolbar;
     public GameObject resourceStats;
-    public GameObject hordeSplitPanel;
+    public GameObject splitPanel;
 
     // References to the resource text fields
     public TextMeshProUGUI cheeseTotalText;
@@ -80,7 +80,7 @@ public class UI_Manager : MonoBehaviour
     {
         if (infoPanel != null) infoPanel.SetActive(false);
         if (attackPanel != null) attackPanel.SetActive(false);
-        if (hordeSplitPanel != null) hordeSplitPanel.SetActive(false);
+        if (splitPanel != null) splitPanel.SetActive(false);
 
         // Ignoring the state of the tool bar, ensuring the default buttons are visible
         var toolbarButtons = GameObject.FindGameObjectsWithTag("UI_button_action");
@@ -94,7 +94,7 @@ public class UI_Manager : MonoBehaviour
 
     // Function to enable info panel
     // and update the text fields
-    public void EnableInfoPanel()
+    public void InfoPanelEnable()
     {
         ResetUI();
         if (infoPanel != null) infoPanel.SetActive(true);
@@ -123,13 +123,24 @@ public class UI_Manager : MonoBehaviour
     }
 
     // Function to disable info panel
-    public void DisableInfoPanel()
+    public void InfoPanelDisable()
     {
         if (infoPanel != null) infoPanel.SetActive(false);
     }
+    
+    //Pure toggle caused issue with reset UI order so changed to use disable and enable functions
+    public void InfoPanelToggle()
+    {
+        if (infoPanel.activeSelf)
+        {
+            InfoPanelDisable();
+        }
+        else 
+            InfoPanelEnable();
+    }
 
     // Function to enable attack panel
-    public void EnableAttackPanel()
+    public void AttackPanelEnable()
     {
         ResetUI();
         if (attackPanel != null) attackPanel.SetActive(true);
@@ -163,45 +174,78 @@ public class UI_Manager : MonoBehaviour
     }
 
     // Function to disable attack panel
-    public void DisableAttackPanel()
+    public void AttackPanelDisable()
     {
         if (attackPanel != null) attackPanel.SetActive(false);
     }
+    
+    public void AttackPanelToggle()
+    {
+        if (attackPanel.activeSelf)
+        {
+            AttackPanelDisable();
+        }
+        else 
+            AttackPanelEnable();
+    }
+    
+    // Function to disable horde split panel
+    public void SplitPanelDisable()
+    {
+        if (splitPanel != null) splitPanel.SetActive(false);
+    }
+    
+    // Function to enable horde split panel
+    public void SplitPanelEnable()
+    {
+        ResetUI();
+        if (splitPanel != null) splitPanel.SetActive(true);
+    }
+    
+    public void SplitPanelToggle()
+    {
+        if (splitPanel.activeSelf)
+        {
+            SplitPanelDisable();
+        }
+        else 
+            SplitPanelEnable();
+    }
 
     // Function to enable mutation pop-up
-    public void EnableMutationPopUp()
+    public void MutationPopUpEnable()
     {
         if (mutationPopUp != null) mutationPopUp.SetActive(true);
     }
 
     // Function to disable mutation pop-up
-    public void DisableMutationPopUp()
+    public void MutationPopUpDisable()
     {
         if (mutationPopUp != null) mutationPopUp.SetActive(false);
     }
 
     // Function to enable toolbar
-    public void EnableToolbar()
+    public void ToolbarEnable()
     {
         ResetUI();
         if (toolbar != null) toolbar.SetActive(true);
     }
 
     // Function to disable toolbar
-    public void DisableToolbar()
+    public void ToolbarDisable()
     {
         ResetUI();
         if (toolbar != null) toolbar.SetActive(false);
     }
 
     // Function to enable resource stats display
-    public void EnableResourceStats()
+    public void ResourceStatsEnable()
     {
         if (resourceStats != null) resourceStats.SetActive(true);
     }
 
     // Function to disable resource stats display
-    public void DisableResourceStats()
+    public void ResourceStatsDiable()
     {
         if (resourceStats != null) resourceStats.SetActive(false);
     }
@@ -356,9 +400,5 @@ public class UI_Manager : MonoBehaviour
                 new Color(colour.r * 0.75f, colour.g * 0.75f, colour.b * 0.75f, 1);
         }
     }
-
-    public void ToggleHordeSplitPanel()
-    {
-        hordeSplitPanel.SetActive(!hordeSplitPanel.activeSelf);
-    }
+    
 }

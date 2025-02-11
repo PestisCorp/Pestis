@@ -15,35 +15,37 @@ namespace UI
 
         private int SplitAmount =>
             (int)(_splitPercentage * InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats);
+        private int splitAmount;
+        private int maxPop;
 
         private void Update()
         {
             if (!InputHandler.Instance.LocalPlayer || !InputHandler.Instance.LocalPlayer!.selectedHorde) return;
 
-            if (InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats <
-                2 * PopulationController.INITIAL_POPULATION)
+            maxPop = InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats;
+
+            if (maxPop < 2 * PopulationController.INITIAL_POPULATION)
             {
                 selectedAmountText.text = "Too small to split";
+                maxAmountText.text = "";
                 button.interactable = false;
                 return;
             }
 
             button.interactable = true;
 
-            selectedAmountText.text = $"{SplitAmount}";
-            maxAmountText.text = $"{InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats}";
+            selectedAmountText.text = "Horde 1: " + $"{splitAmount}";
+            maxAmountText.text = "Horde 2: " + $"{maxPop - splitAmount}";
 
             // Both hordes must stay above initial population!
-            slider.minValue = (float)PopulationController.INITIAL_POPULATION /
-                              InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats;
-            slider.maxValue = (float)(InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats -
-                                      PopulationController.INITIAL_POPULATION) /
-                              InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats;
+            slider.minValue = PopulationController.INITIAL_POPULATION;
+            slider.maxValue = (maxPop - PopulationController.INITIAL_POPULATION);
         }
 
         private void OnEnable()
         {
-            _splitPercentage = slider.value;
+            splitAmount = maxPop / 2;
+            slider.value = splitAmount;
         }
 
         public void SplitHorde()
@@ -53,9 +55,9 @@ namespace UI
             gameObject.SetActive(false);
         }
 
-        public void SetHordeSplitNumber(float percentage)
+        public void SetHordeSplitNumber()
         {
-            _splitPercentage = percentage;
+            splitAmount = (int)slider.value;
         }
     }
 }
