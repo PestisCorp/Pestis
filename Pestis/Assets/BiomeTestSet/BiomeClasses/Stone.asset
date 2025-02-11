@@ -20,5 +20,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cab14d9d032db5776949d99fcbafeb09, type: 2}
   seedCount: 250
   walkLength: 200
-  iteration: 50
+  iteration: 70
   strength: 0
