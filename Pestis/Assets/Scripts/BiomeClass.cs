@@ -46,12 +46,9 @@ public class BiomeClass : ScriptableObject
     {
         if (Random.Range(0, 0) == 0)
         {
-
-            Vector3Int cellPosition = map.WorldToCell(new Vector3(biomeInstance.seedPosition.x, biomeInstance.seedPosition.y, 0));
-            map.GetCellCenterWorld(cellPosition);
-            GameObject feature = Instantiate(getRandomFeature(), map.GetCellCenterWorld(cellPosition), Quaternion.identity);
+            Vector3 vector3 = map.CellToWorld(new Vector3Int(biomeInstance.seedPosition.x, biomeInstance.seedPosition.y, 0));
+            GameObject feature = Instantiate(getRandomFeature(), vector3, Quaternion.identity);
             feature.transform.parent = parent.transform;
-            feature.layer = LayerMask.GetMask("Characters");
         }
     }
 
