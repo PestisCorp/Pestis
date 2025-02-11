@@ -55,6 +55,7 @@ namespace Horde
         /// <summary>
         ///     Seconds until we can start simulating population again after combat.
         /// </summary>
+        
         public float PopulationCooldown;
 
         private readonly List<RatController> _spawnedRats = new();
@@ -419,7 +420,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void DealDamageRpc(float damage)
         {
-            TotalHealth -= damage;
+            TotalHealth -= damage * _populationController.GetState().DamageReduction;
         }
 
         public Bounds GetBounds()
