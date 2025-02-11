@@ -2,7 +2,6 @@ using System;
 using Fusion;
 using System.Collections.Generic;
 using System.Globalization;
-using UI;
 using UnityEngine;
 using Random = System.Random;
 
@@ -18,11 +17,13 @@ namespace Horde
         private HordeController _hordeController;
         // "Evolutionary effect" : [Chance of acquisition, Effect on stats]
         private Dictionary<string, double[]> _passiveEvolutions = new Dictionary<string, double[]>();
+        private const double PredispositionStrength = 1.01;
         private Color _hordeColor;
         private readonly Random _random = new Random();
         private Timer _mutationClock;
         
-        
+        // Set the rat stats in the Population Controller
+        // Shows notification of mutation
         private void UpdateRatStats(string mutation)
         {
             _hordeColor = _hordeController.GetHordeColor();
@@ -50,17 +51,18 @@ namespace Horde
             }
         }
         
+        // Check if a mutation is will be acquired this tick
         private void EvolutionaryEvent()
         {
             foreach (var ele in _passiveEvolutions)
             {
                 double r = _random.NextDouble();
                 string mutation = ele.Key;
-                double p = _passiveEvolutions[mutation][0];
+                double p = _passiveEvolutions[mutation][0] * _passiveEvolutions["evolution rate"][1];
                 double mutEffect = _passiveEvolutions[mutation][1];
                 if ((r < p) && (mutEffect < 3.0f))
                 {
-                    _passiveEvolutions[mutation][0] = p * _passiveEvolutions["evolution rate"][1];
+                    _passiveEvolutions[mutation][0] = p * PredispositionStrength;
                     if (mutation == "rare mutation rate")
                     {
                         _passiveEvolutions[mutation][1] =
@@ -86,6 +88,7 @@ namespace Horde
             _mutationClock.Start();
             _hordeController = GetComponent<HordeController>();
             _populationController = GetComponent<PopulationController>();
+            // Initialise all the passive mutations
             _passiveEvolutions["attack"] = new []{0.001, _populationController.GetState().Damage};
             _passiveEvolutions["health"] = new []{0.001, _populationController.GetState().HealthPerRat};
             _passiveEvolutions["defense"] = new []{ 0.001, _populationController.GetState().DamageReduction};
