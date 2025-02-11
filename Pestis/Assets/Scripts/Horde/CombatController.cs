@@ -260,7 +260,7 @@ POI: {FightingOver}
             _participatorsLock.WaitOne();
             try
             {
-                foreach (var kvp in Participators)
+                foreach (var kvp in Participators.AsEnumerable().ToArray())
                 {
                     // Only look at enemies
                     if (kvp.Key == me.Player) continue;

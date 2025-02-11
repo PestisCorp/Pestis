@@ -126,6 +126,7 @@ namespace Players
                     myHorde.TotalHealth / myHorde.GetPopulationState().HealthPerRat > 10)
                 {
                     player.SplitHorde(myHorde, 0.5f);
+                    Debug.Log("BOT: Split Horde");
                     return;
                 }
 

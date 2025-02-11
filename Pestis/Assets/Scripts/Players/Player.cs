@@ -124,15 +124,17 @@ namespace Players
                         NO.transform.parent = transform;
                         // Ensure new horde spawns in at current location
                         NO.transform.position = toSplit.GetBounds().center;
+                        var horde = NO.GetComponent<HordeController>();
+                        horde.TotalHealth = totalHealth * splitPercentage;
                     })
                 .GetComponent<HordeController>();
-            newHorde.TotalHealth = totalHealth * splitPercentage;
             toSplit.TotalHealth = totalHealth * (1.0f - splitPercentage);
+            newHorde.SetPopulationState(populationState);
+
             // Move two hordes slightly apart
             newHorde.Move(toSplit.targetLocation.transform.position - toSplit.GetBounds().extents);
             toSplit.Move(toSplit.targetLocation.transform.position + toSplit.GetBounds().extents);
             // Ensure genetics are transferred
-            newHorde.SetPopulationState(populationState);
             if (Type == PlayerType.Human) _humanPlayer?.SelectHorde(newHorde);
 
             Debug.Log(

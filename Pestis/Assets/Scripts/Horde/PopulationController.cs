@@ -32,7 +32,6 @@ namespace Horde
 
         // The maximum change in a population per network tick
         private const int MaxPopGrowth = 1;
-        private HordeController _hordeController;
 
         private readonly Random _random = new();
 
@@ -46,6 +45,8 @@ namespace Horde
         ///     Stores the highest health this horde has achieved. Used to stop the player losing too much progress.
         /// </summary>
         private float _highestHealth;
+
+        private HordeController _hordeController;
 
         private int _populationPeak = INITIAL_POPULATION;
 
@@ -61,7 +62,8 @@ namespace Horde
         // W < 1 if R < P
         private double ResourceWeightGrowth()
         {
-            return 1 + 0.5 * (1.0 - Math.Exp(-(_hordeController.Player.CurrentCheese / _hordeController.AliveRats - 1)));
+            return 1 + 0.5 *
+                (1.0 - Math.Exp(-(_hordeController.Player.CurrentCheese / _hordeController.AliveRats - 1)));
         }
 
         // Weight used in probability of population decline
@@ -169,6 +171,7 @@ namespace Horde
             State.DeathRate = 0.005;
             State.HealthPerRat = 5.0f;
             State.Damage = 0.5f;
+            State.DamageReduction = 1.0f;
 
             _hordeController.TotalHealth = INITIAL_POPULATION * State.HealthPerRat;
 
@@ -233,7 +236,7 @@ namespace Horde
 
         public void SetDamageReduction(float damageReduction)
         {
-            State.DamageReduction /= damageReduction;
+            State.DamageReduction = 1.0f / damageReduction;
         }
 
         public void SetBirthRate(double birthRate)
