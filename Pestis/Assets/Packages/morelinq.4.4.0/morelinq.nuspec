@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>morelinq</id>
+    <version>4.4.0</version>
+    <title>MoreLINQ</title>
+    <authors>MoreLINQ Developers.</authors>
+    <owners>MoreLINQ Developers.</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="file">COPYING.txt</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <projectUrl>https://morelinq.github.io/</projectUrl>
+    <description>This project enhances LINQ to Objects with the following methods: Acquire, Aggregate (some EXPERIMENTAL), AggregateRight, Append, Assert, AssertCount, AtLeast, AtMost, Await (EXPERIMENTAL), AwaitCompletion (EXPERIMENTAL), Backsert, Batch, Cartesian, Choose, CountBetween, CompareCount, CountBy, CountDown, Consume, DistinctBy, Duplicates, EndsWith, EquiZip, Evaluate, Exactly, ExceptBy, Exclude, FallbackIfEmpty, FillBackward, FillForward, Flatten, Fold, ForEach, From, FullGroupJoin, FullJoin, Generate, GenerateByIndex, GroupAdjacent, Index, IndexBy, Insert, Interleave, Lag, Lead, LeftJoin, Maxima, Memoize (EXPERIMENTAL), Merge (EXPERIMENTAL), Minima, Move, OrderBy, OrderedMerge, Pad, PadStart, Pairwise, PartialSort, PartialSortBy, Partition, Permutations, Pipe, Prepend, PreScan, Random, RandomDouble, RandomSubset, Rank, RankBy, Repeat, Return, RightJoin, RunLengthEncode, Scan, ScanBy, ScanRight, Segment, Sequence, Shuffle, SkipLast, SkipLastWhile, SkipUntil, Slice, SortedMerge, Split, StartsWith, Subsets, TagFirstLast, TakeEvery, TakeLast, TakeUntil, ThenBy, ToArrayByIndex, ToDataTable, ToDelimitedString, ToDictionary, ToHashSet, ToLookup, Trace, Transpose, TraverseBreadthFirst, TraverseDepthFirst, TrySingle (EXPERIMENTAL), Unfold, Window, WindowLeft, WindowRight, ZipLongest, ZipShortest</description>
+    <releaseNotes>https://github.com/morelinq/MoreLINQ/releases/tag/v4.4.0</releaseNotes>
+    <copyright>© 2008 Jonathan Skeet. Portions © 2009 Atif Aziz, Chris Ammerman, Konrad Rudolph. Portions © 2010 Johannes Rudolph, Leopold Bushkin. Portions © 2015 Felipe Sateler, “sholland”. Portions © 2016 Andreas Gullberg Larsen, Leandro F. Vieira (leandromoh). Portions © 2017 Jonas Nyrup (jnyrup). Portions © 2023 Julien Aspirot (julienasp). Portions © 2024 Andy Romero (armorynode). Portions © Microsoft. All rights reserved.</copyright>
+    <tags>linq extensions</tags>
+    <repository type="git" url="https://github.com/morelinq/MoreLINQ.git" branch="master" commit="6d97c3b1d482f98300f4446df14742b0e3fafbec" />
+    <dependencies>
+      <group targetFramework=".NETFramework6.0" />
+      <group targetFramework=".NETFramework8.0" />
+      <group targetFramework=".NETFramework9.0" />
+      <group targetFramework=".NETStandard2.0" />
+      <group targetFramework=".NETStandard2.1" />
+    </dependencies>
+    <readme>README.md</readme>
+  </metadata>
+</package>
