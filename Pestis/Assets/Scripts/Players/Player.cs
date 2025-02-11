@@ -40,6 +40,11 @@ namespace Players
 
         [Networked] public float CheeseIncrementRate { get; private set; } = 0.03f;
 
+        public int GetHordeCount()
+        {
+            return Hordes.Count;
+        }
+
 
         public override void Spawned()
         {

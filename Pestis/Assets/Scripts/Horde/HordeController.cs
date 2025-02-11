@@ -14,7 +14,21 @@ using Random = UnityEngine.Random;
 namespace Horde
 {
     public class HordeController : NetworkBehaviour
+
     {
+        private static readonly Color[] predefinedHordeColors =
+        {
+            new(1.0f, 0.0f, 0.0f, 1.0f), // Red
+            new(0.0f, 1.0f, 0.0f, 1.0f), // Green
+            new(0.0f, 0.0f, 1.0f, 1.0f), // Blue
+            new(1.0f, 1.0f, 0.0f, 1.0f), // Yellow
+            new(1.0f, 0.5f, 0.0f, 1.0f), // Orange
+            new(0.5f, 0.0f, 0.5f, 1.0f), // Purple
+            new(0.0f, 1.0f, 1.0f, 1.0f), // Cyan
+            new(1.0f, 0.0f, 1.0f, 1.0f) // Magenta
+        };
+
+        private static int nextColorIndex; // Tracks the next color index
         public Player Player;
 
         public GameObject ratPrefab;
@@ -95,6 +109,8 @@ namespace Horde
         [Networked] [CanBeNull] public POIController TargetPoi { get; private set; }
 
         [Networked] private Color _hordeColor { get; set; }
+
+        [Networked] private int HordeColorIndex { get; set; } // Track assigned color index
 
         /// <summary>
         ///     Can only be in one combat instance at a time.
@@ -219,6 +235,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             TotalHealth = _populationController.GetState().HealthPerRat * devToolsTotalRats;
             targetLocation.transform.position = devToolsTargetLocation;
         }
+
 
         public override void FixedUpdateNetwork()
         {
@@ -351,12 +368,15 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         {
             _populationController = GetComponent<PopulationController>();
             Player = GetComponentInParent<Player>();
-            _hordeColor = new Color(
-                Random.Range(0.6f, 1.0f),
-                Random.Range(0.6f, 1.0f),
-                Random.Range(0.6f, 1.0f),
-                1.0f
-            );
+
+
+            if (HasStateAuthority) // Ensure only the host assigns colors
+            {
+                HordeColorIndex = Object.StateAuthority.PlayerId + Player.GetHordeCount() - 1;
+                _hordeColor =
+                    predefinedHordeColors
+                        [HordeColorIndex % predefinedHordeColors.Length]; // Assign color based on index
+            }
 
             _selectionLightTerrain = transform.Find("SelectionLightTerrain").gameObject.GetComponent<Light2D>();
             _selectionLightPoi = transform.Find("SelectionLightPOI").gameObject.GetComponent<Light2D>();
@@ -472,7 +492,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
                 StationedAt = null;
             }
 
-            // Logic to attack TargetPoi is located in `CheckArrivedPoi`
+            // Logic to attack TargetPoi is located in CheckArrivedPoi
             TargetPoi = poi;
             targetLocation.Teleport(poi.transform.position);
         }
