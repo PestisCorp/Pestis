@@ -50,7 +50,7 @@ public class BiomeClass : ScriptableObject
             Vector3Int cellPosition = map.WorldToCell(new Vector3(biomeInstance.seedPosition.x, biomeInstance.seedPosition.y, 0));
             map.GetCellCenterWorld(cellPosition);
             GameObject feature = Instantiate(getRandomFeature(), map.GetCellCenterWorld(cellPosition), Quaternion.identity);
-            feature.layer = 0;
+            feature.layer = LayerMask.GetMask("Characters");
         }
     }
 
@@ -121,7 +121,7 @@ public class BiomeClass : ScriptableObject
             Growth(biomeInstance.seedPosition, map, biomeInstance, walkLength);
         }
 
-        //FeatureGeneration(map, biomeInstance);
+        FeatureGeneration(map, biomeInstance);
     }
 
 }
