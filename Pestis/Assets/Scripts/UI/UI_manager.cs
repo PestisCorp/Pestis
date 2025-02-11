@@ -21,7 +21,6 @@ public class UI_Manager : MonoBehaviour
     public GameObject toolbar;
     public GameObject resourceStats;
     public GameObject hordeSplitPanel;
-    public GameObject passiveMutationNotification;
     // References to the resource text fields
     public TextMeshProUGUI cheeseTotalText;
     public TextMeshProUGUI cheeseRateText;
@@ -37,8 +36,11 @@ public class UI_Manager : MonoBehaviour
     // References to notification system objects
     public GameObject messagePrefab;
     public Transform parentTransform;
-    public float displayTime = 5f;
+    public float displayTime = 3f;
     public float fadeDuration = 1f;
+    private bool _messageActive;
+    private Image _notificationBackground;
+    private Queue<string> messages = new Queue<string>();
     
     private bool displayResourceInfo;
     
@@ -55,6 +57,7 @@ public class UI_Manager : MonoBehaviour
         if (resourceStats != null) resourceStats.SetActive(false);
         displayResourceInfo = false;
         moveFunctionality = false;
+        _notificationBackground = parentTransform.GetComponent<Image>();
     }
 
     // Update is called once per frame
@@ -372,18 +375,28 @@ public class UI_Manager : MonoBehaviour
     
     public void AddNotification(string message, Color hordeColor)
     {
+        messages.Enqueue(message);
+        if (!_messageActive)
+        {
+            StartCoroutine(ShowNextmessage(hordeColor));
+        }
+        
+    }
+    
+    // Removes a notification after 5 seconds, during which it fades out
+    private IEnumerator ShowNextmessage(Color hordeColor)
+    {
+        if (messages.Count == 0) yield break;
+        string message = messages.Dequeue();
+        _messageActive = true;
         GameObject newMessage = Instantiate(messagePrefab, parentTransform);
         newMessage.SetActive(true);
         newMessage.GetComponent<TMP_Text>().color = hordeColor;
         newMessage.GetComponent<TMP_Text>().text = message;
-        StartCoroutine(RemoveMessage(newMessage));
-    }
-    
-    // Removes a notification after 5 seconds, during which it fades out
-    private IEnumerator RemoveMessage(GameObject message)
-    {
+        _notificationBackground.enabled = _messageActive;
+        
         yield return new WaitForSeconds(displayTime);
-        CanvasGroup canvasGroup = message.AddComponent<CanvasGroup>();
+        CanvasGroup canvasGroup = newMessage.AddComponent<CanvasGroup>();
         float elapsedTime = 0f;
         while (elapsedTime < fadeDuration)
         {
@@ -391,7 +404,19 @@ public class UI_Manager : MonoBehaviour
             canvasGroup.alpha = 1 - (elapsedTime / fadeDuration);
             yield return null;
         }
-        Destroy(message);
+        
+        Destroy(newMessage);
+
+        if (messages.Count > 0)
+        {
+            StartCoroutine(ShowNextmessage(hordeColor));
+        }
+        else
+        {
+            _messageActive = false;
+            _notificationBackground.enabled = false;
+        }
+        
     }
     
     

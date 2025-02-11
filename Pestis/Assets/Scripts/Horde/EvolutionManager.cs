@@ -21,6 +21,7 @@ namespace Horde
         private Color _hordeColor;
         private readonly Random _random = new Random();
         private Timer _mutationClock;
+        private float _timeToTick;
         
         // Set the rat stats in the Population Controller
         // Shows notification of mutation
@@ -29,8 +30,11 @@ namespace Horde
             _hordeColor = _hordeController.GetHordeColor();
             double mutEffect = _passiveEvolutions[mutation][1];
             string text = ("A horde's " + mutation + " has improved by " +
-                                         (_passiveEvolutions["evolution strength"][1] * 100 - 100).ToString(CultureInfo.CurrentCulture) + "%.");
-            FindFirstObjectByType<UI_Manager>().AddNotification(text, _hordeColor);
+                                         (Math.Round(_passiveEvolutions["evolution strength"][1] * 100 - 100, 2)).ToString(CultureInfo.CurrentCulture) + "%.");
+            if (_hordeController.Player.Type == 0)
+            {
+                FindFirstObjectByType<UI_Manager>().AddNotification(text, _hordeColor);
+            }
             switch (mutation)
             {
                 case "attack":
@@ -58,7 +62,7 @@ namespace Horde
             {
                 double r = _random.NextDouble();
                 string mutation = ele.Key;
-                double p = _passiveEvolutions[mutation][0] * _passiveEvolutions["evolution rate"][1];
+                double p = Math.Max(_passiveEvolutions[mutation][0] * _passiveEvolutions["evolution rate"][1], 0.1);
                 double mutEffect = _passiveEvolutions[mutation][1];
                 if ((r < p) && (mutEffect < 3.0f))
                 {
@@ -92,15 +96,20 @@ namespace Horde
             _passiveEvolutions["attack"] = new []{0.001, _populationController.GetState().Damage};
             _passiveEvolutions["health"] = new []{0.001, _populationController.GetState().HealthPerRat};
             _passiveEvolutions["defense"] = new []{ 0.001, _populationController.GetState().DamageReduction};
-            _passiveEvolutions["evolution rate"] = new []{ 0.0005, 1.0};
-            _passiveEvolutions["evolution strength"] = new []{ 0.0001, 1.05};
+            _passiveEvolutions["evolution rate"] = new []{ 0.0001, 1.0};
+            _passiveEvolutions["evolution strength"] = new []{ 0.0001, 1.025};
             _passiveEvolutions["birth rate"] = new[]{ 0.0005, _populationController.GetState().BirthRate};
             //_passiveEvolutions["resource consumption"] = new []{ 0.0005, _hordeController.Player.CheeseIncrementRate };
             _passiveEvolutions["rare mutation rate"] = new []{ 0.0001, 30 };
         }
         public override void FixedUpdateNetwork()
         {
-            EvolutionaryEvent();
+            _timeToTick -= Runner.DeltaTime;
+            if (_timeToTick < 0)
+            {
+                EvolutionaryEvent();
+                _timeToTick = 3.0f;
+            }
         }
     }
 }
