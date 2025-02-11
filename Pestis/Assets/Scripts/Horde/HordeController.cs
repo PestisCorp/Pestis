@@ -90,6 +90,8 @@ namespace Horde
 
         [Networked] private Color _hordeColor { get; set; }
 
+        [Networked] private int HordeColorIndex { get; set; } = -1; // Track assigned color index
+
         /// <summary>
         ///     Can only be in one combat instance at a time.
         /// </summary>
@@ -98,6 +100,20 @@ namespace Horde
         private CombatController CurrentCombatController { get; set; }
 
         public bool InCombat => CurrentCombatController && CurrentCombatController.Participators.Count != 0;
+
+        private static readonly Color[] predefinedHordeColors =
+        {
+            new Color(1.0f, 0.0f, 0.0f, 1.0f), // Red
+            new Color(0.0f, 1.0f, 0.0f, 1.0f), // Green
+            new Color(0.0f, 0.0f, 1.0f, 1.0f), // Blue
+            new Color(1.0f, 1.0f, 0.0f, 1.0f), // Yellow
+            new Color(1.0f, 0.5f, 0.0f, 1.0f), // Orange
+            new Color(0.5f, 0.0f, 0.5f, 1.0f), // Purple
+            new Color(0.0f, 1.0f, 1.0f, 1.0f), // Cyan
+            new Color(1.0f, 0.0f, 1.0f, 1.0f) // Magenta
+        };
+
+        private static int nextColorIndex; // Tracks the next color index
 
         private void Awake()
         {
@@ -346,12 +362,12 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             _populationController = GetComponent<PopulationController>();
             Player = GetComponentInParent<Player>();
 
-            _hordeColor = new Color(
-                UnityEngine.Random.Range(0.6f, 1.0f),
-                UnityEngine.Random.Range(0.6f, 1.0f),
-                UnityEngine.Random.Range(0.6f, 1.0f),
-                1.0f
-            );
+            if (HasStateAuthority) // Ensure only the host assigns colors
+            {
+                HordeColorIndex = GetNextAvailableColorIndex();
+                Debug.Log(HordeColorIndex);
+                _hordeColor = predefinedHordeColors[HordeColorIndex]; // Assign color based on index
+            }
 
             _selectionLightTerrain = transform.Find("SelectionLightTerrain").gameObject.GetComponent<Light2D>();
             _selectionLightPoi = transform.Find("SelectionLightPOI").gameObject.GetComponent<Light2D>();
@@ -370,6 +386,13 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
 
             // Needed to spawn in rats from joined session
             TotalHealthChanged();
+        }
+
+        private int GetNextAvailableColorIndex()
+        {
+            int assignedIndex = nextColorIndex;
+            nextColorIndex += 1;
+            return assignedIndex;
         }
 
 
@@ -465,7 +488,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
                 StationedAt = null;
             }
 
-            // Logic to attack TargetPoi is located in `CheckArrivedPoi`
+            // Logic to attack TargetPoi is located in CheckArrivedPoi
             TargetPoi = poi;
             targetLocation.Teleport(poi.transform.position);
         }
