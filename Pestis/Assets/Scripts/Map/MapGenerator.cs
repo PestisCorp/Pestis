@@ -28,6 +28,7 @@ namespace Map
             foreach (var biome in BiomeList)
             {
                 biome.template.CellGeneration(Map.tilemap, biome);
+                biome.template.FeatureGeneration(Map.tilemap, biome, Map.poi);
             }
         }
 

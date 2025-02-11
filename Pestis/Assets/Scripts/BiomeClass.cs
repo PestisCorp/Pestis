@@ -42,7 +42,7 @@ public class BiomeClass : ScriptableObject
         return FeatureList[index];
     }
 
-    public virtual void FeatureGeneration(Tilemap map, BiomeInstance biomeInstance)
+    public virtual void FeatureGeneration(Tilemap map, BiomeInstance biomeInstance, GameObject parent)
     {
         if (Random.Range(0, 0) == 0)
         {
@@ -50,6 +50,7 @@ public class BiomeClass : ScriptableObject
             Vector3Int cellPosition = map.WorldToCell(new Vector3(biomeInstance.seedPosition.x, biomeInstance.seedPosition.y, 0));
             map.GetCellCenterWorld(cellPosition);
             GameObject feature = Instantiate(getRandomFeature(), map.GetCellCenterWorld(cellPosition), Quaternion.identity);
+            feature.transform.parent = parent.transform;
             feature.layer = LayerMask.GetMask("Characters");
         }
     }
@@ -120,8 +121,6 @@ public class BiomeClass : ScriptableObject
         {
             Growth(biomeInstance.seedPosition, map, biomeInstance, walkLength);
         }
-
-        FeatureGeneration(map, biomeInstance);
     }
 
 }

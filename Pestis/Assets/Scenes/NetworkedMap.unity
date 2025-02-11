@@ -5756,6 +5756,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapObject: {fileID: 11400000, guid: b1fe527fc0e4ab24b86e2e012ffc79af, type: 2}
   tilemap: {fileID: 443678114}
+  poi: {fileID: 1163659427}
 --- !u!4 &954311490
 Transform:
   m_ObjectHideFlags: 0
