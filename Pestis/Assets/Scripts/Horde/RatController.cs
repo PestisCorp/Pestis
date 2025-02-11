@@ -144,6 +144,12 @@ namespace Horde
             _hordeController = controller;
         }
 
+        public void SetColor(Color color)
+        {
+            if (_spriteRenderer == null) _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            _spriteRenderer.color = color;
+        }
+
         public HordeController GetHordeController()
         {
             return _hordeController;
