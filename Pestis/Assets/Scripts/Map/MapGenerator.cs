@@ -10,11 +10,11 @@ namespace Map
     public class Generator
     {
         private FastNoise _noiseGenerator;
+        public List<BiomeInstance> BiomeList = new(); //every instance of each biome
         public MapBehaviour Map;
         public int RandomWalkSteps = 5000000;
         public int Smoothing = 10;
         public float VoronoiFrequency = 0.025f;
-        public List<BiomeInstance> BiomeList = new List<BiomeInstance>(); //every instance of each biome
 
         public void GenerateMap()
         {
@@ -22,9 +22,10 @@ namespace Map
             Voronoi(Dilation(RandomWalk()));
             GenerateBiomes();
         }
+
         private void GenerateBiomes()
         {
-            this.sowSeed();
+            sowSeed();
             foreach (var biome in BiomeList)
             {
                 biome.template.CellGeneration(Map.tilemap, biome);
@@ -34,17 +35,13 @@ namespace Map
 
         private void sowSeed()
         {
-            BoundsInt bounds = Map.tilemap.cellBounds;
+            var bounds = Map.tilemap.cellBounds;
 
-            for (int i = 0; i < Map.mapObject.BiomeClasses.Length; i++)
-            {
-                for (int j = 0; j < Map.mapObject.BiomeClasses[i].seedCount; j++)
-                {
-                    BiomeList.Add(Map.mapObject.BiomeClasses[i].sowSeed(Map.tilemap));
-                }
-            }
-
+            for (var i = 0; i < Map.mapObject.BiomeClasses.Length; i++)
+            for (var j = 0; j < Map.mapObject.BiomeClasses[i].seedCount; j++)
+                BiomeList.Add(Map.mapObject.BiomeClasses[i].sowSeed(Map.tilemap));
         }
+
         private TileType[,] Voronoi(TileType[,] grid)
         {
             _noiseGenerator = new FastNoise();
