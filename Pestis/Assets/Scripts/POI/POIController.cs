@@ -39,7 +39,7 @@ namespace POI
                 Gizmos.DrawWireCube(Collider.bounds.center, Collider.bounds.size);
                 Handles.Label(Collider.bounds.center, $@"{Object.Id}
 Combat: {(Combat ? Combat.Object.Id : "None")}
-Controller: {(ControlledBy ? ControlledBy.Object.StateAuthority : "None")}
+Controller: {(ControlledBy ? ControlledBy.Username : "None")}
 Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
 ");
                 HandleUtility.Repaint();
@@ -47,8 +47,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         }
 #endif
 
-        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void ChangeControllerRpc(Player player)
+        public void ChangeController(Player player)
         {
             Debug.Log(
                 $"Changing POI Controller from {(ControlledBy ? ControlledBy.Object.Id : "None")} to {player.Object.Id}");
@@ -63,22 +62,9 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             StationedHordes.Clear();
         }
 
-        /// <summary>
-        ///     Called by horde which wants to be stationed at a specific POI.
-        /// </summary>
-        /// <param name="horde"></param>
-        /// <param name="rpcInfo">Automatically populated by Photon Fusion with details of caller.</param>
-        /// <exception cref="Exception"></exception>
-        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void StationHordeRpc(HordeController horde, RpcInfo rpcInfo = default)
+        private void StationHorde(HordeController horde)
         {
             Debug.Log($"Adding horde {horde.Object.Id} to myself (POI): {Object.Id}");
-            if (horde.Object.StateAuthority != rpcInfo.Source)
-                throw new Exception("Only the controlling player can station a horde!");
-
-            if (horde.Player != ControlledBy)
-                throw new Exception("Tried to station horde at POI not controlled by player.");
-
             StationedHordes.Add(horde);
         }
 
@@ -105,6 +91,20 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void AttackRpc(HordeController horde)
         {
+            if (ControlledBy == horde.Player)
+            {
+                StationHorde(horde);
+                return;
+            }
+
+            // No need to start combat, just hand over control
+            if (StationedHordes.Count == 0)
+            {
+                ChangeController(horde.Player);
+                StationHorde(horde);
+                return;
+            }
+
             Debug.Log("POI being attacked");
             if (!Combat)
             {

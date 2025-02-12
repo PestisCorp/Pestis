@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using Horde;
 using JetBrains.Annotations;
 using Players;
@@ -25,7 +27,6 @@ public class UI_Manager : MonoBehaviour
     public TextMeshProUGUI cheeseRateText;
     public TextMeshProUGUI popTotalText;
     public TextMeshProUGUI hordeTotalText;
-
     // References to the buttons that need some added function
     // Button type wouldn't show in inspector so using GameObject instead
     public GameObject moveButton;
@@ -33,7 +34,18 @@ public class UI_Manager : MonoBehaviour
 
     public bool moveFunctionality;
 
+    // References to notification system objects
+    public GameObject messagePrefab;
+    public Transform parentTransform;
+    public float displayTime = 3f;
+    public float fadeDuration = 1f;
+    private bool _messageActive;
+    private Image _notificationBackground;
+    private Queue<string> messages = new Queue<string>();
+
     private bool displayResourceInfo;
+
+    // Called by EvolutionManager every time a new mutation is acquired
 
 
     // Start is called before the first frame update
@@ -46,6 +58,7 @@ public class UI_Manager : MonoBehaviour
         if (resourceStats != null) resourceStats.SetActive(false);
         displayResourceInfo = false;
         moveFunctionality = false;
+        _notificationBackground = parentTransform.GetComponent<Image>();
     }
 
     // Update is called once per frame
@@ -127,7 +140,7 @@ public class UI_Manager : MonoBehaviour
     {
         if (infoPanel != null) infoPanel.SetActive(false);
     }
-    
+
     //Pure toggle caused issue with reset UI order so changed to use disable and enable functions
     public void InfoPanelToggle()
     {
@@ -135,7 +148,7 @@ public class UI_Manager : MonoBehaviour
         {
             InfoPanelDisable();
         }
-        else 
+        else
             InfoPanelEnable();
     }
 
@@ -178,37 +191,37 @@ public class UI_Manager : MonoBehaviour
     {
         if (attackPanel != null) attackPanel.SetActive(false);
     }
-    
+
     public void AttackPanelToggle()
     {
         if (attackPanel.activeSelf)
         {
             AttackPanelDisable();
         }
-        else 
+        else
             AttackPanelEnable();
     }
-    
+
     // Function to disable horde split panel
     public void SplitPanelDisable()
     {
         if (splitPanel != null) splitPanel.SetActive(false);
     }
-    
+
     // Function to enable horde split panel
     public void SplitPanelEnable()
     {
         ResetUI();
         if (splitPanel != null) splitPanel.SetActive(true);
     }
-    
+
     public void SplitPanelToggle()
     {
         if (splitPanel.activeSelf)
         {
             SplitPanelDisable();
         }
-        else 
+        else
             SplitPanelEnable();
     }
 
@@ -298,7 +311,7 @@ public class UI_Manager : MonoBehaviour
 
     // Function to update the mutation text field of the info panel
     // Using the template:
-    //Genome XX: 
+    //Genome XX:
     //   Mutation XX - Description
     //   Mutation XX - Description
     // TODO: Implement this function
@@ -400,5 +413,53 @@ public class UI_Manager : MonoBehaviour
                 new Color(colour.r * 0.75f, colour.g * 0.75f, colour.b * 0.75f, 1);
         }
     }
-    
+
+    public void AddNotification(string message, Color hordeColor)
+    {
+        messages.Enqueue(message);
+        if (!_messageActive)
+        {
+            StartCoroutine(ShowNextmessage(hordeColor));
+        }
+
+    }
+
+    // Removes a notification after 5 seconds, during which it fades out
+    private IEnumerator ShowNextmessage(Color hordeColor)
+    {
+        if (messages.Count == 0) yield break;
+        string message = messages.Dequeue();
+        _messageActive = true;
+        GameObject newMessage = Instantiate(messagePrefab, parentTransform);
+        newMessage.SetActive(true);
+        newMessage.GetComponent<TMP_Text>().color = hordeColor;
+        newMessage.GetComponent<TMP_Text>().text = message;
+        _notificationBackground.enabled = _messageActive;
+
+        yield return new WaitForSeconds(displayTime);
+        CanvasGroup canvasGroup = newMessage.AddComponent<CanvasGroup>();
+        float elapsedTime = 0f;
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            canvasGroup.alpha = 1 - (elapsedTime / fadeDuration);
+            yield return null;
+        }
+
+        Destroy(newMessage);
+
+        if (messages.Count > 0)
+        {
+            StartCoroutine(ShowNextmessage(hordeColor));
+        }
+        else
+        {
+            _messageActive = false;
+            _notificationBackground.enabled = false;
+        }
+
+    }
+
+
+
 }

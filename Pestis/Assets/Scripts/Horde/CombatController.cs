@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Fusion;
 using JetBrains.Annotations;
 using Players;
@@ -61,6 +61,11 @@ namespace Horde
     {
         public const int MAX_PARTICIPANTS = 6;
 
+        /// <summary>
+        ///     Lock that must be acquired to use `Participators` to prevent races
+        /// </summary>
+        private readonly Mutex _participatorsLock = new();
+
         [Networked] private Player InitiatingPlayer { get; set; }
 
         /// <summary>
@@ -69,7 +74,7 @@ namespace Horde
         /// </summary>
         [Networked]
         [Capacity(MAX_PARTICIPANTS)]
-        public NetworkDictionary<Player, CombatParticipant> Participators { get; }
+        private NetworkDictionary<Player, CombatParticipant> Participators { get; }
 
         /// <summary>
         ///     The POI the fight is over (winner gains control).
@@ -89,6 +94,7 @@ namespace Horde
 POI: {FightingOver}
 ";
 
+            _participatorsLock.WaitOne();
             var b = new Bounds();
             foreach (var kvp in Participators)
             {
@@ -103,6 +109,8 @@ POI: {FightingOver}
                 }
             }
 
+            _participatorsLock.ReleaseMutex();
+
             Gizmos.color = Color.red;
             Gizmos.DrawWireCube(b.center, b.size);
             Handles.Label(new Vector3(b.center.x - b.extents.x, b.center.y + b.extents.y), text);
@@ -115,6 +123,7 @@ POI: {FightingOver}
 
             List<HordeController> hordesToRemove = new();
             List<Player> playersToRemove = new();
+            _participatorsLock.WaitOne(-1);
             foreach (var kvp in Participators)
             {
                 var aliveHordes = 0;
@@ -135,15 +144,10 @@ POI: {FightingOver}
 
             foreach (var horde in hordesToRemove)
             {
-                // Tell horde to run away to nearest friendly POI
-                horde.RetreatRpc();
                 var copy = Participators.Get(horde.Player);
                 copy.RemoveHorde(horde);
                 Participators.Set(horde.Player, copy);
             }
-
-            if (Participators.Count == playersToRemove.Count)
-                throw new Exception("Tried to remove all players from combat at once");
 
             foreach (var player in playersToRemove)
             {
@@ -151,7 +155,20 @@ POI: {FightingOver}
                 Participators.Remove(player);
             }
 
-            // If there's only one person left in combat they are the winner! Reset controller.
+            _participatorsLock.ReleaseMutex();
+
+
+            // Combat still going
+            if (Participators.Count > 1)
+            {
+                // It's safe to call the RPCs now
+                foreach (var horde in hordesToRemove)
+                    // Tell horde to run away to nearest friendly POI
+                    horde.RetreatRpc();
+                return;
+            }
+
+            // If there's only one person left in combat they are the winner! Otherwise we tied
             if (Participators.Count == 1)
             {
                 var winner = Participators.First().Key;
@@ -175,7 +192,7 @@ POI: {FightingOver}
                 if (FightingOver && winner != FightingOver.ControlledBy)
                 {
                     Debug.Log($"Transferring POI Ownership to {winner.Object.StateAuthority}");
-                    FightingOver.ChangeControllerRpc(winner);
+                    FightingOver.ChangeController(winner);
                     foreach (var hordeID in winnerParticipant.Hordes)
                     {
                         Runner.TryFindBehaviour(hordeID, out HordeController horde);
@@ -188,30 +205,49 @@ POI: {FightingOver}
                     Debug.Log("POI successfully defended");
                 }
 
-                // Clear Combat Controller
+                _participatorsLock.WaitOne();
                 Participators.Remove(winner);
-                InitiatingPlayer = null;
-                FightingOver = null;
+                _participatorsLock.ReleaseMutex();
             }
+
+            // Clear Combat Controller
+            InitiatingPlayer = null;
+            FightingOver = null;
+
+            _participatorsLock.WaitOne();
+            Participators.Clear();
+            _participatorsLock.ReleaseMutex();
+
+            // It's safe to call the RPCs now
+            foreach (var horde in hordesToRemove)
+                // Tell horde to run away to nearest friendly POI
+                horde.RetreatRpc();
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void AddHordeRpc(HordeController horde, bool voluntary)
         {
+            _participatorsLock.WaitOne();
             if (Participators.Count == 0) InitiatingPlayer = horde.Player;
 
             if (!Participators.TryGet(horde.Player, out var participant))
             {
+                Debug.Log("COMBAT: Adding player");
                 Participators.Add(horde.Player, new CombatParticipant(horde.Player, horde, voluntary));
-                if (!voluntary) horde.EventAttackedRpc(this);
             }
             else
             {
+                if (participant.Hordes.Contains(horde)) return;
+
                 // Operates on local copy
                 participant.AddHorde(horde, voluntary);
                 // Update stored copy
                 Participators.Set(horde.Player, participant);
             }
+
+            _participatorsLock.ReleaseMutex();
+
+            if (!voluntary) horde.EventAttackedRpc(this);
         }
 
         public HordeController GetNearestEnemy(HordeController me)
@@ -221,23 +257,34 @@ POI: {FightingOver}
             HordeController bestTarget = null;
             var closestDistance = Mathf.Infinity;
 
-            foreach (var kvp in Participators)
+            _participatorsLock.WaitOne();
+            try
             {
-                // Only look at enemies
-                if (kvp.Key == me.Player) continue;
-
-                foreach (var hordeID in kvp.Value.Hordes)
+                foreach (var kvp in Participators.AsEnumerable().ToArray())
                 {
-                    Runner.TryFindBehaviour(hordeID, out HordeController horde);
-                    var dist = ((Vector2)horde.GetBounds().center - myCenter).sqrMagnitude;
+                    // Only look at enemies
+                    if (kvp.Key == me.Player) continue;
 
-                    if (dist < closestDistance)
+                    foreach (var hordeID in kvp.Value.Hordes)
                     {
-                        closestDistance = dist;
-                        bestTarget = horde;
+                        Runner.TryFindBehaviour(hordeID, out HordeController horde);
+                        var dist = ((Vector2)horde.GetBounds().center - myCenter).sqrMagnitude;
+
+                        if (dist < closestDistance)
+                        {
+                            closestDistance = dist;
+                            bestTarget = horde;
+                        }
                     }
                 }
             }
+            catch
+            {
+                Debug.LogError("Failed to iterate over participators");
+            }
+
+
+            _participatorsLock.ReleaseMutex();
 
             return bestTarget;
         }
@@ -250,11 +297,8 @@ POI: {FightingOver}
 
         public bool HordeInCombat(HordeController horde)
         {
-            if (Participators.TryGet(horde.Player, out var participant))
-                if (participant.Hordes.Contains(horde))
-                    return true;
-
-            return false;
+            if (!Participators.TryGet(horde.Player, out var participant)) return false;
+            return participant.Hordes.Contains(horde);
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -272,9 +316,14 @@ POI: {FightingOver}
         public void EventRetreatRpc(HordeController horde)
         {
             Debug.Log($"Horde retreating from combat: {horde.Object.Id}");
+            _participatorsLock.WaitOne();
             var copy = Participators.Get(horde.Player);
             copy.RemoveHorde(horde);
             Participators.Set(horde.Player, copy);
+
+            // Remove player from participators if that was the only horde it had in combat
+            if (!copy.Hordes.Any()) Participators.Remove(horde.Player);
+            _participatorsLock.ReleaseMutex();
         }
     }
 }

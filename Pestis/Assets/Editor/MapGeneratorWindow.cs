@@ -1,47 +1,33 @@
-﻿using UnityEngine;
-using UnityEngine.Tilemaps;
+﻿using Map;
 using UnityEditor;
 using UnityEditorInternal;
+using UnityEngine;
+using UnityEngine.Tilemaps;
 
 // Credit: https://medium.com/nerd-for-tech/how-to-create-a-list-in-a-custom-editor-window-in-unity-e6856e78adfc
 namespace Editor
 {
     public class MapGeneratorWindow : EditorWindow
     {
-        private Map.Map _map;
-        private Map.Generator _mapGenerator;
-        private SerializedObject _serializedBiomeList;
-        private ReorderableList _reorderableBiomeList;
         private const string HelpText = "Cannot find 'Land Biomes List' component on any GameObject in the scene";
         private static readonly Rect HelpRect = new(0f, 0f, 400f, 100f);
         private static readonly Rect ListRect = new(Vector2.zero, Vector2.one * 400f);
-
-        [MenuItem("Window/Map Generator")]
-        public static void ShowWindow()
-        {
-            GetWindow<MapGeneratorWindow>("Map Generator");
-        }
+        private MapBehaviour _map;
+        private Generator _mapGenerator;
+        private ReorderableList _reorderableBiomeList;
+        private SerializedObject _serializedBiomeList;
 
         private void OnEnable()
         {
-            _map = FindFirstObjectByType<Map.Map>();
+            _map = FindFirstObjectByType<MapBehaviour>();
             if (!_map) return;
-            _mapGenerator = new Map.Generator();
+            _mapGenerator = new Generator();
             _mapGenerator.Map = _map;
-            _map.landBiomes = FindFirstObjectByType<Map.LandBiomesList>();
-            _map.tileIndices = new int[_map.width * _map.height];
 
-            if (_map.landBiomes)
-            {
-                _serializedBiomeList = new SerializedObject(_map.landBiomes);
-                _reorderableBiomeList = new ReorderableList(_serializedBiomeList,
-                    _serializedBiomeList.FindProperty("landTiles"), true, true, true, true);
-            }
-        }
 
-        private void OnInspectorUpdate()
-        {
-            Repaint();
+            _serializedBiomeList = new SerializedObject(_map.mapObject);
+            _reorderableBiomeList = new ReorderableList(_serializedBiomeList,
+                _serializedBiomeList.FindProperty("landTiles"), true, true, true, true);
         }
 
         private void OnGUI()
@@ -56,27 +42,27 @@ namespace Editor
             _reorderableBiomeList.DoList(ListRect);
             _serializedBiomeList.ApplyModifiedProperties();
 
-            if (_map.landBiomes)
-            {
-                _reorderableBiomeList.drawHeaderCallback = rect => EditorGUI.LabelField(rect, "Land tiles");
-                _reorderableBiomeList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
-                {
-                    rect.height = EditorGUIUtility.singleLineHeight;
 
-                    GUIContent tileLabel = new GUIContent($"Tile {index}");
-                    EditorGUI.PropertyField(rect,
-                        _reorderableBiomeList.serializedProperty.GetArrayElementAtIndex(index), tileLabel);
-                };
-            }
+            _reorderableBiomeList.drawHeaderCallback = rect => EditorGUI.LabelField(rect, "Land tiles");
+            _reorderableBiomeList.drawElementCallback = (rect, index, isActive, isFocused) =>
+            {
+                rect.height = EditorGUIUtility.singleLineHeight;
+
+                var tileLabel = new GUIContent($"Tile {index}");
+                EditorGUI.PropertyField(rect,
+                    _reorderableBiomeList.serializedProperty.GetArrayElementAtIndex(index), tileLabel);
+            };
+
 
             GUILayout.Space(_reorderableBiomeList.GetHeight());
 
             EditorGUILayout.BeginVertical();
 
             _map.tilemap = (Tilemap)EditorGUILayout.ObjectField("Tilemap", _map.tilemap, typeof(Tilemap), true);
-            _map.width = EditorGUILayout.IntField("Width", _map.width);
-            _map.height = EditorGUILayout.IntField("Height", _map.height);
-            _map.water = (TileBase)EditorGUILayout.ObjectField("Water tile", _map.water, typeof(TileBase), true);
+            _map.mapObject.width = EditorGUILayout.IntField("Width", _map.mapObject.width);
+            _map.mapObject.height = EditorGUILayout.IntField("Height", _map.mapObject.height);
+            _map.mapObject.water =
+                (TileBase)EditorGUILayout.ObjectField("Water tile", _map.mapObject.water, typeof(TileBase), true);
             _mapGenerator.VoronoiFrequency =
                 EditorGUILayout.FloatField("Voronoi frequency", _mapGenerator.VoronoiFrequency);
             _mapGenerator.RandomWalkSteps =
@@ -89,22 +75,26 @@ namespace Editor
 
             EditorGUILayout.BeginHorizontal();
 
-            if (GUILayout.Button("Generate Map"))
-            {
-                _mapGenerator.GenerateMap();
-            }
+            if (GUILayout.Button("Generate Map")) _mapGenerator.GenerateMap();
 
             if (GUILayout.Button("Save Map"))
             {
-                _map.Save();
-            }
-
-            if (GUILayout.Button("Load Map"))
-            {
-                _map.Load();
+                _map.mapObject.Save();
+                _map.tilemap.ClearAllTiles();
             }
 
             EditorGUILayout.EndHorizontal();
+        }
+
+        private void OnInspectorUpdate()
+        {
+            Repaint();
+        }
+
+        [MenuItem("Window/Map Generator")]
+        public static void ShowWindow()
+        {
+            GetWindow<MapGeneratorWindow>("Map Generator");
         }
     }
 }

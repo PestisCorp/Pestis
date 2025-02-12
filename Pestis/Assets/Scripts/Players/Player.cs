@@ -30,7 +30,7 @@ namespace Players
 
         public bool IsLocal => Type != PlayerType.Bot && HasStateAuthority;
 
-        [Networked] [Capacity(32)] private NetworkLinkedList<HordeController> Hordes { get; } = default;
+        [Networked] [Capacity(32)] public NetworkLinkedList<HordeController> Hordes { get; } = default;
 
         [Networked] public string Username { get; private set; }
 
@@ -39,6 +39,11 @@ namespace Players
         [Networked] public float CurrentCheese { get; private set; }
 
         [Networked] public float CheeseIncrementRate { get; private set; } = 0.03f;
+
+        public int GetHordeCount()
+        {
+            return Hordes.Count;
+        }
 
 
         public override void Spawned()
@@ -51,14 +56,14 @@ namespace Players
                 if (HasStateAuthority)
                     FindAnyObjectByType<Grid>().GetComponent<InputHandler>().LocalPlayer = _humanPlayer;
 
-                Username = $"{Object.StateAuthority}";
+                Username = $"Player {Object.StateAuthority.PlayerId}";
             }
             else
             {
                 _botPlayer = this.AddComponent<BotPlayer>();
                 _botPlayer!.player = this;
 
-                Username = $"Bot {Object.Id}";
+                Username = $"Bot {Object.Id.Raw}";
             }
 
             foreach (var horde in GetComponentsInChildren<HordeController>()) Hordes.Add(horde);
@@ -124,15 +129,17 @@ namespace Players
                         NO.transform.parent = transform;
                         // Ensure new horde spawns in at current location
                         NO.transform.position = toSplit.GetBounds().center;
+                        var horde = NO.GetComponent<HordeController>();
+                        horde.TotalHealth = totalHealth * splitPercentage;
                     })
                 .GetComponent<HordeController>();
-            newHorde.TotalHealth = totalHealth * splitPercentage;
             toSplit.TotalHealth = totalHealth * (1.0f - splitPercentage);
+            newHorde.SetPopulationState(populationState);
+
             // Move two hordes slightly apart
             newHorde.Move(toSplit.targetLocation.transform.position - toSplit.GetBounds().extents);
             toSplit.Move(toSplit.targetLocation.transform.position + toSplit.GetBounds().extents);
             // Ensure genetics are transferred
-            newHorde.SetPopulationState(populationState);
             if (Type == PlayerType.Human) _humanPlayer?.SelectHorde(newHorde);
 
             Debug.Log(

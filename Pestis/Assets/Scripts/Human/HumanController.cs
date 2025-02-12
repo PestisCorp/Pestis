@@ -13,16 +13,16 @@ namespace Human
         public Sprite DirectionDown;
         public Sprite DirectionDownRight;
 
-        private Rigidbody2D rb;
-        private SpriteRenderer spriteRenderer;
-        private Transform poiCenter; // Center of patrol area (Van)
-        private Vector2 targetPosition;
-
 
         [SerializeField] private float patrolRadius = 2f;
         [SerializeField] private float patrolSpeed = 1.0f;
         [SerializeField] private float rotationSpeed = 360.0f; // Rotation speed (degrees per second)
         [SerializeField] private float targetTolerance = 0.5f; // Distance before choosing a new target
+        private Transform poiCenter; // Center of patrol area (Van)
+
+        private Rigidbody2D rb;
+        private SpriteRenderer spriteRenderer;
+        private Vector2 targetPosition;
 
         private void Start()
         {
@@ -33,22 +33,14 @@ namespace Human
             PickNewTarget();
         }
 
-        public void SetPOI(Transform poi)
-        {
-            poiCenter = poi;
-            PickNewTarget();
-        }
-
         private void FixedUpdate()
         {
             if (poiCenter == null) return;
 
             // Check if the human has reached the patrol target
             if (Vector2.Distance(transform.position, targetPosition) < targetTolerance ||
-                rb.linearVelocity.magnitude < 0.3)
-            {
+                rb.linearVelocity.magnitude < 1.0f)
                 PickNewTarget();
-            }
 
             // Move towards the target
             MoveTowardsTarget();
@@ -57,10 +49,23 @@ namespace Human
             UpdateSpriteDirection();
         }
 
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.gameObject == poiCenter.gameObject) // If the human collides with the POI, pick a new target
+                PickNewTarget();
+        }
+
+        public void SetPOI(Transform poi)
+        {
+            poiCenter = poi;
+            PickNewTarget();
+        }
+
         private void PickNewTarget()
         {
             // Select a new patrol point around the POI
-            Vector2 randomOffset = Random.insideUnitCircle * patrolRadius;
+            var randomOffset = Random.insideUnitCircle * patrolRadius;
             targetPosition = (Vector2)poiCenter.position + randomOffset;
         }
 
@@ -70,23 +75,23 @@ namespace Human
             PickNewTarget(); // Immediately update to new radius
         }
 
-
-        private void OnCollisionEnter2D(Collision2D collision)
+        /// <param name="force">The force to apply to the human</param>
+        /// <returns>New velocity</returns>
+        private Vector2 _addForce(Vector2 force)
         {
-            if (collision.gameObject == poiCenter.gameObject) // If the human collides with the POI, pick a new target
-            {
-                Debug.Log("Human collided with POI, changing direction!");
-                PickNewTarget();
-            }
+            rb.AddForce(force);
+            rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, patrolSpeed);
+            return rb.linearVelocity;
         }
+
 
         private void MoveTowardsTarget()
         {
             // Get direction vector
-            Vector2 direction = (targetPosition - (Vector2)transform.position).normalized;
+            var direction = (targetPosition - (Vector2)transform.position).normalized;
 
             // Get desired rotation from desired direction
-            Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, direction);
+            var targetRotation = Quaternion.LookRotation(Vector3.forward, direction);
 
             // If the human is facing exactly away from the target, Unity might fumble the calculation
             if (Quaternion.Inverse(targetRotation) == transform.rotation)
@@ -95,19 +100,20 @@ namespace Human
                 targetRotation = Quaternion.Euler(0, 0, degrees + 90); // Offset rotation to fix issue
             }
 
-            // Smoothly rotate towards the target
-            Quaternion newRotation =
-                Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-            transform.rotation = newRotation;
-
-            // Apply movement in the new direction
+            // Lerp to desired rotation
+            var newRotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 360 * Time.deltaTime);
+            // Apply rotation to current direction
             Vector2 headingIn = newRotation * Vector2.up;
-            rb.linearVelocity = headingIn.normalized * patrolSpeed;
+            // Push rat in new direction and get current direction
+            var currentDirection = _addForce(headingIn.normalized);
+            // Turn rat to face current direction
+            var currentRotation = Quaternion.LookRotation(Vector3.forward, currentDirection);
+            transform.rotation = currentRotation;
         }
 
         private void UpdateSpriteDirection()
         {
-            float angle = Vector2.SignedAngle(transform.up, Vector2.up);
+            var angle = Vector2.SignedAngle(transform.up, Vector2.up);
             if (angle < 0) angle += 360f; // Normalize angle to 0-360 degrees
 
             if (angle < 22.5f)
