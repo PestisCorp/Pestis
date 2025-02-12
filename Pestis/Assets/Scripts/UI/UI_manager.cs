@@ -26,7 +26,9 @@ public class UI_Manager : MonoBehaviour
     public TextMeshProUGUI cheeseTotalText;
     public TextMeshProUGUI cheeseRateText;
     public TextMeshProUGUI popTotalText;
+
     public TextMeshProUGUI hordeTotalText;
+
     // References to the buttons that need some added function
     // Button type wouldn't show in inspector so using GameObject instead
     public GameObject moveButton;
@@ -35,13 +37,14 @@ public class UI_Manager : MonoBehaviour
     public bool moveFunctionality;
 
     // References to notification system objects
-    public GameObject messagePrefab;
-    public Transform parentTransform;
+    public GameObject notification;
     public float displayTime = 3f;
     public float fadeDuration = 1f;
+    private readonly Queue<string> messages = new();
     private bool _messageActive;
     private Image _notificationBackground;
-    private Queue<string> messages = new Queue<string>();
+
+    private TMP_Text _notificationText;
 
     private bool displayResourceInfo;
 
@@ -58,7 +61,9 @@ public class UI_Manager : MonoBehaviour
         if (resourceStats != null) resourceStats.SetActive(false);
         displayResourceInfo = false;
         moveFunctionality = false;
-        _notificationBackground = parentTransform.GetComponent<Image>();
+
+        _notificationText = notification.GetComponentInChildren<TMP_Text>();
+        _notificationBackground = notification.GetComponentInChildren<Image>();
     }
 
     // Update is called once per frame
@@ -145,9 +150,7 @@ public class UI_Manager : MonoBehaviour
     public void InfoPanelToggle()
     {
         if (infoPanel.activeSelf)
-        {
             InfoPanelDisable();
-        }
         else
             InfoPanelEnable();
     }
@@ -195,9 +198,7 @@ public class UI_Manager : MonoBehaviour
     public void AttackPanelToggle()
     {
         if (attackPanel.activeSelf)
-        {
             AttackPanelDisable();
-        }
         else
             AttackPanelEnable();
     }
@@ -218,9 +219,7 @@ public class UI_Manager : MonoBehaviour
     public void SplitPanelToggle()
     {
         if (splitPanel.activeSelf)
-        {
             SplitPanelDisable();
-        }
         else
             SplitPanelEnable();
     }
@@ -417,49 +416,41 @@ public class UI_Manager : MonoBehaviour
     public void AddNotification(string message, Color hordeColor)
     {
         messages.Enqueue(message);
-        if (!_messageActive)
-        {
-            StartCoroutine(ShowNextmessage(hordeColor));
-        }
-
+        if (!_messageActive) StartCoroutine(ShowNextmessage(hordeColor));
     }
 
     // Removes a notification after 5 seconds, during which it fades out
     private IEnumerator ShowNextmessage(Color hordeColor)
     {
         if (messages.Count == 0) yield break;
-        string message = messages.Dequeue();
+        var message = messages.Dequeue();
         _messageActive = true;
-        GameObject newMessage = Instantiate(messagePrefab, parentTransform);
-        newMessage.SetActive(true);
-        newMessage.GetComponent<TMP_Text>().color = hordeColor;
-        newMessage.GetComponent<TMP_Text>().text = message;
-        _notificationBackground.enabled = _messageActive;
+        notification.SetActive(true);
+        _notificationText.color = hordeColor;
+        {
+            var colour = _notificationBackground.color;
+            colour.a = 1.0f;
+            _notificationBackground.color = colour;
+        }
+
+        _notificationText.text = message;
 
         yield return new WaitForSeconds(displayTime);
-        CanvasGroup canvasGroup = newMessage.AddComponent<CanvasGroup>();
-        float elapsedTime = 0f;
+        var elapsedTime = 0f;
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
-            canvasGroup.alpha = 1 - (elapsedTime / fadeDuration);
+            _notificationText.alpha = 1 - elapsedTime / fadeDuration;
+            var colour = _notificationBackground.color;
+            colour.a = 1 - elapsedTime / fadeDuration;
+            _notificationBackground.color = colour;
             yield return null;
         }
 
-        Destroy(newMessage);
 
         if (messages.Count > 0)
-        {
             StartCoroutine(ShowNextmessage(hordeColor));
-        }
         else
-        {
             _messageActive = false;
-            _notificationBackground.enabled = false;
-        }
-
     }
-
-
-
 }

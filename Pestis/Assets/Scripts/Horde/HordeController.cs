@@ -9,7 +9,6 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using Random = UnityEngine.Random;
 
 namespace Horde
 {
@@ -372,10 +371,10 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
 
             if (HasStateAuthority) // Ensure only the host assigns colors
             {
-                HordeColorIndex = Object.StateAuthority.PlayerId + Player.GetHordeCount() - 1;
+                HordeColorIndex = (int)Object.Id.Raw % predefinedHordeColors.Length;
                 _hordeColor =
                     predefinedHordeColors
-                        [HordeColorIndex % predefinedHordeColors.Length]; // Assign color based on index
+                        [HordeColorIndex]; // Assign color based on index
             }
 
             _selectionLightTerrain = transform.Find("SelectionLightTerrain").gameObject.GetComponent<Light2D>();
