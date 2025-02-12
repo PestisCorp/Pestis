@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using Fusion;
 using Horde;
+using Human;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using Players;
 using UnityEditor;
@@ -12,6 +14,8 @@ namespace POI
     public class POIController : NetworkBehaviour
     {
         private readonly float _cheesePerTick = 0.3f;
+
+        private List<HumanController> _stationedHumans = new();
 
         public float CheesePerSecond => _cheesePerTick / Runner.DeltaTime;
 
@@ -123,6 +127,41 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         {
             Debug.Log("POI Combat over");
             Combat = null;
+        }
+
+        public void RegisterHumans(HumanController human)
+        {
+            if (!_stationedHumans.Contains(human))
+            {
+                _stationedHumans.Add(human);
+            }
+        }
+
+        public void RemoveHumans(HumanController human)
+        {
+            if (_stationedHumans.Contains(human))
+            {
+                _stationedHumans.Remove(human);
+            }
+        }
+
+        public List<HumanCombatController> GetStationedHumans()
+        {
+            List<HumanCombatController> combatHumans = new();
+            foreach (var human in _stationedHumans)
+            {
+                if (human.TryGetComponent<HumanCombatController>(out HumanCombatController combatHuman))
+                {
+                    combatHumans.Add(combatHuman);
+                }
+            }
+
+            return combatHumans;
+        }
+
+        public List<HumanController> GetHumans()
+        {
+            return _stationedHumans;
         }
     }
 }

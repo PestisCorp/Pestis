@@ -234,6 +234,14 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
                 {
                     HordeBeingDamaged = null;
                 }
+
+                if (StationedAt != null && StationedAt.GetStationedHumans().Count > 0)
+                {
+                    foreach (var human in StationedAt.GetStationedHumans())
+                    {
+                        human.TakeDamage(_populationController.GetState().Damage, this);
+                    }
+                }
             }
         }
 
@@ -276,6 +284,15 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void StationAtRpc(POIController poi)
         {
+            Debug.Log($"[Horde] Attempting to station at POI: {poi.Object.Id}");
+
+            // Check if humans are still alive at the POI
+            if (poi.GetStationedHumans().Count > 0)
+            {
+                Debug.Log($"[Horde] Cannot station at POI {poi.Object.Id}, humans are still alive!");
+                return; // Horde must fight humans first
+            }
+
             Debug.Log($"Adding myself (horde {Object.Id}) to POI: {poi.Object.Id}");
             poi.StationHordeRpc(this);
             Move(poi.transform.position);

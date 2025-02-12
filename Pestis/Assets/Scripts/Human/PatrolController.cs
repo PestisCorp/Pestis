@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
+using POI;
 
 namespace Human
 {
@@ -77,6 +78,9 @@ namespace Human
                     {
                         humanScript.SetPOI(_poiCenter);
                         humanScript.UpdatePatrolRadius(PatrolRadius);
+
+                        // Register the human with the POI
+                        poi.GetComponent<POIController>().RegisterHumans(humanScript);
                     }
                 }
             }
