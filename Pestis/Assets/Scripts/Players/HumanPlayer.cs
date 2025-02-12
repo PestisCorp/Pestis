@@ -30,7 +30,7 @@ namespace Players
                 UI_manager.localPlayer = this;
 
                 //Enable resource stats upon loading in
-                UI_manager.EnableResourceStats();
+                UI_manager.ResourceStatsEnable();
             }
         }
 
@@ -39,7 +39,7 @@ namespace Players
             if (selectedHorde && selectedHorde != horde)
             {
                 selectedHorde.UnHighlight();
-                UI_manager.DisableToolbar();
+                UI_manager.ToolbarDisable();
             }
 
             if (selectedHorde != horde)
@@ -47,7 +47,7 @@ namespace Players
                 selectedHorde = horde;
                 selectedHorde?.Highlight();
                 if (selectedHorde.Player.IsLocal)
-                    UI_manager.EnableToolbar();
+                    UI_manager.ToolbarEnable();
             }
         }
 
@@ -55,7 +55,7 @@ namespace Players
         {
             selectedHorde?.UnHighlight();
             selectedHorde = null;
-            UI_manager.DisableToolbar();
+            UI_manager.ToolbarDisable();
         }
 
         public void MoveHorde(Vector2 target)

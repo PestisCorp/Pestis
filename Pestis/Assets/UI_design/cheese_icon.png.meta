@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ea81d3dcce85f457aaaa4aeb5f7ce62d
+guid: 1a914809777e544ba9c6efc7f63c69ed
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6301311657201560942
-    second: parchment_high_res_0
+      213: 1414754420132289912
+    second: cheese_icon_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: parchment_high_res_0
+      name: cheese_icon_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 1
         y: 0
-        width: 256
-        height: 64
+        width: 49
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 292197dfe6e3d88a0800000000000000
-      internalID: -6301311657201560942
+      spriteID: 87d166046a732a310800000000000000
+      internalID: 1414754420132289912
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      parchment_high_res_0: -6301311657201560942
+      cheese_icon_0: 1414754420132289912
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

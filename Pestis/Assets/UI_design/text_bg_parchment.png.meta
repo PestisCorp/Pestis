@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 75bebb22080934836a78da010d353e49
+guid: 8888781124ad74cebae184277a7a0d1b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3842093446037501768
-    second: Toolbar_attack_icon_0
+      213: 8472372312845089779
+    second: text_bg_parchment_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Toolbar_attack_icon_0
+      name: text_bg_parchment_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 50
-        height: 50
+        width: 64
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 847fbe402abd15530800000000000000
-      internalID: 3842093446037501768
+      spriteID: 3fb7cffdab9e39570800000000000000
+      internalID: 8472372312845089779
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Toolbar_attack_icon_0: 3842093446037501768
+      text_bg_parchment_0: 8472372312845089779
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
