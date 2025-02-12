@@ -1,17 +1,16 @@
-using System;
 using Fusion;
 using Horde;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Players
 {
     public class HumanPlayer : MonoBehaviour
     {
-        [CanBeNull] public HordeController selectedHorde = null;
+        [CanBeNull] public HordeController selectedHorde;
+
         // Whether this HumanPlayer is the one being controlled by the player on this machine.
-        public bool IsLocal = false;
+        public bool IsLocal;
 
         public Player player;
 
@@ -19,23 +18,22 @@ namespace Players
 
         private void Awake()
         {
-            UI_manager = GameObject.FindAnyObjectByType<UI_Manager>();
+            UI_manager = FindAnyObjectByType<UI_Manager>();
         }
 
-        void Start()
+        private void Start()
         {
             IsLocal = GetComponent<NetworkObject>().HasStateAuthority;
             if (IsLocal)
             {
-                GameObject.FindAnyObjectByType<InputHandler>().LocalPlayer = this;
+                FindAnyObjectByType<InputHandler>().LocalPlayer = this;
                 UI_manager.localPlayer = this;
-                
+
                 //Enable resource stats upon loading in
                 UI_manager.ResourceStatsEnable();
             }
-            
         }
-    
+
         public void SelectHorde(HordeController horde)
         {
             if (selectedHorde && selectedHorde != horde)
@@ -48,7 +46,7 @@ namespace Players
             {
                 selectedHorde = horde;
                 selectedHorde?.Highlight();
-                if(selectedHorde.HasStateAuthority)
+                if (selectedHorde.Player.IsLocal)
                     UI_manager.ToolbarEnable();
             }
         }

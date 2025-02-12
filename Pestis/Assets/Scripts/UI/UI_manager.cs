@@ -28,7 +28,6 @@ public class UI_Manager : MonoBehaviour
     public TextMeshProUGUI popTotalText;
 
     public TextMeshProUGUI hordeTotalText;
-
     // References to the buttons that need some added function
     // Button type wouldn't show in inspector so using GameObject instead
     public GameObject moveButton;
