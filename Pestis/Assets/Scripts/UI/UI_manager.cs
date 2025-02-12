@@ -20,11 +20,13 @@ public class UI_Manager : MonoBehaviour
     public GameObject mutationPopUp;
     public GameObject toolbar;
     public GameObject resourceStats;
-    public GameObject hordeSplitPanel;
+    public GameObject splitPanel;
+
     // References to the resource text fields
     public TextMeshProUGUI cheeseTotalText;
     public TextMeshProUGUI cheeseRateText;
     public TextMeshProUGUI popTotalText;
+
     public TextMeshProUGUI hordeTotalText;
     // References to the buttons that need some added function
     // Button type wouldn't show in inspector so using GameObject instead
@@ -32,21 +34,22 @@ public class UI_Manager : MonoBehaviour
     public GameObject moveButtonInfo;
 
     public bool moveFunctionality;
-    
+
     // References to notification system objects
-    public GameObject messagePrefab;
-    public Transform parentTransform;
+    public GameObject notification;
     public float displayTime = 3f;
     public float fadeDuration = 1f;
+    private readonly Queue<string> messages = new();
     private bool _messageActive;
     private Image _notificationBackground;
-    private Queue<string> messages = new Queue<string>();
-    
+
+    private TMP_Text _notificationText;
+
     private bool displayResourceInfo;
-    
+
     // Called by EvolutionManager every time a new mutation is acquired
-    
-    
+
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -57,7 +60,9 @@ public class UI_Manager : MonoBehaviour
         if (resourceStats != null) resourceStats.SetActive(false);
         displayResourceInfo = false;
         moveFunctionality = false;
-        _notificationBackground = parentTransform.GetComponent<Image>();
+
+        _notificationText = notification.GetComponentInChildren<TMP_Text>();
+        _notificationBackground = notification.GetComponentInChildren<Image>();
     }
 
     // Update is called once per frame
@@ -92,6 +97,7 @@ public class UI_Manager : MonoBehaviour
     {
         if (infoPanel != null) infoPanel.SetActive(false);
         if (attackPanel != null) attackPanel.SetActive(false);
+        if (splitPanel != null) splitPanel.SetActive(false);
 
         // Ignoring the state of the tool bar, ensuring the default buttons are visible
         var toolbarButtons = GameObject.FindGameObjectsWithTag("UI_button_action");
@@ -105,7 +111,7 @@ public class UI_Manager : MonoBehaviour
 
     // Function to enable info panel
     // and update the text fields
-    public void EnableInfoPanel()
+    public void InfoPanelEnable()
     {
         ResetUI();
         if (infoPanel != null) infoPanel.SetActive(true);
@@ -134,13 +140,22 @@ public class UI_Manager : MonoBehaviour
     }
 
     // Function to disable info panel
-    public void DisableInfoPanel()
+    public void InfoPanelDisable()
     {
         if (infoPanel != null) infoPanel.SetActive(false);
     }
 
+    //Pure toggle caused issue with reset UI order so changed to use disable and enable functions
+    public void InfoPanelToggle()
+    {
+        if (infoPanel.activeSelf)
+            InfoPanelDisable();
+        else
+            InfoPanelEnable();
+    }
+
     // Function to enable attack panel
-    public void EnableAttackPanel()
+    public void AttackPanelEnable()
     {
         ResetUI();
         if (attackPanel != null) attackPanel.SetActive(true);
@@ -174,45 +189,74 @@ public class UI_Manager : MonoBehaviour
     }
 
     // Function to disable attack panel
-    public void DisableAttackPanel()
+    public void AttackPanelDisable()
     {
         if (attackPanel != null) attackPanel.SetActive(false);
     }
 
+    public void AttackPanelToggle()
+    {
+        if (attackPanel.activeSelf)
+            AttackPanelDisable();
+        else
+            AttackPanelEnable();
+    }
+
+    // Function to disable horde split panel
+    public void SplitPanelDisable()
+    {
+        if (splitPanel != null) splitPanel.SetActive(false);
+    }
+
+    // Function to enable horde split panel
+    public void SplitPanelEnable()
+    {
+        ResetUI();
+        if (splitPanel != null) splitPanel.SetActive(true);
+    }
+
+    public void SplitPanelToggle()
+    {
+        if (splitPanel.activeSelf)
+            SplitPanelDisable();
+        else
+            SplitPanelEnable();
+    }
+
     // Function to enable mutation pop-up
-    public void EnableMutationPopUp()
+    public void MutationPopUpEnable()
     {
         if (mutationPopUp != null) mutationPopUp.SetActive(true);
     }
 
     // Function to disable mutation pop-up
-    public void DisableMutationPopUp()
+    public void MutationPopUpDisable()
     {
         if (mutationPopUp != null) mutationPopUp.SetActive(false);
     }
 
     // Function to enable toolbar
-    public void EnableToolbar()
+    public void ToolbarEnable()
     {
         ResetUI();
         if (toolbar != null) toolbar.SetActive(true);
     }
 
     // Function to disable toolbar
-    public void DisableToolbar()
+    public void ToolbarDisable()
     {
         ResetUI();
         if (toolbar != null) toolbar.SetActive(false);
     }
 
     // Function to enable resource stats display
-    public void EnableResourceStats()
+    public void ResourceStatsEnable()
     {
         if (resourceStats != null) resourceStats.SetActive(true);
     }
 
     // Function to disable resource stats display
-    public void DisableResourceStats()
+    public void ResourceStatsDiable()
     {
         if (resourceStats != null) resourceStats.SetActive(false);
     }
@@ -265,7 +309,7 @@ public class UI_Manager : MonoBehaviour
 
     // Function to update the mutation text field of the info panel
     // Using the template:
-    //Genome XX: 
+    //Genome XX:
     //   Mutation XX - Description
     //   Mutation XX - Description
     // TODO: Implement this function
@@ -368,57 +412,44 @@ public class UI_Manager : MonoBehaviour
         }
     }
 
-    public void ToggleHordeSplitPanel()
-    {
-        hordeSplitPanel.SetActive(!hordeSplitPanel.activeSelf);
-    }
-    
     public void AddNotification(string message, Color hordeColor)
     {
         messages.Enqueue(message);
-        if (!_messageActive)
-        {
-            StartCoroutine(ShowNextmessage(hordeColor));
-        }
-        
+        if (!_messageActive) StartCoroutine(ShowNextmessage(hordeColor));
     }
-    
+
     // Removes a notification after 5 seconds, during which it fades out
     private IEnumerator ShowNextmessage(Color hordeColor)
     {
         if (messages.Count == 0) yield break;
-        string message = messages.Dequeue();
+        var message = messages.Dequeue();
         _messageActive = true;
-        GameObject newMessage = Instantiate(messagePrefab, parentTransform);
-        newMessage.SetActive(true);
-        newMessage.GetComponent<TMP_Text>().color = hordeColor;
-        newMessage.GetComponent<TMP_Text>().text = message;
-        _notificationBackground.enabled = _messageActive;
-        
+        notification.SetActive(true);
+        _notificationText.color = hordeColor;
+        {
+            var colour = _notificationBackground.color;
+            colour.a = 1.0f;
+            _notificationBackground.color = colour;
+        }
+
+        _notificationText.text = message;
+
         yield return new WaitForSeconds(displayTime);
-        CanvasGroup canvasGroup = newMessage.AddComponent<CanvasGroup>();
-        float elapsedTime = 0f;
+        var elapsedTime = 0f;
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
-            canvasGroup.alpha = 1 - (elapsedTime / fadeDuration);
+            _notificationText.alpha = 1 - elapsedTime / fadeDuration;
+            var colour = _notificationBackground.color;
+            colour.a = 1 - elapsedTime / fadeDuration;
+            _notificationBackground.color = colour;
             yield return null;
         }
-        
-        Destroy(newMessage);
+
 
         if (messages.Count > 0)
-        {
             StartCoroutine(ShowNextmessage(hordeColor));
-        }
         else
-        {
             _messageActive = false;
-            _notificationBackground.enabled = false;
-        }
-        
     }
-    
-    
-    
 }
