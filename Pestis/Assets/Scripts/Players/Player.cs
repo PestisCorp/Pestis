@@ -38,6 +38,8 @@ namespace Players
         // Cheese Management
         [Networked] public float CurrentCheese { get; private set; }
 
+        [SerializeField] private float cheeseConsumptionRate = 0.01f; // k value
+
         [Networked] public float CheeseIncrementRate { get; private set; } = 0.03f;
 
         public int GetHordeCount()
@@ -103,8 +105,26 @@ namespace Players
         public override void FixedUpdateNetwork()
         {
             if (HasStateAuthority)
+            {
                 // Add Cheese every tick based on the increment rate
                 CurrentCheese += CheeseIncrementRate;
+
+
+                // Consume cheese
+                int totalRatsCount = 0;
+                foreach (var horde in FindObjectsByType<HordeController>(FindObjectsSortMode.None))
+                {
+                    if (horde.Player == this)
+                    {
+                        totalRatsCount += horde.AliveRats;
+                    }
+                }
+
+                // Cheese consumption formula
+                float cheeseConsumed = cheeseConsumptionRate * totalRatsCount;
+                // Prevent negative cheese values
+                CurrentCheese = Mathf.Max(0, CurrentCheese + CheeseIncrementRate - cheeseConsumed);
+            }
         }
 
 
