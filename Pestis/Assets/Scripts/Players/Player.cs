@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Fusion;
 using Horde;
 using JetBrains.Annotations;
@@ -24,6 +25,8 @@ namespace Players
 
         public GameObject hordePrefab;
 
+        [SerializeField] private float cheeseConsumptionRate = 0.001f; // k value
+
         [CanBeNull] private BotPlayer _botPlayer;
 
         [CanBeNull] private HumanPlayer _humanPlayer;
@@ -37,8 +40,6 @@ namespace Players
 
         // Cheese Management
         [Networked] public float CurrentCheese { get; private set; }
-
-        [SerializeField] private float cheeseConsumptionRate = 0.01f; // k value
 
         [Networked] public float CheeseIncrementRate { get; private set; } = 0.03f;
 
@@ -111,17 +112,11 @@ namespace Players
 
 
                 // Consume cheese
-                int totalRatsCount = 0;
-                foreach (var horde in FindObjectsByType<HordeController>(FindObjectsSortMode.None))
-                {
-                    if (horde.Player == this)
-                    {
-                        totalRatsCount += horde.AliveRats;
-                    }
-                }
+                var totalRatsCount = Hordes.Select(horde => horde.AliveRats).Sum();
+
 
                 // Cheese consumption formula
-                float cheeseConsumed = cheeseConsumptionRate * totalRatsCount;
+                var cheeseConsumed = cheeseConsumptionRate * totalRatsCount;
                 // Prevent negative cheese values
                 CurrentCheese = Mathf.Max(0, CurrentCheese + CheeseIncrementRate - cheeseConsumed);
             }
