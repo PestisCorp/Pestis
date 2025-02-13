@@ -47,8 +47,22 @@ namespace Horde
 
         private void Update()
         {
-            if (deathCountdown != -1) return;
+        }
 
+        private void FixedUpdate()
+        {
+            if (deathCountdown != -1)
+            {
+                _spriteRenderer.transform.localRotation = Quaternion.Euler(Vector3.zero);
+                transform.rotation = Quaternion.Euler(Vector3.zero);
+                _rigidbody.freezeRotation = true;
+                _rigidbody.linearDamping = 15;
+                deathCountdown -= Time.deltaTime;
+                if (deathCountdown <= 0) Destroy(gameObject);
+                return;
+            }
+
+            // Update sprite rotation
             var angle = Vector2.SignedAngle(transform.up, Vector2.up);
 
             // Normalise to clockwise
@@ -71,20 +85,6 @@ namespace Horde
             else
                 _spriteRenderer.sprite = DirectionUpLeft;
             _spriteRenderer.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));
-        }
-
-        private void FixedUpdate()
-        {
-            if (deathCountdown != -1)
-            {
-                _spriteRenderer.transform.localRotation = Quaternion.Euler(Vector3.zero);
-                transform.rotation = Quaternion.Euler(Vector3.zero);
-                _rigidbody.freezeRotation = true;
-                _rigidbody.linearDamping = 15;
-                deathCountdown -= Time.deltaTime;
-                if (deathCountdown <= 0) Destroy(gameObject);
-                return;
-            }
 
 
             if (_hordeController.HordeBeingDamaged)
@@ -164,10 +164,6 @@ namespace Horde
             return _rigidbody.linearVelocity;
         }
 
-        public Vector2 GetPosition()
-        {
-            return transform.position;
-        }
 
         /// <summary>
         ///     Kill rat and leave corpse
