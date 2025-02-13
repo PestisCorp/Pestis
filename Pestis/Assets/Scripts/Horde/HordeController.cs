@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Fusion;
+using Human;
 using JetBrains.Annotations;
 using Players;
 using POI;
@@ -95,7 +96,10 @@ namespace Horde
         [CanBeNull]
         private CombatController CurrentCombatController { get; set; }
 
+        private HumanCombatController CurrentHumanCombatController { get; set; }
+
         public bool InCombat => CurrentCombatController && CurrentCombatController.Participators.Count != 0;
+        public bool InCombatWithHuman => CurrentHumanCombatController;
 
         private void Awake()
         {
@@ -234,8 +238,11 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
                 {
                     HordeBeingDamaged = null;
                 }
-
-                if (StationedAt != null && StationedAt.GetStationedHumans().Count > 0)
+            }
+            else if (InCombatWithHuman)
+            {
+                //humans take damage
+                if (StationedAt && StationedAt.GetStationedHumans().Count > 0)
                 {
                     foreach (var human in StationedAt.GetStationedHumans())
                     {
@@ -251,6 +258,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         /// </summary>
         private void CheckArrivedAtPoi()
         {
+            PatrolController patrol = TargetPoi!.GetComponent<PatrolController>();
             // Not targeting a POI
             if (!TargetPoi) return;
 
@@ -268,7 +276,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             }
 
             // If the POI isn't being defended, we can just take over without combat.
-            if (TargetPoi.StationedHordes.Count == 0)
+            if (TargetPoi.StationedHordes.Count == 0 && TargetPoi.GetStationedHumans().Count == 0)
             {
                 TargetPoi.ChangeControllerRpc(Player);
                 StationAtRpc(TargetPoi);
@@ -278,6 +286,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             // Arrived at POI, let's attack it!
             Debug.Log("Arrived at POI, initiating combat!");
             TargetPoi.AttackRpc(this);
+            TargetPoi.AttackHumanRpc(patrol);
             TargetPoi = null;
         }
 
@@ -500,6 +509,19 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             }
         }
 
+        public void AttackHumans(HumanController human)
+        {
+            if (CurrentCombatController)
+                // Leave current combat
+                CurrentCombatController.EventRetreatRpc(this);
+
+            if (StationedAt)
+            {
+                StationedAt.UnStationHordeRpc(this);
+                StationedAt = null;
+            }
+        }
+
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void EventWonCombatRpc()
         {
@@ -513,6 +535,12 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         public void EventAttackedRpc(CombatController combat)
         {
             CurrentCombatController = combat;
+        }
+
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void EventAttackedHumanRpc(HumanCombatController combat)
+        {
+            CurrentHumanCombatController = combat;
         }
 
         public PopulationState GetPopulationState()

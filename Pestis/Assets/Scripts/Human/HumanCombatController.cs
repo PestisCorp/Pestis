@@ -1,6 +1,8 @@
 using UnityEngine;
 using Fusion;
 using POI;
+using Horde;
+using Players;
 
 namespace Human
 {
@@ -14,8 +16,18 @@ namespace Human
         [SerializeField] private float attackCooldown = 1.5f;
         private float lastAttackTime;
 
-        private bool isUnderAttack = false;
-        private Horde.HordeController attackingHorde;
+        private bool isUnderAttack;
+        private HordeController attackingHorde;
+
+        public const int MAX_PARTICIPANTS = 6;
+
+        /// <summary>
+        ///     Stores the involved players and a list of their HordeControllers (as NetworkBehaviourId so must be converted before
+        ///     use)
+        /// </summary>
+        [Networked]
+        [Capacity(MAX_PARTICIPANTS)]
+        public NetworkDictionary<Player, CombatParticipant> Participators { get; }
 
         private void Start()
         {
@@ -48,13 +60,46 @@ namespace Human
             }
         }
 
+        //human finding nearest rat horde
+        public HordeController GetNearestEnemy()
+        {
+            Vector2 myCenter = poi.transform.position;
+
+            HordeController bestTarget = null;
+            var closestDistance = Mathf.Infinity;
+
+            foreach (var kvp in Participators)
+            {
+                foreach (var hordeID in kvp.Value.Hordes)
+                {
+                    Runner.TryFindBehaviour(hordeID, out HordeController horde);
+                    var dist = ((Vector2)horde.GetBounds().center - myCenter).sqrMagnitude;
+
+                    if (dist < closestDistance)
+                    {
+                        closestDistance = dist;
+                        bestTarget = horde;
+                    }
+                }
+            }
+
+            return bestTarget;
+        }
+
         private void AttackHorde()
         {
             if (attackingHorde == null) return;
 
             attackingHorde.DealDamageRpc(attackDamage);
+            attackingHorde.EventAttackedHumanRpc(this);
             Debug.Log($"[Human] Attacking Horde {attackingHorde.Object.Id} for {attackDamage} damage!");
         }
+
+        public void AttackHuman(PatrolController patrol)
+        {
+            patrol.EventAttackedHumanRpc(this);
+        }
+
 
         private void Die()
         {

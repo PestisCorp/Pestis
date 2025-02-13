@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 using POI;
+using Horde;
 
 namespace Human
 {
@@ -20,6 +21,9 @@ namespace Human
         [Networked]
         [OnChangedRender(nameof(OnPatrolRadiusChanged))]
         public float PatrolRadius { get; private set; } = 5.0f; // Networked patrol radius
+
+        private HumanCombatController CurrentHumanCombatController { get; set; }
+        public bool InCombat => CurrentHumanCombatController;
 
         public override void Spawned()
         {
@@ -57,6 +61,26 @@ namespace Human
                     humanScript.UpdatePatrolRadius(PatrolRadius);
                 }
             }
+        }
+
+        public override void FixedUpdateNetwork()
+        {
+            if (CurrentHumanCombatController != null) return;
+
+            //find the nearest rat horde and deal damage to it
+            var enemyHordeToHuman = CurrentHumanCombatController!.GetNearestEnemy();
+            if (InCombat)
+            {
+                if (enemyHordeToHuman.GetBounds().Intersects(new Bounds(poi.transform.position, Vector3.one)))
+                {
+                    enemyHordeToHuman.DealDamageRpc(CurrentHumanCombatController.GetAttackDamage());
+                }
+            }
+        }
+
+        public void EventAttackedHumanRpc(HumanCombatController combat)
+        {
+            CurrentHumanCombatController = combat;
         }
 
         private void AdjustHumanCount()

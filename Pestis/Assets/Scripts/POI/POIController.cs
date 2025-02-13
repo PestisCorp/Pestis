@@ -8,6 +8,7 @@ using JetBrains.Annotations;
 using Players;
 using UnityEditor;
 using UnityEngine;
+using Human;
 
 namespace POI
 {
@@ -26,6 +27,8 @@ namespace POI
         [Networked] [Capacity(4)] public NetworkLinkedList<HordeController> StationedHordes { get; } = default;
 
         [Networked] [CanBeNull] public CombatController Combat { get; private set; }
+
+        [Networked] [CanBeNull] public HumanCombatController HumanCombat { get; private set; }
 
 #if UNITY_EDITOR
         [DrawGizmo(GizmoType.Selected ^ GizmoType.NonSelected)]
@@ -120,6 +123,22 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             }
 
             Combat.AddHordeRpc(horde, true);
+        }
+
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+
+        //humans attack
+        public void AttackHumanRpc(PatrolController human)
+        {
+            Debug.Log("POI being attacked");
+
+            if (!HumanCombat)
+            {
+                Debug.Log("Changing POI Combat Controller");
+                HumanCombat = human.GetComponent<HumanCombatController>();
+                if (!HumanCombat) throw new NullReferenceException("Failed to get HumanCombatController.");
+                HumanCombat.AttackHuman(human);
+            }
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
