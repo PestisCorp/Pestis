@@ -9,7 +9,6 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using Random = UnityEngine.Random;
 
 namespace Horde
 {
@@ -156,11 +155,10 @@ namespace Horde
             if (_ratsToSpawn != 0)
             {
                 // Spawn a Rat
-                var rat = Instantiate(ratPrefab, _hordeCenter, Quaternion.identity, transform);
+                var rat = Instantiate(ratPrefab, _hordeCenter, Quaternion.identity);
                 var ratController = rat.GetComponent<RatController>();
                 ratController.SetHordeController(this);
                 ratController.SetColor(_hordeColor); //Apply horde color
-                ratController.Start();
                 _spawnedRats.Add(ratController);
                 _ratsToSpawn--;
             }
@@ -173,7 +171,7 @@ namespace Horde
 
             // Calculate bounding box that contains all rats
             var b = new Bounds(_spawnedRats[0].transform.position, Vector2.zero);
-            foreach (var rat in _spawnedRats) b.Encapsulate(rat.GetPosition());
+            foreach (var rat in _spawnedRats) b.Encapsulate(rat.transform.position);
 
             b.Expand(1.0f);
 
