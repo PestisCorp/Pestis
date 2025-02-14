@@ -47,20 +47,7 @@ namespace Horde
 
         private void Update()
         {
-        }
-
-        private void FixedUpdate()
-        {
-            if (deathCountdown != -1)
-            {
-                _spriteRenderer.transform.localRotation = Quaternion.Euler(Vector3.zero);
-                transform.rotation = Quaternion.Euler(Vector3.zero);
-                _rigidbody.freezeRotation = true;
-                _rigidbody.linearDamping = 15;
-                deathCountdown -= Time.deltaTime;
-                if (deathCountdown <= 0) Destroy(gameObject);
-                return;
-            }
+            if (deathCountdown != -1) return;
 
             // Update sprite rotation
             var angle = Vector2.SignedAngle(transform.up, Vector2.up);
@@ -85,6 +72,20 @@ namespace Horde
             else
                 _spriteRenderer.sprite = DirectionUpLeft;
             _spriteRenderer.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        }
+
+        private void FixedUpdate()
+        {
+            if (deathCountdown != -1)
+            {
+                _spriteRenderer.transform.localRotation = Quaternion.Euler(Vector3.zero);
+                transform.rotation = Quaternion.Euler(Vector3.zero);
+                _rigidbody.freezeRotation = true;
+                _rigidbody.linearDamping = 15;
+                deathCountdown -= Time.deltaTime;
+                if (deathCountdown <= 0) Destroy(gameObject);
+                return;
+            }
 
 
             if (_hordeController.HordeBeingDamaged)
