@@ -15,13 +15,12 @@ namespace Horde
     {
         private PopulationController _populationController;
         private HordeController _hordeController;
-        // "Evolutionary effect" : [Chance of acquisition, Effect on stats]
+        // "Evolutionary effect" : [Chance of acquisition, Effect on stats, Maximum effect]
         private Dictionary<string, double[]> _passiveEvolutions = new Dictionary<string, double[]>();
         private const double PredispositionStrength = 1.01;
         private Color _hordeColor;
         private readonly Random _random = new Random();
         private Timer _mutationClock;
-        private float _timeToTick;
         
         // Set the rat stats in the Population Controller
         // Shows notification of mutation
@@ -62,21 +61,21 @@ namespace Horde
             {
                 double r = _random.NextDouble();
                 string mutation = ele.Key;
-                double p = Math.Max(_passiveEvolutions[mutation][0] * _passiveEvolutions["evolution rate"][1], 0.1);
+                double p = _passiveEvolutions[mutation][0];
                 double mutEffect = _passiveEvolutions[mutation][1];
-                if ((r < p) && (mutEffect < 3.0f))
+                if ((r < p) && (_passiveEvolutions[mutation][2] > mutEffect))
                 {
                     _passiveEvolutions[mutation][0] = p * PredispositionStrength;
-                    if (mutation == "rare mutation rate")
+                    if ((mutation == "rare mutation rate") || (mutation == "evolution rate"))
                     {
                         _passiveEvolutions[mutation][1] =
-                            Math.Max(mutEffect / _passiveEvolutions["evolution strength"][1], 20);
+                            Math.Max(mutEffect / _passiveEvolutions[mutation][1], _passiveEvolutions[mutation][2]);
                     }
                     else
                     {
-                        _passiveEvolutions[mutation][1] = mutEffect * _passiveEvolutions["evolution strength"][1];
-                        UpdateRatStats(mutation);
+                        _passiveEvolutions[mutation][1] = Math.Min(mutEffect * _passiveEvolutions["evolution strength"][1], _passiveEvolutions[mutation][2]);
                     }
+                    UpdateRatStats(mutation);
                 }
             }
             // This is for rare mutations, probably needs some work first. Not ready for panel.
@@ -93,22 +92,22 @@ namespace Horde
             _hordeController = GetComponent<HordeController>();
             _populationController = GetComponent<PopulationController>();
             // Initialise all the passive mutations
-            _passiveEvolutions["attack"] = new []{0.001, _populationController.GetState().Damage};
-            _passiveEvolutions["health"] = new []{0.001, _populationController.GetState().HealthPerRat};
-            _passiveEvolutions["defense"] = new []{ 0.001, _populationController.GetState().DamageReduction};
-            _passiveEvolutions["evolution rate"] = new []{ 0.0001, 1.0};
-            _passiveEvolutions["evolution strength"] = new []{ 0.0001, 1.025};
-            _passiveEvolutions["birth rate"] = new[]{ 0.0005, _populationController.GetState().BirthRate};
+            
+            _passiveEvolutions["attack"] = new []{0.05, _populationController.GetState().Damage, 2.0};
+            _passiveEvolutions["health"] = new []{0.05, _populationController.GetState().HealthPerRat, 20.0};
+            _passiveEvolutions["defense"] = new []{ 0.05, _populationController.GetState().DamageReduction, 2.5};
+            _passiveEvolutions["evolution rate"] = new []{ 0.025, 2, 0.5};
+            _passiveEvolutions["evolution strength"] = new []{ 0.03, 1.02, 1.3};
+            _passiveEvolutions["birth rate"] = new[]{ 0.02, _populationController.GetState().BirthRate, 0.1};
             //_passiveEvolutions["resource consumption"] = new []{ 0.0005, _hordeController.Player.CheeseIncrementRate };
-            _passiveEvolutions["rare mutation rate"] = new []{ 0.0001, 30 };
+            _passiveEvolutions["rare mutation rate"] = new []{ 0.025, 30, 20};
         }
         public override void FixedUpdateNetwork()
         {
-            _timeToTick -= Runner.DeltaTime;
-            if (_timeToTick < 0)
+            if (_mutationClock.ElapsedInSeconds > _passiveEvolutions["evolution rate"][1])
             {
                 EvolutionaryEvent();
-                _timeToTick = 3.0f;
+                _mutationClock.Restart();
             }
         }
     }
