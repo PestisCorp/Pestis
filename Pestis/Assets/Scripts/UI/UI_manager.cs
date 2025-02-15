@@ -4,6 +4,7 @@ using Horde;
 using JetBrains.Annotations;
 using Players;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Color = UnityEngine.Color;
@@ -32,7 +33,9 @@ public class UI_Manager : MonoBehaviour
     // Button type wouldn't show in inspector so using GameObject instead
     public GameObject moveButton;
     public GameObject moveButtonInfo;
-
+    
+    
+    
     public bool moveFunctionality;
 
     // References to notification system objects
@@ -44,7 +47,7 @@ public class UI_Manager : MonoBehaviour
     private Image _notificationBackground;
 
     private TMP_Text _notificationText;
-
+    
     private bool displayResourceInfo;
 
     // Called by EvolutionManager every time a new mutation is acquired
@@ -63,6 +66,8 @@ public class UI_Manager : MonoBehaviour
 
         _notificationText = notification.GetComponentInChildren<TMP_Text>();
         _notificationBackground = notification.GetComponentInChildren<Image>();
+
+        
     }
 
     // Update is called once per frame
@@ -256,7 +261,7 @@ public class UI_Manager : MonoBehaviour
     }
 
     // Function to disable resource stats display
-    public void ResourceStatsDiable()
+    public void ResourceStatsDisable()
     {
         if (resourceStats != null) resourceStats.SetActive(false);
     }
@@ -412,6 +417,15 @@ public class UI_Manager : MonoBehaviour
         }
     }
 
+    public void RareMutationPopup((ActiveMutation, ActiveMutation, ActiveMutation) mutations) 
+    {
+        MutationPopUpEnable();
+        var buttons = mutationPopUp.GetComponentsInChildren<Button>();
+        buttons[0].GetComponentInChildren<TMP_Text>().text = mutations.Item1.MutationName;
+        buttons[1].GetComponentInChildren<TMP_Text>().text = mutations.Item2.MutationName;
+        buttons[2].GetComponentInChildren<TMP_Text>().text = mutations.Item3.MutationName;
+    }
+    
     public void AddNotification(string message, Color hordeColor)
     {
         messages.Enqueue(message);

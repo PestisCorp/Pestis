@@ -7,9 +7,10 @@ using Newtonsoft.Json;
 using UnityEngine.Windows;
 using File = System.IO.File;
 using Random = System.Random;
+using KaimiraGames;
 
 // TODO: Retain mutations on horde split.
-// TODO: Rather than work with values from State, just store multiplier. Change setter.
+// TODO: Rather than work with values from State, just store multiplier. Change setters.
 
 
 namespace Horde
@@ -22,7 +23,7 @@ namespace Horde
         public int MutationID { get; set; }
         public string MutationName { get; set; }
         public string MutationTag { get; set; }
-        public double MutationProbability { get; set; }
+        public int MutationWeight { get; set; }
         public string[] Effects { get; set; }
     }
     
@@ -33,11 +34,12 @@ namespace Horde
         private HordeController _hordeController;
         // "Evolutionary effect" : [Chance of acquisition, Effect on stats, Maximum effect]
         private Dictionary<string, double[]> _passiveEvolutions = new Dictionary<string, double[]>();
-        private List<ActiveMutation> _activeMutations;
+        private WeightedList<ActiveMutation> _activeMutations = new WeightedList<ActiveMutation>();
         private const double PredispositionStrength = 1.01;
         private Color _hordeColor;
         private readonly Random _random = new Random();
         private Timer _mutationClock;
+        private Timer _rareMutationClock;
         
         // Set the rat stats in the Population Controller
         // Shows notification of mutation
@@ -95,17 +97,20 @@ namespace Horde
                     UpdateRatStats(mutation);
                 }
             }
-            // This is for rare mutations, probably needs some work first. Not ready for panel.
-            //if (Math.Truncate(_mutationClock.ElapsedInSeconds) % Math.Truncate(_passiveEvolutions["rare mutation rate"][1]) == 0 
-                //&& (Math.Truncate(_mutationClock.ElapsedInSeconds) != 0))
-            //{
-                //FindFirstObjectByType<UI_Manager>().EnableMutationPopUp();
-            //}
         }
 
-        private void CalculateActiveProbabilities()
+        private void RareEvolutionaryEvent()
         {
-            
+            _rareMutationClock.Reset();
+            // TODO: Add mechanism for rejecting repeat samples
+            var firstMut = _activeMutations.Next();
+            var secondMut = _activeMutations.Next();
+            var thirdMut = _activeMutations.Next();
+            FindFirstObjectByType<UI_Manager>().RareMutationPopup((firstMut, secondMut, thirdMut));
+        }
+        
+        private void CalculateActiveWeights()
+        {
         }
 
         private void CreatePassiveEvolutions()
@@ -126,11 +131,16 @@ namespace Horde
         private void CreateActiveEvolutions()
         {
             string json = File.ReadAllText("Assets/json/active_mutations.json");
-            _activeMutations = JsonConvert.DeserializeObject<List<ActiveMutation>>(json);
+            var activeMutations = JsonConvert.DeserializeObject<List<ActiveMutation>>(json);
+            foreach (var mut in activeMutations)
+            {
+                _activeMutations.Add(mut, mut.MutationWeight);
+            }
         }
         public override void Spawned()
         {
             _mutationClock.Start();
+            _rareMutationClock.Start();
             _hordeController = GetComponent<HordeController>();
             _populationController = GetComponent<PopulationController>();
             CreatePassiveEvolutions();
@@ -142,6 +152,11 @@ namespace Horde
             {
                 EvolutionaryEvent();
                 _mutationClock.Restart();
+            }
+            if (_rareMutationClock.ElapsedInSeconds > _passiveEvolutions["rare mutation rate"][1])  
+            {
+                CalculateActiveWeights();
+                RareEvolutionaryEvent();
             }
         }
     }

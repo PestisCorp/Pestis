@@ -1,9 +1,9 @@
 [
 	{
 		"MutationID": 0,
-		"MutationName": "septic_bite",
+		"MutationName": "Septic bite",
 		"MutationTag" : "disease",
-		"MutationProbability": 0.1,
+		"MutationWeight": 10,
 		"Effects": ["unlock_septic_bite"]
 	}
 ]
