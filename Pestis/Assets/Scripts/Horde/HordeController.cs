@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using Players;
 using POI;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -470,10 +471,24 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         public void RetreatRpc()
         {
             Debug.Log("Retreating!");
-            // For now just retreat to spawn base
-            targetLocation.Teleport(transform.parent.position);
+            Vector3 baseCamp = transform.parent.position;
+            POIController closestPOI = Player.ControlledPOIs.Aggregate((closest, poi) =>
+                Vector3.Distance(transform.position, poi.transform.position) <
+                Vector3.Distance(transform.position, closest.transform.position)
+                    ? poi
+                    : closest);
+
+            if (Vector3.Distance(closestPOI.transform.position, transform.position) <
+                Vector3.Distance(baseCamp, transform.position))
+            {
+                StationAtRpc(closestPOI);
+            }
+            else
+            {
+                targetLocation.Teleport(baseCamp);
+                StationedAt = null;
+            }
             HordeBeingDamaged = null;
-            StationedAt = null;
             CurrentCombatController = null;
             PopulationCooldown = 15.0f;
             lastInCombat = Time.time;

@@ -3,6 +3,7 @@ using System.Linq;
 using Fusion;
 using Horde;
 using JetBrains.Annotations;
+using POI;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -34,6 +35,8 @@ namespace Players
         public bool IsLocal => Type != PlayerType.Bot && HasStateAuthority;
 
         [Networked] [Capacity(32)] public NetworkLinkedList<HordeController> Hordes { get; } = default;
+        
+        [Networked] [Capacity(64)] public NetworkLinkedList<POIController> ControlledPOIs { get; } = default;
 
         [Networked] public string Username { get; private set; }
 
