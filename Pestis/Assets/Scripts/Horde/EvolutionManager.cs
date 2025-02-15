@@ -3,13 +3,29 @@ using Fusion;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
+using Newtonsoft.Json;
+using UnityEngine.Windows;
+using File = System.IO.File;
 using Random = System.Random;
+
+// TODO: Retain mutations on horde split.
+// TODO: Rather than work with values from State, just store multiplier. Change setter.
+
 
 namespace Horde
 {
     /// <summary>
     /// Responsible for managing evolution of a Horde. Stores state and calculates potential mutations.
     /// </summary>
+    public struct ActiveMutation
+    {
+        public int MutationID { get; set; }
+        public string MutationName { get; set; }
+        public string MutationTag { get; set; }
+        public double MutationProbability { get; set; }
+        public string[] Effects { get; set; }
+    }
+    
     
     public class EvolutionManager : NetworkBehaviour
     {
@@ -17,6 +33,7 @@ namespace Horde
         private HordeController _hordeController;
         // "Evolutionary effect" : [Chance of acquisition, Effect on stats, Maximum effect]
         private Dictionary<string, double[]> _passiveEvolutions = new Dictionary<string, double[]>();
+        private List<ActiveMutation> _activeMutations;
         private const double PredispositionStrength = 1.01;
         private Color _hordeColor;
         private readonly Random _random = new Random();
@@ -86,11 +103,13 @@ namespace Horde
             //}
         }
 
-        public override void Spawned()
+        private void CalculateActiveProbabilities()
         {
-            _mutationClock.Start();
-            _hordeController = GetComponent<HordeController>();
-            _populationController = GetComponent<PopulationController>();
+            
+        }
+
+        private void CreatePassiveEvolutions()
+        {
             // Initialise all the passive mutations
             
             _passiveEvolutions["attack"] = new []{0.05, _populationController.GetState().Damage, 2.0};
@@ -100,7 +119,22 @@ namespace Horde
             _passiveEvolutions["evolution strength"] = new []{ 0.03, 1.02, 1.3};
             _passiveEvolutions["birth rate"] = new[]{ 0.02, _populationController.GetState().BirthRate, 0.1};
             //_passiveEvolutions["resource consumption"] = new []{ 0.0005, _hordeController.Player.CheeseIncrementRate };
+            // Need to change the default values for rate, and strength of evolutions to referring to values in PC.State (for horde split reasons)
             _passiveEvolutions["rare mutation rate"] = new []{ 0.025, 30, 20};
+        }
+
+        private void CreateActiveEvolutions()
+        {
+            string json = File.ReadAllText("Assets/json/active_mutations.json");
+            _activeMutations = JsonConvert.DeserializeObject<List<ActiveMutation>>(json);
+        }
+        public override void Spawned()
+        {
+            _mutationClock.Start();
+            _hordeController = GetComponent<HordeController>();
+            _populationController = GetComponent<PopulationController>();
+            CreatePassiveEvolutions();
+            CreateActiveEvolutions();
         }
         public override void FixedUpdateNetwork()
         {
