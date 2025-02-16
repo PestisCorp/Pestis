@@ -160,7 +160,7 @@ namespace Horde
         private Vector2 _addForce(Vector2 force)
         {
             _rigidbody.AddForce(force);
-            _rigidbody.linearVelocity = Vector2.ClampMagnitude(_rigidbody.linearVelocity, 0.6f);
+            _rigidbody.linearVelocity = Vector2.ClampMagnitude(_rigidbody.linearVelocity, 5f);
             return _rigidbody.linearVelocity;
         }
 

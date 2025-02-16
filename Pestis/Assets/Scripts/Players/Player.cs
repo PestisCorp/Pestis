@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Fusion;
 using Horde;
 using JetBrains.Annotations;
@@ -23,6 +24,8 @@ namespace Players
         public PlayerType Type;
 
         public GameObject hordePrefab;
+
+        [SerializeField] private float cheeseConsumptionRate = 0.001f; // k value
 
         [CanBeNull] private BotPlayer _botPlayer;
 
@@ -103,8 +106,20 @@ namespace Players
         public override void FixedUpdateNetwork()
         {
             if (HasStateAuthority)
+            {
                 // Add Cheese every tick based on the increment rate
                 CurrentCheese += CheeseIncrementRate;
+
+
+                // Consume cheese
+                var totalRatsCount = Hordes.Select(horde => horde.AliveRats).Sum();
+
+
+                // Cheese consumption formula
+                var cheeseConsumed = cheeseConsumptionRate * totalRatsCount;
+                // Prevent negative cheese values
+                CurrentCheese = Mathf.Max(0, CurrentCheese + CheeseIncrementRate - cheeseConsumed);
+            }
         }
 
 
