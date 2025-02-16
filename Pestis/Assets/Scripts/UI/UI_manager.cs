@@ -417,13 +417,19 @@ public class UI_Manager : MonoBehaviour
         }
     }
 
-    public void RareMutationPopup((ActiveMutation, ActiveMutation, ActiveMutation) mutations) 
+    public void RareMutationPopup((ActiveMutation, ActiveMutation, ActiveMutation) mutations, EvolutionManager evolutionManager) 
     {
         MutationPopUpEnable();
         var buttons = mutationPopUp.GetComponentsInChildren<Button>();
+        
         buttons[0].GetComponentInChildren<TMP_Text>().text = mutations.Item1.MutationName;
+        buttons[0].onClick.AddListener(delegate {evolutionManager.ApplyActiveEffects(mutations.Item1);});
+        
         buttons[1].GetComponentInChildren<TMP_Text>().text = mutations.Item2.MutationName;
+        buttons[1].onClick.AddListener(delegate {evolutionManager.ApplyActiveEffects(mutations.Item2);});
+        
         buttons[2].GetComponentInChildren<TMP_Text>().text = mutations.Item3.MutationName;
+        buttons[2].onClick.AddListener(delegate {evolutionManager.ApplyActiveEffects(mutations.Item3);});
     }
     
     public void AddNotification(string message, Color hordeColor)

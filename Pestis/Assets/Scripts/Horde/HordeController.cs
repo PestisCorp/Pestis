@@ -69,6 +69,7 @@ namespace Horde
         private GameObject _playerText;
 
         private PopulationController _populationController;
+        private EvolutionManager _evolutionManager;
 
         /// <summary>
         ///     How many rats we need to spawn to have the correct amount visible.
@@ -244,7 +245,12 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             if (InCombat)
             {
                 var enemy = CurrentCombatController!.GetNearestEnemy(this);
-
+                var damage = _populationController.GetState().Damage;
+                if (_evolutionManager.AcquiredMutations.ContainsKey("unlock_septic_bite"))
+                {
+                    var damageMult = _populationController.GetState().DamageMult;
+                    _populationController.SetDamageMult(damageMult * 1.005f);
+                }
                 if (enemy) // Could be no enemy if we just joined it
                 {
                     // If we chose to be in combat, move towards enemy
@@ -255,7 +261,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
                     // If close enough, start dealing damage, and animating rats.
                     if (enemy.GetBounds().Intersects(HordeBounds))
                     {
-                        enemy.DealDamageRpc(_populationController.GetState().Damage);
+                        enemy.DealDamageRpc(damage * _populationController.GetState().DamageMult);
                         HordeBeingDamaged = enemy;
                     }
                     else
@@ -367,6 +373,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         public override void Spawned()
         {
             _populationController = GetComponent<PopulationController>();
+            _evolutionManager = GetComponent<EvolutionManager>();
             Player = GetComponentInParent<Player>();
 
 
@@ -430,7 +437,14 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         public void DealDamageRpc(float damage)
         {
             Debug.Log($"Damage Reduction: {_populationController.GetState().DamageReduction}");
-            TotalHealth -= damage * _populationController.GetState().DamageReduction;
+            if (_evolutionManager.AcquiredMutations.ContainsKey("unlock_septic_bite"))
+            {
+                TotalHealth -= damage;
+            }
+            else
+            {
+                TotalHealth -= damage * _populationController.GetState().DamageReduction;
+            }
         }
 
         public Bounds GetBounds()

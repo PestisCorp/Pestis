@@ -35,6 +35,7 @@ namespace Horde
         // "Evolutionary effect" : [Chance of acquisition, Effect on stats, Maximum effect]
         private Dictionary<string, double[]> _passiveEvolutions = new Dictionary<string, double[]>();
         private WeightedList<ActiveMutation> _activeMutations = new WeightedList<ActiveMutation>();
+        public Dictionary<string, ActiveMutation> AcquiredMutations = new Dictionary<string, ActiveMutation>();
         private const double PredispositionStrength = 1.01;
         private Color _hordeColor;
         private readonly Random _random = new Random();
@@ -102,11 +103,25 @@ namespace Horde
         private void RareEvolutionaryEvent()
         {
             _rareMutationClock.Reset();
-            // TODO: Add mechanism for rejecting repeat samples
             var firstMut = _activeMutations.Next();
+            //_activeMutations.Remove(firstMut);
+            
             var secondMut = _activeMutations.Next();
+            //_activeMutations.Remove(secondMut);
+            
             var thirdMut = _activeMutations.Next();
-            FindFirstObjectByType<UI_Manager>().RareMutationPopup((firstMut, secondMut, thirdMut));
+            //_activeMutations.Remove(thirdMut);
+            
+            FindFirstObjectByType<UI_Manager>().RareMutationPopup((firstMut, secondMut, thirdMut), this);
+        }
+
+        public void ApplyActiveEffects(ActiveMutation mutation)
+        {
+            FindFirstObjectByType<UI_Manager>().MutationPopUpDisable();
+            foreach (var effect in mutation.Effects)
+            {
+                AcquiredMutations[effect] = mutation;
+            }
         }
         
         private void CalculateActiveWeights()

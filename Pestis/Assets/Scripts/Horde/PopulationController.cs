@@ -19,7 +19,8 @@ namespace Horde
         ///     How much damage the horde does to other hordes per tick in combat
         /// </summary>
         internal float Damage;
-
+        // DamageMult is a conditional state effect that is used by some active mutations
+        internal float DamageMult;
         internal float DamageReduction;
     }
 
@@ -172,7 +173,7 @@ namespace Horde
             State.HealthPerRat = 5.0f;
             State.Damage = 0.5f;
             State.DamageReduction = 1.0f;
-
+            State.DamageMult = 1.0f;
             _hordeController.TotalHealth = INITIAL_POPULATION * State.HealthPerRat;
 
             _transitionMatrix = GenerateTransitionMatrix();
@@ -242,6 +243,11 @@ namespace Horde
         public void SetBirthRate(double birthRate)
         {
             State.BirthRate = birthRate;
+        }
+
+        public void SetDamageMult(float damageMult)
+        {
+            State.DamageMult = damageMult;
         }
 
         public PopulationState GetState()
