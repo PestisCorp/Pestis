@@ -40,35 +40,35 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RatDown:
-        m_Texture: {fileID: -8328923581568760697, guid: a4f1b5ab03587f9ac83cf8c82d2345af, type: 3}
+        m_Texture: {fileID: 2800000, guid: 53915f2755433bfea97543fe46b4947f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RatDownLeft:
-        m_Texture: {fileID: -8328923581568760697, guid: d93c7989abb0c5d8eb82f3f79e746a42, type: 3}
+        m_Texture: {fileID: 2800000, guid: 908dfad257058cb51945d061fdf22aba, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RatDownRight:
-        m_Texture: {fileID: -8328923581568760697, guid: bc3eb020be9376f61a09d99e47b121ff, type: 3}
+        m_Texture: {fileID: 2800000, guid: 235ce98fca96cc1e8940d1d93fc1b772, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RatLeft:
-        m_Texture: {fileID: -8328923581568760697, guid: 3d770699a58e0209195682bfa1d11a38, type: 3}
+        m_Texture: {fileID: 2800000, guid: b7af2c926e771cba2899b8ed4aa98e12, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RatRight:
-        m_Texture: {fileID: -8328923581568760697, guid: 6ea2893aa13e707e8adc867c503c9843, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0cda7cf1997991fb1ba48dd345ac0885, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RatUp:
-        m_Texture: {fileID: -8328923581568760697, guid: 4ba5cb578bf6c48e1aef4f60272dfc58, type: 3}
+        m_Texture: {fileID: 2800000, guid: 925cb0a7ea03dd906ac7da6fd4ad128a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RatUpLeft:
-        m_Texture: {fileID: -8328923581568760697, guid: 25c35e91c05601e82b998a6303b1a6db, type: 3}
+        m_Texture: {fileID: 2800000, guid: de0672c87896f9c6eb06a41f82f3f175, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RatUpRight:
-        m_Texture: {fileID: -8328923581568760697, guid: 793c7d44a132e5072a814c8da8306943, type: 3}
+        m_Texture: {fileID: 2800000, guid: e2d1880e9e38cc77eb05325dd83db6b7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
