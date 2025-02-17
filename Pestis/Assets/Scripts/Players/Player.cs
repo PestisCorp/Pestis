@@ -43,6 +43,8 @@ namespace Players
 
         [Networked] public float CheeseIncrementRate { get; private set; } = 0.03f;
 
+        [Networked] public float FixedCheeseGain { get; private set; } = 0.03f;
+
         public int GetHordeCount()
         {
             return Hordes.Count;
@@ -107,18 +109,18 @@ namespace Players
         {
             if (HasStateAuthority)
             {
-                // Add Cheese every tick based on the increment rate
-                CurrentCheese += CheeseIncrementRate;
-
-
                 // Consume cheese
                 var totalRatsCount = Hordes.Select(horde => horde.AliveRats).Sum();
 
-
                 // Cheese consumption formula
                 var cheeseConsumed = cheeseConsumptionRate * totalRatsCount;
+
+                // Cheese gain per game tick
+                CheeseIncrementRate = FixedCheeseGain - cheeseConsumed;
+
                 // Prevent negative cheese values
-                CurrentCheese = Mathf.Max(0, CurrentCheese + CheeseIncrementRate - cheeseConsumed);
+                CurrentCheese = Mathf.Max(0, CurrentCheese + CheeseIncrementRate);
+                Debug.Log("No enough cheese!!");
             }
         }
 
