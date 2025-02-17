@@ -118,6 +118,16 @@ namespace Players
                 // Cheese gain per game tick
                 CheeseIncrementRate = FixedCheeseGain - cheeseConsumed;
 
+                // handle boundary values
+                if (CheeseIncrementRate < 0.01f && CheeseIncrementRate >= 0.00)
+                {
+                    CheeseIncrementRate = 0.00f;
+                }
+                else if (CheeseIncrementRate > -0.01f && CheeseIncrementRate < 0.00)
+                {
+                    CheeseIncrementRate = 0.00f;
+                }
+
                 // Prevent negative cheese values
                 CurrentCheese = Mathf.Max(0, CurrentCheese + CheeseIncrementRate);
                 Debug.Log("No enough cheese!!");
