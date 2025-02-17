@@ -64,7 +64,7 @@ public class RatBoids : MonoBehaviour
     private ComputeBuffer gridSumsBuffer2;
 
     private float minSpeed;
-    private Modes mode = Modes.Cpu;
+    private Modes mode = Modes.Gpu;
     private RearrangeBoidsJob rearrangeBoidsJob;
     private RenderParams rp;
     private GraphicsBuffer trianglePositions;
@@ -158,7 +158,7 @@ public class RatBoids : MonoBehaviour
         rp.matProps = new MaterialPropertyBlock();
         rp.matProps.SetBuffer("boids", boidBuffer);
         rp.worldBounds = new Bounds(Vector3.zero, Vector3.one * 3000);
-        trianglePositions = new GraphicsBuffer(GraphicsBuffer.Target.Structured, 3, 8);
+        trianglePositions = new GraphicsBuffer(GraphicsBuffer.Target.Structured, 4, 8);
         trianglePositions.SetData(triangleVerts);
         rp.matProps.SetBuffer("_Positions", trianglePositions);
 
@@ -349,7 +349,7 @@ public class RatBoids : MonoBehaviour
         }
 
         // Actually draw the boids
-        Graphics.RenderPrimitives(rp, MeshTopology.Triangles, numBoids * 3);
+        Graphics.RenderPrimitives(rp, MeshTopology.Quads, numBoids * 4);
     }
 
     private void OnDestroy()
@@ -542,9 +542,10 @@ public class RatBoids : MonoBehaviour
     {
         return new[]
         {
-            new Vector2(-.4f, -.5f),
-            new Vector2(0, .5f),
-            new Vector2(.4f, -.5f)
+            new Vector2(-0.5f, -0.5f),
+            new Vector2(-0.5f, 0.5f),
+            new Vector2(0.5f, 0.5f),
+            new Vector2(0.5f, -0.5f)
         };
     }
 
