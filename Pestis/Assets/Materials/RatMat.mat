@@ -39,10 +39,42 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _RatDown:
+        m_Texture: {fileID: -8328923581568760697, guid: a4f1b5ab03587f9ac83cf8c82d2345af, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RatDownLeft:
+        m_Texture: {fileID: -8328923581568760697, guid: d93c7989abb0c5d8eb82f3f79e746a42, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RatDownRight:
+        m_Texture: {fileID: -8328923581568760697, guid: bc3eb020be9376f61a09d99e47b121ff, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RatLeft:
+        m_Texture: {fileID: -8328923581568760697, guid: 3d770699a58e0209195682bfa1d11a38, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RatRight:
+        m_Texture: {fileID: -8328923581568760697, guid: 6ea2893aa13e707e8adc867c503c9843, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RatUp:
+        m_Texture: {fileID: -8328923581568760697, guid: 4ba5cb578bf6c48e1aef4f60272dfc58, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RatUpLeft:
+        m_Texture: {fileID: -8328923581568760697, guid: 25c35e91c05601e82b998a6303b1a6db, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RatUpRight:
+        m_Texture: {fileID: -8328923581568760697, guid: 793c7d44a132e5072a814c8da8306943, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _EnableExternalAlpha: 0
-    - _Scale: 0.1
+    - _Scale: 0.5
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
