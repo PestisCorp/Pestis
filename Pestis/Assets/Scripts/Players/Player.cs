@@ -119,11 +119,11 @@ namespace Players
                 CheeseIncrementRate = FixedCheeseGain - cheeseConsumed;
 
                 // handle boundary values
-                if (CheeseIncrementRate < 0.01f && CheeseIncrementRate >= 0.00)
+                if (CheeseIncrementRate < 0.005f && CheeseIncrementRate >= 0.00)
                 {
                     CheeseIncrementRate = 0.00f;
                 }
-                else if (CheeseIncrementRate > -0.01f && CheeseIncrementRate < 0.00)
+                else if (CheeseIncrementRate > -0.005f && CheeseIncrementRate < 0.00)
                 {
                     CheeseIncrementRate = 0.00f;
                 }
