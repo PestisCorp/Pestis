@@ -90,19 +90,19 @@ namespace Players
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void SetCheeseIncrementRateRpc(float rate)
         {
-            CheeseIncrementRate = rate;
+            FixedCheeseGain = rate;
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void IncrementCheeseIncrementRateRpc(float amount)
         {
-            CheeseIncrementRate += amount;
+            FixedCheeseGain += amount;
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void DecrementCheeseIncrementRateRpc(float amount)
         {
-            CheeseIncrementRate -= amount;
+            FixedCheeseGain -= amount;
         }
 
         public override void FixedUpdateNetwork()
@@ -130,7 +130,6 @@ namespace Players
 
                 // Prevent negative cheese values
                 CurrentCheese = Mathf.Max(0, CurrentCheese + CheeseIncrementRate);
-                Debug.Log("No enough cheese!!");
             }
         }
 
