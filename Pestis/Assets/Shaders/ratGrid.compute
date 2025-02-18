@@ -8,7 +8,10 @@ struct Boid
 
 StructuredBuffer<Boid> boids;
 RWStructuredBuffer<Boid> boidsOut;
+/// Stores the Grid Index & Offset of each boid by Boid Index
 RWStructuredBuffer<uint2> gridBuffer;
+/// Cumulative boid count for each grid cell
+/// I.e. count for block N is the sum of counts for blocks 0 to N
 RWStructuredBuffer<uint> gridOffsetBuffer;
 StructuredBuffer<uint> gridOffsetBufferIn;
 RWStructuredBuffer<uint> gridSumsBuffer;
@@ -38,8 +41,10 @@ void UpdateGrid(uint3 id : SV_DispatchThreadID, uint localID : SV_GROUPTHREADID)
         return;
     }
 
+    // Get index of Cell the boid belongs to
     int gridID = getGridID(boids[id.x]);
     gridBuffer[id.x].x = gridID;
+    // Set index of boid within that Cell
     InterlockedAdd(gridOffsetBuffer[gridID], 1, gridBuffer[id.x].y);
 }
 
@@ -55,6 +60,8 @@ void ClearGrid(uint3 id : SV_DispatchThreadID)
     gridOffsetBuffer[id.x] = 0;
 }
 
+/// Sum boid counts in each block cumulatively
+/// I.e. count for block N is the sum of counts for blocks 0 to N
 groupshared int temp[blockSize * 2];
 #pragma kernel PrefixSum // ID 2
 [numthreads(blockSize, 1, 1)]
@@ -94,6 +101,7 @@ void PrefixSum(uint globalID : SV_DispatchThreadID, uint localID : SV_GROUPTHREA
     }
 }
 
+/// Rearrange boids to be in grid order instead of random order
 #pragma kernel RearrangeBoids // ID 3
 [numthreads(blockSize, 1, 1)]
 void RearrangeBoids(uint3 id : SV_DispatchThreadID)

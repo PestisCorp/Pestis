@@ -1,10 +1,9 @@
+using Horde;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 internal struct Boid
@@ -28,11 +27,8 @@ public class RatBoids : MonoBehaviour
     [SerializeField] private float cohesionFactor = 2;
     [SerializeField] private float separationFactor = 1;
     [SerializeField] private float alignmentFactor = 5;
+    [SerializeField] private float targetFactor = 0.5f;
 
-    [Header("Prefabs")] [SerializeField] private Text fpsText;
-
-    [SerializeField] private Text boidText;
-    [SerializeField] private Slider numSlider;
     [SerializeField] private ComputeShader boidShader;
     [SerializeField] private ComputeShader gridShader;
     [SerializeField] private Material boidMat;
@@ -41,6 +37,7 @@ public class RatBoids : MonoBehaviour
     private readonly int cpuLimit = 1 << 12;
     private readonly int gpuLimit = 1 << 25;
     private readonly int jobLimit = 1 << 18;
+    private readonly Modes mode = Modes.Gpu;
     private int blocks;
 
     private ComputeBuffer boidBuffer;
@@ -63,8 +60,9 @@ public class RatBoids : MonoBehaviour
     private ComputeBuffer gridSumsBuffer;
     private ComputeBuffer gridSumsBuffer2;
 
+    private HordeController horde;
+
     private float minSpeed;
-    private Modes mode = Modes.Gpu;
     private RearrangeBoidsJob rearrangeBoidsJob;
     private RenderParams rp;
     private GraphicsBuffer trianglePositions;
@@ -87,17 +85,17 @@ public class RatBoids : MonoBehaviour
 
     private void Awake()
     {
-        numSlider.maxValue = cpuLimit;
         triangleVerts = getTriangleVerts();
     }
 
     // Start is called before the first frame update
     private void Start()
     {
-        boidText.text = "Boids: " + numBoids;
+        horde = GetComponentInParent<HordeController>();
+
         xBound = Camera.main.orthographicSize * Camera.main.aspect - edgeMargin;
         yBound = Camera.main.orthographicSize - edgeMargin;
-        turnSpeed = maxSpeed * 3;
+        turnSpeed = 0.04f;
         minSpeed = maxSpeed * 0.75f;
 
         // Get kernel IDs
@@ -127,6 +125,7 @@ public class RatBoids : MonoBehaviour
         boidShader.SetFloat("cohesionFactor", cohesionFactor);
         boidShader.SetFloat("separationFactor", separationFactor);
         boidShader.SetFloat("alignmentFactor", alignmentFactor);
+        boidShader.SetFloat("targetFactor", targetFactor);
 
         // Generate boids on GPU if over CPU limit
         if (numBoids <= jobLimit)
@@ -253,11 +252,11 @@ public class RatBoids : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        fpsText.text = "FPS: " + (int)(1 / Time.smoothDeltaTime);
-
         if (mode == Modes.Gpu)
         {
             boidShader.SetFloat("deltaTime", Time.deltaTime);
+            boidShader.SetFloats("targetPos", horde.targetLocation.transform.position.x,
+                horde.targetLocation.transform.position.y);
 
             // Clear indices
             gridShader.Dispatch(clearGridKernel, blocks, 1, 1);
@@ -484,59 +483,6 @@ public class RatBoids : MonoBehaviour
         }
     }
 
-    public void sliderChange(float val)
-    {
-        var limit = (int)blockSize * 65535;
-        numBoids = (int)val;
-        if (numBoids > limit) numBoids = limit;
-        OnDestroy();
-        Start();
-    }
-
-    public void switchTo3D()
-    {
-        SceneManager.LoadScene("Boids3DScene");
-    }
-
-    public void modeChange(int val)
-    {
-        // CPU
-        if (val == 0)
-        {
-            numSlider.maxValue = cpuLimit;
-            mode = Modes.Cpu;
-            var tempArray = new Boid[numBoids];
-            boidBuffer.GetData(tempArray);
-            boids.CopyFrom(tempArray);
-        }
-
-        // CPU Burst
-        if (val == 1)
-        {
-            numSlider.maxValue = burstLimit;
-            mode = Modes.Burst;
-            var tempArray = new Boid[numBoids];
-            boidBuffer.GetData(tempArray);
-            boids.CopyFrom(tempArray);
-        }
-
-        // CPU Burst Jobs
-        if (val == 2)
-        {
-            numSlider.maxValue = jobLimit;
-            mode = Modes.Jobs;
-            var tempArray = new Boid[numBoids];
-            boidBuffer.GetData(tempArray);
-            boids.CopyFrom(tempArray);
-        }
-
-        // GPU
-        if (val == 3)
-        {
-            numSlider.maxValue = gpuLimit;
-            mode = Modes.Gpu;
-        }
-    }
 
     private Vector2[] getTriangleVerts()
     {

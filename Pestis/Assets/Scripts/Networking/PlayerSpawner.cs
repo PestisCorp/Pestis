@@ -51,9 +51,9 @@ public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
             Runner.Spawn(PlayerPrefab, spawnPositions[0],
                 Quaternion.identity);
 
-            for (var i = 1; i < numBots + 1; i++)
-                Runner.Spawn(BotPrefab, spawnPositions[i],
-                    Quaternion.identity);
+            //for (var i = 1; i < numBots + 1; i++)
+            //    Runner.Spawn(BotPrefab, spawnPositions[i],
+            //        Quaternion.identity);
 
             Camera.main.transform.position = new Vector3(spawnPositions[0].x, spawnPositions[0].y, -1.0f);
         }
