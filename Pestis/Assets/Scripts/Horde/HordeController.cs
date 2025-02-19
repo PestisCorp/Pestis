@@ -79,6 +79,7 @@ namespace Horde
         private Light2D _selectionLightPoi;
 
         private Light2D _selectionLightTerrain;
+        
 
         [CanBeNull] private Action OnArriveAtTarget;
 
@@ -246,7 +247,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             {
                 var enemy = CurrentCombatController!.GetNearestEnemy(this);
                 var damage = _populationController.GetState().Damage;
-                if (_evolutionManager.AcquiredMutations["unlock_septic_bite"])
+                if (_evolutionManager.GetEvolutionaryState().AcquiredMutations["unlock_septic_bite"])
                 {
                     var damageMult = _populationController.GetState().DamageMult;
                     _populationController.SetDamageMult(damageMult * 1.005f);
@@ -437,7 +438,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         public void DealDamageRpc(float damage)
         {
             Debug.Log($"Damage Reduction: {_populationController.GetState().DamageReduction}");
-            if (_evolutionManager.AcquiredMutations.ContainsKey("unlock_septic_bite"))
+            if (_evolutionManager.GetEvolutionaryState().AcquiredMutations.ContainsKey("unlock_septic_bite"))
             {
                 TotalHealth -= damage;
             }
@@ -569,6 +570,21 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             _populationController.SetState(newState);
         }
 
+        public void SetPopulationInit(int initialPopulation)
+        {
+            _populationController.initialPopulation = initialPopulation;
+        }
+
+        public EvolutionaryState GetEvolutionState()
+        {
+            return _evolutionManager.GetEvolutionaryState();
+        }
+
+        public void SetEvolutionaryState(EvolutionaryState newState)
+        {
+            _evolutionManager.SetEvolutionaryState(newState);
+        }
+        
         public Vector2 GetCenter()
         {
             return _hordeCenter;

@@ -49,6 +49,10 @@ namespace Players
                 selectedHorde?.Highlight();
                 if (selectedHorde.Player.IsLocal)
                 {
+                    foreach (var mut in selectedHorde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredAbilities)
+                    {
+                        UI_manager.RegisterAbility(mut, selectedHorde.GetComponent<AbilityController>());
+                    }
                     UI_manager.ToolbarEnable();
                     UI_manager.AbilityToolbarEnable();
                 }

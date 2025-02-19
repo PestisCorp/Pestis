@@ -452,18 +452,23 @@ public class UI_Manager : MonoBehaviour
     public void AbilityToolbarDisable()
     {
         ResetUI();
+        foreach (var button in abilityToolbar.GetComponentsInChildren<Button>())
+        {
+            button.enabled = false;
+        }
         if (abilityToolbar != null) abilityToolbar.SetActive(false);
     }
     
-    public void RegisterAbility(ActiveMutation mutation, AbilityController abilityController)
+    public void RegisterAbility(string mutationName, AbilityController abilityController)
     {
         foreach (var button in abilityToolbar.GetComponentsInChildren<Button>(true))
         {
             if (button.enabled) continue;
             button.enabled = true;
+            button.onClick.RemoveAllListeners();
             button.GetComponent<Image>().enabled = true;
-            button.GetComponentInChildren<TextMeshProUGUI>().text = mutation.MutationName;
-            switch (mutation.MutationName)
+            button.GetComponentInChildren<TextMeshProUGUI>().text = mutationName;
+            switch (mutationName)
             {
                 case "Pestis":
                     button.onClick.AddListener(abilityController.UsePestis);

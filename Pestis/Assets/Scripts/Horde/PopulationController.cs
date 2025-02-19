@@ -26,7 +26,7 @@ namespace Horde
 
     public class PopulationController : NetworkBehaviour
     {
-        public const int INITIAL_POPULATION = 5;
+        public int initialPopulation = 5;
 
         // Soft population limit, should be extremely difficult for the player to grow beyond this, but still possible
         private const int PopMax = 1000;
@@ -49,7 +49,7 @@ namespace Horde
 
         private HordeController _hordeController;
 
-        private int _populationPeak = INITIAL_POPULATION;
+        private int _populationPeak;
 
 
         private List<double[]> _transitionMatrix;
@@ -106,6 +106,7 @@ namespace Horde
         // The entry X[n][n-k] is the probability of the population declining by an amount k
         private List<double[]> GenerateTransitionMatrix()
         {
+            _populationPeak = initialPopulation;
             var transitionMatrix = new List<double[]>(_populationPeak);
             var wMin = _weights.Min();
             var wMax = _weights.Max();
@@ -174,7 +175,7 @@ namespace Horde
             State.Damage = 0.5f;
             State.DamageReduction = 1.0f;
             State.DamageMult = 1.0f;
-            _hordeController.TotalHealth = INITIAL_POPULATION * State.HealthPerRat;
+            _hordeController.TotalHealth = initialPopulation * State.HealthPerRat;
 
             _transitionMatrix = GenerateTransitionMatrix();
         }

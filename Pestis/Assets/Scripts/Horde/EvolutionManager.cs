@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
 using Newtonsoft.Json;
-using UnityEngine.Windows;
 using File = System.IO.File;
 using Random = System.Random;
 using KaimiraGames;
@@ -26,33 +25,36 @@ namespace Horde
         public string[] Effects { get; set; }
         public bool IsAbility { get; set; }
     }
-    
+
+    public struct EvolutionaryState
+    {
+        public Dictionary<string, double[]> PassiveEvolutions;
+        public WeightedList<ActiveMutation> ActiveMutations;
+        public Dictionary<string, bool> AcquiredMutations;
+        public List<string> AcquiredAbilities;
+    }
     
     public class EvolutionManager : NetworkBehaviour
     {
         private PopulationController _populationController;
         private HordeController _hordeController;
         private Panner _panner;
-        private AbilityController _abilityController;
         // "Evolutionary effect" : [Chance of acquisition, Effect on stats, Maximum effect]
-        private Dictionary<string, double[]> _passiveEvolutions = new();
-        private WeightedList<ActiveMutation> _activeMutations = new();
-        public Dictionary<string, bool> AcquiredMutations = new();
+        private EvolutionaryState _evolutionaryState;
         private const double PredispositionStrength = 1.01;
         private Color _hordeColor;
         private readonly Random _random = new();
         private Timer _mutationClock;
         private Timer _rareMutationClock;
-        private bool _panCamera = false;
         
         // Set the rat stats in the Population Controller
         // Shows notification of mutation
         private void UpdateRatStats(string mutation)
         {
             _hordeColor = _hordeController.GetHordeColor();
-            double mutEffect = _passiveEvolutions[mutation][1];
+            double mutEffect = _evolutionaryState.PassiveEvolutions[mutation][1];
             string text = ("A horde's " + mutation + " has improved by " +
-                                         (Math.Round(_passiveEvolutions["evolution strength"][1] * 100 - 100, 2)).ToString(CultureInfo.CurrentCulture) + "%.");
+                                         (Math.Round(_evolutionaryState.PassiveEvolutions["evolution strength"][1] * 100 - 100, 2)).ToString(CultureInfo.CurrentCulture) + "%.");
             if (_hordeController.Player.Type == 0)
             {
                 FindFirstObjectByType<UI_Manager>().AddNotification(text, _hordeColor);
@@ -80,23 +82,23 @@ namespace Horde
         // Check if a mutation is will be acquired this tick
         private void EvolutionaryEvent()
         {
-            foreach (var ele in _passiveEvolutions)
+            foreach (var ele in _evolutionaryState.PassiveEvolutions)
             {
                 double r = _random.NextDouble();
                 string mutation = ele.Key;
-                double p = _passiveEvolutions[mutation][0];
-                double mutEffect = _passiveEvolutions[mutation][1];
-                if ((r < p) && (_passiveEvolutions[mutation][2] > mutEffect))
+                double p = _evolutionaryState.PassiveEvolutions[mutation][0];
+                double mutEffect = _evolutionaryState.PassiveEvolutions[mutation][1];
+                if ((r < p) && (_evolutionaryState.PassiveEvolutions[mutation][2] > mutEffect))
                 {
-                    _passiveEvolutions[mutation][0] = p * PredispositionStrength;
+                    _evolutionaryState.PassiveEvolutions[mutation][0] = p * PredispositionStrength;
                     if (mutation is "rare mutation rate" or "evolution rate")
                     {
-                        _passiveEvolutions[mutation][1] =
-                            Math.Max(mutEffect / _passiveEvolutions[mutation][1], _passiveEvolutions[mutation][2]);
+                        _evolutionaryState.PassiveEvolutions[mutation][1] =
+                            Math.Max(mutEffect / _evolutionaryState.PassiveEvolutions[mutation][1], _evolutionaryState.PassiveEvolutions[mutation][2]);
                     }
                     else
                     {
-                        _passiveEvolutions[mutation][1] = Math.Min(mutEffect * _passiveEvolutions["evolution strength"][1], _passiveEvolutions[mutation][2]);
+                        _evolutionaryState.PassiveEvolutions[mutation][1] = Math.Min(mutEffect * _evolutionaryState.PassiveEvolutions["evolution strength"][1], _evolutionaryState.PassiveEvolutions[mutation][2]);
                     }
                     UpdateRatStats(mutation);
                 }
@@ -106,14 +108,14 @@ namespace Horde
         private void RareEvolutionaryEvent()
         {
             _rareMutationClock.Reset();
-            var firstMut = _activeMutations.Next();
-            _activeMutations.Remove(firstMut);
+            var firstMut = _evolutionaryState.ActiveMutations.Next();
+            _evolutionaryState.ActiveMutations.Remove(firstMut);
             
-            var secondMut = _activeMutations.Next();
-            _activeMutations.Remove(secondMut);
+            var secondMut = _evolutionaryState.ActiveMutations.Next();
+            _evolutionaryState.ActiveMutations.Remove(secondMut);
             
-            var thirdMut = _activeMutations.Next();
-            _activeMutations.Remove(thirdMut);
+            var thirdMut = _evolutionaryState.ActiveMutations.Next();
+            _evolutionaryState.ActiveMutations.Remove(thirdMut);
 
             _panner.target.x = _hordeController.GetBounds().center.x;
             _panner.target.y = _hordeController.GetBounds().center.y;
@@ -127,9 +129,12 @@ namespace Horde
             FindFirstObjectByType<UI_Manager>().MutationPopUpDisable();
             foreach (var effect in mutation.Effects)
             {
-                AcquiredMutations[effect] = true;
+                _evolutionaryState.AcquiredMutations[effect] = true;
             }
-            if (mutation.IsAbility) FindFirstObjectByType<UI_Manager>().RegisterAbility(mutation, _abilityController);
+            if (mutation.IsAbility)
+            {
+                _evolutionaryState.AcquiredAbilities.Add(mutation.MutationName);
+            }
         }
         
         private void CalculateActiveWeights()
@@ -139,48 +144,64 @@ namespace Horde
         private void CreatePassiveEvolutions()
         {
             // Initialise all the passive mutations
-            
-            _passiveEvolutions["attack"] = new []{0.05, _populationController.GetState().Damage, 2.0};
-            _passiveEvolutions["health"] = new []{0.05, _populationController.GetState().HealthPerRat, 20.0};
-            _passiveEvolutions["defense"] = new []{ 0.05, _populationController.GetState().DamageReduction, 2.5};
-            _passiveEvolutions["evolution rate"] = new []{ 0.025, 2, 0.5};
-            _passiveEvolutions["evolution strength"] = new []{ 0.03, 1.02, 1.3};
-            _passiveEvolutions["birth rate"] = new[]{ 0.02, _populationController.GetState().BirthRate, 0.1};
-            //_passiveEvolutions["resource consumption"] = new []{ 0.0005, _hordeController.Player.CheeseIncrementRate };
+            _mutationClock.Start();
+            _evolutionaryState.PassiveEvolutions["attack"] = new []{0.05, _populationController.GetState().Damage, 2.0};
+            _evolutionaryState.PassiveEvolutions["health"] = new []{0.05, _populationController.GetState().HealthPerRat, 20.0};
+            _evolutionaryState.PassiveEvolutions["defense"] = new []{ 0.05, _populationController.GetState().DamageReduction, 2.5};
+            _evolutionaryState.PassiveEvolutions["evolution rate"] = new []{ 0.025, 2, 0.5};
+            _evolutionaryState.PassiveEvolutions["evolution strength"] = new []{ 0.03, 1.02, 1.3};
+            _evolutionaryState.PassiveEvolutions["birth rate"] = new[]{ 0.02, _populationController.GetState().BirthRate, 0.1};
+            //_evolutionaryState.PassiveEvolutions["resource consumption"] = new []{ 0.0005, _hordeController.Player.CheeseIncrementRate };
             // Need to change the default values for rate, and strength of evolutions to referring to values in PC.State (for horde split reasons)
-            _passiveEvolutions["rare mutation rate"] = new []{ 0.025, 30, 20};
+            _evolutionaryState.PassiveEvolutions["rare mutation rate"] = new []{ 0.025, 30, 20};
         }
 
         private void CreateActiveEvolutions()
         {
+            _rareMutationClock.Start();
             string json = File.ReadAllText("Assets/json/active_mutations.json");
             var activeMutations = JsonConvert.DeserializeObject<List<ActiveMutation>>(json);
             foreach (var mut in activeMutations)
             {
-                _activeMutations.Add(mut, mut.MutationWeight);
-                foreach (var effect in mut.Effects) { AcquiredMutations[effect] = false; }
+                _evolutionaryState.ActiveMutations.Add(mut, mut.MutationWeight);
+                foreach (var effect in mut.Effects) { _evolutionaryState.AcquiredMutations[effect] = false; }
             }
         }
+
+        public EvolutionaryState GetEvolutionaryState()
+        {
+            return _evolutionaryState;
+        }
+
+        public void SetEvolutionaryState(EvolutionaryState newState)
+        {
+            _evolutionaryState = newState;
+        }
+        
         public override void Spawned()
         {
             _panner = FindFirstObjectByType<Panner>();
-            _mutationClock.Start();
-            _rareMutationClock.Start();
             _hordeController = GetComponent<HordeController>();
             _populationController = GetComponent<PopulationController>();
-            _abilityController = GetComponent<AbilityController>();
+            _evolutionaryState = new EvolutionaryState()
+            {
+                PassiveEvolutions = new Dictionary<string, double[]>(),
+                ActiveMutations = new WeightedList<ActiveMutation>(),
+                AcquiredAbilities = new List<string>(),
+                AcquiredMutations = new Dictionary<string, bool>()
+            };
             CreatePassiveEvolutions();
             CreateActiveEvolutions();
         }
         
         public override void FixedUpdateNetwork()
         {
-            if (_mutationClock.ElapsedInSeconds > _passiveEvolutions["evolution rate"][1])
+            if (_mutationClock.ElapsedInSeconds > _evolutionaryState.PassiveEvolutions["evolution rate"][1])
             {
                 EvolutionaryEvent();
                 _mutationClock.Restart();
             }
-            if ((_rareMutationClock.ElapsedInSeconds > _passiveEvolutions["rare mutation rate"][1]) && (_hordeController.Player.Type == 0))  
+            if ((_rareMutationClock.ElapsedInSeconds > _evolutionaryState.PassiveEvolutions["rare mutation rate"][1]) && (_hordeController.Player.Type == 0))  
             {
                 CalculateActiveWeights();
                 RareEvolutionaryEvent();
