@@ -40,6 +40,7 @@ namespace Players
             {
                 selectedHorde.UnHighlight();
                 UI_manager.ToolbarDisable();
+                UI_manager.AbilityToolbarDisable();
             }
 
             if (selectedHorde != horde)
@@ -47,7 +48,11 @@ namespace Players
                 selectedHorde = horde;
                 selectedHorde?.Highlight();
                 if (selectedHorde.Player.IsLocal)
+                {
                     UI_manager.ToolbarEnable();
+                    UI_manager.AbilityToolbarEnable();
+                }
+                    
             }
         }
 
@@ -56,6 +61,7 @@ namespace Players
             selectedHorde?.UnHighlight();
             selectedHorde = null;
             UI_manager.ToolbarDisable();
+            UI_manager.AbilityToolbarDisable();
         }
 
         public void MoveHorde(Vector2 target)

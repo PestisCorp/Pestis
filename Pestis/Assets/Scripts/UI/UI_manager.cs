@@ -61,6 +61,7 @@ public class UI_Manager : MonoBehaviour
         ResetUI();
         if (mutationPopUp != null) mutationPopUp.SetActive(false);
         if (toolbar != null) toolbar.SetActive(false);
+        if (abilityToolbar != null) abilityToolbar.SetActive(false);
         if (resourceStats != null) resourceStats.SetActive(false);
         displayResourceInfo = false;
         moveFunctionality = false;
@@ -441,7 +442,19 @@ public class UI_Manager : MonoBehaviour
         buttons[2].onClick.RemoveAllListeners();
         buttons[2].onClick.AddListener(delegate {evolutionManager.ApplyActiveEffects(mutations.Item3);});
     }
-
+    
+    public void AbilityToolbarEnable()
+    {
+        ResetUI();
+        if (abilityToolbar != null) abilityToolbar.SetActive(true);
+    }
+    
+    public void AbilityToolbarDisable()
+    {
+        ResetUI();
+        if (abilityToolbar != null) abilityToolbar.SetActive(false);
+    }
+    
     public void RegisterAbility(ActiveMutation mutation, AbilityController abilityController)
     {
         foreach (var button in abilityToolbar.GetComponentsInChildren<Button>(true))
