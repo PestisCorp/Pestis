@@ -249,6 +249,7 @@ namespace Horde
         {
             State.DamageMult = damageMult;
         }
+        
 
         public PopulationState GetState()
         {

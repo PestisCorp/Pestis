@@ -20,11 +20,11 @@ namespace Horde
     /// </summary>
     public struct ActiveMutation
     {
-        public int MutationID { get; set; }
         public string MutationName { get; set; }
         public string MutationTag { get; set; }
         public int MutationWeight { get; set; }
         public string[] Effects { get; set; }
+        public bool IsAbility { get; set; }
     }
     
     
@@ -32,15 +32,18 @@ namespace Horde
     {
         private PopulationController _populationController;
         private HordeController _hordeController;
+        private Panner _panner;
+        private AbilityController _abilityController;
         // "Evolutionary effect" : [Chance of acquisition, Effect on stats, Maximum effect]
-        private Dictionary<string, double[]> _passiveEvolutions = new Dictionary<string, double[]>();
-        private WeightedList<ActiveMutation> _activeMutations = new WeightedList<ActiveMutation>();
-        public Dictionary<string, ActiveMutation> AcquiredMutations = new Dictionary<string, ActiveMutation>();
+        private Dictionary<string, double[]> _passiveEvolutions = new();
+        private WeightedList<ActiveMutation> _activeMutations = new();
+        public Dictionary<string, bool> AcquiredMutations = new();
         private const double PredispositionStrength = 1.01;
         private Color _hordeColor;
-        private readonly Random _random = new Random();
+        private readonly Random _random = new();
         private Timer _mutationClock;
         private Timer _rareMutationClock;
+        private bool _panCamera = false;
         
         // Set the rat stats in the Population Controller
         // Shows notification of mutation
@@ -86,7 +89,7 @@ namespace Horde
                 if ((r < p) && (_passiveEvolutions[mutation][2] > mutEffect))
                 {
                     _passiveEvolutions[mutation][0] = p * PredispositionStrength;
-                    if ((mutation == "rare mutation rate") || (mutation == "evolution rate"))
+                    if (mutation is "rare mutation rate" or "evolution rate")
                     {
                         _passiveEvolutions[mutation][1] =
                             Math.Max(mutEffect / _passiveEvolutions[mutation][1], _passiveEvolutions[mutation][2]);
@@ -104,14 +107,18 @@ namespace Horde
         {
             _rareMutationClock.Reset();
             var firstMut = _activeMutations.Next();
-            //_activeMutations.Remove(firstMut);
+            _activeMutations.Remove(firstMut);
             
             var secondMut = _activeMutations.Next();
-            //_activeMutations.Remove(secondMut);
+            _activeMutations.Remove(secondMut);
             
             var thirdMut = _activeMutations.Next();
-            //_activeMutations.Remove(thirdMut);
-            
+            _activeMutations.Remove(thirdMut);
+
+            _panner.target.x = _hordeController.GetBounds().center.x;
+            _panner.target.y = _hordeController.GetBounds().center.y;
+            _panner.target.z = -1;
+            _panner.shouldPan = true;
             FindFirstObjectByType<UI_Manager>().RareMutationPopup((firstMut, secondMut, thirdMut), this);
         }
 
@@ -120,8 +127,9 @@ namespace Horde
             FindFirstObjectByType<UI_Manager>().MutationPopUpDisable();
             foreach (var effect in mutation.Effects)
             {
-                AcquiredMutations[effect] = mutation;
+                AcquiredMutations[effect] = true;
             }
+            if (mutation.IsAbility) FindFirstObjectByType<UI_Manager>().RegisterAbility(mutation, _abilityController);
         }
         
         private void CalculateActiveWeights()
@@ -150,17 +158,21 @@ namespace Horde
             foreach (var mut in activeMutations)
             {
                 _activeMutations.Add(mut, mut.MutationWeight);
+                foreach (var effect in mut.Effects) { AcquiredMutations[effect] = false; }
             }
         }
         public override void Spawned()
         {
+            _panner = FindFirstObjectByType<Panner>();
             _mutationClock.Start();
             _rareMutationClock.Start();
             _hordeController = GetComponent<HordeController>();
             _populationController = GetComponent<PopulationController>();
+            _abilityController = GetComponent<AbilityController>();
             CreatePassiveEvolutions();
             CreateActiveEvolutions();
         }
+        
         public override void FixedUpdateNetwork()
         {
             if (_mutationClock.ElapsedInSeconds > _passiveEvolutions["evolution rate"][1])
@@ -168,7 +180,7 @@ namespace Horde
                 EvolutionaryEvent();
                 _mutationClock.Restart();
             }
-            if (_rareMutationClock.ElapsedInSeconds > _passiveEvolutions["rare mutation rate"][1])  
+            if ((_rareMutationClock.ElapsedInSeconds > _passiveEvolutions["rare mutation rate"][1]) && (_hordeController.Player.Type == 0))  
             {
                 CalculateActiveWeights();
                 RareEvolutionaryEvent();

@@ -246,7 +246,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             {
                 var enemy = CurrentCombatController!.GetNearestEnemy(this);
                 var damage = _populationController.GetState().Damage;
-                if (_evolutionManager.AcquiredMutations.ContainsKey("unlock_septic_bite"))
+                if (_evolutionManager.AcquiredMutations["unlock_septic_bite"])
                 {
                     var damageMult = _populationController.GetState().DamageMult;
                     _populationController.SetDamageMult(damageMult * 1.005f);
@@ -567,6 +567,11 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         public void SetPopulationState(PopulationState newState)
         {
             _populationController.SetState(newState);
+        }
+
+        public Vector2 GetCenter()
+        {
+            return _hordeCenter;
         }
 
         public void Select()

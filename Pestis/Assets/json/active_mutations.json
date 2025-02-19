@@ -1,9 +1,26 @@
 [
 	{
-		"MutationID": 0,
 		"MutationName": "Septic bite",
 		"MutationTag" : "disease",
 		"MutationWeight": 10,
-		"Effects": ["unlock_septic_bite"]
+		"Effects": ["unlock_septic_bite"],
+		"Tooltip": "Your rats live in squalor and never brush their teeth. Now their bites shut down your enemies' organs. Deal ramping damage that ignores armor.",
+		"IsAbility": false
+	},
+	{
+		"MutationName": "Pestis",
+		"MutationTag": "disease",
+		"MutationWeight": 10,
+		"Effects": ["unlock_pestis", "unlock_disease_resistance", "unlock_human_aggression"],
+		"Tooltip": "Unleash the plague onto all nearby horde or human controlled location by sacrificing 30% of your population and pausing population growth for a minute. If you spread it to a horde, they suffer from reduced armor reduction and increased resource needs for one minute. Humans suffer from gradual damage and will summon more patrols. Gain immunity to disease.",
+		"IsAbility": true
+	},
+	{
+		"MutationName": "Sewer Dwellers",
+		"MutationTag" : "disease",
+		"MutationWeight": 10,
+		"Effects": ["unlock_city_boost", "unlock_sewer_travel"],
+		"Tooltip": "Your rats thrive in the city sewers, gaining a boost to all basal stats in the city. You can use the sewers to instantly travel between cities you control.",
+		"IsAbility": true
 	}
 ]

@@ -143,6 +143,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 1
   hordePrefab: {fileID: 2093969167296477126, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
+  cheeseConsumptionRate: 0.001
   _Hordes: []
   _Username: 
   _CurrentCheese: 0
@@ -221,7 +222,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8072967729009948161, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
       propertyPath: NetworkedBehaviours.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8072967729009948161, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
       propertyPath: 'NetworkedBehaviours.Array.data[1]'

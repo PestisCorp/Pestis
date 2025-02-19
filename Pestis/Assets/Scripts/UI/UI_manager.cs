@@ -22,6 +22,7 @@ public class UI_Manager : MonoBehaviour
     public GameObject toolbar;
     public GameObject resourceStats;
     public GameObject splitPanel;
+    public GameObject abilityToolbar;
 
     // References to the resource text fields
     public TextMeshProUGUI cheeseTotalText;
@@ -66,6 +67,12 @@ public class UI_Manager : MonoBehaviour
 
         _notificationText = notification.GetComponentInChildren<TMP_Text>();
         _notificationBackground = notification.GetComponentInChildren<Image>();
+
+        foreach (var button in abilityToolbar.GetComponentsInChildren<Button>())
+        {
+            button.enabled = false;
+            button.GetComponent<Image>().enabled = false;
+        }
 
         
     }
@@ -423,13 +430,35 @@ public class UI_Manager : MonoBehaviour
         var buttons = mutationPopUp.GetComponentsInChildren<Button>();
         
         buttons[0].GetComponentInChildren<TMP_Text>().text = mutations.Item1.MutationName;
+        buttons[0].onClick.RemoveAllListeners();
         buttons[0].onClick.AddListener(delegate {evolutionManager.ApplyActiveEffects(mutations.Item1);});
         
         buttons[1].GetComponentInChildren<TMP_Text>().text = mutations.Item2.MutationName;
+        buttons[1].onClick.RemoveAllListeners();
         buttons[1].onClick.AddListener(delegate {evolutionManager.ApplyActiveEffects(mutations.Item2);});
         
         buttons[2].GetComponentInChildren<TMP_Text>().text = mutations.Item3.MutationName;
+        buttons[2].onClick.RemoveAllListeners();
         buttons[2].onClick.AddListener(delegate {evolutionManager.ApplyActiveEffects(mutations.Item3);});
+    }
+
+    public void RegisterAbility(ActiveMutation mutation, AbilityController abilityController)
+    {
+        foreach (var button in abilityToolbar.GetComponentsInChildren<Button>(true))
+        {
+            if (button.enabled) continue;
+            button.enabled = true;
+            button.GetComponent<Image>().enabled = true;
+            button.GetComponentInChildren<TextMeshProUGUI>().text = mutation.MutationName;
+            switch (mutation.MutationName)
+            {
+                case "Pestis":
+                    button.onClick.AddListener(abilityController.UsePestis);
+                    break;
+            }
+            break;
+        }
+
     }
     
     public void AddNotification(string message, Color hordeColor)

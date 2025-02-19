@@ -201,6 +201,7 @@ GameObject:
   - component: {fileID: 8072967729009948161}
   - component: {fileID: 2822140812086679925}
   - component: {fileID: 7949394547622356909}
+  - component: {fileID: 2298762105365068013}
   m_Layer: 0
   m_Name: RatHorde
   m_TagString: Untagged
@@ -300,6 +301,7 @@ MonoBehaviour:
   - {fileID: -7073726608519572895}
   - {fileID: 2822140812086679925}
   - {fileID: 7949394547622356909}
+  - {fileID: 2298762105365068013}
   - {fileID: 6270358088513742782}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &2822140812086679925
@@ -331,9 +333,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fc0f394f1d4433faea6b58a882e00ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Participators:
-    _items: []
   _FightingOver: {fileID: 0}
+--- !u!114 &2298762105365068013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2093969167296477126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e5121fa714640d78cc89c73a8985e8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3577181395217153104
 GameObject:
   m_ObjectHideFlags: 0
