@@ -471,13 +471,13 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             Debug.Log("Retreating!");
             Vector3 baseCamp = transform.parent.position;
             POIController closestPOI = Player.ControlledPOIs.Aggregate((closest, poi) =>
-                Vector3.Distance(transform.position, poi.transform.position) <
-                Vector3.Distance(transform.position, closest.transform.position)
+                Vector3.Distance(HordeBounds.center, poi.transform.position) <
+                Vector3.Distance(HordeBounds.center, closest.transform.position)
                     ? poi
                     : closest);
 
-            if (Vector3.Distance(closestPOI.transform.position, transform.position) <
-                Vector3.Distance(baseCamp, transform.position))
+            if (Vector3.Distance(closestPOI.transform.position, HordeBounds.center) <
+                Vector3.Distance(baseCamp, HordeBounds.center))
             {
                 StationAtRpc(closestPOI);
             }
