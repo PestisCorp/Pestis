@@ -43,7 +43,7 @@ public class UI_Manager : MonoBehaviour
     public GameObject notification;
     public float displayTime = 3f;
     public float fadeDuration = 1f;
-    private readonly Queue<string> messages = new();
+    private readonly Queue<(string, Color)> messages = new();
     private bool _messageActive;
     private Image _notificationBackground;
 
@@ -481,25 +481,25 @@ public class UI_Manager : MonoBehaviour
     
     public void AddNotification(string message, Color hordeColor)
     {
-        messages.Enqueue(message);
-        if (!_messageActive) StartCoroutine(ShowNextmessage(hordeColor));
+        messages.Enqueue((message, hordeColor));
+        if (!_messageActive) StartCoroutine(ShowNextmessage());
     }
 
     // Removes a notification after 5 seconds, during which it fades out
-    private IEnumerator ShowNextmessage(Color hordeColor)
+    private IEnumerator ShowNextmessage()
     {
         if (messages.Count == 0) yield break;
         var message = messages.Dequeue();
         _messageActive = true;
         notification.SetActive(true);
-        _notificationText.color = hordeColor;
+        _notificationText.color = message.Item2;
         {
             var colour = _notificationBackground.color;
             colour.a = 1.0f;
             _notificationBackground.color = colour;
         }
 
-        _notificationText.text = message;
+        _notificationText.text = message.Item1;
 
         yield return new WaitForSeconds(displayTime);
         var elapsedTime = 0f;
@@ -512,10 +512,9 @@ public class UI_Manager : MonoBehaviour
             _notificationBackground.color = colour;
             yield return null;
         }
-
-
+        
         if (messages.Count > 0)
-            StartCoroutine(ShowNextmessage(hordeColor));
+            StartCoroutine(ShowNextmessage());
         else
             _messageActive = false;
     }

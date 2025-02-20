@@ -15,18 +15,25 @@ namespace Horde
         
         public void UsePestis()
         {
-            _hordeController.TotalHealth = (int)Math.Ceiling(_hordeController.AliveRats * _populationController.GetState().HealthPerRat * 0.7);
-            HashSet<PopulationController> affectedHordes = new HashSet<PopulationController>();
+            
             Collider2D[] hitColliders = Physics2D.OverlapCircleAll(_hordeController.GetBounds().center, 5f);
+            HashSet<PopulationController> affectedHordes = new HashSet<PopulationController>();
+            affectedHordes.Add(_hordeController.GetComponent<PopulationController>());
             foreach (var col in hitColliders)
             {
                 PopulationController affectedEnemy = col.GetComponentInParent<PopulationController>();
-                if (affectedEnemy && affectedHordes.Add(affectedEnemy))
+                if (affectedEnemy && affectedHordes.Add(affectedEnemy) )
                 {
                     affectedEnemy.SetDamageReductionMult(affectedEnemy.GetState().DamageReductionMult * 0.7f);
                     StartCoroutine(RemovePestisAfterDelay(affectedEnemy));
                 }
             }
+            if (affectedHordes.Count == 1)
+            {
+                FindFirstObjectByType<UI_Manager>().AddNotification("No enemy hordes nearby!", Color.red);
+                return;
+            }
+            _hordeController.TotalHealth = (int)Math.Ceiling(_hordeController.AliveRats * _populationController.GetState().HealthPerRat * 0.7);
         }
 
         public void RemovePestis(PopulationController affectedEnemy)
