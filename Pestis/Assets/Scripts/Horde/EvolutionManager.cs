@@ -23,6 +23,7 @@ namespace Horde
         public int MutationWeight { get; set; }
         public string[] Effects { get; set; }
         public bool IsAbility { get; set; }
+        public string Tooltip { get; set; }
     }
 
     public struct EvolutionaryState
@@ -30,7 +31,7 @@ namespace Horde
         public Dictionary<string, double[]> PassiveEvolutions;
         public WeightedList<ActiveMutation> ActiveMutations;
         public Dictionary<string, bool> AcquiredMutations;
-        public List<string> AcquiredAbilities;
+        public List<(string, string)> AcquiredAbilities;
     }
     
     public class EvolutionManager : NetworkBehaviour
@@ -132,7 +133,7 @@ namespace Horde
             }
             if (mutation.IsAbility)
             {
-                _evolutionaryState.AcquiredAbilities.Add(mutation.MutationName);
+                _evolutionaryState.AcquiredAbilities.Add((mutation.MutationName, mutation.Tooltip));
             }
         }
         
@@ -186,7 +187,7 @@ namespace Horde
             {
                 PassiveEvolutions = new Dictionary<string, double[]>(),
                 ActiveMutations = new WeightedList<ActiveMutation>(),
-                AcquiredAbilities = new List<string>(),
+                AcquiredAbilities = new List<(string, string)>(),
                 AcquiredMutations = new Dictionary<string, bool>()
             };
             CreatePassiveEvolutions();

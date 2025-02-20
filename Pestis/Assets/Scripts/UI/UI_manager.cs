@@ -4,6 +4,7 @@ using Horde;
 using JetBrains.Annotations;
 using Players;
 using TMPro;
+using UI;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -459,7 +460,7 @@ public class UI_Manager : MonoBehaviour
         if (abilityToolbar != null) abilityToolbar.SetActive(false);
     }
     
-    public void RegisterAbility(string mutationName, AbilityController abilityController)
+    public void RegisterAbility((string, string) mutation, AbilityController abilityController)
     {
         foreach (var button in abilityToolbar.GetComponentsInChildren<Button>(true))
         {
@@ -467,11 +468,12 @@ public class UI_Manager : MonoBehaviour
             button.enabled = true;
             button.onClick.RemoveAllListeners();
             button.GetComponent<Image>().enabled = true;
-            button.GetComponentInChildren<TextMeshProUGUI>().text = mutationName;
-            switch (mutationName)
+            button.GetComponentInChildren<TextMeshProUGUI>().text = mutation.Item1;
+            switch (mutation.Item1)
             {
                 case "Pestis":
                     button.onClick.AddListener(abilityController.UsePestis);
+                    button.GetComponent<Tooltip>().tooltipText = mutation.Item2;
                     break;
             }
             break;

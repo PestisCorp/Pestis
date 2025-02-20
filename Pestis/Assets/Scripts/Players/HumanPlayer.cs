@@ -56,7 +56,7 @@ namespace Players
                     UI_manager.ToolbarEnable();
                     UI_manager.AbilityToolbarEnable();
                 }
-                    
+                     
             }
         }
 
