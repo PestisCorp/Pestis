@@ -9,6 +9,8 @@ struct Boid
 StructuredBuffer<Boid> boidsIn;
 RWStructuredBuffer<Boid> boidsOut;
 uniform uint numBoids;
+/// Number of boids in the previous frame
+uniform uint numBoidsPrevious;
 uniform float deltaTime;
 uniform float maxSpeed;
 uniform float minSpeed;
@@ -122,7 +124,13 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
         return;
     }
 
+
     Boid boid = boidsIn[id.x];
+
+    if (id.x >= numBoidsPrevious)
+    {
+        boid.pos = boidsIn[0].pos;
+    }
 
     MergedBehaviours(boid);
     LimitSpeed(boid);
@@ -146,7 +154,6 @@ float randPCG(float min, float max)
     float f = ((word >> 22u) ^ word) / 4294967296.0;
     return f * (max - min) + min;
 }
-
 
 #pragma kernel GenerateBoids // ID 1
 [numthreads(blockSize, 1, 1)]
