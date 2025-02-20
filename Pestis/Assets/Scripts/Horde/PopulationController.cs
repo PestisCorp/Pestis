@@ -19,9 +19,11 @@ namespace Horde
         ///     How much damage the horde does to other hordes per tick in combat
         /// </summary>
         internal float Damage;
+        internal float DamageReduction;
         // DamageMult is a conditional state effect that is used by some active mutations
         internal float DamageMult;
-        internal float DamageReduction;
+        internal float SepticMult;
+        internal float DamageReductionMult;
     }
 
     public class PopulationController : NetworkBehaviour
@@ -35,7 +37,7 @@ namespace Horde
         private const int MaxPopGrowth = 1;
 
         private readonly Random _random = new();
-
+        
         // Weights are reversed because weight decreases with distance from n
         // e.g. the probability of going from population n to n + 5 should be
         // smaller than going from n to n + 1, so the weight applied is smaller
@@ -171,10 +173,16 @@ namespace Horde
             _hordeController = GetComponent<HordeController>();
             State.BirthRate = 0.01;
             State.DeathRate = 0.005;
+            
             State.HealthPerRat = 5.0f;
             State.Damage = 0.5f;
             State.DamageReduction = 1.0f;
+            
+            
             State.DamageMult = 1.0f;
+            State.DamageReductionMult = 1.0f;
+            State.SepticMult = 1.0f;
+            
             _hordeController.TotalHealth = initialPopulation * State.HealthPerRat;
 
             _transitionMatrix = GenerateTransitionMatrix();
@@ -246,12 +254,16 @@ namespace Horde
             State.BirthRate = birthRate;
         }
 
-        public void SetDamageMult(float damageMult)
+        public void SetDamageReductionMult(float damageReductionMult)
+        {
+            State.DamageReductionMult = damageReductionMult;
+        }
+        
+        public void SetSepticMult(float damageMult)
         {
             State.DamageMult = damageMult;
         }
         
-
         public PopulationState GetState()
         {
             return State;

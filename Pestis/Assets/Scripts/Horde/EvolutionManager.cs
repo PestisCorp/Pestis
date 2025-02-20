@@ -8,7 +8,6 @@ using File = System.IO.File;
 using Random = System.Random;
 using KaimiraGames;
 
-// TODO: Retain mutations on horde split.
 // TODO: Rather than work with values from State, just store multiplier. Change setters.
 
 

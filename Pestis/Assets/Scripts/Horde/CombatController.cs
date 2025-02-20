@@ -168,7 +168,7 @@ POI: {FightingOver}
                     horde.RetreatRpc();
                     if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredMutations["unlock_septic_bite"])
                     {
-                        horde.GetComponent<PopulationController>().SetDamageMult(1.0f);
+                        horde.GetComponent<PopulationController>().SetSepticMult(1.0f);
                     }
                 }
                 return;
@@ -188,7 +188,7 @@ POI: {FightingOver}
                     horde.EventWonCombatRpc();
                     if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredMutations["unlock_septic_bite"])
                     {
-                        horde.GetComponent<PopulationController>().SetDamageMult(1.0f);
+                        horde.GetComponent<PopulationController>().SetSepticMult(1.0f);
                     }
                 }
 

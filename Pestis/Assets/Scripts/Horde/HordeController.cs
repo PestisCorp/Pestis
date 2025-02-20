@@ -249,8 +249,8 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
                 var damage = _populationController.GetState().Damage;
                 if (_evolutionManager.GetEvolutionaryState().AcquiredMutations["unlock_septic_bite"])
                 {
-                    var damageMult = _populationController.GetState().DamageMult;
-                    _populationController.SetDamageMult(damageMult * 1.005f);
+                    var septicMult = _populationController.GetState().SepticMult;
+                    _populationController.SetSepticMult(septicMult * 1.005f);
                 }
                 if (enemy) // Could be no enemy if we just joined it
                 {
@@ -262,7 +262,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
                     // If close enough, start dealing damage, and animating rats.
                     if (enemy.GetBounds().Intersects(HordeBounds))
                     {
-                        enemy.DealDamageRpc(damage * _populationController.GetState().DamageMult);
+                        enemy.DealDamageRpc(damage * _populationController.GetState().DamageMult * _populationController.GetState().SepticMult);
                         HordeBeingDamaged = enemy;
                     }
                     else
