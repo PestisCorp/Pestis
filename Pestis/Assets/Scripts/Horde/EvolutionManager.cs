@@ -36,6 +36,7 @@ namespace Horde
         private Dictionary<string, double[]> _passiveEvolutions = new Dictionary<string, double[]>();
         private WeightedList<ActiveMutation> _activeMutations = new WeightedList<ActiveMutation>();
         public Dictionary<string, ActiveMutation> AcquiredMutations = new Dictionary<string, ActiveMutation>();
+        private MultiHordeEvolution multiHordeEvolution = new MultiHordeEvolution();
         private const double PredispositionStrength = 1.01;
         private Color _hordeColor;
         private readonly Random _random = new Random();
