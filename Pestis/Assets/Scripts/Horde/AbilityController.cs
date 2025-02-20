@@ -24,7 +24,8 @@ namespace Horde
                 PopulationController affectedEnemy = col.GetComponentInParent<PopulationController>();
                 if (affectedEnemy && affectedHordes.Add(affectedEnemy) )
                 {
-                    affectedEnemy.SetDamageReductionMult(affectedEnemy.GetState().DamageReductionMult * 0.7f);
+                    float damageReduction = affectedEnemy.GetState().DamageReduction * 1.3f;
+                    affectedEnemy.SetDamageReduction(damageReduction);
                     StartCoroutine(RemovePestisAfterDelay(affectedEnemy));
                 }
             }
@@ -38,7 +39,7 @@ namespace Horde
 
         public void RemovePestis(PopulationController affectedEnemy)
         {
-            affectedEnemy.SetDamageReductionMult(affectedEnemy.GetState().DamageReductionMult / 0.7f);
+            affectedEnemy.SetDamageReduction(affectedEnemy.GetState().DamageReduction / 1.3f);
         }
         
         IEnumerator RemovePestisAfterDelay(PopulationController affectedEnemy)
