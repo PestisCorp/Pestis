@@ -64,7 +64,7 @@ jobs:
 
         # Output
         - name: Copy build to hosting folder
-          run: cp -rfT build/WebGL/WebGL /home/ec2-user/configs/pestis-runner/builds/${{ steps.release.outputs.version }}
+          run: cp -rfT build/WebGL/WebGL /home/ec2-user/actions-runner/builds/${{ steps.release.outputs.version }}
 
         - name: Symlink to latest
-          run: ln -sfn /home/ec2-user/configs/pestis-runner/builds/${{ steps.release.outputs.version }} /home/ec2-user/configs/pestis-runner/builds/latest
+          run: ln -sfn /home/ec2-user/actions-runner/builds/${{ steps.release.outputs.version }} /home/ec2-user/actions-runner/builds/latest
