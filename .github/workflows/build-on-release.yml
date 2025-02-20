@@ -41,7 +41,7 @@ jobs:
             githubToken: ${{ secrets.GITHUB_TOKEN }}
             projectPath: Pestis
             runAsHostUser: true
-            chownFilesTo: mediaserver
+            chownFilesTo: ec2-user
 
         # Build
         - name: Build project
@@ -56,11 +56,11 @@ jobs:
             version: ${{github.event.release.tag_name }}
             projectPath: Pestis
             runAsHostUser: true
-            chownFilesTo: mediaserver
+            chownFilesTo: ec2-user
 
         # Output
         - name: Copy build to hosting folder
-          run: cp -rfT build/WebGL/WebGL /home/mediaserver/configs/pestis-runner/builds/${{ github.event.release.tag_name }}
+          run: cp -rfT build/WebGL/WebGL /home/ec2-user/configs/pestis-runner/builds/${{ github.event.release.tag_name }}
 
         - name: Symlink to latest
-          run: ln -sfn /home/mediaserver/configs/pestis-runner/builds/${{ github.event.release.tag_name }} /home/mediaserver/configs/pestis-runner/builds/stable
+          run: ln -sfn /home/ec2-user/configs/pestis-runner/builds/${{ github.event.release.tag_name }} /home/ec2-user/configs/pestis-runner/builds/stable
