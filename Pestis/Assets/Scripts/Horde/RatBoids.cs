@@ -16,9 +16,6 @@ public class RatBoids : MonoBehaviour
 {
     private const float blockSize = 512f;
 
-    [Header("Performance")] [SerializeField]
-    private int numBoids = 500;
-
     [Header("Settings")] [SerializeField] private float maxSpeed = 2;
 
     [SerializeField] private float edgeMargin = .5f;
@@ -80,6 +77,9 @@ public class RatBoids : MonoBehaviour
         rearrangeBoidsKernel;
 
     private float xBound, yBound;
+
+    [Header("Performance")] private int numBoids => horde.AliveRats;
+
     private float visualRangeSq => visualRange * visualRange;
     private float minDistanceSq => minDistance * minDistance;
 
@@ -109,8 +109,8 @@ public class RatBoids : MonoBehaviour
         rearrangeBoidsKernel = gridShader.FindKernel("RearrangeBoids");
 
         // Setup compute buffer
-        boidBuffer = new ComputeBuffer(numBoids, 16);
-        boidBufferOut = new ComputeBuffer(numBoids, 16);
+        boidBuffer = new ComputeBuffer(1024, 16);
+        boidBufferOut = new ComputeBuffer(1024, 16);
         boidShader.SetBuffer(updateBoidsKernel, "boidsIn", boidBufferOut);
         boidShader.SetBuffer(updateBoidsKernel, "boidsOut", boidBuffer);
         boidShader.SetInt("numBoids", numBoids);
@@ -127,30 +127,10 @@ public class RatBoids : MonoBehaviour
         boidShader.SetFloat("alignmentFactor", alignmentFactor);
         boidShader.SetFloat("targetFactor", targetFactor);
 
-        // Generate boids on GPU if over CPU limit
-        if (numBoids <= jobLimit)
-        {
-            // Populate initial boids
-            boids = new NativeArray<Boid>(numBoids, Allocator.Persistent);
-            boidsTemp = new NativeArray<Boid>(numBoids, Allocator.Persistent);
-            for (var i = 0; i < numBoids; i++)
-            {
-                var pos = new float2(Random.Range(-xBound, xBound), Random.Range(-yBound, yBound));
-                var vel = new float2(Random.Range(-maxSpeed, maxSpeed), Random.Range(-maxSpeed, maxSpeed));
-                var boid = new Boid();
-                boid.pos = pos;
-                boid.vel = vel;
-                boids[i] = boid;
-            }
 
-            boidBuffer.SetData(boids);
-        }
-        else
-        {
-            boidShader.SetBuffer(generateBoidsKernel, "boidsOut", boidBuffer);
-            boidShader.SetInt("randSeed", Random.Range(0, int.MaxValue));
-            boidShader.Dispatch(generateBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
-        }
+        boidShader.SetBuffer(generateBoidsKernel, "boidsOut", boidBuffer);
+        boidShader.SetInt("randSeed", Random.Range(0, int.MaxValue));
+        boidShader.Dispatch(generateBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
 
         // Set render params
         rp = new RenderParams(boidMat);
@@ -174,7 +154,7 @@ public class RatBoids : MonoBehaviour
             gridOffsets = new NativeArray<int>(gridTotalCells, Allocator.Persistent);
         }
 
-        gridBuffer = new ComputeBuffer(numBoids, 8);
+        gridBuffer = new ComputeBuffer(1024, 8);
         gridOffsetBuffer = new ComputeBuffer(gridTotalCells, 4);
         gridOffsetBufferIn = new ComputeBuffer(gridTotalCells, 4);
         blocks = Mathf.CeilToInt(gridTotalCells / blockSize);
@@ -252,100 +232,48 @@ public class RatBoids : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (mode == Modes.Gpu)
+        boidShader.SetFloat("deltaTime", Time.deltaTime);
+        boidShader.SetFloats("targetPos", horde.targetLocation.transform.position.x,
+            horde.targetLocation.transform.position.y);
+
+        boidShader.SetInt("numBoids", horde.AliveRats);
+
+        // Clear indices
+        gridShader.Dispatch(clearGridKernel, blocks, 1, 1);
+
+        // Populate grid
+        gridShader.Dispatch(updateGridKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
+
+        // Generate Offsets (Prefix Sum)
+        // Offsets in each block
+        gridShader.Dispatch(prefixSumKernel, blocks, 1, 1);
+
+        // Offsets for sums of blocks
+        var swap = false;
+        for (var d = 1; d < blocks; d *= 2)
         {
-            boidShader.SetFloat("deltaTime", Time.deltaTime);
-            boidShader.SetFloats("targetPos", horde.targetLocation.transform.position.x,
-                horde.targetLocation.transform.position.y);
-
-            // Clear indices
-            gridShader.Dispatch(clearGridKernel, blocks, 1, 1);
-
-            // Populate grid
-            gridShader.Dispatch(updateGridKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
-
-            // Generate Offsets (Prefix Sum)
-            // Offsets in each block
-            gridShader.Dispatch(prefixSumKernel, blocks, 1, 1);
-
-            // Offsets for sums of blocks
-            var swap = false;
-            for (var d = 1; d < blocks; d *= 2)
-            {
-                gridShader.SetBuffer(sumBlocksKernel, "gridSumsBufferIn", swap ? gridSumsBuffer : gridSumsBuffer2);
-                gridShader.SetBuffer(sumBlocksKernel, "gridSumsBuffer", swap ? gridSumsBuffer2 : gridSumsBuffer);
-                gridShader.SetInt("d", d);
-                gridShader.Dispatch(sumBlocksKernel, Mathf.CeilToInt(blocks / blockSize), 1, 1);
-                swap = !swap;
-            }
-
-            // Apply offsets of sums to each block
-            gridShader.SetBuffer(addSumsKernel, "gridSumsBufferIn", swap ? gridSumsBuffer : gridSumsBuffer2);
-            gridShader.Dispatch(addSumsKernel, blocks, 1, 1);
-
-
-            // Rearrange boids
-            gridShader.Dispatch(rearrangeBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
-
-            // Compute boid behaviours
-            boidShader.Dispatch(updateBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
+            gridShader.SetBuffer(sumBlocksKernel, "gridSumsBufferIn", swap ? gridSumsBuffer : gridSumsBuffer2);
+            gridShader.SetBuffer(sumBlocksKernel, "gridSumsBuffer", swap ? gridSumsBuffer2 : gridSumsBuffer);
+            gridShader.SetInt("d", d);
+            gridShader.Dispatch(sumBlocksKernel, Mathf.CeilToInt(blocks / blockSize), 1, 1);
+            swap = !swap;
         }
-        else // CPU
-        {
-            // Using Burst or Jobs (multicore)
-            if (mode == Modes.Burst || mode == Modes.Jobs)
-            {
-                // Clear grid counts/offsets
-                clearGridJob.Run(gridTotalCells);
 
-                // Update grid
-                updateGridJob.Run();
+        // Apply offsets of sums to each block
+        gridShader.SetBuffer(addSumsKernel, "gridSumsBufferIn", swap ? gridSumsBuffer : gridSumsBuffer2);
+        gridShader.Dispatch(addSumsKernel, blocks, 1, 1);
 
-                // Generate grid offsets
-                generateGridOffsetsJob.Run();
 
-                // Rearrange boids
-                rearrangeBoidsJob.Run();
+        // Rearrange boids
+        gridShader.Dispatch(rearrangeBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
 
-                // Update boids
-                boidJob.deltaTime = Time.deltaTime;
+        // Compute boid behaviours
+        boidShader.Dispatch(updateBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
 
-                // Burst compiled (Single core)
-                if (mode == Modes.Burst)
-                {
-                    boidJob.Run(numBoids);
-                }
-                // Burst Jobs (Multicore)
-                else
-                {
-                    var boidJobHandle = boidJob.Schedule(numBoids, 32);
-                    boidJobHandle.Complete();
-                }
-            }
-            else // basic cpu
-            {
-                // Spatial grid
-                ClearGrid();
-                UpdateGrid();
-                GenerateGridOffsets();
-                RearrangeBoids();
 
-                for (var i = 0; i < numBoids; i++)
-                {
-                    var boid = boidsTemp[i];
-                    MergedBehaviours(ref boid);
-                    LimitSpeed(ref boid);
-                    KeepInBounds(ref boid);
-
-                    // Update boid position
-                    boid.pos += boid.vel * Time.deltaTime;
-                    boids[i] = boid;
-                }
-            }
-
-            // Send data to gpu buffer
-            boidBuffer.SetData(boids);
-        }
+        boidShader.SetInt("numBoidsPrevious", numBoids);
+        // Grid shader needs to be one iteration behind, for correct rearranging.
+        gridShader.SetInt("numBoids", horde.AliveRats);
 
         // Actually draw the boids
         Graphics.RenderPrimitives(rp, MeshTopology.Quads, numBoids * 4);
