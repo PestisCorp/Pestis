@@ -472,7 +472,7 @@ public class UI_Manager : MonoBehaviour
             switch (mutation.Item1)
             {
                 case "Pestis":
-                    button.onClick.AddListener(abilityController.UsePestis);
+                    button.onClick.AddListener(delegate {abilityController.UsePestis(button);});
                     button.GetComponent<Tooltip>().tooltipText = mutation.Item2;
                     break;
             }
