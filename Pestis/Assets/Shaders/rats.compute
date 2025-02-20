@@ -129,7 +129,7 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
 
     if (id.x >= numBoidsPrevious)
     {
-        boid.pos = boidsIn[0].pos;
+        boid.pos = boidsIn[floor(numBoids / 2.0f)].pos;
     }
 
     MergedBehaviours(boid);
