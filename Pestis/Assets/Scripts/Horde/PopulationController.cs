@@ -53,8 +53,10 @@ namespace Horde
 
 
         private List<double[]> _transitionMatrix;
-
+        //state for passive mutations
         [Networked] private ref PopulationState State => ref MakeRef<PopulationState>();
+        //state2 for multihorde
+        [Networked] private ref PopulationState State2 => ref MakeRef<PopulationState>();
 
 
         // Weight used in probability of population growth
