@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Horde
@@ -81,6 +82,20 @@ namespace Horde
                 transform.rotation = Quaternion.Euler(Vector3.zero);
                 _rigidbody.freezeRotation = true;
                 _rigidbody.linearDamping = 15;
+                if (_hordeController.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredMutations["Necrosis"])
+                {
+                    Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 20f);
+                    HashSet<HordeController> affectedHordes = new HashSet<HordeController>();
+                    affectedHordes.Add(_hordeController);
+                    foreach (var col in hitColliders)
+                    {
+                        HordeController affectedEnemy = col.GetComponentInParent<HordeController>();
+                        if (affectedHordes.Add(affectedEnemy))
+                        {
+                            affectedEnemy.DealDamageRpc(0.1f);
+                        }
+                    }
+                }
                 deathCountdown -= Time.deltaTime;
                 if (deathCountdown <= 0) Destroy(gameObject);
                 return;

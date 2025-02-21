@@ -131,6 +131,23 @@ namespace Horde
             {
                 _evolutionaryState.AcquiredMutations[effect] = true;
             }
+            
+            if (_evolutionaryState.AcquiredMutations["unlock_fester"] && mutation.MutationTag == "disease")
+            {
+                
+                PopulationState newState = new PopulationState()
+                {
+                    BirthRate = _populationController.GetState().BirthRate * 1.1,
+                    Damage = _populationController.GetState().Damage * 1.1f,
+                    DamageMult = _populationController.GetState().DamageMult * 1.1f,
+                    DamageReduction = _populationController.GetState().DamageReduction * 1.1f,
+                    DamageReductionMult = _populationController.GetState().DamageReductionMult * 1.1f,
+                    DeathRate = _populationController.GetState().DeathRate * 1.1,
+                    HealthPerRat = _populationController.GetState().HealthPerRat * 1.1f,
+                    SepticMult = _populationController.GetState().SepticMult * 1.1f
+                };
+                _populationController.SetState(newState);
+            }
             if (mutation.IsAbility)
             {
                 _evolutionaryState.AcquiredAbilities.Add((mutation.MutationName, mutation.Tooltip));

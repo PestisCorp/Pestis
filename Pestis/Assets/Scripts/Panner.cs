@@ -9,13 +9,13 @@ public class Panner : MonoBehaviour
 
     public Vector3 target;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
         shouldPan = false;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (shouldPan)
         {

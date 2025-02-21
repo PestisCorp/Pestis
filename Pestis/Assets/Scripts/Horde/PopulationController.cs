@@ -20,8 +20,9 @@ namespace Horde
         /// </summary>
         internal float Damage;
         internal float DamageReduction;
-        // DamageMult is a conditional state effect that is used by some active mutations
+        // Multipliers applied to damage original state
         internal float DamageMult;
+        internal float DamageReductionMult;
         internal float SepticMult;
     }
 
@@ -179,6 +180,7 @@ namespace Horde
             
             
             State.DamageMult = 1.0f;
+            State.DamageReductionMult = 1.0f;
             State.SepticMult = 1.0f;
             
             _hordeController.TotalHealth = initialPopulation * State.HealthPerRat;
@@ -245,6 +247,11 @@ namespace Horde
         public void SetDamageReduction(float damageReduction)
         {
             State.DamageReduction = 1.0f / damageReduction;
+        }
+
+        public void SetDamageReductionMult(float damageReductionMult)
+        {
+            State.DamageReductionMult = damageReductionMult;
         }
 
         public void SetBirthRate(double birthRate)

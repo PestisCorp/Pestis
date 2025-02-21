@@ -74,8 +74,14 @@ public class UI_Manager : MonoBehaviour
         {
             button.enabled = false;
             button.GetComponent<Image>().enabled = false;
+            var childrenWithTag = GetComponentInChildrenWithTag<Image, Button>(button, "UI_cooldown_bar");
+            foreach (var child in childrenWithTag)
+            {
+                child.GetComponent<Image>().enabled = false;
+            }
         }
-
+        
+        
         
     }
 
@@ -459,6 +465,19 @@ public class UI_Manager : MonoBehaviour
         }
         if (abilityToolbar != null) abilityToolbar.SetActive(false);
     }
+
+    public T[] GetComponentInChildrenWithTag<T, TP>(TP parent, string tagToFind) where T : Component where TP : Component
+    {
+        List<T> componentsInChildren = new List<T>();
+        foreach (T obj in parent.GetComponentsInChildren<T>()) 
+        {
+            if (obj.CompareTag(tagToFind))
+            {
+                componentsInChildren.Add(obj);
+            }
+        }
+        return componentsInChildren.ToArray();
+    }
     
     public void RegisterAbility((string, string) mutation, AbilityController abilityController)
     {
@@ -469,6 +488,11 @@ public class UI_Manager : MonoBehaviour
             button.onClick.RemoveAllListeners();
             button.GetComponent<Image>().enabled = true;
             button.GetComponentInChildren<TextMeshProUGUI>().text = mutation.Item1;
+            var childrenWithTag = GetComponentInChildrenWithTag<Image, Button>(button, "UI_cooldown_bar");
+            foreach (var child in childrenWithTag)
+            {
+                child.GetComponent<Image>().enabled = true;
+            }
             switch (mutation.Item1)
             {
                 case "Pestis":

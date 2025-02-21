@@ -438,14 +438,10 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         public void DealDamageRpc(float damage)
         {
             Debug.Log($"Damage Reduction: {_populationController.GetState().DamageReduction}");
-            if (_evolutionManager.GetEvolutionaryState().AcquiredMutations.ContainsKey("unlock_septic_bite"))
-            {
-                TotalHealth -= damage;
-            }
-            else
-            {
-                TotalHealth -= damage * _populationController.GetState().DamageReduction;
-            }
+            TotalHealth -= damage * _populationController.GetState().DamageReduction 
+                                  * _populationController.GetState().DamageReductionMult
+                                  * _populationController.GetState().SepticMult;
+            
         }
 
         public Bounds GetBounds()

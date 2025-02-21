@@ -17,7 +17,7 @@ namespace Horde
         
         public void UsePestis(Button calledBy)
         {
-            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(_hordeController.GetBounds().center, 5f);
+            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(_hordeController.GetBounds().center, 20f);
             HashSet<PopulationController> affectedHordes = new HashSet<PopulationController>();
             affectedHordes.Add(_hordeController.GetComponent<PopulationController>());
             foreach (var col in hitColliders)
@@ -25,8 +25,8 @@ namespace Horde
                 PopulationController affectedEnemy = col.GetComponentInParent<PopulationController>();
                 if (affectedEnemy && affectedHordes.Add(affectedEnemy) )
                 {
-                    float damageReduction = affectedEnemy.GetState().DamageReduction * 1.3f;
-                    affectedEnemy.SetDamageReduction(damageReduction);
+                    float damageReductionMult = affectedEnemy.GetState().DamageReductionMult * 1.3f;
+                    affectedEnemy.SetDamageReductionMult(damageReductionMult);
                     StartCoroutine(RemovePestisAfterDelay(affectedEnemy));
                 }
             }
@@ -44,7 +44,7 @@ namespace Horde
         
         public void RemovePestis(PopulationController affectedEnemy)
         {
-            affectedEnemy.SetDamageReduction(affectedEnemy.GetState().DamageReduction / 1.3f);
+            affectedEnemy.SetDamageReductionMult(affectedEnemy.GetState().DamageReductionMult / 1.3f);
         }
         
         IEnumerator RemovePestisAfterDelay(PopulationController affectedEnemy)
