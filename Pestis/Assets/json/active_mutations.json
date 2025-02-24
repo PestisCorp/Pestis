@@ -12,7 +12,7 @@
 		"MutationTag": "disease",
 		"MutationWeight": 10,
 		"Effects": ["unlock_pestis", "unlock_disease_resistance", "unlock_human_aggression"],
-		"Tooltip": "Unleash the plague onto all nearby hordes or human controlled locations by sacrificing 30% of your population. If you spread it to a horde, they suffer from reduced armor and increased resource needs for one minute. Humans shield from disease and are less vigilant in their patrols. Gain immunity to disease.",
+		"Tooltip": "Unleash the plague onto all nearby hordes or human controlled locations by sacrificing 30% of your population. If you spread it to a horde, they suffer from reduced armor and increased resource needs for one minute. Pest exterminators extend their patrol radius. Gain immunity to disease.",
 		"IsAbility": true
 	},
 	{

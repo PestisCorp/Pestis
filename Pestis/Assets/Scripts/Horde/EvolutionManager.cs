@@ -2,6 +2,7 @@ using System;
 using Fusion;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using UnityEngine;
 using Newtonsoft.Json;
 using File = System.IO.File;
@@ -130,6 +131,10 @@ namespace Horde
             foreach (var effect in mutation.Effects)
             {
                 _evolutionaryState.AcquiredMutations.Add(effect);
+                if (effect == "unlock_necrosis")
+                {
+                    _populationController.SetDamageReductionMult(_populationController.GetState().DamageReductionMult * 1.2f);
+                }
             }
             
             if (_evolutionaryState.AcquiredMutations.Contains("unlock_fester") && mutation.MutationTag == "disease")
@@ -148,6 +153,7 @@ namespace Horde
                 };
                 _populationController.SetState(newState);
             }
+            
             if (mutation.IsAbility)
             {
                 _evolutionaryState.AcquiredAbilities.Add((mutation.MutationName, mutation.Tooltip));

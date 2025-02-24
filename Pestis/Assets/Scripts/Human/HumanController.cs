@@ -56,6 +56,16 @@ namespace Human
                 PickNewTarget();
         }
 
+        public void SetRadius(float newRadius)
+        {
+            patrolRadius = newRadius;
+        }
+
+        public float GetRadius()
+        {
+            return patrolRadius;
+        }
+        
         public void SetPOI(Transform poi)
         {
             poiCenter = poi;

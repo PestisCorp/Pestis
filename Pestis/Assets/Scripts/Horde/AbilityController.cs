@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using ExitGames.Client.Photon.StructWrapping;
 using Fusion;
+using Human;
 using Players;
 using UI;
 using UnityEngine;
@@ -19,6 +20,7 @@ namespace Horde
         {
             Collider2D[] hitColliders = Physics2D.OverlapCircleAll(_hordeController.GetBounds().center, 20f);
             HashSet<PopulationController> affectedHordes = new HashSet<PopulationController>();
+            HashSet<HumanController> affectedHumans = new HashSet<HumanController>();
             affectedHordes.Add(_hordeController.GetComponent<PopulationController>());
             foreach (var col in hitColliders)
             {
@@ -27,7 +29,12 @@ namespace Horde
                 {
                     float damageReductionMult = affectedEnemy.GetState().DamageReductionMult * 1.3f;
                     affectedEnemy.SetDamageReductionMult(damageReductionMult);
-                    StartCoroutine(RemovePestisAfterDelay(affectedEnemy));
+                    StartCoroutine(RemovePestisAfterDelayRat(affectedEnemy));
+                }
+                HumanController affectedHuman = col.GetComponentInParent<HumanController>();
+                if (affectedHuman && affectedHumans.Add(affectedHuman))
+                {
+                    affectedHuman.SetRadius(affectedHuman.GetRadius() + 10.0f);
                 }
             }
             if (affectedHordes.Count == 1)
@@ -40,17 +47,16 @@ namespace Horde
             StartCoroutine(Cooldown(60, calledBy, "Pestis"));
         }
         
-        
-        
-        public void RemovePestis(PopulationController affectedEnemy)
-        {
-            affectedEnemy.SetDamageReductionMult(affectedEnemy.GetState().DamageReductionMult / 1.3f);
-        }
-        
-        IEnumerator RemovePestisAfterDelay(PopulationController affectedEnemy)
+        IEnumerator RemovePestisAfterDelayHuman(HumanController affectedHuman)
         {
             yield return new WaitForSeconds(30f);
-            RemovePestis(affectedEnemy);
+            affectedHuman.SetRadius(affectedHuman.GetRadius() - 10.0f);
+        }
+        
+        IEnumerator RemovePestisAfterDelayRat(PopulationController affectedEnemy)
+        {
+            yield return new WaitForSeconds(30f);
+            affectedEnemy.SetDamageReductionMult(affectedEnemy.GetState().DamageReductionMult / 1.3f);
         }
 
         IEnumerator Cooldown(int duration, Button calledBy, string abilityName)
