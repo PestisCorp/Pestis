@@ -150,7 +150,19 @@ namespace Horde
             }
 
             // If we're the owner of this Horde, we are the authoritative source for the horde bounds
-            if (HasStateAuthority) HordeBounds = boids.GetBounds();
+            if (HasStateAuthority)
+            {
+                if (AliveRats == 1)
+                {
+                    HordeBounds = boids.GetBounds();
+                }
+                else // Move horde center slowly to avoid jitter due to center rat changing
+                {
+                    var newBounds = boids.GetBounds();
+                    newBounds.center = Vector2.Lerp(HordeBounds.center, newBounds.center, Time.deltaTime);
+                    HordeBounds = newBounds;
+                }
+            }
 
             _selectionLightTerrain.pointLightInnerRadius = HordeBounds.extents.magnitude * 0.9f + 0.5f;
             _selectionLightTerrain.pointLightOuterRadius = HordeBounds.extents.magnitude * 1.0f + 0.5f;
