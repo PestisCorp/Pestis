@@ -17,7 +17,7 @@ public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
         if (player == Runner.LocalPlayer)
         {
             Debug.Log($"Spawning player {player.AsIndex}");
-            const float A = 8;
+            const float A = 4;
             const float dtheta = (float)(40 * Math.PI / 180); // 20 degrees.
             List<Vector2> spawnPositions = new();
             for (var theta = dtheta * 4 + player.AsIndex * 5 * dtheta;; theta += dtheta)
@@ -51,9 +51,9 @@ public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
             Runner.Spawn(PlayerPrefab, spawnPositions[0],
                 Quaternion.identity);
 
-            for (var i = 1; i < numBots + 1; i++)
-                Runner.Spawn(BotPrefab, spawnPositions[i],
-                    Quaternion.identity);
+            //for (var i = 1; i < numBots + 1; i++)
+            //    Runner.Spawn(BotPrefab, spawnPositions[i],
+            //        Quaternion.identity);
 
             Camera.main.transform.position = new Vector3(spawnPositions[0].x, spawnPositions[0].y, -1.0f);
         }

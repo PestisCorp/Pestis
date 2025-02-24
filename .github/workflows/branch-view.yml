@@ -44,7 +44,7 @@ jobs:
             githubToken: ${{ secrets.GITHUB_TOKEN }}
             projectPath: Pestis
             runAsHostUser: true
-            chownFilesTo: mediaserver
+            chownFilesTo: ec2-user
 
 
         # Build
@@ -60,10 +60,10 @@ jobs:
             version: ${{ github.ref_name }}
             projectPath: Pestis
             runAsHostUser: true
-            chownFilesTo: mediaserver
+            chownFilesTo: ec2-user
 
         # Output
         - name: Copy build to hosting folder
-          run: cp -rfT build/WebGL/WebGL /home/mediaserver/configs/pestis-runner/builds/${{ github.ref_name  }}
+          run: cp -rfT build/WebGL/WebGL /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}
 
      

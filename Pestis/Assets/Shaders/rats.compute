@@ -1,0 +1,165 @@
+#define blockSize 512
+
+struct Boid
+{
+    float2 pos;
+    float2 vel;
+};
+
+StructuredBuffer<Boid> boidsIn;
+RWStructuredBuffer<Boid> boidsOut;
+uniform uint numBoids;
+/// Number of boids in the previous frame
+uniform uint numBoidsPrevious;
+uniform float deltaTime;
+uniform float maxSpeed;
+uniform float minSpeed;
+uniform float edgeMargin;
+uniform float visualRangeSq;
+uniform float cohesionFactor;
+uniform float separationFactor;
+uniform float alignmentFactor;
+uniform float minDistanceSq;
+uniform float turnSpeed;
+uniform float xBound;
+uniform float yBound;
+/// Target position for boids to move towards
+uniform float2 targetPos;
+uniform float targetFactor;
+
+/// Cumulative boid count for each grid cell
+/// I.e. count for block N is the sum of counts for blocks 0 to N
+StructuredBuffer<uint> gridOffsetBuffer;
+float gridCellSize;
+uint gridDimY;
+uint gridDimX;
+
+uint2 getGridLocation(Boid boid)
+{
+    int x = floor(boid.pos.x / gridCellSize + gridDimX / 2);
+    int y = floor(boid.pos.y / gridCellSize + gridDimY / 2);
+    return uint2(x, y);
+}
+
+/// Get Grid Index from 2D grid coordinate
+uint getGridID(uint2 pos)
+{
+    return (gridDimX * pos.y) + pos.x;
+}
+
+void MergedBehaviours(inout Boid boid)
+{
+    float2 center = 0;
+    float2 close = 0;
+    float2 avgVel = 0;
+    uint neighbours = 0;
+
+    uint2 gridXY = getGridLocation(boid);
+    uint cell = getGridID(gridXY);
+
+    // Loop row above, current row, row below
+    for (uint y = cell - gridDimX; y <= cell + gridDimX; y += gridDimX)
+    {
+        // y-2 because that gives last index of boid in y-2, i.e. first index of boid in y-1
+        uint start = gridOffsetBuffer[y - 2];
+        uint end = gridOffsetBuffer[y + 1];
+        // Loop boids in left, center, right grid cells
+        for (uint i = start; i < end; i++)
+        {
+            Boid other = boidsIn[i];
+            float2 diff = boid.pos - other.pos;
+            float distSq = dot(diff, diff);
+
+            if (distSq > 0 && distSq < visualRangeSq)
+            {
+                if (distSq < minDistanceSq)
+                {
+                    close += diff / distSq;
+                }
+                center += other.pos;
+                avgVel += other.vel;
+                neighbours++;
+            }
+        }
+    }
+
+    if (neighbours > 0)
+    {
+        center /= neighbours;
+        avgVel /= neighbours;
+
+        boid.vel += (center - boid.pos) * (cohesionFactor * deltaTime * turnSpeed);
+        boid.vel += (avgVel - boid.vel) * (alignmentFactor * deltaTime * turnSpeed);
+    }
+
+    boid.vel += close * (separationFactor * deltaTime * turnSpeed);
+    boid.vel += normalize(targetPos - boid.pos) * (targetFactor * deltaTime * turnSpeed);
+}
+
+void LimitSpeed(inout Boid boid)
+{
+    float speed = length(boid.vel);
+    float clampedSpeed = clamp(speed, minSpeed, maxSpeed);
+    boid.vel *= clampedSpeed / speed;
+}
+
+void KeepInBounds(inout Boid boid)
+{
+    if (abs(boid.pos.x) > xBound)
+    {
+        boid.vel.x -= sign(boid.pos.x) * deltaTime * turnSpeed;
+    }
+    if (abs(boid.pos.y) > yBound)
+    {
+        boid.vel.y -= sign(boid.pos.y) * deltaTime * turnSpeed;
+    }
+}
+
+#pragma kernel UpdateBoids // ID 0
+[numthreads(blockSize, 1, 1)]
+void UpdateBoids(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= numBoids)
+    {
+        return;
+    }
+
+
+    Boid boid = boidsIn[id.x];
+
+    if (id.x >= numBoidsPrevious)
+    {
+        boid.pos = boidsIn[floor(numBoids / 2.0f)].pos;
+    }
+
+    MergedBehaviours(boid);
+    LimitSpeed(boid);
+    KeepInBounds(boid);
+
+    // Update positions
+    boid.pos += boid.vel * deltaTime;
+    boidsOut[id.x] = boid;
+}
+
+
+// Basic random generation
+uint randSeed;
+uint rngState;
+
+float randPCG(float min, float max)
+{
+    rngState = rngState * 747796405u + 2891336453u;
+    uint state = rngState;
+    uint word = ((state >> ((state >> 28u) + 4u)) ^ state) * 277803737u;
+    float f = ((word >> 22u) ^ word) / 4294967296.0;
+    return f * (max - min) + min;
+}
+
+#pragma kernel GenerateBoids // ID 1
+[numthreads(blockSize, 1, 1)]
+void GenerateBoids(uint3 id : SV_DispatchThreadID)
+{
+    rngState = randSeed + id.x;
+    boidsOut[id.x].pos = float2(randPCG(-xBound, xBound), randPCG(-yBound, yBound));
+    boidsOut[id.x].vel = float2(randPCG(-maxSpeed, maxSpeed), randPCG(-maxSpeed, maxSpeed));
+}

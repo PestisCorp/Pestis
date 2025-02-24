@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        Application.targetFrameRate = 58;
+        QualitySettings.vSyncCount = 0;
     }
 
     // Update is called once per frame

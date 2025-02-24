@@ -80,6 +80,8 @@ namespace Horde
 
         [CanBeNull] private Action OnArriveAtTarget;
 
+        public RatBoids boids { get; private set; }
+
         /// <summary>
         ///     Time in seconds since game start when the horde last finished combat
         /// </summary>
@@ -147,58 +149,31 @@ namespace Horde
                 OnArriveAtTarget = null;
             }
 
-            // Spawn at center of horde if there is one, or base if there isn't one yet.
-            if (_spawnedRats.Count == 0)
-                _hordeCenter = HordeBounds.center == Vector3.zero ? transform.position : HordeBounds.center;
-
-            // Only spawn up to one rat each tick to avoid freezes
-            if (_ratsToSpawn != 0)
+            // If we're the owner of this Horde, we are the authoritative source for the horde bounds
+            if (HasStateAuthority)
             {
-                // Spawn a Rat
-                var rat = Instantiate(ratPrefab, _hordeCenter, Quaternion.identity, transform);
-                var ratController = rat.GetComponent<RatController>();
-                ratController.SetHordeController(this);
-                ratController.SetColor(_hordeColor); //Apply horde color
-                ratController.Start();
-                _spawnedRats.Add(ratController);
-                _ratsToSpawn--;
+                if (AliveRats == 1)
+                {
+                    HordeBounds = boids.GetBounds();
+                }
+                else // Move horde center slowly to avoid jitter due to center rat changing
+                {
+                    var newBounds = boids.GetBounds();
+                    newBounds.center = Vector2.Lerp(HordeBounds.center, newBounds.center, Time.deltaTime);
+                    HordeBounds = newBounds;
+                }
             }
 
-            // Can't calculate the bounds of nothing
-            if (_spawnedRats.Count == 0) return;
+            _selectionLightTerrain.pointLightInnerRadius = HordeBounds.extents.magnitude * 0.9f + 0.5f;
+            _selectionLightTerrain.pointLightOuterRadius = HordeBounds.extents.magnitude * 1.0f + 0.5f;
+            _selectionLightTerrain.transform.position = HordeBounds.center;
 
 
-            devToolsTargetLocation = targetLocation.transform.position;
+            _selectionLightPoi.pointLightInnerRadius = HordeBounds.extents.magnitude * 0.9f + 0.5f;
+            _selectionLightPoi.pointLightOuterRadius = HordeBounds.extents.magnitude * 1.0f + 0.5f;
+            _selectionLightPoi.transform.position = HordeBounds.center;
 
-            // Calculate bounding box that contains all rats
-            var b = new Bounds(_spawnedRats[0].transform.position, Vector2.zero);
-            foreach (var rat in _spawnedRats) b.Encapsulate(rat.GetPosition());
-
-            b.Expand(1.0f);
-
-            // If we're the owner of this Horde, we are the authoritative source for the horde bounds
-            if (HasStateAuthority) HordeBounds = b;
-
-            _selectionLightTerrain.pointLightInnerRadius = b.extents.magnitude * 0.9f + 0.5f;
-            _selectionLightTerrain.pointLightOuterRadius = b.extents.magnitude * 1.0f + 0.5f;
-            _selectionLightTerrain.transform.position = b.center;
-
-
-            _selectionLightPoi.pointLightInnerRadius = b.extents.magnitude * 0.9f + 0.5f;
-            _selectionLightPoi.pointLightOuterRadius = b.extents.magnitude * 1.0f + 0.5f;
-            _selectionLightPoi.transform.position = b.center;
-
-            intraHordeTargets[0] = new Vector2(targetLocation.transform.position.x - b.extents.x * 0.65f,
-                targetLocation.transform.position.y + b.extents.y * 0.65f);
-            intraHordeTargets[1] = new Vector2(targetLocation.transform.position.x - b.extents.x * 0.65f,
-                targetLocation.transform.position.y - b.extents.y * 0.65f);
-            intraHordeTargets[2] = new Vector2(targetLocation.transform.position.x + b.extents.x * 0.65f,
-                targetLocation.transform.position.y - b.extents.y * 0.65f);
-            intraHordeTargets[3] = new Vector2(targetLocation.transform.position.x + b.extents.x * 0.65f,
-                targetLocation.transform.position.y + b.extents.y * 0.65f);
-            targetTolerance = b.extents.magnitude * 0.1f;
-
-            _hordeCenter = b.center;
+            _hordeCenter = HordeBounds.center;
         }
 
 #if UNITY_EDITOR
@@ -367,7 +342,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         {
             _populationController = GetComponent<PopulationController>();
             Player = GetComponentInParent<Player>();
-
+            boids = GetComponentInChildren<RatBoids>();
 
             if (HasStateAuthority) // Ensure only the host assigns colors
             {
