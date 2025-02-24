@@ -121,7 +121,7 @@ POI: {FightingOver}
         {
             if (Participators.Count == 0) return;
 
-            List<HordeController> hordesToRemove = new();
+            List<HordeController> hordesToKill = new();
             List<Player> playersToRemove = new();
             _participatorsLock.WaitOne(-1);
             foreach (var kvp in Participators)
@@ -131,18 +131,18 @@ POI: {FightingOver}
                 {
                     Runner.TryFindBehaviour(hordeID, out HordeController horde);
                     var minimumHealth = kvp.Value.HordeStartingHealth.Get(hordeID) * 0.2f;
-                    // If horde is above 20% of it's starting health
-                    if (horde.TotalHealth > minimumHealth)
+                    
+                    if (horde.TotalHealth > 0)
                         aliveHordes++;
                     else
-                        hordesToRemove.Add(horde);
+                        hordesToKill.Add(horde);
                 }
 
-                // If player has no hordes above 20% health participating
+                
                 if (aliveHordes == 0) playersToRemove.Add(kvp.Key);
             }
 
-            foreach (var horde in hordesToRemove)
+            foreach (var horde in hordesToKill)
             {
                 var copy = Participators.Get(horde.Player);
                 copy.RemoveHorde(horde);
@@ -162,9 +162,19 @@ POI: {FightingOver}
             if (Participators.Count > 1)
             {
                 // It's safe to call the RPCs now
-                foreach (var horde in hordesToRemove)
+                // Last horde for that player
+                if (hordesToKill.Count == 1)
+                {
                     // Tell horde to run away to nearest friendly POI
-                    horde.RetreatRpc();
+                    hordesToKill[0].RetreatRpc();
+                    return;
+                }
+
+                foreach (var horde in hordesToKill)
+                {
+                    Destroy(horde);
+                }
+
                 return;
             }
 
@@ -219,9 +229,8 @@ POI: {FightingOver}
             _participatorsLock.ReleaseMutex();
 
             // It's safe to call the RPCs now
-            foreach (var horde in hordesToRemove)
-                // Tell horde to run away to nearest friendly POI
-                horde.RetreatRpc();
+            foreach (var horde in hordesToKill)
+                Destroy(horde);
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
