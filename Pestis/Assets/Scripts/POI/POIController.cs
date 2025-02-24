@@ -71,7 +71,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         private void StationHorde(HordeController horde)
         {
             Debug.Log($"Adding horde {horde.Object.Id} to myself (POI): {Object.Id}");
-            captureEffect.Emit(10000);
+            EmitCaptureEffect();
             StationedHordes.Add(horde);
         }
 
@@ -89,6 +89,22 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
 
             StationedHordes.Remove(horde);
         }
+
+        public void EmitCaptureEffect()
+        {
+            Debug.Log("particle effect");
+            if (captureEffect == null)
+            {
+                Debug.LogError("captureEffect is not assigned!");
+            }
+            Debug.Log("Particle Position: " + GetComponent<ParticleSystem>().transform.position);
+            for (int i = 0; i < 100; i++)
+            {
+                captureEffect.Play();
+                captureEffect.Emit(1);
+            }
+        }
+
 
         public override void Spawned()
         {
