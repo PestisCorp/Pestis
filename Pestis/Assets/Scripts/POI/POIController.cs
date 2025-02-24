@@ -17,6 +17,8 @@ namespace POI
 
         public Collider2D Collider { get; private set; }
 
+        public ParticleSystem captureEffect;
+
         [Networked] public Player ControlledBy { get; private set; }
 
         [Networked] [Capacity(4)] public NetworkLinkedList<HordeController> StationedHordes { get; } = default;
@@ -69,6 +71,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         private void StationHorde(HordeController horde)
         {
             Debug.Log($"Adding horde {horde.Object.Id} to myself (POI): {Object.Id}");
+            captureEffect.Emit(10000);
             StationedHordes.Add(horde);
         }
 
