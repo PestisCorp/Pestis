@@ -39,7 +39,6 @@ namespace Horde
     {
         private PopulationController _populationController;
         private HordeController _hordeController;
-        private Panner _panner;
         // "Evolutionary effect" : [Chance of acquisition, Effect on stats, Maximum effect]
         private EvolutionaryState _evolutionaryState;
         private const double PredispositionStrength = 1.01;
@@ -110,24 +109,23 @@ namespace Horde
         {
             _rareMutationClock.Reset();
             var firstMut = _evolutionaryState.ActiveMutations.Next();
-            _evolutionaryState.ActiveMutations.Remove(firstMut);
-            
             var secondMut = _evolutionaryState.ActiveMutations.Next();
-            _evolutionaryState.ActiveMutations.Remove(secondMut);
-            
             var thirdMut = _evolutionaryState.ActiveMutations.Next();
-            _evolutionaryState.ActiveMutations.Remove(thirdMut);
 
-            _panner.target.x = _hordeController.GetBounds().center.x;
-            _panner.target.y = _hordeController.GetBounds().center.y;
-            _panner.target.z = -1;
-            _panner.shouldPan = true;
-            FindFirstObjectByType<UI_Manager>().RareMutationPopup((firstMut, secondMut, thirdMut), this);
+            while (firstMut.MutationName == secondMut.MutationName ||  secondMut.MutationName == thirdMut.MutationName || thirdMut.MutationName == firstMut.MutationName)
+            {
+                secondMut = _evolutionaryState.ActiveMutations.Next();
+                thirdMut = _evolutionaryState.ActiveMutations.Next();
+            }
+            
+            FindFirstObjectByType<UI_Manager>().RareMutationPopup((firstMut, secondMut, thirdMut), this, _hordeController);
+            _rareMutationClock.Start();
         }
 
         public void ApplyActiveEffects(ActiveMutation mutation)
         {
             FindFirstObjectByType<UI_Manager>().MutationPopUpDisable();
+            _evolutionaryState.ActiveMutations.Remove(mutation);
             foreach (var effect in mutation.Effects)
             {
                 _evolutionaryState.AcquiredMutations.Add(effect);
@@ -202,7 +200,6 @@ namespace Horde
         
         public override void Spawned()
         {
-            _panner = FindFirstObjectByType<Panner>();
             _hordeController = GetComponent<HordeController>();
             _populationController = GetComponent<PopulationController>();
             _evolutionaryState = new EvolutionaryState()
