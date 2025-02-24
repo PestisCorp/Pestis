@@ -1,7 +1,5 @@
 using Horde;
-using Unity.Burst;
 using Unity.Collections;
-using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -34,17 +32,13 @@ public class RatBoids : MonoBehaviour
     private readonly int cpuLimit = 1 << 12;
     private readonly int gpuLimit = 1 << 25;
     private readonly int jobLimit = 1 << 18;
-    private readonly Modes mode = Modes.Gpu;
     private int blocks;
 
     private ComputeBuffer boidBuffer;
     private ComputeBuffer boidBufferOut;
-    private BoidBehavioursJob boidJob;
 
     private NativeArray<Boid> boids;
     private NativeArray<Boid> boidsTemp;
-    private ClearGridJob clearGridJob;
-    private GenerateGridOffsetsJob generateGridOffsetsJob;
 
     // Index is particle ID, x value is position flattened to 1D array, y value is grid cell offset
     private NativeArray<int2> grid;
@@ -60,14 +54,12 @@ public class RatBoids : MonoBehaviour
     private HordeController horde;
 
     private float minSpeed;
-    private RearrangeBoidsJob rearrangeBoidsJob;
     private RenderParams rp;
     private GraphicsBuffer trianglePositions;
     private Vector2[] triangleVerts;
     private float turnSpeed;
 
     private int updateBoidsKernel, generateBoidsKernel;
-    private UpdateGridJob updateGridJob;
 
     private int updateGridKernel,
         clearGridKernel,
@@ -189,44 +181,6 @@ public class RatBoids : MonoBehaviour
         boidShader.SetFloat("gridCellSize", gridCellSize);
         boidShader.SetInt("gridDimY", gridDimY);
         boidShader.SetInt("gridDimX", gridDimX);
-
-        // Job variables setup
-        boidJob.gridCellSize = gridCellSize;
-        boidJob.gridDimX = gridDimX;
-        boidJob.gridDimY = gridDimY;
-        boidJob.numBoids = numBoids;
-        boidJob.visualRangeSq = visualRangeSq;
-        boidJob.minDistanceSq = minDistanceSq;
-        boidJob.xBound = xBound;
-        boidJob.yBound = yBound;
-        boidJob.cohesionFactor = cohesionFactor;
-        boidJob.alignmentFactor = alignmentFactor;
-        boidJob.separationFactor = separationFactor;
-        boidJob.maxSpeed = maxSpeed;
-        boidJob.minSpeed = minSpeed;
-        boidJob.turnSpeed = turnSpeed;
-        boidJob.inBoids = boidsTemp;
-        boidJob.outBoids = boids;
-        boidJob.gridOffsets = gridOffsets;
-
-        clearGridJob.gridOffsets = gridOffsets;
-
-        updateGridJob.numBoids = numBoids;
-        updateGridJob.gridCellSize = gridCellSize;
-        updateGridJob.gridDimY = gridDimY;
-        updateGridJob.gridDimX = gridDimX;
-        updateGridJob.boids = boids;
-        updateGridJob.grid = grid;
-        updateGridJob.gridOffsets = gridOffsets;
-
-        generateGridOffsetsJob.gridTotalCells = gridTotalCells;
-        generateGridOffsetsJob.gridOffsets = gridOffsets;
-
-        rearrangeBoidsJob.numBoids = numBoids;
-        rearrangeBoidsJob.grid = grid;
-        rearrangeBoidsJob.gridOffsets = gridOffsets;
-        rearrangeBoidsJob.inBoids = boids;
-        rearrangeBoidsJob.outBoids = boidsTemp;
     }
 
     // Update is called once per frame
@@ -303,115 +257,6 @@ public class RatBoids : MonoBehaviour
         trianglePositions.Release();
     }
 
-    private void MergedBehaviours(ref Boid boid)
-    {
-        var center = float2.zero;
-        var close = float2.zero;
-        var avgVel = float2.zero;
-        var neighbours = 0;
-
-        var gridXY = getGridLocation(boid);
-        var gridCell = getGridIDbyLoc(gridXY);
-
-        for (var y = gridCell - gridDimX; y <= gridCell + gridDimX; y += gridDimX)
-        {
-            var start = gridOffsets[y - 2];
-            var end = gridOffsets[y + 1];
-            for (var i = start; i < end; i++)
-            {
-                var other = boidsTemp[i];
-                var diff = boid.pos - other.pos;
-                var distanceSq = math.dot(diff, diff);
-                if (distanceSq > 0 && distanceSq < visualRangeSq)
-                {
-                    if (distanceSq < minDistanceSq) close += diff / distanceSq;
-                    center += other.pos;
-                    avgVel += other.vel;
-                    neighbours++;
-                }
-            }
-        }
-
-        if (neighbours > 0)
-        {
-            center /= neighbours;
-            avgVel /= neighbours;
-
-            boid.vel += (center - boid.pos) * (cohesionFactor * Time.deltaTime);
-            boid.vel += (avgVel - boid.vel) * (alignmentFactor * Time.deltaTime);
-        }
-
-        boid.vel += close * (separationFactor * Time.deltaTime);
-    }
-
-    private void LimitSpeed(ref Boid boid)
-    {
-        var speed = math.length(boid.vel);
-        var clampedSpeed = Mathf.Clamp(speed, minSpeed, maxSpeed);
-        boid.vel *= clampedSpeed / speed;
-    }
-
-    // Keep boids on screen
-    private void KeepInBounds(ref Boid boid)
-    {
-        if (Mathf.Abs(boid.pos.x) > xBound) boid.vel.x -= Mathf.Sign(boid.pos.x) * Time.deltaTime * turnSpeed;
-        if (Mathf.Abs(boid.pos.y) > yBound) boid.vel.y -= Mathf.Sign(boid.pos.y) * Time.deltaTime * turnSpeed;
-    }
-
-    private int getGridID(Boid boid)
-    {
-        var gridX = Mathf.FloorToInt(boid.pos.x / gridCellSize + gridDimX / 2);
-        var gridY = Mathf.FloorToInt(boid.pos.y / gridCellSize + gridDimY / 2);
-        return gridDimX * gridY + gridX;
-    }
-
-    private int getGridIDbyLoc(int2 cell)
-    {
-        return gridDimX * cell.y + cell.x;
-    }
-
-    private int2 getGridLocation(Boid boid)
-    {
-        var gridX = Mathf.FloorToInt(boid.pos.x / gridCellSize + gridDimX / 2);
-        var gridY = Mathf.FloorToInt(boid.pos.y / gridCellSize + gridDimY / 2);
-        return new int2(gridX, gridY);
-    }
-
-    private void ClearGrid()
-    {
-        for (var i = 0; i < gridTotalCells; i++) gridOffsets[i] = 0;
-    }
-
-    private void UpdateGrid()
-    {
-        for (var i = 0; i < numBoids; i++)
-        {
-            var id = getGridID(boids[i]);
-            var boidGrid = grid[i];
-            boidGrid.x = id;
-            boidGrid.y = gridOffsets[id];
-            grid[i] = boidGrid;
-            gridOffsets[id]++;
-        }
-    }
-
-    private void GenerateGridOffsets()
-    {
-        for (var i = 1; i < gridTotalCells; i++) gridOffsets[i] += gridOffsets[i - 1];
-    }
-
-    private void RearrangeBoids()
-    {
-        for (var i = 0; i < numBoids; i++)
-        {
-            var gridID = grid[i].x;
-            var cellOffset = grid[i].y;
-            var index = gridOffsets[gridID] - 1 - cellOffset;
-            boidsTemp[index] = boids[i];
-        }
-    }
-
-
     private Vector2[] getTriangleVerts()
     {
         return new[]
@@ -421,186 +266,5 @@ public class RatBoids : MonoBehaviour
             new Vector2(0.5f, 0.5f),
             new Vector2(0.5f, -0.5f)
         };
-    }
-
-    private enum Modes
-    {
-        Cpu,
-        Burst,
-        Jobs,
-        Gpu
-    }
-
-    // Jobs
-    [BurstCompile]
-    private struct ClearGridJob : IJobParallelFor
-    {
-        public NativeArray<int> gridOffsets;
-
-        public void Execute(int i)
-        {
-            gridOffsets[i] = 0;
-        }
-    }
-
-    [BurstCompile]
-    private struct UpdateGridJob : IJob
-    {
-        public NativeArray<int2> grid;
-        public NativeArray<int> gridOffsets;
-        [ReadOnly] public NativeArray<Boid> boids;
-        public int numBoids;
-        public float gridCellSize;
-        public int gridDimY;
-        public int gridDimX;
-
-        private int jobGetGridID(Boid boid)
-        {
-            var gridX = Mathf.FloorToInt(boid.pos.x / gridCellSize + gridDimX / 2);
-            var gridY = Mathf.FloorToInt(boid.pos.y / gridCellSize + gridDimY / 2);
-            return gridDimX * gridY + gridX;
-        }
-
-        public void Execute()
-        {
-            for (var i = 0; i < numBoids; i++)
-            {
-                var id = jobGetGridID(boids[i]);
-                var boidGrid = grid[i];
-                boidGrid.x = id;
-                boidGrid.y = gridOffsets[id];
-                grid[i] = boidGrid;
-                gridOffsets[id]++;
-            }
-        }
-    }
-
-    [BurstCompile]
-    private struct GenerateGridOffsetsJob : IJob
-    {
-        public int gridTotalCells;
-        public NativeArray<int> gridOffsets;
-
-        public void Execute()
-        {
-            for (var i = 1; i < gridTotalCells; i++) gridOffsets[i] += gridOffsets[i - 1];
-        }
-    }
-
-    [BurstCompile]
-    private struct RearrangeBoidsJob : IJob
-    {
-        [ReadOnly] public NativeArray<int2> grid;
-        [ReadOnly] public NativeArray<int> gridOffsets;
-        [ReadOnly] public NativeArray<Boid> inBoids;
-        public NativeArray<Boid> outBoids;
-        public int numBoids;
-
-        public void Execute()
-        {
-            for (var i = 0; i < numBoids; i++)
-            {
-                var gridID = grid[i].x;
-                var cellOffset = grid[i].y;
-                var index = gridOffsets[gridID] - 1 - cellOffset;
-                outBoids[index] = inBoids[i];
-            }
-        }
-    }
-
-    [BurstCompile]
-    private struct BoidBehavioursJob : IJobParallelFor
-    {
-        [ReadOnly] public NativeArray<int> gridOffsets;
-        [ReadOnly] public NativeArray<Boid> inBoids;
-        public NativeArray<Boid> outBoids;
-        public float deltaTime;
-        public int numBoids;
-        public float visualRangeSq;
-        public float minDistanceSq;
-        public float cohesionFactor;
-        public float alignmentFactor;
-        public float separationFactor;
-        public float maxSpeed;
-        public float minSpeed;
-        public float turnSpeed;
-        public float xBound;
-        public float yBound;
-        public float gridCellSize;
-        public int gridDimY;
-        public int gridDimX;
-
-        private void jobMergedBehaviours(ref Boid boid)
-        {
-            var center = float2.zero;
-            var close = float2.zero;
-            var avgVel = float2.zero;
-            var neighbours = 0;
-
-            var gridXY = jobGetGridLocation(boid);
-            var gridCell = gridDimX * gridXY.y + gridXY.x;
-
-            for (var y = gridCell - gridDimX; y <= gridCell + gridDimX; y += gridDimX)
-            {
-                var start = gridOffsets[y - 2];
-                var end = gridOffsets[y + 1];
-                for (var i = start; i < end; i++)
-                {
-                    var other = inBoids[i];
-                    var diff = boid.pos - other.pos;
-                    var distanceSq = math.dot(diff, diff);
-                    if (distanceSq > 0 && distanceSq < visualRangeSq)
-                    {
-                        if (distanceSq < minDistanceSq) close += diff / distanceSq;
-                        center += other.pos;
-                        avgVel += other.vel;
-                        neighbours++;
-                    }
-                }
-            }
-
-            if (neighbours > 0)
-            {
-                center /= neighbours;
-                avgVel /= neighbours;
-
-                boid.vel += (center - boid.pos) * (cohesionFactor * deltaTime);
-                boid.vel += (avgVel - boid.vel) * (alignmentFactor * deltaTime);
-            }
-
-            boid.vel += close * (separationFactor * deltaTime);
-        }
-
-        private void jobLimitSpeed(ref Boid boid)
-        {
-            var speed = math.length(boid.vel);
-            var clampedSpeed = Mathf.Clamp(speed, minSpeed, maxSpeed);
-            boid.vel *= clampedSpeed / speed;
-        }
-
-        private void jobKeepInBounds(ref Boid boid)
-        {
-            if (Mathf.Abs(boid.pos.x) > xBound) boid.vel.x -= Mathf.Sign(boid.pos.x) * deltaTime * turnSpeed;
-            if (Mathf.Abs(boid.pos.y) > yBound) boid.vel.y -= Mathf.Sign(boid.pos.y) * deltaTime * turnSpeed;
-        }
-
-        private int2 jobGetGridLocation(Boid boid)
-        {
-            var gridY = Mathf.FloorToInt(boid.pos.y / gridCellSize + gridDimY / 2);
-            var gridX = Mathf.FloorToInt(boid.pos.x / gridCellSize + gridDimX / 2);
-            return new int2(gridX, gridY);
-        }
-
-        public void Execute(int index)
-        {
-            var boid = inBoids[index];
-
-            jobMergedBehaviours(ref boid);
-            jobLimitSpeed(ref boid);
-            jobKeepInBounds(ref boid);
-
-            boid.pos += boid.vel * deltaTime;
-            outBoids[index] = boid;
-        }
     }
 }
