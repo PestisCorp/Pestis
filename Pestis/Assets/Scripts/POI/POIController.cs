@@ -97,12 +97,8 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             {
                 Debug.LogError("captureEffect is not assigned!");
             }
-            Debug.Log("Particle Position: " + GetComponent<ParticleSystem>().transform.position);
-            for (int i = 0; i < 100; i++)
-            {
-                captureEffect.Play();
-                captureEffect.Emit(1);
-            }
+            captureEffect.Stop();
+            captureEffect.Play();
         }
 
 
