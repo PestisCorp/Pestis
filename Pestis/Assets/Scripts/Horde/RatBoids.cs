@@ -267,4 +267,18 @@ public class RatBoids : MonoBehaviour
             new Vector2(0.5f, -0.5f)
         };
     }
+    public Bounds GetBounds()
+    {
+        var boids = new Boid[2];
+        // Boids are sorted in position order
+        boidBuffer.GetData(boids, 0, 0, 1);
+        boidBuffer.GetData(boids, 1, numBoids - 1, 1);
+        Vector2 topLeft = boids[0].pos;
+        Vector2 bottomRight = boids[1].pos;
+
+        var center = topLeft + (bottomRight - topLeft) / 2.0f;
+        var size = bottomRight - topLeft;
+
+        return new Bounds(center, size);
+    }
 }
