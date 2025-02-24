@@ -12,7 +12,7 @@
 		"MutationTag": "disease",
 		"MutationWeight": 10,
 		"Effects": ["unlock_pestis", "unlock_disease_resistance", "unlock_human_aggression"],
-		"Tooltip": "Unleash the plague onto all nearby hordes or human controlled locations by sacrificing 30% of your population. If you spread it to a horde, they suffer from reduced armor reduction and increased resource needs for one minute. Humans shield from disease and are less vigilant in their patrols. Gain immunity to disease.",
+		"Tooltip": "Unleash the plague onto all nearby hordes or human controlled locations by sacrificing 30% of your population. If you spread it to a horde, they suffer from reduced armor and increased resource needs for one minute. Humans shield from disease and are less vigilant in their patrols. Gain immunity to disease.",
 		"IsAbility": true
 	},
 	{
@@ -28,7 +28,7 @@
 		"MutationTag": "disease",
 		"MutationWeight": 10,
 		"Effects": ["unlock_fester"],
-		"Tooltip": "What do your rats hate more than humans? The advent of modern medicine. Gain an instant 10% boost to all stats, and every subsequent disease type mutations grants the same buff.",
+		"Tooltip": "What do your rats hate more than humans? The advent of modern medicine. Gain an instant 10% boost to all stats, and every subsequent disease type mutation grants the same buff. Additionally, any disease abilities you have that do combat damage are 10% more effective.",
 		"IsAbility": false
 	},
 	{
@@ -36,7 +36,7 @@
 		"MutationTag": "disease",
 		"MutationWeight": 10,
 		"Effects": ["unlock_necrosis"],
-		"Tooltip": "Your rats are having trouble keeping their flesh on their bones. You armor reduction is reduced by 20% but the corpses of your fallen souls deal damage to your enemies with their noxious gases.",
+		"Tooltip": "Your rats are having trouble keeping their flesh on their bones. You armor is reduced by 20% but the corpses of your fallen souls deal damage to your enemies with their noxious gases.",
 		"IsAbility": false
 	}
 ]

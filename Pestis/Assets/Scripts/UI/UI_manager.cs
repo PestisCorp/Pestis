@@ -438,16 +438,22 @@ public class UI_Manager : MonoBehaviour
         var buttons = mutationPopUp.GetComponentsInChildren<Button>();
         
         buttons[0].GetComponentInChildren<TMP_Text>().text = mutations.Item1.MutationName;
+        buttons[0].GetComponent<Tooltip>().tooltipText = mutations.Item1.Tooltip;
         buttons[0].onClick.RemoveAllListeners();
         buttons[0].onClick.AddListener(delegate {evolutionManager.ApplyActiveEffects(mutations.Item1);});
+        buttons[0].onClick.AddListener(delegate {Destroy(buttons[0].GetComponent<Tooltip>().tooltipInstance);});
         
         buttons[1].GetComponentInChildren<TMP_Text>().text = mutations.Item2.MutationName;
+        buttons[1].GetComponent<Tooltip>().tooltipText = mutations.Item2.Tooltip;
         buttons[1].onClick.RemoveAllListeners();
         buttons[1].onClick.AddListener(delegate {evolutionManager.ApplyActiveEffects(mutations.Item2);});
+        buttons[1].onClick.AddListener(delegate {Destroy(buttons[1].GetComponent<Tooltip>().tooltipInstance);});
         
         buttons[2].GetComponentInChildren<TMP_Text>().text = mutations.Item3.MutationName;
+        buttons[2].GetComponent<Tooltip>().tooltipText = mutations.Item3.Tooltip;
         buttons[2].onClick.RemoveAllListeners();
         buttons[2].onClick.AddListener(delegate {evolutionManager.ApplyActiveEffects(mutations.Item3);});
+        buttons[2].onClick.AddListener(delegate {Destroy(buttons[2].GetComponent<Tooltip>().tooltipInstance);});
     }
     
     public void AbilityToolbarEnable()
@@ -508,11 +514,11 @@ public class UI_Manager : MonoBehaviour
     public void AddNotification(string message, Color hordeColor)
     {
         messages.Enqueue((message, hordeColor));
-        if (!_messageActive) StartCoroutine(ShowNextmessage());
+        if (!_messageActive) StartCoroutine(ShowNextMessage());
     }
 
     // Removes a notification after 5 seconds, during which it fades out
-    private IEnumerator ShowNextmessage()
+    private IEnumerator ShowNextMessage()
     {
         if (messages.Count == 0) yield break;
         var message = messages.Dequeue();
@@ -540,7 +546,7 @@ public class UI_Manager : MonoBehaviour
         }
         
         if (messages.Count > 0)
-            StartCoroutine(ShowNextmessage());
+            StartCoroutine(ShowNextMessage());
         else
             _messageActive = false;
     }

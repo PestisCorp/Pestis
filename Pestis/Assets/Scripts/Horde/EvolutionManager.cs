@@ -8,7 +8,7 @@ using File = System.IO.File;
 using Random = System.Random;
 using KaimiraGames;
 
-// TODO: Rather than work with values from State, just store multiplier. Change setters.
+// TODO: Change AcquiredMutations to a HashSet.
 
 
 namespace Horde
@@ -30,7 +30,7 @@ namespace Horde
     {
         public Dictionary<string, double[]> PassiveEvolutions;
         public WeightedList<ActiveMutation> ActiveMutations;
-        public Dictionary<string, bool> AcquiredMutations;
+        public HashSet<string> AcquiredMutations;
         public List<(string, string)> AcquiredAbilities;
     }
     
@@ -129,10 +129,10 @@ namespace Horde
             FindFirstObjectByType<UI_Manager>().MutationPopUpDisable();
             foreach (var effect in mutation.Effects)
             {
-                _evolutionaryState.AcquiredMutations[effect] = true;
+                _evolutionaryState.AcquiredMutations.Add(effect);
             }
             
-            if (_evolutionaryState.AcquiredMutations["unlock_fester"] && mutation.MutationTag == "disease")
+            if (_evolutionaryState.AcquiredMutations.Contains("unlock_fester") && mutation.MutationTag == "disease")
             {
                 
                 PopulationState newState = new PopulationState()
@@ -181,7 +181,6 @@ namespace Horde
             foreach (var mut in activeMutations)
             {
                 _evolutionaryState.ActiveMutations.Add(mut, mut.MutationWeight);
-                foreach (var effect in mut.Effects) { _evolutionaryState.AcquiredMutations[effect] = false; }
             }
         }
 
@@ -205,7 +204,7 @@ namespace Horde
                 PassiveEvolutions = new Dictionary<string, double[]>(),
                 ActiveMutations = new WeightedList<ActiveMutation>(),
                 AcquiredAbilities = new List<(string, string)>(),
-                AcquiredMutations = new Dictionary<string, bool>()
+                AcquiredMutations = new HashSet<string>()
             };
             CreatePassiveEvolutions();
             CreateActiveEvolutions();

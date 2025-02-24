@@ -82,18 +82,21 @@ namespace Horde
                 transform.rotation = Quaternion.Euler(Vector3.zero);
                 _rigidbody.freezeRotation = true;
                 _rigidbody.linearDamping = 15;
-                if (_hordeController.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredMutations["Necrosis"])
+                if (_hordeController.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredMutations.Contains("unlock_necrosis"))
                 {
                     Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 20f);
-                    HashSet<HordeController> affectedHordes = new HashSet<HordeController>();
-                    affectedHordes.Add(_hordeController);
+                    Dictionary<HordeController, int> affectedHordes = new Dictionary<HordeController, int>();
                     foreach (var col in hitColliders)
                     {
                         HordeController affectedEnemy = col.GetComponentInParent<HordeController>();
-                        if (affectedHordes.Add(affectedEnemy))
+                        if (affectedEnemy && (affectedEnemy.GetHashCode() != _hordeController.GetHashCode()) && (affectedHordes.ContainsKey(affectedEnemy)))
                         {
-                            affectedEnemy.DealDamageRpc(0.1f);
+                            affectedHordes[affectedEnemy] += 1;
                         }
+                    }
+                    foreach (var horde in affectedHordes)
+                    {
+                        horde.Key.DealDamageRpc(horde.Value * 0.1f);
                     }
                 }
                 deathCountdown -= Time.deltaTime;

@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
+//TODO: Fix tooltip bug where tooltip remains on screen after picking the mutation option
+
 namespace UI
 {
     public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler

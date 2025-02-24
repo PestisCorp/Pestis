@@ -247,7 +247,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             {
                 var enemy = CurrentCombatController!.GetNearestEnemy(this);
                 var damage = _populationController.GetState().Damage;
-                if (_evolutionManager.GetEvolutionaryState().AcquiredMutations["unlock_septic_bite"])
+                if (_evolutionManager.GetEvolutionaryState().AcquiredMutations.Contains("unlock_septic_bite"))
                 {
                     var septicMult = _populationController.GetState().SepticMult;
                     _populationController.SetSepticMult(septicMult * 1.005f);
