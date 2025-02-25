@@ -3,6 +3,7 @@ using System.Linq;
 using Fusion;
 using Horde;
 using JetBrains.Annotations;
+using POI;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -34,6 +35,8 @@ namespace Players
         public bool IsLocal => Type != PlayerType.Bot && HasStateAuthority;
 
         [Networked] [Capacity(32)] public NetworkLinkedList<HordeController> Hordes { get; } = default;
+        
+        [Networked] [Capacity(64)] public NetworkLinkedList<POIController> ControlledPOIs { get; } = default;
 
         [Networked] public string Username { get; private set; }
 
@@ -42,6 +45,8 @@ namespace Players
         [Networked] public float CurrentCheese { get; private set; }
 
         [Networked] public float CheeseIncrementRate { get; private set; } = 0.03f;
+
+        [Networked] public float FixedCheeseGain { get; private set; } = 0.03f;
 
         public int GetHordeCount()
         {
@@ -88,37 +93,46 @@ namespace Players
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void SetCheeseIncrementRateRpc(float rate)
         {
-            CheeseIncrementRate = rate;
+            FixedCheeseGain = rate;
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void IncrementCheeseIncrementRateRpc(float amount)
         {
-            CheeseIncrementRate += amount;
+            FixedCheeseGain += amount;
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void DecrementCheeseIncrementRateRpc(float amount)
         {
-            CheeseIncrementRate -= amount;
+            FixedCheeseGain -= amount;
         }
 
         public override void FixedUpdateNetwork()
         {
             if (HasStateAuthority)
             {
-                // Add Cheese every tick based on the increment rate
-                CurrentCheese += CheeseIncrementRate;
-
-
                 // Consume cheese
                 var totalRatsCount = Hordes.Select(horde => horde.AliveRats).Sum();
 
-
                 // Cheese consumption formula
                 var cheeseConsumed = cheeseConsumptionRate * totalRatsCount;
+
+                // Cheese gain per game tick
+                CheeseIncrementRate = FixedCheeseGain - cheeseConsumed;
+
+                // handle boundary values
+                if (CheeseIncrementRate < 0.005f && CheeseIncrementRate >= 0.00)
+                {
+                    CheeseIncrementRate = 0.00f;
+                }
+                else if (CheeseIncrementRate > -0.005f && CheeseIncrementRate < 0.00)
+                {
+                    CheeseIncrementRate = 0.00f;
+                }
+
                 // Prevent negative cheese values
-                CurrentCheese = Mathf.Max(0, CurrentCheese + CheeseIncrementRate - cheeseConsumed);
+                CurrentCheese = Mathf.Max(0, CurrentCheese + CheeseIncrementRate);
             }
         }
 

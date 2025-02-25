@@ -9,7 +9,6 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using Random = UnityEngine.Random;
 
 namespace Horde
 {
@@ -481,10 +480,24 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         public void RetreatRpc()
         {
             Debug.Log("Retreating!");
-            // For now just retreat to spawn base
-            targetLocation.Teleport(transform.parent.position);
+            Vector3 baseCamp = transform.parent.position;
+            POIController closestPOI = Player.ControlledPOIs.Aggregate((closest, poi) =>
+                Vector3.Distance(HordeBounds.center, poi.transform.position) <
+                Vector3.Distance(HordeBounds.center, closest.transform.position)
+                    ? poi
+                    : closest);
+
+            if (Vector3.Distance(closestPOI.transform.position, HordeBounds.center) <
+                Vector3.Distance(baseCamp, HordeBounds.center))
+            {
+                StationAtRpc(closestPOI);
+            }
+            else
+            {
+                targetLocation.Teleport(baseCamp);
+                StationedAt = null;
+            }
             HordeBeingDamaged = null;
-            StationedAt = null;
             CurrentCombatController = null;
             PopulationCooldown = 15.0f;
             lastInCombat = Time.time;
