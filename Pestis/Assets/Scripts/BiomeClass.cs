@@ -13,6 +13,7 @@ public class BiomeClass : ScriptableObject
     public GameObject[] FeatureList; //set of features that spawn in this biome
 
     public TileBase[] CompatableTerrainTypes; //can be altered to just be some preexisting tile
+    public static Dictionary<Vector2Int, BiomeInstance> TileBiomeMap = new ();
 
     //generation stuff
     public int seedCount;
@@ -76,7 +77,10 @@ public class BiomeClass : ScriptableObject
             if (CompatableTerrainTypes.Contains(currentTile))
             {
                 map.SetTile(randomPosition, getRandomBiomeTile());
-                return new BiomeInstance(this, new Vector2Int(randomX, randomY));
+                var instance = new BiomeInstance(this, new Vector2Int(randomX, randomY));
+                instance.tilePositions.Add(new Vector2Int(randomX, randomY));
+                TileBiomeMap[new Vector2Int(randomX, randomY)] = instance;
+                return instance;
             }
         }
     }
@@ -109,6 +113,7 @@ public class BiomeClass : ScriptableObject
                     currentPosition = newPosition;
                     map.SetTile(new Vector3Int(newPosition.x, newPosition.y, 0), getRandomBiomeTile());
                     biomeInstance.tilePositions.Add(currentPosition);
+                    TileBiomeMap[currentPosition] = biomeInstance;
                 }
 
                 index += 1;
@@ -126,6 +131,12 @@ public class BiomeClass : ScriptableObject
             BiomeInstance biomeInstance) //generate biomes by seeding 1 biomeTile and then repeatedly "growing" it
     {
         for (var i = 0; i < iteration; i++) Growth(biomeInstance.seedPosition, map, biomeInstance, walkLength);
+    }
+    
+    public static BiomeInstance GetBiomeAtPosition(Vector3Int tilePosition)
+    {
+        Vector2Int pos = (Vector2Int)tilePosition;
+        return TileBiomeMap.TryGetValue(pos, out var biomeInstance) ? biomeInstance : null;
     }
 }
 

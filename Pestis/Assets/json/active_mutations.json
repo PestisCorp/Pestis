@@ -38,5 +38,13 @@
 		"Effects": ["unlock_necrosis"],
 		"Tooltip": "Your rats are having trouble keeping their flesh on their bones. You armor is reduced by 20% but the corpses of your fallen souls deal damage to your enemies with their noxious gases.",
 		"IsAbility": false
+	},
+	{
+		"MutationName": "Agriculturalist",
+		"MutationTag": "grassland",
+		"MutationWeight": 10,
+		"Effects": [""],
+		"Tooltip": "Your time in grassy lands has given your rats the chance to rediscover the wonders of irrigation. All resource output in grassy lands is increased by 20%. Additionally, gain the ability to convert other POIs into farms.",
+		"IsAbility": true
 	}
 ]

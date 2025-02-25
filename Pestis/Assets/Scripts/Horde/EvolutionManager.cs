@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using File = System.IO.File;
 using Random = System.Random;
 using KaimiraGames;
+using UnityEngine.Tilemaps;
 
 // TODO: Change AcquiredMutations to a HashSet.
 
@@ -33,6 +34,7 @@ namespace Horde
         public WeightedList<ActiveMutation> ActiveMutations;
         public HashSet<string> AcquiredMutations;
         public List<(string, string)> AcquiredAbilities;
+        public Dictionary<string, int> TagCounts;
     }
     
     public class EvolutionManager : NetworkBehaviour
@@ -46,6 +48,7 @@ namespace Horde
         private readonly Random _random = new();
         private Timer _mutationClock;
         private Timer _rareMutationClock;
+        
         
         // Set the rat stats in the Population Controller
         // Shows notification of mutation
@@ -151,7 +154,9 @@ namespace Horde
                 };
                 _populationController.SetState(newState);
             }
-            
+
+            _evolutionaryState.TagCounts[mutation.MutationTag] =
+                _evolutionaryState.TagCounts.ContainsKey(mutation.MutationTag) ? _evolutionaryState.TagCounts[mutation.MutationTag]++ : 0;
             if (mutation.IsAbility)
             {
                 _evolutionaryState.AcquiredAbilities.Add((mutation.MutationName, mutation.Tooltip));
@@ -160,6 +165,16 @@ namespace Horde
         
         private void CalculateActiveWeights()
         {
+            for (int i = 0; i < _evolutionaryState.ActiveMutations.Count; i++)
+            {
+                int count = 0;
+                if (_evolutionaryState.TagCounts.TryGetValue(_evolutionaryState.ActiveMutations[i].MutationTag, out var tagCount))
+                {
+                    count = tagCount + 1;
+                }
+                _evolutionaryState.ActiveMutations.SetWeight(_evolutionaryState.ActiveMutations[i], count);
+                //var biome = BiomeClass.GetBiomeAtPosition(tilemap.WorldToCell(_hordeController.GetBounds().center)).template.name;
+            }
         }
 
         private void CreatePassiveEvolutions()
@@ -207,7 +222,8 @@ namespace Horde
                 PassiveEvolutions = new Dictionary<string, double[]>(),
                 ActiveMutations = new WeightedList<ActiveMutation>(),
                 AcquiredAbilities = new List<(string, string)>(),
-                AcquiredMutations = new HashSet<string>()
+                AcquiredMutations = new HashSet<string>(),
+                TagCounts = new Dictionary<string, int>()
             };
             CreatePassiveEvolutions();
             CreateActiveEvolutions();

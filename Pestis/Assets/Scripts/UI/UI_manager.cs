@@ -442,6 +442,10 @@ public class UI_Manager : MonoBehaviour
     private IEnumerator ShowMutationPopUp()
     {
         if (_mutationQueue.Count == 0) yield break;
+        while (mutationPopUp.activeSelf)
+        {
+            yield return null;
+        }
         MutationPopUpEnable();
         var mutation = _mutationQueue.Dequeue();
         Panner panner = FindFirstObjectByType<Panner>();
@@ -468,10 +472,7 @@ public class UI_Manager : MonoBehaviour
         buttons[2].onClick.RemoveAllListeners();
         buttons[2].onClick.AddListener(delegate {mutation.Item4.ApplyActiveEffects(mutation.Item3);});
         buttons[2].onClick.AddListener(delegate {Destroy(buttons[2].GetComponent<Tooltip>().tooltipInstance);});
-        while (mutationPopUp.activeSelf)
-        {
-            yield return null;
-        }
+        
     }
     
     public void AbilityToolbarEnable()
