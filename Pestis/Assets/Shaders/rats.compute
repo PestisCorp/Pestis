@@ -124,7 +124,6 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
         return;
     }
 
-
     Boid boid = boidsIn[id.x];
 
     if (id.x >= numBoidsPrevious)
@@ -136,7 +135,7 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
         }
         else
         {
-            boid.pos = boidsIn[floor(numBoids / 2.0f)].pos;
+            boid.pos = boidsIn[floor(numBoidsPrevious / 2.0f)].pos;
             boid.vel = float2(0, 0);
         }
     }

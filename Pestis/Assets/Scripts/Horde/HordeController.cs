@@ -162,6 +162,10 @@ namespace Horde
                     newBounds.center = Vector2.Lerp(HordeBounds.center, newBounds.center, Time.deltaTime);
                     HordeBounds = newBounds;
                 }
+                else
+                {
+                    HordeBounds = new Bounds(new Vector3(0, 0, 0), new Vector3(0, 0, 0));
+                }
             }
 
             _selectionLightTerrain.pointLightInnerRadius = HordeBounds.extents.magnitude * 0.9f + 0.5f;
