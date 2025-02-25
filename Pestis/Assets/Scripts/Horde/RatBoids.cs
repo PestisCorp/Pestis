@@ -1,3 +1,4 @@
+using System.Linq;
 using Horde;
 using Unity.Collections;
 using Unity.Mathematics;
@@ -41,7 +42,6 @@ public class RatBoids : MonoBehaviour
     private int gridDimY, gridDimX, gridTotalCells;
     private ComputeBuffer gridOffsetBuffer;
     private ComputeBuffer gridOffsetBufferIn;
-    private NativeArray<int> gridOffsets;
     private ComputeBuffer gridSumsBuffer;
     private ComputeBuffer gridSumsBuffer2;
 
@@ -296,6 +296,25 @@ public class RatBoids : MonoBehaviour
     }
 
     /// <summary>
+    ///     Get grid coordinates of a world point
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <returns></returns>
+    private int2 getGridLocation(Vector2 pos)
+    {
+        var x = Mathf.FloorToInt(pos.x / gridCellSize + gridDimX / 2);
+        var y = Mathf.FloorToInt(pos.y / gridCellSize + gridDimY / 2);
+        return new int2(x, y);
+    }
+
+    /// Get Grid Index from 2D grid coordinate
+    private int getGridID(int2 pos)
+    {
+        return gridDimX * pos.y + pos.x;
+    }
+
+
+    /// <summary>
     ///     Check whether a given position is within the horde.
     /// </summary>
     /// <param name="pos">Position to check</param>
@@ -319,13 +338,20 @@ public class RatBoids : MonoBehaviour
         if (pos.y < bottomLeft.y - range) return false;
         if (pos.y > topRight.y + range) return false;
 
-        var grid = new uint[gridDimX * gridDimY];
-        gridOffsetBuffer.GetData(grid, 0, 0, gridDimX * gridDimY);
+        var gridXY = getGridLocation(pos);
+        var gridID = getGridID(gridXY);
 
-        boids = new Boid[previousNumBoids];
-        boidBufferOut.GetData(boids, 0, 0, previousNumBoids);
+        // Get grid offset of this cell, and next cell
+        var gridOffsets = new int[2];
+        gridOffsetBuffer.GetData(gridOffsets, 0, gridID - 1, 2);
 
-        return true;
+        // If grid offsets are identical then there are no boids in the grid cell where we clicked
+        if (gridOffsets[0] == gridOffsets[1]) return false;
+
+        boids = new Boid[gridOffsets[1] - gridOffsets[0]];
+        boidBufferOut.GetData(boids, 0, gridOffsets[0], gridOffsets[1] - gridOffsets[0]);
+
+        return boids.Any(boid => (new Vector2(boid.pos.x, boid.pos.y) - pos).sqrMagnitude < rangeSq);
     }
 
     public Bounds GetBounds()
