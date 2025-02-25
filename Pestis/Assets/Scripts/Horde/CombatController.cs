@@ -66,7 +66,7 @@ namespace Horde
         /// </summary>
         private readonly Mutex _participatorsLock = new();
 
-        [Networked] private NetworkLinkedList<NetworkBehaviourId> AllParticipants => default;
+        [Networked] [Capacity(MAX_PARTICIPANTS)] private NetworkLinkedList<NetworkBehaviourId> AllParticipants => default;
         
         [Networked] private Player InitiatingPlayer { get; set; }
 
