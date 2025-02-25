@@ -50,6 +50,7 @@ public class RatBoids : MonoBehaviour
     private float minSpeed;
 
     [Header("Performance")] private int numBoids = 5;
+    private int previousNumBoids;
     private RenderParams rp;
     private GraphicsBuffer trianglePositions;
     private Vector2[] triangleVerts;
@@ -174,10 +175,11 @@ public class RatBoids : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        previousNumBoids = numBoids;
         var newNumBoids = horde.AliveRats;
         if (boidBuffer.count < newNumBoids)
         {
-            Debug.Log("Resizing boid buffers");
+            Debug.Log($"Resizing boid buffers to {newNumBoids * 2}");
             var newBuffer = new ComputeBuffer(newNumBoids * 2, 16);
             var boids = new Boid[numBoids];
             boidBuffer.GetData(boids, 0, 0, numBoids);
@@ -213,13 +215,15 @@ public class RatBoids : MonoBehaviour
             rp.matProps.SetBuffer("boids", boidBuffer);
         }
 
-        numBoids = newNumBoids;
+        // Increase separation force the bigger the horde is.
+        boidShader.SetFloat("separationFactor", separationFactor * (numBoids / 1000.0f));
 
         boidShader.SetFloat("deltaTime", Time.deltaTime);
         boidShader.SetFloats("targetPos", horde.targetLocation.transform.position.x,
             horde.targetLocation.transform.position.y);
 
         boidShader.SetInt("numBoids", horde.AliveRats);
+        numBoids = newNumBoids;
 
         // Clear indices
         gridShader.Dispatch(clearGridKernel, blocks, 1, 1);
@@ -303,23 +307,23 @@ public class RatBoids : MonoBehaviour
 
         var boids = new Boid[2];
 
-        // Boids are sorted in position order
-        boidBuffer.GetData(boids, 0, 0, 1);
-        boidBuffer.GetData(boids, 1, numBoids - 1, 1);
-        Vector2 topLeft = boids[0].pos;
-        Vector2 bottomRight = boids[1].pos;
+        // Boids are sorted in position order from bottom left to top right
+        boidBufferOut.GetData(boids, 0, 0, 1);
+        boidBufferOut.GetData(boids, 1, previousNumBoids - 1, 1);
+        Vector2 bottomLeft = boids[0].pos;
+        Vector2 topRight = boids[1].pos;
 
         // Early return if pos outside bounding box
-        if (pos.x < topLeft.x - range) return false;
-        if (pos.x > bottomRight.x + range) return false;
-        if (pos.y < bottomRight.y - range) return false;
-        if (pos.y > topLeft.y + range) return false;
+        if (pos.x < bottomLeft.x - range) return false;
+        if (pos.x > topRight.x + range) return false;
+        if (pos.y < bottomLeft.y - range) return false;
+        if (pos.y > topRight.y + range) return false;
 
-        var grid = new float2[gridDimX * gridDimY];
+        var grid = new uint[gridDimX * gridDimY];
         gridOffsetBuffer.GetData(grid, 0, 0, gridDimX * gridDimY);
 
-        boids = new Boid[numBoids];
-        boidBuffer.GetData(boids, 0, 0, numBoids);
+        boids = new Boid[previousNumBoids];
+        boidBufferOut.GetData(boids, 0, 0, previousNumBoids);
 
         return true;
     }
@@ -328,13 +332,23 @@ public class RatBoids : MonoBehaviour
     {
         var boids = new Boid[2];
         // Boids are sorted in position order
-        boidBuffer.GetData(boids, 0, 0, 1);
-        boidBuffer.GetData(boids, 1, numBoids - 1, 1);
-        Vector2 topLeft = boids[0].pos;
-        Vector2 bottomRight = boids[1].pos;
+        boidBufferOut.GetData(boids, 0, 0, 1);
+        boidBufferOut.GetData(boids, 1, previousNumBoids - 1, 1);
+        Vector2 bottomLeft = boids[0].pos;
+        Vector2 topRight = boids[1].pos;
 
-        var center = topLeft + (bottomRight - topLeft) / 2.0f;
-        var size = bottomRight - topLeft;
+        var center = bottomLeft + (topRight - bottomLeft) / 2.0f;
+        var size = topRight - bottomLeft;
+
+        if (size.magnitude > 1000)
+        {
+            boids = new Boid[numBoids];
+            boidBufferOut.GetData(boids, 0, 0, numBoids);
+            Debug.LogError("Bounds too big");
+        }
+
+        if (float.IsNaN(center.x)) Debug.LogError("NAN in bounds");
+        ;
 
         return new Bounds(center, size);
     }
