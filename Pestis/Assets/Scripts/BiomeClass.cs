@@ -13,7 +13,7 @@ public class BiomeClass : ScriptableObject
     public GameObject[] FeatureList; //set of features that spawn in this biome
 
     public TileBase[] CompatableTerrainTypes; //can be altered to just be some preexisting tile
-
+    public int distanceFromNearestSeed = 3;
     //generation stuff
     public int seedCount;
     public int walkLength;
@@ -61,11 +61,23 @@ public class BiomeClass : ScriptableObject
         }
     }
 
-
+    List<TileBase> TilesInArea(int x, int y, int size, Tilemap map)
+    {
+        List<TileBase> tiles = new List<TileBase>();
+        for (int dx = -size / 2; dx <= size / 2; dx++)
+        {
+            for (int dy = -size / 2; dy <= size / 2; dy++)
+            {
+                var checkPosition = new Vector3Int(x + dx, y + dy);
+                tiles.Add(map.GetTile(checkPosition));
+            }
+        }
+        return tiles;
+    }
     public virtual BiomeInstance sowSeed(Tilemap map)
     {
         var bounds = map.cellBounds;
-        var success = false;
+        int stoptrying = 1000;
         while (true)
         {
             var randomX = UnityEngine.Random.Range(bounds.xMin, bounds.xMax);
@@ -75,8 +87,11 @@ public class BiomeClass : ScriptableObject
             // Check if the current tile is of a specific type (e.g., Grass)
             if (CompatableTerrainTypes.Contains(currentTile))
             {
-                map.SetTile(randomPosition, getRandomBiomeTile());
-                return new BiomeInstance(this, new Vector2Int(randomX, randomY));
+                List < TileBase > tiles = TilesInArea(randomX, randomY, distanceFromNearestSeed*2, map);
+                if (!tiles.OfType<BiomeTile>().Any())
+                {
+                    return new BiomeInstance(this, new Vector2Int(randomX, randomY));
+                }
             }
         }
     }
