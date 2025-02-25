@@ -142,7 +142,7 @@ namespace Horde
         // Update the transition matrix when a new population peak is achieved
         // Logic is mostly similar to GenerateTransitionMatrix, except that you are
         // operating on a single row here
-        private void UpdateTransitionMatrix()
+        private void UpdateTransitionMatrix(int population)
         {
             var row = new double[MaxPopGrowth * 2 + 1];
             double delta = 0;
@@ -152,7 +152,7 @@ namespace Horde
             {
                 var w = wMin == wMax ? 1 : (double)(_weights[i] - wMin) / (wMax - wMin);
 
-                var alpha = Alpha(w, _populationPeak);
+                var alpha = Alpha(w, population);
                 row[MaxPopGrowth + i + 1] = alpha;
                 delta += alpha;
 
@@ -193,8 +193,11 @@ namespace Horde
         {
             if (_hordeController.AliveRats > _populationPeak)
             {
+                for (int i = _populationPeak + 1; i <= _hordeController.AliveRats; i++)
+                {
+                    UpdateTransitionMatrix(i);
+                }
                 _populationPeak = _hordeController.AliveRats;
-                UpdateTransitionMatrix();
             }
 
             // Lookup the relevant probabilities for the current population
