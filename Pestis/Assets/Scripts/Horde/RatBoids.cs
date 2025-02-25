@@ -366,16 +366,6 @@ public class RatBoids : MonoBehaviour
         var center = bottomLeft + (topRight - bottomLeft) / 2.0f;
         var size = topRight - bottomLeft;
 
-        if (size.magnitude > 1000)
-        {
-            boids = new Boid[numBoids];
-            boidBufferOut.GetData(boids, 0, 0, numBoids);
-            Debug.LogError("Bounds too big");
-        }
-
-        if (float.IsNaN(center.x)) Debug.LogError("NAN in bounds");
-        ;
-
         return new Bounds(center, size);
     }
 }
