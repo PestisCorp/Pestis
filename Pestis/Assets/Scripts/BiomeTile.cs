@@ -15,6 +15,7 @@ public class BiomeTile : TileBase
         tileData.flags = TileFlags.LockTransform;
         tileData.colliderType = Tile.ColliderType.None;
     }
+
     public virtual void FeatureGeneration()
     {
         // Empty method

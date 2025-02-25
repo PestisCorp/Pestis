@@ -18,7 +18,7 @@ public class BiomeClass : ScriptableObject
     public int seedCount;
     public int walkLength;
     public int iteration;
-    public int strength;
+    public float strength;
 
     //in game stuff
 
@@ -61,7 +61,7 @@ public class BiomeClass : ScriptableObject
         }
     }
 
-    List<TileBase> TilesInArea(int x, int y, int size, Tilemap map)
+    internal List<TileBase> TilesInArea(int x, int y, int size, Tilemap map)
     {
         List<TileBase> tiles = new List<TileBase>();
         for (int dx = -size / 2; dx <= size / 2; dx++)
@@ -74,10 +74,11 @@ public class BiomeClass : ScriptableObject
         }
         return tiles;
     }
+
+
     public virtual BiomeInstance sowSeed(Tilemap map)
     {
         var bounds = map.cellBounds;
-        int stoptrying = 1000;
         while (true)
         {
             var randomX = UnityEngine.Random.Range(bounds.xMin, bounds.xMax);
@@ -97,8 +98,8 @@ public class BiomeClass : ScriptableObject
     }
 
     public virtual void
-        Growth(Vector2Int currentPosition, Tilemap map, BiomeInstance biomeInstance,
-            int walkLength) //generate biomes by seeding 1 biomeTile and then repeatedly "growing" it
+        drunkyardGrowth(Vector2Int currentPosition, Tilemap map, BiomeInstance biomeInstance,
+            int walkLength) 
     {
         var bounds = map.cellBounds;
         // Perform the drunkard's walk
@@ -135,12 +136,11 @@ public class BiomeClass : ScriptableObject
             currentPosition.y = Mathf.Clamp(currentPosition.y, bounds.yMin, bounds.yMax);
         }
     }
-
     public virtual void
         CellGeneration(Tilemap map,
             BiomeInstance biomeInstance) //generate biomes by seeding 1 biomeTile and then repeatedly "growing" it
     {
-        for (var i = 0; i < iteration; i++) Growth(biomeInstance.seedPosition, map, biomeInstance, walkLength);
+        for (var i = 0; i < iteration; i++) drunkyardGrowth(biomeInstance.seedPosition, map, biomeInstance, walkLength);
     }
 }
 

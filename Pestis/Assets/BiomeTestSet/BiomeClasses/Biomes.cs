@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -27,8 +28,11 @@ public class Tundra:BiomeClass
             // Check if the current tile is of a specific type (e.g., Grass)
             if (CompatableTerrainTypes.Contains(currentTile))
             {
-                map.SetTile(randomPosition, getRandomBiomeTile());
-                return new BiomeInstance(this, new Vector2Int(randomX, randomY));
+                List<TileBase> tiles = TilesInArea(randomX, randomY, distanceFromNearestSeed * 2, map);
+                if (!tiles.OfType<BiomeTile>().Any())
+                {
+                    return new BiomeInstance(this, new Vector2Int(randomX, randomY));
+                }
             }
         }
     }

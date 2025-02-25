@@ -25,6 +25,7 @@ namespace Map
 
         private void GenerateBiomes()
         {
+            BiomeList = new();
             sowSeed();
             foreach (var biome in BiomeList)
             {
@@ -35,6 +36,7 @@ namespace Map
 
         private void sowSeed()
         {
+            
             var bounds = Map.tilemap.cellBounds;
 
             for (var i = 0; i < Map.mapObject.BiomeClasses.Length; i++)
