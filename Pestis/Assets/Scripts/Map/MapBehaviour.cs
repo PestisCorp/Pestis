@@ -18,7 +18,7 @@ namespace Map
 
         public void LoadRuntime()
         {
-            tilemap.transform.position = new Vector2(0, -mapObject.height / 4.0f);
+            tilemap.transform.position = new Vector2(0, 0);
 
             if (mapObject.mapBytes.Count() != 0)
             {

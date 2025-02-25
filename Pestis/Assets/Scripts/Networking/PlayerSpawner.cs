@@ -7,7 +7,7 @@ public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
 {
     private const int numBots = 4;
     private const int spawnSeed = 312;
-    private static readonly Vector2 spawnCenter = new(0, 0);
+    private static readonly Vector2 spawnCenter = new(0, 256);
 
     public GameObject PlayerPrefab;
     public GameObject BotPrefab;
