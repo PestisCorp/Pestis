@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Map;
+using Players;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -10,6 +12,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public MapScriptableObject map;
     public Tilemap terrainMap;
+    public List<Player> Players;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -26,10 +29,5 @@ public class GameManager : MonoBehaviour
 
         Application.targetFrameRate = 58;
         QualitySettings.vSyncCount = 0;
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
     }
 }

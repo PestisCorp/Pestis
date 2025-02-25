@@ -97,7 +97,7 @@ namespace Horde
 
         [Networked]
         [OnChangedRender(nameof(TotalHealthChanged))]
-        internal float TotalHealth { get; set; }
+        internal float TotalHealth { get; set; } = 25.0f;
 
         /// <summary>
         ///     Bounds containing every rat in Horde
@@ -156,7 +156,7 @@ namespace Horde
                 {
                     HordeBounds = boids.GetBounds();
                 }
-                else // Move horde center slowly to avoid jitter due to center rat changing
+                else if (AliveRats > 0) // Move horde center slowly to avoid jitter due to center rat changing
                 {
                     var newBounds = boids.GetBounds();
                     newBounds.center = Vector2.Lerp(HordeBounds.center, newBounds.center, Time.deltaTime);

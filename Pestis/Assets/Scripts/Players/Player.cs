@@ -46,6 +46,11 @@ namespace Players
 
         [Networked] public float CheeseIncrementRate { get; private set; } = 0.03f;
 
+        private void OnDestroy()
+        {
+            GameManager.Instance.Players.Remove(this);
+        }
+
         [Networked] public float FixedCheeseGain { get; private set; } = 0.03f;
 
         public int GetHordeCount()
@@ -75,6 +80,8 @@ namespace Players
             }
 
             foreach (var horde in GetComponentsInChildren<HordeController>()) Hordes.Add(horde);
+
+            GameManager.Instance.Players.Add(this);
         }
 
         // Manage Cheese
