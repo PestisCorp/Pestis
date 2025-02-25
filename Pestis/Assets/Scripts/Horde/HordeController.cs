@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Fusion;
 using JetBrains.Annotations;
+using KaimiraGames;
+using MoreLinq;
 using Players;
 using POI;
 using TMPro;
@@ -554,13 +556,46 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void EventWonCombatRpc()
+        public void EventWonCombatRpc(NetworkBehaviourId[] hordes)
         {
             Debug.Log($"We ({Object.Id}) won combat!");
             CurrentCombatController = null;
             HordeBeingDamaged = null;
+            EvolutionaryState state = GetEvolutionState();
+            WeightedList<ActiveMutation> newMutations = new WeightedList<ActiveMutation>();
+            foreach (var hordeID in hordes)
+            {
+                CurrentCombatController.Runner.TryFindBehaviour(hordeID, out HordeController horde);
+                state.PassiveEvolutions["attack"][1] = Math.Max(horde.GetPopulationState().Damage * 0.8,
+                    state.PassiveEvolutions["attack"][1]);
+                state.PassiveEvolutions["health"][1] = Math.Max(horde.GetPopulationState().HealthPerRat * 0.8,
+                    state.PassiveEvolutions["health"][1]);
+                state.PassiveEvolutions["defense"][1] = Math.Max(horde.GetPopulationState().DamageReduction * 0.8,
+                    state.PassiveEvolutions["defense"][1]);
+                foreach (var mut in horde.GetEvolutionState().ActiveMutations)
+                {
+                    if (state.ActiveMutations.Contains(mut))
+                    {
+                        newMutations.Add(mut, 1);
+                    }
+                }
+            }
+
+            if (newMutations.Count > 0)
+            {
+                ActiveMutation newMutation = newMutations.Next();
+                _evolutionManager.ApplyActiveEffects(newMutation);
+                FindFirstObjectByType<UI_Manager>().AddNotification($"You acquired a mutation, {newMutation.MutationName}, from your enemy.", Color.red);
+            }
+            
+            if (state.PassiveEvolutions != GetEvolutionState().PassiveEvolutions)
+            {
+                FindFirstObjectByType<UI_Manager>().AddNotification("In your conquests you have gained the strength of your subjects", Color.red);
+            }
             PopulationCooldown = 20.0f;
             lastInCombat = Time.time;
+            
+
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]

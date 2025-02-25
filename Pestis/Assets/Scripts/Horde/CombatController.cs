@@ -66,6 +66,8 @@ namespace Horde
         /// </summary>
         private readonly Mutex _participatorsLock = new();
 
+        [Networked] private NetworkLinkedList<NetworkBehaviourId> AllParticipants => default;
+        
         [Networked] private Player InitiatingPlayer { get; set; }
 
         /// <summary>
@@ -185,7 +187,8 @@ POI: {FightingOver}
                 foreach (var hordeID in winnerParticipant.Hordes)
                 {
                     Runner.TryFindBehaviour(hordeID, out HordeController horde);
-                    horde.EventWonCombatRpc();
+                    horde.EventWonCombatRpc(AllParticipants.ToArray());
+                    
                     if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredMutations.Contains("unlock_septic_bite"))
                     {
                         horde.GetComponent<PopulationController>().SetSepticMult(1.0f);
@@ -195,6 +198,7 @@ POI: {FightingOver}
                 if (FightingOver)
                 {
                     FightingOver.EventCombatOverRpc();
+                    AllParticipants.Clear();
                     Debug.Log($"COMBAT: Current Controller {FightingOver.ControlledBy.Id}, winner is {winner.Id}");
                 }
 
@@ -244,6 +248,7 @@ POI: {FightingOver}
             {
                 Debug.Log("COMBAT: Adding player");
                 Participators.Add(horde.Player, new CombatParticipant(horde.Player, horde, voluntary));
+                AllParticipants.Add(horde.Id);
             }
             else
             {

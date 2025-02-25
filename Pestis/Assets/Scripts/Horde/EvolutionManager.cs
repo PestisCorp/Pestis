@@ -28,20 +28,36 @@ namespace Horde
         public string Tooltip { get; set; }
     }
 
-    public struct EvolutionaryState
+    public struct EvolutionaryState : IEquatable<EvolutionaryState>
     {
+        // "Evolutionary effect" : [Chance of acquisition, Effect on stats, Maximum effect]
         public Dictionary<string, double[]> PassiveEvolutions;
         public WeightedList<ActiveMutation> ActiveMutations;
         public HashSet<string> AcquiredMutations;
         public List<(string, string)> AcquiredAbilities;
         public Dictionary<string, int> TagCounts;
+
+        public bool Equals(EvolutionaryState other)
+        {
+            return Equals(PassiveEvolutions, other.PassiveEvolutions) && Equals(ActiveMutations, other.ActiveMutations) && Equals(AcquiredMutations, other.AcquiredMutations) && Equals(AcquiredAbilities, other.AcquiredAbilities) && Equals(TagCounts, other.TagCounts);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is EvolutionaryState other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(PassiveEvolutions, ActiveMutations, AcquiredMutations, AcquiredAbilities, TagCounts);
+        }
     }
     
     public class EvolutionManager : NetworkBehaviour
     {
         private PopulationController _populationController;
         private HordeController _hordeController;
-        // "Evolutionary effect" : [Chance of acquisition, Effect on stats, Maximum effect]
+        
         private EvolutionaryState _evolutionaryState;
         private const double PredispositionStrength = 1.01;
         private Color _hordeColor;
