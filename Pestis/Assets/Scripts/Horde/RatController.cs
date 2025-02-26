@@ -82,7 +82,7 @@ namespace Horde
                 transform.rotation = Quaternion.Euler(Vector3.zero);
                 _rigidbody.freezeRotation = true;
                 _rigidbody.linearDamping = 15;
-                if (_hordeController.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredMutations.Contains("unlock_necrosis"))
+                if (_hordeController.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredEffects.Contains("unlock_necrosis"))
                 {
                     Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 20f);
                     Dictionary<HordeController, int> affectedHordes = new Dictionary<HordeController, int>();

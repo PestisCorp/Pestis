@@ -168,7 +168,7 @@ POI: {FightingOver}
                 {
                     // Tell horde to run away to nearest friendly POI
                     horde.RetreatRpc();
-                    if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredMutations.Contains("unlock_septic_bite"))
+                    if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredEffects.Contains("unlock_septic_bite"))
                     {
                         horde.GetComponent<PopulationController>().SetSepticMult(1.0f);
                     }
@@ -189,7 +189,7 @@ POI: {FightingOver}
                     Runner.TryFindBehaviour(hordeID, out HordeController horde);
                     horde.EventWonCombatRpc(AllParticipants.ToArray());
                     
-                    if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredMutations.Contains("unlock_septic_bite"))
+                    if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredEffects.Contains("unlock_septic_bite"))
                     {
                         horde.GetComponent<PopulationController>().SetSepticMult(1.0f);
                     }

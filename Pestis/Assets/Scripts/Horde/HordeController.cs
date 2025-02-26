@@ -248,7 +248,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             {
                 var enemy = CurrentCombatController!.GetNearestEnemy(this);
                 var damage = _populationController.GetState().Damage;
-                if (_evolutionManager.GetEvolutionaryState().AcquiredMutations.Contains("unlock_septic_bite"))
+                if (_evolutionManager.GetEvolutionaryState().AcquiredEffects.Contains("unlock_septic_bite"))
                 {
                     var septicMult = _populationController.GetState().SepticMult;
                     _populationController.SetSepticMult(septicMult * 1.005f);
@@ -572,7 +572,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
                     state.PassiveEvolutions["health"][1]);
                 state.PassiveEvolutions["defense"][1] = Math.Max(horde.GetPopulationState().DamageReduction * 0.8,
                     state.PassiveEvolutions["defense"][1]);
-                foreach (var mut in horde.GetEvolutionState().ActiveMutations)
+                foreach (var mut in horde.GetEvolutionState().AcquiredMutations)
                 {
                     if (state.ActiveMutations.Contains(mut))
                     {

@@ -18,7 +18,7 @@ namespace Horde
     /// <summary>
     /// Responsible for managing evolution of a Horde. Stores state and calculates potential mutations.
     /// </summary>
-    public struct ActiveMutation
+    public struct ActiveMutation : IEquatable<ActiveMutation>
     {
         public string MutationName { get; set; }
         public string MutationTag { get; set; }
@@ -26,6 +26,21 @@ namespace Horde
         public string[] Effects { get; set; }
         public bool IsAbility { get; set; }
         public string Tooltip { get; set; }
+
+        public bool Equals(ActiveMutation other)
+        {
+            return MutationName == other.MutationName && MutationTag == other.MutationTag && MutationWeight == other.MutationWeight && Equals(Effects, other.Effects) && IsAbility == other.IsAbility && Tooltip == other.Tooltip;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is ActiveMutation other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(MutationName, MutationTag, MutationWeight, Effects, IsAbility, Tooltip);
+        }
     }
 
     public struct EvolutionaryState : IEquatable<EvolutionaryState>
@@ -33,9 +48,10 @@ namespace Horde
         // "Evolutionary effect" : [Chance of acquisition, Effect on stats, Maximum effect]
         public Dictionary<string, double[]> PassiveEvolutions;
         public WeightedList<ActiveMutation> ActiveMutations;
-        public HashSet<string> AcquiredMutations;
+        public HashSet<ActiveMutation> AcquiredMutations;
         public List<(string, string)> AcquiredAbilities;
         public Dictionary<string, int> TagCounts;
+        public HashSet<string> AcquiredEffects;
 
         public bool Equals(EvolutionaryState other)
         {
@@ -145,16 +161,17 @@ namespace Horde
         {
             FindFirstObjectByType<UI_Manager>().MutationPopUpDisable();
             _evolutionaryState.ActiveMutations.Remove(mutation);
+            _evolutionaryState.AcquiredMutations.Add(mutation);
             foreach (var effect in mutation.Effects)
             {
-                _evolutionaryState.AcquiredMutations.Add(effect);
+                _evolutionaryState.AcquiredEffects.Add(effect);
                 if (effect == "unlock_necrosis")
                 {
                     _populationController.SetDamageReductionMult(_populationController.GetState().DamageReductionMult * 1.2f);
                 }
             }
             
-            if (_evolutionaryState.AcquiredMutations.Contains("unlock_fester") && mutation.MutationTag == "disease")
+            if (_evolutionaryState.AcquiredEffects.Contains("unlock_fester") && mutation.MutationTag == "disease")
             {
                 
                 PopulationState newState = new PopulationState()
@@ -238,7 +255,8 @@ namespace Horde
                 PassiveEvolutions = new Dictionary<string, double[]>(),
                 ActiveMutations = new WeightedList<ActiveMutation>(),
                 AcquiredAbilities = new List<(string, string)>(),
-                AcquiredMutations = new HashSet<string>(),
+                AcquiredMutations = new HashSet<ActiveMutation>(),
+                AcquiredEffects = new HashSet<string>(),
                 TagCounts = new Dictionary<string, int>()
             };
             CreatePassiveEvolutions();
