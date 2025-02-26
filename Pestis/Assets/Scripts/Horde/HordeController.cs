@@ -161,6 +161,7 @@ namespace Horde
                     var newBounds = boids.GetBounds();
                     newBounds.center = Vector2.Lerp(HordeBounds.center, newBounds.center, Time.deltaTime);
                     HordeBounds = newBounds;
+                    HordeBounds = boids.GetBounds();
                 }
                 else
                 {
