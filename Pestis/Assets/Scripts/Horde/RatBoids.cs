@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Runtime.InteropServices;
-using Horde;
 using MoreLinq.Extensions;
 using Unity.Collections;
 using Unity.Mathematics;
@@ -31,6 +30,13 @@ public class RatBoids : MonoBehaviour
     [SerializeField] private ComputeShader gridShader;
     [SerializeField] private Material boidMat;
 
+    /// <summary>
+    ///     Set by HordeController, pulled from when sim updates. Inside this script you should only read from `numBoids`
+    /// </summary>
+    public int AliveRats;
+
+    public Vector2 TargetPos;
+
     private ComputeBuffer _boidPlayersBuffer;
     private ComputeBuffer _boidPlayersBufferOut;
     private bool _swapPlayerBuffer;
@@ -50,8 +56,6 @@ public class RatBoids : MonoBehaviour
     private ComputeBuffer gridOffsetBufferIn;
     private ComputeBuffer gridSumsBuffer;
     private ComputeBuffer gridSumsBuffer2;
-
-    private HordeController horde;
 
     private float minSpeed;
 
@@ -84,8 +88,6 @@ public class RatBoids : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        horde = GetComponentInParent<HordeController>();
-
         xBound = Camera.main.orthographicSize * Camera.main.aspect - edgeMargin;
         yBound = Camera.main.orthographicSize - edgeMargin;
         turnSpeed = 0.04f;
@@ -191,7 +193,7 @@ public class RatBoids : MonoBehaviour
     private void Update()
     {
         previousNumBoids = numBoids;
-        var newNumBoids = horde.AliveRats;
+        var newNumBoids = AliveRats;
         if (boidBuffer.count < newNumBoids)
         {
             Debug.Log($"Resizing boid buffers to {newNumBoids * 2}");
@@ -247,10 +249,10 @@ public class RatBoids : MonoBehaviour
         boidShader.SetFloat("separationFactor", separationFactor * (numBoids / 1000.0f));
 
         boidShader.SetFloat("deltaTime", Time.deltaTime);
-        boidShader.SetFloats("targetPos", horde.targetLocation.transform.position.x,
-            horde.targetLocation.transform.position.y);
+        boidShader.SetFloats("targetPos", TargetPos.x,
+            TargetPos.y);
 
-        boidShader.SetInt("numBoids", horde.AliveRats);
+        boidShader.SetInt("numBoids", AliveRats);
         numBoids = newNumBoids;
 
         // Clear indices
@@ -303,7 +305,7 @@ public class RatBoids : MonoBehaviour
 
         boidShader.SetInt("numBoidsPrevious", numBoids);
         // Grid shader needs to be one iteration behind, for correct rearranging.
-        gridShader.SetInt("numBoids", horde.AliveRats);
+        gridShader.SetInt("numBoids", AliveRats);
 
         // Actually draw the boids
         Graphics.RenderPrimitives(rp, MeshTopology.Quads, numBoids * 4);

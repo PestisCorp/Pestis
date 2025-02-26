@@ -149,6 +149,9 @@ namespace Horde
                 OnArriveAtTarget = null;
             }
 
+            boids.AliveRats = AliveRats;
+            boids.TargetPos = targetLocation.transform.position;
+
             // If we're the owner of this Horde, we are the authoritative source for the horde bounds
             if (HasStateAuthority)
             {
