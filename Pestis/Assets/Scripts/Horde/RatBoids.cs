@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Runtime.InteropServices;
 using Horde;
 using MoreLinq.Extensions;
 using Unity.Collections;
@@ -29,6 +30,10 @@ public class RatBoids : MonoBehaviour
     [SerializeField] private ComputeShader boidShader;
     [SerializeField] private ComputeShader gridShader;
     [SerializeField] private Material boidMat;
+
+    private ComputeBuffer _boidPlayersBuffer;
+    private ComputeBuffer _boidPlayersBufferOut;
+    private bool _swapPlayerBuffer;
     private int blocks;
 
     private ComputeBuffer boidBuffer;
@@ -97,10 +102,14 @@ public class RatBoids : MonoBehaviour
         generateBoidsKernel = boidShader.FindKernel("GenerateBoids");
 
         // Setup compute buffer
-        boidBuffer = new ComputeBuffer(128, 16);
-        boidBufferOut = new ComputeBuffer(128, 16);
+        boidBuffer = new ComputeBuffer(128, Marshal.SizeOf(typeof(Boid)));
+        boidBufferOut = new ComputeBuffer(128, Marshal.SizeOf(typeof(Boid)));
+        _boidPlayersBuffer = new ComputeBuffer(128, Marshal.SizeOf(typeof(int)));
+        _boidPlayersBufferOut = new ComputeBuffer(128, Marshal.SizeOf(typeof(int)));
+
         boidShader.SetBuffer(updateBoidsKernel, "boidsIn", boidBufferOut);
         boidShader.SetBuffer(updateBoidsKernel, "boidsOut", boidBuffer);
+
         boidShader.SetInt("numBoids", numBoids);
         boidShader.SetFloat("maxSpeed", maxSpeed);
         boidShader.SetFloat("minSpeed", minSpeed);
@@ -143,6 +152,7 @@ public class RatBoids : MonoBehaviour
         gridSumsBuffer = new ComputeBuffer(blocks, 4);
         gridSumsBuffer2 = new ComputeBuffer(blocks, 4);
         gridShader.SetInt("numBoids", numBoids);
+        gridShader.SetInt("numBoidsPrevious", 0);
         gridShader.SetBuffer(updateGridKernel, "boids", boidBuffer);
         gridShader.SetBuffer(updateGridKernel, "gridBuffer", gridBuffer);
         gridShader.SetBuffer(updateGridKernel, "gridOffsetBuffer", gridOffsetBufferIn);
@@ -181,14 +191,14 @@ public class RatBoids : MonoBehaviour
         if (boidBuffer.count < newNumBoids)
         {
             Debug.Log($"Resizing boid buffers to {newNumBoids * 2}");
-            var newBuffer = new ComputeBuffer(newNumBoids * 2, 16);
+            var newBuffer = new ComputeBuffer(newNumBoids * 2, Marshal.SizeOf(typeof(Boid)));
             var boids = new Boid[numBoids];
             boidBuffer.GetData(boids, 0, 0, numBoids);
             newBuffer.SetData(boids);
             boidBuffer.Release();
             boidBuffer = newBuffer;
 
-            newBuffer = new ComputeBuffer(newNumBoids * 2, 16);
+            newBuffer = new ComputeBuffer(newNumBoids * 2, Marshal.SizeOf(typeof(Boid)));
             boidBufferOut.GetData(boids, 0, 0, numBoids);
             newBuffer.SetData(boids);
             boidBufferOut.Release();
@@ -251,6 +261,21 @@ public class RatBoids : MonoBehaviour
         gridShader.SetBuffer(addSumsKernel, "gridSumsBufferIn", swap ? gridSumsBuffer : gridSumsBuffer2);
         gridShader.Dispatch(addSumsKernel, blocks, 1, 1);
 
+
+        if (_swapPlayerBuffer)
+        {
+            gridShader.SetBuffer(rearrangeBoidsKernel, "boidPlayersIn", _boidPlayersBufferOut);
+            gridShader.SetBuffer(rearrangeBoidsKernel, "boidPlayersOut", _boidPlayersBuffer);
+            boidShader.SetBuffer(updateBoidsKernel, "boidPlayers", _boidPlayersBuffer);
+        }
+        else
+        {
+            gridShader.SetBuffer(rearrangeBoidsKernel, "boidPlayersIn", _boidPlayersBuffer);
+            gridShader.SetBuffer(rearrangeBoidsKernel, "boidPlayersOut", _boidPlayersBufferOut);
+            boidShader.SetBuffer(updateBoidsKernel, "boidPlayers", _boidPlayersBufferOut);
+        }
+
+        _swapPlayerBuffer = !_swapPlayerBuffer;
 
         // Rearrange boids
         gridShader.Dispatch(rearrangeBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);

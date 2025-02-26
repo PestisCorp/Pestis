@@ -8,6 +8,8 @@ struct Boid
 
 StructuredBuffer<Boid> boids;
 RWStructuredBuffer<Boid> boidsOut;
+StructuredBuffer<int> boidPlayersIn;
+RWStructuredBuffer<int> boidPlayersOut;
 /// Stores the Grid Index & Offset of each boid by Boid Index
 RWStructuredBuffer<uint2> gridBuffer;
 /// Cumulative boid count for each grid cell
@@ -115,6 +117,7 @@ void RearrangeBoids(uint3 id : SV_DispatchThreadID)
     uint cellOffset = gridBuffer[id.x].y;
     uint index = gridOffsetBuffer[gridID] - 1 - cellOffset;
     boidsOut[index] = boids[id.x];
+    boidPlayersOut[index] = boidPlayersIn[id.x];
 }
 
 #pragma kernel SumBlocks // ID 4
