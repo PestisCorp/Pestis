@@ -1,5 +1,6 @@
 using System.Linq;
 using Horde;
+using MoreLinq.Extensions;
 using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
@@ -354,14 +355,90 @@ public class RatBoids : MonoBehaviour
         return boids.Any(boid => (new Vector2(boid.pos.x, boid.pos.y) - pos).sqrMagnitude < rangeSq);
     }
 
+
+    /// <summary>
+    ///     EXPENSIVE, should only be used by HordeController to update bounds each frame, otherwise you should get the bounds
+    ///     from the HordeController.
+    /// </summary>
+    /// <returns>Bounds encapsulating all rats in the horde</returns>
     public Bounds GetBounds()
     {
-        var boids = new Boid[2];
-        // Boids are sorted in position order
-        boidBufferOut.GetData(boids, 0, 0, 1);
-        boidBufferOut.GetData(boids, 1, previousNumBoids - 1, 1);
-        Vector2 bottomLeft = boids[0].pos;
-        Vector2 topRight = boids[1].pos;
+        var offsets = new int[gridDimX * gridDimY];
+        gridOffsetBuffer.GetData(offsets, 0, 0, gridDimX * gridDimY);
+
+        var bottomLeft = Vector2.positiveInfinity;
+
+        // Find first non-empty row from bottom
+        for (var y = 0; y < gridDimY; y++)
+        {
+            var rowBoids = offsets[(y + 1) * gridDimX - 1] - offsets[y * gridDimX];
+            if (rowBoids == 0) continue;
+
+            var boids = new Boid[rowBoids];
+            boidBufferOut.GetData(boids, 0, offsets[y * gridDimX], rowBoids);
+
+            bottomLeft.y = boids.Minima(boid => boid.pos.y).First().pos.y;
+            break;
+        }
+
+        // Find first non-empty column from left
+        for (var x = 0; x < gridDimX; x++)
+        {
+            var empty = true;
+
+            for (var y = 0; y < gridDimY; y++)
+            {
+                var cellBoids = offsets[y * gridDimX + x] - (y == 0 ? 0 : offsets[y * gridDimX + x - 1]);
+                if (cellBoids == 0) continue;
+
+                empty = false;
+
+                var boids = new Boid[cellBoids];
+                boidBufferOut.GetData(boids, 0, y == 0 ? 0 : offsets[y * gridDimX + x - 1], cellBoids);
+
+                bottomLeft.x = Mathf.Min(bottomLeft.x, boids.Minima(boid => boid.pos.x).First().pos.x);
+            }
+
+            // Break once we've processed the first non-empty row
+            if (!empty) break;
+        }
+
+        var topRight = Vector2.negativeInfinity;
+
+        // Find first non-empty row from top
+        for (var y = gridDimY - 1; y >= 0; y--)
+        {
+            var rowBoids = offsets[(y + 1) * gridDimX - 1] - offsets[y * gridDimX];
+            if (rowBoids == 0) continue;
+
+            var boids = new Boid[rowBoids];
+            boidBufferOut.GetData(boids, 0, offsets[y * gridDimX], rowBoids);
+
+            topRight.y = boids.Maxima(boid => boid.pos.y).First().pos.y;
+            break;
+        }
+
+        // Find first non-empty column from right
+        for (var x = gridDimX - 1; x >= 0; x--)
+        {
+            var empty = true;
+
+            for (var y = 0; y < gridDimY; y++)
+            {
+                var cellBoids = offsets[y * gridDimX + x] - (y == 0 ? 0 : offsets[y * gridDimX + x - 1]);
+                if (cellBoids == 0) continue;
+
+                empty = false;
+
+                var boids = new Boid[cellBoids];
+                boidBufferOut.GetData(boids, 0, y == 0 ? 0 : offsets[y * gridDimX + x - 1], cellBoids);
+
+                topRight.x = Mathf.Max(topRight.x, boids.Maxima(boid => boid.pos.x).First().pos.x);
+            }
+
+            // Break once we've processed the first non-empty row
+            if (!empty) break;
+        }
 
         var center = bottomLeft + (topRight - bottomLeft) / 2.0f;
         var size = topRight - bottomLeft;
