@@ -8,6 +8,9 @@ struct Boid
 
 StructuredBuffer<Boid> boidsIn;
 RWStructuredBuffer<Boid> boidsOut;
+/// Get boid's player by boid index from boidsIn
+RWStructuredBuffer<int> boidPlayers;
+
 uniform uint numBoids;
 /// Number of boids in the previous frame
 uniform uint numBoidsPrevious;
@@ -47,7 +50,7 @@ uint getGridID(uint2 pos)
     return (gridDimX * pos.y) + pos.x;
 }
 
-void MergedBehaviours(inout Boid boid)
+void MergedBehaviours(inout Boid boid, int player)
 {
     float2 center = 0;
     float2 close = 0;
@@ -72,13 +75,22 @@ void MergedBehaviours(inout Boid boid)
 
             if (distSq > 0 && distSq < visualRangeSq)
             {
-                if (distSq < minDistanceSq)
+                if (boidPlayers[i] == player)
                 {
-                    close += diff / distSq;
+                    if (distSq < minDistanceSq)
+                    {
+                        close += diff / distSq;
+                    }
+                    center += other.pos;
+                    avgVel += other.vel;
+                    neighbours++;
                 }
-                center += other.pos;
-                avgVel += other.vel;
-                neighbours++;
+                else
+                {
+                    // Aggressively head towards enemy boids
+                    center += other.pos * 4.0f;
+                    neighbours++;
+                }
             }
         }
     }
@@ -126,8 +138,10 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
 
     Boid boid = boidsIn[id.x];
 
+    // Initialise new boid
     if (id.x >= numBoidsPrevious)
     {
+        boidPlayers[id.x] = -1;
         if (numBoidsPrevious == 0)
         {
             boid.pos = float2(0, 0);
@@ -140,7 +154,7 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
         }
     }
 
-    MergedBehaviours(boid);
+    MergedBehaviours(boid, boidPlayers[id.x]);
     LimitSpeed(boid);
     KeepInBounds(boid);
 
