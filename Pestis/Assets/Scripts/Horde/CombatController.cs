@@ -59,6 +59,9 @@ namespace Horde
 
     public class CombatController : NetworkBehaviour
     {
+
+        public static event Action OnCombatStarted;
+        public static event Action OnCombatEnded;
         public const int MAX_PARTICIPANTS = 6;
 
         /// <summary>
