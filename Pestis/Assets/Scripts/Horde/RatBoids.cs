@@ -91,6 +91,10 @@ public class RatBoids : MonoBehaviour
         turnSpeed = 0.04f;
         minSpeed = maxSpeed * 0.75f;
 
+        // Create new instance of shaders to stop them sharing data!
+        boidShader = Instantiate(boidShader);
+        gridShader = Instantiate(gridShader);
+
         // Get kernel IDs
         updateBoidsKernel = boidShader.FindKernel("UpdateBoids");
         updateGridKernel = gridShader.FindKernel("UpdateGrid");
@@ -130,7 +134,7 @@ public class RatBoids : MonoBehaviour
         boidShader.Dispatch(generateBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
 
         // Set render params
-        rp = new RenderParams(boidMat);
+        rp = new RenderParams(new Material(boidMat));
         rp.matProps = new MaterialPropertyBlock();
         rp.matProps.SetBuffer("boids", boidBuffer);
         rp.worldBounds = new Bounds(Vector3.zero, Vector3.one * 3000);
@@ -204,6 +208,19 @@ public class RatBoids : MonoBehaviour
             boidBufferOut.Release();
             boidBufferOut = newBuffer;
 
+            newBuffer = new ComputeBuffer(newNumBoids * 2, Marshal.SizeOf(typeof(int)));
+            var players = new int[numBoids];
+            _boidPlayersBuffer.GetData(players, 0, 0, numBoids);
+            newBuffer.SetData(players);
+            _boidPlayersBuffer.Release();
+            _boidPlayersBuffer = newBuffer;
+
+            newBuffer = new ComputeBuffer(newNumBoids * 2, Marshal.SizeOf(typeof(int)));
+            players = new int[numBoids];
+            _boidPlayersBufferOut.GetData(players, 0, 0, numBoids);
+            newBuffer.SetData(players);
+            _boidPlayersBufferOut.Release();
+            _boidPlayersBufferOut = newBuffer;
 
             // Resize grid buffer
             var grid = new uint2[numBoids];
