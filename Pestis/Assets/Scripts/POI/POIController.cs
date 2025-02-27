@@ -113,8 +113,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             if (!Combat)
             {
                 Debug.Log("Changing POI Combat Controller");
-                Combat = horde.GetComponent<CombatController>();
-                if (!Combat) throw new NullReferenceException("Failed to get Combat Controller from horde.");
+                Combat = Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
                 Combat!.SetFightingOverRpc(this);
                 foreach (var defender in StationedHordes) Combat.AddHordeRpc(defender, false);
             }

@@ -234,6 +234,8 @@ POI: {FightingOver}
                 {
                     // Tell horde to run away to nearest friendly POI
                     horde.RetreatRpc();
+
+            Destroy(gameObject);
                 }
                 Destroy(horde);
             }

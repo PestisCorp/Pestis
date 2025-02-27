@@ -10,6 +10,7 @@ using UnityEngine.Tilemaps;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    public GameObject CombatControllerPrefab;
     public MapScriptableObject map;
     public Tilemap terrainMap;
     public List<Player> Players;

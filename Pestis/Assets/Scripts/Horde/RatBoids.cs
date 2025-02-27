@@ -18,12 +18,12 @@ public class RatBoids : MonoBehaviour
     [Header("Settings")] [SerializeField] private float maxSpeed = 2;
 
     [SerializeField] private float edgeMargin = .5f;
-    [SerializeField] private float visualRange = .5f;
-    [SerializeField] private float minDistance = 0.15f;
-    [SerializeField] private float cohesionFactor = 2;
-    [SerializeField] private float separationFactor = 1;
-    [SerializeField] private float alignmentFactor = 5;
-    [SerializeField] private float targetFactor = 0.5f;
+    [SerializeField] private float visualRange = 5.0f;
+    [SerializeField] private float minDistance = 0.4f;
+    [SerializeField] private float cohesionFactor = 3;
+    [SerializeField] private float separationFactor = 100;
+    [SerializeField] private float alignmentFactor = 0.1f;
+    [SerializeField] private float targetFactor = 50;
 
     [SerializeField] private ComputeShader boidShader;
     [SerializeField] private ComputeShader gridShader;
@@ -103,7 +103,6 @@ public class RatBoids : MonoBehaviour
         sumBlocksKernel = gridShader.FindKernel("SumBlocks");
         addSumsKernel = gridShader.FindKernel("AddSums");
         rearrangeBoidsKernel = gridShader.FindKernel("RearrangeBoids");
-        generateBoidsKernel = boidShader.FindKernel("GenerateBoids");
 
         // Setup compute buffer
         boidBuffer = new ComputeBuffer(128, Marshal.SizeOf(typeof(Boid)));
