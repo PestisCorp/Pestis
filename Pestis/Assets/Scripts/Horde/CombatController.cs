@@ -61,6 +61,8 @@ namespace Horde
     {
         public const int MAX_PARTICIPANTS = 6;
 
+        public RatBoids boids;
+
         /// <summary>
         ///     Lock that must be acquired to use `Participators` to prevent races
         /// </summary>
@@ -265,6 +267,7 @@ POI: {FightingOver}
             _participatorsLock.ReleaseMutex();
 
             if (!voluntary) horde.EventAttackedRpc(this);
+            horde.AddBoidsToCombatRpc(this);
         }
 
         public HordeController GetNearestEnemy(HordeController me)
@@ -341,6 +344,11 @@ POI: {FightingOver}
             // Remove player from participators if that was the only horde it had in combat
             if (!copy.Hordes.Any()) Participators.Remove(horde.Player);
             _participatorsLock.ReleaseMutex();
+        }
+
+        public override void Spawned()
+        {
+            boids.Start();
         }
     }
 }
