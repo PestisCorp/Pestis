@@ -222,6 +222,8 @@ POI: {FightingOver}
             foreach (var horde in hordesToRemove)
                 // Tell horde to run away to nearest friendly POI
                 horde.RetreatRpc();
+
+            Destroy(gameObject);
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]

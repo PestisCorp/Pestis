@@ -28,6 +28,8 @@ namespace Horde
         };
 
         private static int nextColorIndex; // Tracks the next color index
+
+
         public Player Player;
 
         public GameObject ratPrefab;
@@ -118,7 +120,7 @@ namespace Horde
         /// </summary>
         [Networked]
         [CanBeNull]
-        private CombatController CurrentCombatController { get; set; }
+        public CombatController CurrentCombatController { get; private set; }
 
         public bool InCombat => CurrentCombatController && CurrentCombatController.HordeInCombat(this);
 
@@ -505,7 +507,8 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             }
             else // Otherwise start new combat and add the target to it
             {
-                CurrentCombatController = GetComponent<CombatController>();
+                CurrentCombatController =
+                    Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
                 CurrentCombatController!.AddHordeRpc(this, true);
                 CurrentCombatController.AddHordeRpc(target, false);
             }
