@@ -61,6 +61,8 @@ namespace Horde
     {
         public const int MAX_PARTICIPANTS = 6;
 
+        public RatBoids boids;
+
         /// <summary>
         ///     Lock that must be acquired to use `Participators` to prevent races
         /// </summary>
@@ -131,14 +133,14 @@ POI: {FightingOver}
                 {
                     Runner.TryFindBehaviour(hordeID, out HordeController horde);
                     var minimumHealth = kvp.Value.HordeStartingHealth.Get(hordeID) * 0.2f;
-                    
-                    if (horde.TotalHealth > 0)
+                    // If horde is above 20% of it's starting health
+                    if (horde.TotalHealth > minimumHealth)
                         aliveHordes++;
                     else
                         hordesToRemove.Add(horde);
                 }
 
-                
+                // If player has no hordes above 20% health participating
                 if (aliveHordes == 0) playersToRemove.Add(kvp.Key);
             }
 
@@ -163,16 +165,8 @@ POI: {FightingOver}
             {
                 // It's safe to call the RPCs now
                 foreach (var horde in hordesToRemove)
-                {
-                    // If last horde of that player
-                    if (horde.Player.Hordes.Count == 1)
-                    {
-                        // Tell horde to run away to nearest friendly POI
-                        horde.RetreatRpc();
-                    }
-                    Destroy(horde);
-                }
-
+                    // Tell horde to run away to nearest friendly POI
+                    horde.RetreatRpc();
                 return;
             }
 
@@ -229,14 +223,20 @@ POI: {FightingOver}
             // It's safe to call the RPCs now
             foreach (var horde in hordesToRemove)
             {
+                // Tell horde to run away to nearest friendly POI
                 // If last horde of that player
                 if (horde.Player.Hordes.Count == 1)
                 {
                     // Tell horde to run away to nearest friendly POI
                     horde.RetreatRpc();
                 }
-                Destroy(horde);
+                else
+                {
+                    Destroy(horde.gameObject);
+                }
             }
+
+            Destroy(gameObject);
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -339,6 +339,11 @@ POI: {FightingOver}
             // Remove player from participators if that was the only horde it had in combat
             if (!copy.Hordes.Any()) Participators.Remove(horde.Player);
             _participatorsLock.ReleaseMutex();
+        }
+
+        public override void Spawned()
+        {
+            boids.Start();
         }
     }
 }

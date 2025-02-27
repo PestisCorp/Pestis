@@ -28,6 +28,8 @@ namespace Horde
         };
 
         private static int nextColorIndex; // Tracks the next color index
+
+
         public Player Player;
 
         public GameObject ratPrefab;
@@ -97,7 +99,7 @@ namespace Horde
 
         [Networked]
         [OnChangedRender(nameof(TotalHealthChanged))]
-        internal float TotalHealth { get; set; }
+        internal float TotalHealth { get; set; } = 25.0f;
 
         /// <summary>
         ///     Bounds containing every rat in Horde
@@ -118,7 +120,7 @@ namespace Horde
         /// </summary>
         [Networked]
         [CanBeNull]
-        private CombatController CurrentCombatController { get; set; }
+        public CombatController CurrentCombatController { get; private set; }
 
         public bool InCombat => CurrentCombatController && CurrentCombatController.HordeInCombat(this);
 
@@ -149,6 +151,9 @@ namespace Horde
                 OnArriveAtTarget = null;
             }
 
+            boids.AliveRats = AliveRats;
+            boids.TargetPos = targetLocation.transform.position;
+
             // If we're the owner of this Horde, we are the authoritative source for the horde bounds
             if (HasStateAuthority)
             {
@@ -156,11 +161,16 @@ namespace Horde
                 {
                     HordeBounds = boids.GetBounds();
                 }
-                else // Move horde center slowly to avoid jitter due to center rat changing
+                else if (AliveRats > 0) // Move horde center slowly to avoid jitter due to center rat changing
                 {
                     var newBounds = boids.GetBounds();
                     newBounds.center = Vector2.Lerp(HordeBounds.center, newBounds.center, Time.deltaTime);
                     HordeBounds = newBounds;
+                    HordeBounds = boids.GetBounds();
+                }
+                else
+                {
+                    HordeBounds = new Bounds(new Vector3(0, 0, 0), new Vector3(0, 0, 0));
                 }
             }
 
@@ -193,6 +203,7 @@ Combat: {InCombat}
 Horde Target: {(HordeBeingDamaged ? HordeBeingDamaged.Object.Id : "None")}
 Stationed At {(StationedAt ? StationedAt.Object.Id : "None")}
 POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
+Count: {AliveRats}
 ");
             HandleUtility.Repaint();
         }
@@ -511,7 +522,8 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             }
             else // Otherwise start new combat and add the target to it
             {
-                CurrentCombatController = GetComponent<CombatController>();
+                CurrentCombatController =
+                    Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
                 CurrentCombatController!.AddHordeRpc(this, true);
                 CurrentCombatController.AddHordeRpc(target, false);
             }
@@ -546,6 +558,16 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         public void Select()
         {
             FindAnyObjectByType<InputHandler>().LocalPlayer?.SelectHorde(this);
+        }
+
+        /// <summary>
+        ///     Sent to *all* machines so they can update their local boid sims
+        /// </summary>
+        /// <param name="combat"></param>
+        [Rpc(RpcSources.All, RpcTargets.All)]
+        public void AddBoidsToCombatRpc(CombatController combat)
+        {
+            boids.JoinCombat(combat.boids);
         }
     }
 }
