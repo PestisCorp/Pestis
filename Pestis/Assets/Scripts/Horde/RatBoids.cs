@@ -38,6 +38,8 @@ public class RatBoids : MonoBehaviour
 
     private ComputeBuffer _boidPlayersBuffer;
     private ComputeBuffer _boidPlayersBufferOut;
+
+    private bool _started;
     private bool _swapPlayerBuffer;
     private int blocks;
 
@@ -84,8 +86,10 @@ public class RatBoids : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    private void Start()
+    public void Start()
     {
+        if (_started) return;
+        _started = true;
         xBound = Camera.main.orthographicSize * Camera.main.aspect - edgeMargin;
         yBound = Camera.main.orthographicSize - edgeMargin;
         turnSpeed = 0.04f;

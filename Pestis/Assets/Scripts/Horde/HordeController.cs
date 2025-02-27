@@ -545,5 +545,15 @@ Count: {AliveRats}
         {
             FindAnyObjectByType<InputHandler>().LocalPlayer?.SelectHorde(this);
         }
+
+        /// <summary>
+        ///     Sent to *all* machines so they can update their local boid sims
+        /// </summary>
+        /// <param name="combat"></param>
+        [Rpc(RpcSources.All, RpcTargets.All)]
+        public void AddBoidsToCombatRpc(CombatController combat)
+        {
+            boids.JoinCombat(combat.boids);
+        }
     }
 }
