@@ -57,7 +57,7 @@ jobs:
             UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
             UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
           with:
-            targetPlatform: Linux
+            targetPlatform: StandaloneLinux64
             versioning: Custom
             version: ${{ github.ref_name }}
             projectPath: Pestis
@@ -66,7 +66,7 @@ jobs:
 
         # Output
         - name: Copy build to hosting folder
-          run: cp -rfT build/Linux /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/linux
+          run: cp -rfT build/StandaloneLinux64 /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/linux
 
         # Build
         - name: Build Windows
@@ -76,7 +76,7 @@ jobs:
             UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
             UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
           with:
-            targetPlatform: Windows
+            targetPlatform: StandaloneWindows64
             versioning: Custom
             version: ${{ github.ref_name }}
             projectPath: Pestis
@@ -85,5 +85,5 @@ jobs:
     
         # Output
         - name: Copy build to hosting folder
-          run: cp -rfT build/Windows/ /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/windows
+          run: cp -rfT build/StandaloneWindows64/ /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/windows
      
