@@ -203,6 +203,7 @@ Combat: {InCombat}
 Horde Target: {(HordeBeingDamaged ? HordeBeingDamaged.Object.Id : "None")}
 Stationed At {(StationedAt ? StationedAt.Object.Id : "None")}
 POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
+Count: {AliveRats}
 ");
             HandleUtility.Repaint();
         }
