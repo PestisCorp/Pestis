@@ -121,7 +121,7 @@ POI: {FightingOver}
         {
             if (Participators.Count == 0) return;
 
-            List<HordeController> hordesToKill = new();
+            List<HordeController> hordesToRemove = new();
             List<Player> playersToRemove = new();
             _participatorsLock.WaitOne(-1);
             foreach (var kvp in Participators)
@@ -135,14 +135,14 @@ POI: {FightingOver}
                     if (horde.TotalHealth > 0)
                         aliveHordes++;
                     else
-                        hordesToKill.Add(horde);
+                        hordesToRemove.Add(horde);
                 }
 
                 
                 if (aliveHordes == 0) playersToRemove.Add(kvp.Key);
             }
 
-            foreach (var horde in hordesToKill)
+            foreach (var horde in hordesToRemove)
             {
                 var copy = Participators.Get(horde.Player);
                 copy.RemoveHorde(horde);
@@ -162,16 +162,14 @@ POI: {FightingOver}
             if (Participators.Count > 1)
             {
                 // It's safe to call the RPCs now
-                // Last horde for that player
-                if (hordesToKill.Count == 1)
+                foreach (var horde in hordesToRemove)
                 {
-                    // Tell horde to run away to nearest friendly POI
-                    hordesToKill[0].RetreatRpc();
-                    return;
-                }
-
-                foreach (var horde in hordesToKill)
-                {
+                    // If last horde of that player
+                    if (horde.Player.Hordes.Count == 1)
+                    {
+                        // Tell horde to run away to nearest friendly POI
+                        horde.RetreatRpc();
+                    }
                     Destroy(horde);
                 }
 
@@ -229,8 +227,16 @@ POI: {FightingOver}
             _participatorsLock.ReleaseMutex();
 
             // It's safe to call the RPCs now
-            foreach (var horde in hordesToKill)
+            foreach (var horde in hordesToRemove)
+            {
+                // If last horde of that player
+                if (horde.Player.Hordes.Count == 1)
+                {
+                    // Tell horde to run away to nearest friendly POI
+                    horde.RetreatRpc();
+                }
                 Destroy(horde);
+            }
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
