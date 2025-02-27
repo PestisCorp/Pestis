@@ -109,6 +109,7 @@ public class UI_Manager : MonoBehaviour
             if (hordeTotalText != null)
                 hordeTotalText.text = "0";
         }
+        if (attackPanel.activeSelf) AttackPanelRefresh();
     }
 
     // Function to reset all referenced canvases to their default states to prevent UI clutter
@@ -179,25 +180,27 @@ public class UI_Manager : MonoBehaviour
     public void AttackPanelEnable()
     {
         ResetUI();
+        var fightButton = attackPanel.GetComponentInChildren<Button>();
+        fightButton.onClick.RemoveAllListeners();
         if (attackPanel != null) attackPanel.SetActive(true);
 
         // Find all GameObjects with the tag "UI_stats_text"
         var uiStatsTextObjects = GameObject.FindGameObjectsWithTag("UI_stats_text");
 
         // Loop through and find the one specific to the attack panel with name "Attack_own_stats"
+        var friendlyHorde = GetSelectedHorde();
+        var enemyHorde = GetSelectedEnemyHorde();
         foreach (var obj in uiStatsTextObjects)
             if (obj.name == "Attack_own_stats")
             {
-                var horde = GetSelectedHorde();
-                UpdateStats(obj, horde);
+                UpdateStats(obj, friendlyHorde);
             }
             else if (obj.name == "Attack_enemy_stats")
             {
-                var horde = GetSelectedEnemyHorde();
-                UpdateStats(obj, horde);
+                UpdateStats(obj, enemyHorde);
             }
 
-        // Find all GameObjects with the tag "Attack_slider_text
+        // Find all GameObjects with the tag "Attack_slider_text"
         var attackSliderObjects = GameObject.FindGameObjectsWithTag("Attack_slider_text");
 
         // Loop through and find the one specific to the attack panel with name "Attack_own_stats"
@@ -207,6 +210,21 @@ public class UI_Manager : MonoBehaviour
                 var horde = GetSelectedHorde();
                 UpdateSliderMaxPop(obj, horde);
             }
+
+        var toggles = attackPanel.GetComponentsInChildren<Toggle>();
+        var combatOptions = new List<string>();
+        foreach (var toggle in toggles)
+        {
+            if (toggle.isOn) combatOptions.Add(toggle.name);
+        }
+        fightButton.onClick.AddListener(delegate {friendlyHorde.AttackHorde(enemyHorde);});
+
+    }
+
+    public void AttackPanelRefresh()
+    {
+        AttackPanelDisable();
+        AttackPanelEnable();
     }
 
     // Function to disable attack panel
@@ -294,7 +312,7 @@ public class UI_Manager : MonoBehaviour
     // Function to retrieve the selected enemy horde and return it
     private HordeController GetSelectedEnemyHorde()
     {
-        return null;
+        return inputHandler?.GetComponent<InputHandler>()?.LocalPlayer?.selectedEnemyHorde;
     }
 
     // Function to update the stats text field of the passed game object
@@ -309,9 +327,10 @@ public class UI_Manager : MonoBehaviour
         if (horde != null)
         {
             // Create string variables for the stats, with XX as default if no value is present
+            var hordeState = horde.GetPopulationState();
             var population = horde.AliveRats.ToString();
-            var attack = "XX";
-            var defense = "XX";
+            var attack = horde.GetPopulationState().Damage;
+            var defense = hordeState.DamageReduction;
             var avgSize = "XX";
             var avgWeight = "XX";
 

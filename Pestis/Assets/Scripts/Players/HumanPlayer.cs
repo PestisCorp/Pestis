@@ -8,6 +8,7 @@ namespace Players
     public class HumanPlayer : MonoBehaviour
     {
         [CanBeNull] public HordeController selectedHorde;
+        [CanBeNull] public HordeController selectedEnemyHorde;
 
         // Whether this HumanPlayer is the one being controlled by the player on this machine.
         public bool IsLocal;
@@ -36,34 +37,51 @@ namespace Players
 
         public void SelectHorde(HordeController horde)
         {
-            if (selectedHorde && selectedHorde != horde)
+            if (horde.Player.IsLocal)
             {
-                selectedHorde.UnHighlight();
-                UI_manager.ToolbarDisable();
-                UI_manager.AbilityToolbarDisable();
-            }
-
-            if (selectedHorde != horde)
-            {
-                selectedHorde = horde;
-                selectedHorde?.Highlight();
-                if (selectedHorde.Player.IsLocal)
+                if (selectedHorde && selectedHorde != horde)
                 {
-                    foreach (var mut in selectedHorde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredAbilities)
-                    {
-                        UI_manager.RegisterAbility(mut, selectedHorde.GetComponent<AbilityController>());
-                    }
-                    UI_manager.ToolbarEnable();
-                    UI_manager.AbilityToolbarEnable();
+                    selectedHorde.UnHighlight();
+                    UI_manager.ToolbarDisable();
+                    UI_manager.AbilityToolbarDisable();
                 }
+                if (selectedHorde != horde)
+                {
+                    selectedHorde = horde;
+                    selectedHorde?.Highlight();
+                    if (selectedHorde.Player.IsLocal)
+                    {
+                        foreach (var mut in selectedHorde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredAbilities)
+                        {
+                            UI_manager.RegisterAbility(mut, selectedHorde.GetComponent<AbilityController>());
+                        }
+                        UI_manager.ToolbarEnable();
+                        UI_manager.AbilityToolbarEnable();
+                    }
                      
+                }
+            }
+            else
+            {
+                if (selectedEnemyHorde && selectedEnemyHorde != horde)
+                {
+                    selectedEnemyHorde.UnHighlight();
+                }
+
+                if (selectedEnemyHorde != horde)
+                {
+                    selectedEnemyHorde = horde;
+                    selectedEnemyHorde?.Highlight();
+                }
             }
         }
 
         public void DeselectHorde()
         {
             selectedHorde?.UnHighlight();
+            selectedEnemyHorde?.UnHighlight();
             selectedHorde = null;
+            selectedEnemyHorde = null;
             UI_manager.ToolbarDisable();
             UI_manager.AbilityToolbarDisable();
         }
