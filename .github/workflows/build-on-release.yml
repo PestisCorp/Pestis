@@ -44,23 +44,44 @@ jobs:
             chownFilesTo: ec2-user
 
         # Build
-        - name: Build project
+        - name: Build Linux
           uses: game-ci/unity-builder@v4
           env:
             UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
             UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
             UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
           with:
-            targetPlatform: WebGL
+            targetPlatform: Linux
+            versioning: Custom
+            version: ${{github.event.release.tag_name }}
+            projectPath: Pestis
+            runAsHostUser: true
+            chownFilesTo: ec2-user
+            
+
+        # Output
+        - name: Copy build to hosting folder
+          run: cp -rfT build/Linux/ /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name }}/linux
+
+        # Build
+        - name: Build Windows
+          uses: game-ci/unity-builder@v4
+          env:
+            UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+            UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+            UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          with:
+            targetPlatform: Windows
             versioning: Custom
             version: ${{github.event.release.tag_name }}
             projectPath: Pestis
             runAsHostUser: true
             chownFilesTo: ec2-user
 
+
         # Output
         - name: Copy build to hosting folder
-          run: cp -rfT build/WebGL/WebGL /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name }}
+          run: cp -rfT build/Windows/ /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name }}/windows
 
         - name: Symlink to latest
           run: ln -sfn /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name }} /home/ec2-user/actions-runner/builds/stable
