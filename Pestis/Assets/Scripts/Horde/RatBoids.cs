@@ -1,10 +1,9 @@
+using System;
 using System.Linq;
 using System.Runtime.InteropServices;
 using MoreLinq.Extensions;
-using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 internal struct Boid
 {
@@ -45,9 +44,6 @@ public class RatBoids : MonoBehaviour
     private ComputeBuffer boidBuffer;
     private ComputeBuffer boidBufferOut;
 
-    private NativeArray<Boid> boids;
-    private NativeArray<Boid> boidsTemp;
-
     // Index is boid ID, x value is position flattened to 1D array, y value is grid cell offset
     private ComputeBuffer gridBuffer;
     private float gridCellSize;
@@ -59,7 +55,9 @@ public class RatBoids : MonoBehaviour
 
     private float minSpeed;
 
-    [Header("Performance")] private int numBoids = 5;
+    [Header("Performance")] private int numBoids;
+
+    private bool paused;
     private int previousNumBoids;
     private RenderParams rp;
     private GraphicsBuffer trianglePositions;
@@ -130,11 +128,6 @@ public class RatBoids : MonoBehaviour
         boidShader.SetFloat("alignmentFactor", alignmentFactor);
         boidShader.SetFloat("targetFactor", targetFactor);
 
-
-        boidShader.SetBuffer(generateBoidsKernel, "boidsOut", boidBuffer);
-        boidShader.SetInt("randSeed", Random.Range(0, int.MaxValue));
-        boidShader.Dispatch(generateBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
-
         // Set render params
         rp = new RenderParams(new Material(boidMat));
         rp.matProps = new MaterialPropertyBlock();
@@ -192,58 +185,11 @@ public class RatBoids : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (AliveRats == 0 || paused) return;
+
         previousNumBoids = numBoids;
         var newNumBoids = AliveRats;
-        if (boidBuffer.count < newNumBoids)
-        {
-            Debug.Log($"Resizing boid buffers to {newNumBoids * 2}");
-            var newBuffer = new ComputeBuffer(newNumBoids * 2, Marshal.SizeOf(typeof(Boid)));
-            var boids = new Boid[numBoids];
-            boidBuffer.GetData(boids, 0, 0, numBoids);
-            newBuffer.SetData(boids);
-            boidBuffer.Release();
-            boidBuffer = newBuffer;
-
-            newBuffer = new ComputeBuffer(newNumBoids * 2, Marshal.SizeOf(typeof(Boid)));
-            boidBufferOut.GetData(boids, 0, 0, numBoids);
-            newBuffer.SetData(boids);
-            boidBufferOut.Release();
-            boidBufferOut = newBuffer;
-
-            newBuffer = new ComputeBuffer(newNumBoids * 2, Marshal.SizeOf(typeof(int)));
-            var players = new int[numBoids];
-            _boidPlayersBuffer.GetData(players, 0, 0, numBoids);
-            newBuffer.SetData(players);
-            _boidPlayersBuffer.Release();
-            _boidPlayersBuffer = newBuffer;
-
-            newBuffer = new ComputeBuffer(newNumBoids * 2, Marshal.SizeOf(typeof(int)));
-            players = new int[numBoids];
-            _boidPlayersBufferOut.GetData(players, 0, 0, numBoids);
-            newBuffer.SetData(players);
-            _boidPlayersBufferOut.Release();
-            _boidPlayersBufferOut = newBuffer;
-
-            // Resize grid buffer
-            var grid = new uint2[numBoids];
-            newBuffer = new ComputeBuffer(newNumBoids * 2, 8);
-            gridBuffer.GetData(grid, 0, 0, numBoids);
-            newBuffer.SetData(grid);
-            gridBuffer.Release();
-            gridBuffer = newBuffer;
-
-            boidShader.SetBuffer(updateBoidsKernel, "boidsIn", boidBufferOut);
-            boidShader.SetBuffer(updateBoidsKernel, "boidsOut", boidBuffer);
-
-            gridShader.SetBuffer(updateGridKernel, "boids", boidBuffer);
-            gridShader.SetBuffer(updateGridKernel, "gridBuffer", gridBuffer);
-
-            gridShader.SetBuffer(rearrangeBoidsKernel, "gridBuffer", gridBuffer);
-            gridShader.SetBuffer(rearrangeBoidsKernel, "boids", boidBuffer);
-            gridShader.SetBuffer(rearrangeBoidsKernel, "boidsOut", boidBufferOut);
-
-            rp.matProps.SetBuffer("boids", boidBuffer);
-        }
+        if (boidBuffer.count < newNumBoids) ResizeBuffers(newNumBoids * 2);
 
         // Increase separation force the bigger the horde is.
         boidShader.SetFloat("separationFactor", separationFactor * (numBoids / 1000.0f));
@@ -313,20 +259,68 @@ public class RatBoids : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (boids.IsCreated)
-        {
-            boids.Dispose();
-            boidsTemp.Dispose();
-        }
-
         boidBuffer.Release();
         boidBufferOut.Release();
+        _boidPlayersBuffer.Release();
+        _boidPlayersBufferOut.Release();
         gridBuffer.Release();
         gridOffsetBuffer.Release();
         gridOffsetBufferIn.Release();
         gridSumsBuffer.Release();
         gridSumsBuffer2.Release();
         trianglePositions.Release();
+    }
+
+    private void ResizeBuffers(int newSize)
+    {
+        if (newSize < boidBuffer.count) throw new Exception("Tried to shrink buffers!");
+        Debug.Log($"Resizing boid buffers to {newSize}");
+        var newBuffer = new ComputeBuffer(newSize, Marshal.SizeOf(typeof(Boid)));
+        var boids = new Boid[numBoids];
+        boidBuffer.GetData(boids, 0, 0, numBoids);
+        newBuffer.SetData(boids);
+        boidBuffer.Release();
+        boidBuffer = newBuffer;
+
+        newBuffer = new ComputeBuffer(newSize, Marshal.SizeOf(typeof(Boid)));
+        boidBufferOut.GetData(boids, 0, 0, numBoids);
+        newBuffer.SetData(boids);
+        boidBufferOut.Release();
+        boidBufferOut = newBuffer;
+
+        newBuffer = new ComputeBuffer(newSize, Marshal.SizeOf(typeof(int)));
+        var players = new int[numBoids];
+        _boidPlayersBuffer.GetData(players, 0, 0, numBoids);
+        newBuffer.SetData(players);
+        _boidPlayersBuffer.Release();
+        _boidPlayersBuffer = newBuffer;
+
+        newBuffer = new ComputeBuffer(newSize, Marshal.SizeOf(typeof(int)));
+        players = new int[numBoids];
+        _boidPlayersBufferOut.GetData(players, 0, 0, numBoids);
+        newBuffer.SetData(players);
+        _boidPlayersBufferOut.Release();
+        _boidPlayersBufferOut = newBuffer;
+
+        // Resize grid buffer
+        var grid = new uint2[numBoids];
+        newBuffer = new ComputeBuffer(newSize, 8);
+        gridBuffer.GetData(grid, 0, 0, numBoids);
+        newBuffer.SetData(grid);
+        gridBuffer.Release();
+        gridBuffer = newBuffer;
+
+        boidShader.SetBuffer(updateBoidsKernel, "boidsIn", boidBufferOut);
+        boidShader.SetBuffer(updateBoidsKernel, "boidsOut", boidBuffer);
+
+        gridShader.SetBuffer(updateGridKernel, "boids", boidBuffer);
+        gridShader.SetBuffer(updateGridKernel, "gridBuffer", gridBuffer);
+
+        gridShader.SetBuffer(rearrangeBoidsKernel, "gridBuffer", gridBuffer);
+        gridShader.SetBuffer(rearrangeBoidsKernel, "boids", boidBuffer);
+        gridShader.SetBuffer(rearrangeBoidsKernel, "boidsOut", boidBufferOut);
+
+        rp.matProps.SetBuffer("boids", boidBuffer);
     }
 
     private Vector2[] getTriangleVerts()
@@ -407,6 +401,8 @@ public class RatBoids : MonoBehaviour
     /// <returns>Bounds encapsulating all rats in the horde</returns>
     public Bounds GetBounds()
     {
+        if (numBoids == 0) return new Bounds();
+
         var offsets = new int[gridDimX * gridDimY];
         gridOffsetBuffer.GetData(offsets, 0, 0, gridDimX * gridDimY);
 
@@ -488,5 +484,37 @@ public class RatBoids : MonoBehaviour
         var size = topRight - bottomLeft;
 
         return new Bounds(center, size);
+    }
+
+    /// <summary>
+    ///     Add new boids to myself (I am a combat boids controller)
+    /// </summary>
+    /// <param name="newBoidsBuffer">The compute buffer containing the boids to add</param>
+    /// <param name="newBoidsCount">How many boids to add from the compute buffer</param>
+    public void AddBoids(ComputeBuffer newBoidsBuffer, int newBoidsCount)
+    {
+        Debug.Log("COMBAT BOIDS: Adding boids");
+
+        // Resize buffers if too small
+        if (numBoids + newBoidsCount < boidBuffer.count) ResizeBuffers((numBoids + newBoidsCount) * 2);
+
+        // Load boids into memory
+        var newBoids = new Boid[newBoidsCount];
+        newBoidsBuffer.GetData(newBoids, 0, 0, newBoidsCount);
+
+        // Send boids to buffer
+        boidBuffer.SetData(newBoids, 0, numBoids, newBoidsCount);
+        numBoids += newBoidsCount;
+    }
+
+    /// <summary>
+    ///     Transfer control of my boids over to some combat boids controller.
+    /// </summary>
+    /// <param name="combatBoids">The combat boid controller</param>
+    public void JoinCombat(RatBoids combatBoids)
+    {
+        Debug.Log("BOIDS: Joining to combat");
+        paused = true;
+        combatBoids.AddBoids(boidBufferOut, numBoids);
     }
 }
