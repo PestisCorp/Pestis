@@ -34,6 +34,7 @@ namespace Horde
         [Capacity(5)]
         public NetworkDictionary<NetworkBehaviourId, float> HordeStartingHealth => default;
 
+
         public CombatParticipant(Player player, HordeController hordeController, bool voluntary)
         {
             Player = player;
@@ -67,6 +68,11 @@ namespace Horde
         ///     Lock that must be acquired to use `Participators` to prevent races
         /// </summary>
         private readonly Mutex _participatorsLock = new();
+
+        /// <summary>
+        ///     Bounds of all *actively* participating hordes i.e. hordes which are dealing damage due to proximity.
+        /// </summary>
+        public Bounds bounds { private set; get; }
 
         [Networked] private Player InitiatingPlayer { get; set; }
 
@@ -122,6 +128,8 @@ POI: {FightingOver}
         public override void FixedUpdateNetwork()
         {
             if (Participators.Count == 0) return;
+
+            bounds = boids.GetBounds();
 
             List<HordeController> hordesToRemove = new();
             List<Player> playersToRemove = new();
@@ -251,8 +259,13 @@ POI: {FightingOver}
 
             _participatorsLock.ReleaseMutex();
 
-            if (!voluntary) horde.EventAttackedRpc(this);
-            horde.AddBoidsToCombatRpc(this);
+            if (!voluntary)
+            {
+                horde.EventAttackedRpc(this);
+                // Immediately transfer defending horde to combat boids sim
+                // Other hordes will then get transferred when they intersect the combat boids
+                horde.AddBoidsToCombatRpc(this);
+            }
         }
 
         public HordeController GetNearestEnemy(HordeController me)

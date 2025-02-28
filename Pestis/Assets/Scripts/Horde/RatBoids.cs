@@ -59,7 +59,7 @@ public class RatBoids : MonoBehaviour
 
     [Header("Performance")] private int numBoids;
 
-    private bool paused;
+    public bool paused;
     private int previousNumBoids;
     private RenderParams rp;
     private GraphicsBuffer trianglePositions;

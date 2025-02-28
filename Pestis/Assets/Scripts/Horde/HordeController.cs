@@ -225,6 +225,7 @@ Count: {AliveRats}
         public override void FixedUpdateNetwork()
         {
             CheckArrivedAtPoi();
+            CheckArrivedAtCombat();
 
             if (InCombat)
             {
@@ -285,6 +286,22 @@ Count: {AliveRats}
             Debug.Log("Arrived at POI, initiating combat!");
             TargetPoi.AttackRpc(this);
             TargetPoi = null;
+        }
+
+        /// <summary>
+        ///     Check if we've arrived at the combat we're in.
+        ///     If we have, transfer control of our boids over to the combat controller.
+        /// </summary>
+        private void CheckArrivedAtCombat()
+        {
+            if (!CurrentCombatController) return;
+
+            if (!HordeBounds.Intersects(CurrentCombatController.bounds)) return;
+
+            // Already arrived at combat
+            if (boids.paused) return;
+
+            boids.JoinCombat(CurrentCombatController.boids);
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
