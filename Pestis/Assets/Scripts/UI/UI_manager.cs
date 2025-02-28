@@ -24,6 +24,7 @@ public class UI_Manager : MonoBehaviour
     public GameObject resourceStats;
     public GameObject splitPanel;
     public GameObject abilityToolbar;
+    public GameObject fearAndMorale;
 
     // References to the resource text fields
     public TextMeshProUGUI cheeseTotalText;
@@ -212,13 +213,13 @@ public class UI_Manager : MonoBehaviour
             }
 
         var toggles = attackPanel.GetComponentsInChildren<Toggle>();
-        var combatOptions = new List<string>();
+        string combatOption = "";
         foreach (var toggle in toggles)
         {
-            if (toggle.isOn) combatOptions.Add(toggle.name);
+            if (toggle.isOn) combatOption = toggle.GetComponentInChildren<TextMeshProUGUI>().text;
         }
-        fightButton.onClick.AddListener(delegate {friendlyHorde.AttackHorde(enemyHorde);});
-
+        if (combatOption != "") fightButton.onClick.AddListener(delegate {friendlyHorde.AttackHorde(enemyHorde, combatOption);});
+        
     }
 
     public void AttackPanelRefresh()
@@ -506,6 +507,23 @@ public class UI_Manager : MonoBehaviour
         foreach (var button in abilityToolbar.GetComponentsInChildren<Button>())
         {
             button.enabled = false;
+            button.onClick.RemoveAllListeners();
+            button.GetComponent<Image>().enabled = false;
+            button.GetComponentInChildren<TextMeshProUGUI>().text = ""; 
+
+            
+            var childrenWithTag = GetComponentInChildrenWithTag<Image, Button>(button, "UI_cooldown_bar");
+            foreach (var child in childrenWithTag)
+            {
+                child.GetComponent<Image>().enabled = false; 
+            }
+            
+            var tooltip = button.GetComponent<Tooltip>();
+            if (tooltip != null)
+            {
+                tooltip.tooltipText = "";
+                tooltip.enabled = false;
+            }
         }
         if (abilityToolbar != null) abilityToolbar.SetActive(false);
     }

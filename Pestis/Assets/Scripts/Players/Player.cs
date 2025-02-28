@@ -164,7 +164,7 @@ namespace Players
                     })
                 .GetComponent<HordeController>();
             toSplit.TotalHealth = totalHealth * (1.0f - splitPercentage);
-            newHorde.SetEvolutionaryState(evolutionaryState);
+            newHorde.SetEvolutionaryState(evolutionaryState.DeepCopy());
             newHorde.SetPopulationState(populationState);
             newHorde.SetPopulationInit(toSplit.AliveRats);
             // Move two hordes slightly apart

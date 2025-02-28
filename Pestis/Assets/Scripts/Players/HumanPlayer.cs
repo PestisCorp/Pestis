@@ -37,13 +37,17 @@ namespace Players
 
         public void SelectHorde(HordeController horde)
         {
+            
             if (horde.Player.IsLocal)
             {
+                UI_manager.AbilityToolbarDisable();
                 if (selectedHorde && selectedHorde != horde)
                 {
                     selectedHorde.UnHighlight();
+                    selectedHorde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
+                    
                     UI_manager.ToolbarDisable();
-                    UI_manager.AbilityToolbarDisable();
+                    
                 }
                 if (selectedHorde != horde)
                 {
@@ -55,6 +59,8 @@ namespace Players
                         {
                             UI_manager.RegisterAbility(mut, selectedHorde.GetComponent<AbilityController>());
                         }
+
+                        if (selectedHorde.InCombat) selectedHorde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 1;
                         UI_manager.ToolbarEnable();
                         UI_manager.AbilityToolbarEnable();
                     }
@@ -80,6 +86,7 @@ namespace Players
         {
             selectedHorde?.UnHighlight();
             selectedEnemyHorde?.UnHighlight();
+            if (selectedHorde) selectedHorde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
             selectedHorde = null;
             selectedEnemyHorde = null;
             UI_manager.ToolbarDisable();

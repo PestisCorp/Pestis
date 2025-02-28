@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Fusion;
@@ -8,6 +9,7 @@ using MoreLinq;
 using Players;
 using POI;
 using TMPro;
+using UI;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -34,6 +36,7 @@ namespace Horde
 
         public GameObject ratPrefab;
 
+        public GameObject moraleAndFearInstance;
         // Do not use or edit yourself, used to expose internals to Editor
         [SerializeField] private int devToolsTotalRats;
         [SerializeField] private float devToolsTotalHealth;
@@ -360,16 +363,46 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
                 {
                     // Only leave corpse if in combat
                     if (InCombat)
+                    {
                         sortedByDistanceFromEnemy[sortedByDistanceFromEnemy.Count - 1 + i].Value.Kill();
+                        IncreaseFear();
+                    }
                     else
                         sortedByDistanceFromEnemy[sortedByDistanceFromEnemy.Count - 1 + i].Value.KillInstant();
                     indexesToRemove.Add(sortedByDistanceFromEnemy[sortedByDistanceFromEnemy.Count - 1 + i].Key);
+                    
                 }
 
                 indexesToRemove.Sort();
                 indexesToRemove.Reverse();
                 foreach (var index in indexesToRemove) _spawnedRats.RemoveAt(index);
             }
+        }
+
+        private void IncreaseFear()
+        {
+            CooldownBar[] bars = moraleAndFearInstance.GetComponentsInChildren<CooldownBar>();
+            if (bars[0].name == "FearBar")
+            {
+                if (bars[0].current == 0) return;
+                bars[0].current -= 5;
+                if (bars[0].current != 0) return;
+                StartCoroutine(FearDebuff(bars[0]));
+
+            }
+            else
+            {
+                if (bars[1].current == 0) return;
+                bars[1].current -= 5;
+                if (bars[1].current != 0) return;
+                StartCoroutine(FearDebuff(bars[0]));
+            }
+        }
+
+        IEnumerator FearDebuff(CooldownBar bar)
+        {
+            yield return new WaitForSeconds(20f);
+            bar.current = bar.maximum;
         }
 
         public override void Spawned()
@@ -381,6 +414,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
 
             if (HasStateAuthority) // Ensure only the host assigns colors
             {
+                
                 HordeColorIndex = (int)Object.Id.Raw % predefinedHordeColors.Length;
                 _hordeColor =
                     predefinedHordeColors
@@ -401,7 +435,12 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             var text = _playerText.GetComponentInChildren<TMP_Text>();
             text.text = Player.Username;
             if (Player.IsLocal) text.color = Color.red;
-
+            moraleAndFearInstance = Instantiate(FindFirstObjectByType<UI_Manager>().fearAndMorale);
+            foreach (CooldownBar bar in moraleAndFearInstance.GetComponentsInChildren<CooldownBar>())
+            {
+                bar.current = bar.maximum;
+            }
+            moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
             // Needed to spawn in rats from joined session
             TotalHealthChanged();
         }
@@ -523,7 +562,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             targetLocation.Teleport(poi.transform.position);
         }
 
-        public void AttackHorde(HordeController target)
+        public void AttackHorde(HordeController target, string combatOption)
         {
             // Don't fight if we're below 10 rats
             if (TotalHealth < 10 * _populationController.GetState().HealthPerRat) return;
@@ -553,6 +592,13 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
                 CurrentCombatController!.AddHordeRpc(this, true);
                 CurrentCombatController.AddHordeRpc(target, false);
             }
+
+            switch (combatOption)
+            {
+                case "Frontal Assault":
+                    break;
+            }
+            
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]

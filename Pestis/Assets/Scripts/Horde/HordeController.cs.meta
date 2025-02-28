@@ -3,7 +3,14 @@ guid: 1bdcc73801315cf2e931e86ff59c2ed9
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - Player: {instanceID: 0}
+  - ratPrefab: {instanceID: 0}
+  - moraleAndFearBar: {instanceID: 0}
+  - moraleAndFearInstance: {instanceID: 0}
+  - targetLocation: {instanceID: 0}
+  - _StationedAt: {instanceID: 0}
+  - _TargetPoi: {instanceID: 0}
   executionOrder: 0
   icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   userData: 

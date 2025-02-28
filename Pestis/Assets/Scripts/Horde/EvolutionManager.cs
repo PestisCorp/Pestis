@@ -41,6 +41,9 @@ namespace Horde
         {
             return HashCode.Combine(MutationName, MutationTag, MutationWeight, Effects, IsAbility, Tooltip);
         }
+        
+        
+        
     }
 
     public struct EvolutionaryState : IEquatable<EvolutionaryState>
@@ -67,6 +70,27 @@ namespace Horde
         {
             return HashCode.Combine(PassiveEvolutions, ActiveMutations, AcquiredMutations, AcquiredAbilities, TagCounts);
         }
+        
+        public EvolutionaryState DeepCopy()
+        {
+            EvolutionaryState copy = new EvolutionaryState
+            {
+                PassiveEvolutions = this.PassiveEvolutions.ToDictionary(entry => entry.Key, entry => (double[])entry.Value.Clone()), 
+                ActiveMutations = new WeightedList<ActiveMutation>(), 
+                AcquiredAbilities = new List<(string, string)>(AcquiredAbilities), 
+                AcquiredMutations = new HashSet<ActiveMutation>(AcquiredMutations), 
+                AcquiredEffects = new HashSet<string>(AcquiredEffects), 
+                TagCounts = new Dictionary<string, int>(TagCounts) 
+            };
+            
+            foreach (var mutation in this.ActiveMutations)
+            {
+                copy.ActiveMutations.Add(mutation, mutation.MutationWeight);
+            }
+
+            return copy;
+        }
+        
     }
     
     public class EvolutionManager : NetworkBehaviour

@@ -15,17 +15,17 @@ namespace Horde
     {
         private HordeController _hordeController;
         private PopulationController _populationController;
+        public bool forceCooldownRefresh = false;
         
         public void UsePestis(Button calledBy)
         {
             Collider2D[] hitColliders = Physics2D.OverlapCircleAll(_hordeController.GetBounds().center, 20f);
             HashSet<PopulationController> affectedHordes = new HashSet<PopulationController>();
             HashSet<HumanController> affectedHumans = new HashSet<HumanController>();
-            affectedHordes.Add(_hordeController.GetComponent<PopulationController>());
             foreach (var col in hitColliders)
             {
                 PopulationController affectedEnemy = col.GetComponentInParent<PopulationController>();
-                if (affectedEnemy && affectedHordes.Add(affectedEnemy) )
+                if (affectedEnemy && affectedHordes.Add(affectedEnemy) && !affectedEnemy.GetComponent<HordeController>().Player.IsLocal)
                 {
                     float damageReductionMult = affectedEnemy.GetState().DamageReductionMult * 1.3f;
                     affectedEnemy.SetDamageReductionMult(damageReductionMult);
@@ -35,9 +35,10 @@ namespace Horde
                 if (affectedHuman && affectedHumans.Add(affectedHuman))
                 {
                     affectedHuman.SetRadius(affectedHuman.GetRadius() + 10.0f);
+                    StartCoroutine(RemovePestisAfterDelayHuman(affectedHuman));
                 }
             }
-            if (affectedHordes.Count == 1)
+            if (affectedHordes.Count == 0)
             {
                 FindFirstObjectByType<UI_Manager>().AddNotification("No enemy hordes nearby!", Color.red);
                 return;
