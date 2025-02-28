@@ -66,7 +66,7 @@ jobs:
 
         # Output
         - name: Zip Linux build to hosting folder
-          run: zip -ur /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/linux.zip build/StandaloneLinux64 
+          run: zipD -ur /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/linux.zip build/StandaloneLinux64 
 
         # Build
         - name: Build Windows
@@ -82,18 +82,8 @@ jobs:
             projectPath: Pestis
             runAsHostUser: true
             chownFilesTo: ec2-user
-    
-        - name: Compress Windows Build
-          uses: somaz94/compress-decompress@v1
-          with:
-            command: compress
-            source: build/StandaloneWindows64
-            dest: windows.zip
-            includeRoot: false
-            format: zip
-
-
+			
         # Output
         - name: Zip Windows build to hosting folder
-          run: zip -ur /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/windows.zip build/StandaloneWindows64 
+          run: zip -urD /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/windows.zip build/StandaloneWindows64 
      
