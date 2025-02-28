@@ -1,3 +1,4 @@
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -7,6 +8,7 @@ using Players;
 using POI;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Horde
 {
@@ -59,6 +61,13 @@ namespace Horde
 
     public class CombatController : NetworkBehaviour
     {
+        /// <summary>
+        /// events used to trigger battle vfx
+        /// </summary>
+        public UnityEvent BattleParticipantHordeIncreased;
+        public UnityEvent BattleParticipantHordeDecreased;
+        public UnityEvent BattleParticipantPlayerIncreased;
+        public UnityEvent BattleParticipantPlayerDecreased;
 
         public const int MAX_PARTICIPANTS = 6;
 
@@ -140,12 +149,14 @@ POI: {FightingOver}
                 }
 
                 // If player has no hordes above 20% health participating
-                if (aliveHordes == 0) playersToRemove.Add(kvp.Key);
+                if (aliveHordes == 0) 
+                    playersToRemove.Add(kvp.Key);
             }
 
             foreach (var horde in hordesToRemove)
             {
                 var copy = Participators.Get(horde.Player);
+                BattleParticipantHordeDecreased.Invoke();
                 copy.RemoveHorde(horde);
                 Participators.Set(horde.Player, copy);
             }
@@ -153,6 +164,7 @@ POI: {FightingOver}
             foreach (var player in playersToRemove)
             {
                 Debug.Log($"Removing {player.Object.Id} from participators");
+                BattleParticipantPlayerDecreased.Invoke();
                 Participators.Remove(player);
             }
 
@@ -235,6 +247,8 @@ POI: {FightingOver}
             {
                 Debug.Log("COMBAT: Adding player");
                 Participators.Add(horde.Player, new CombatParticipant(horde.Player, horde, voluntary));
+                BattleParticipantHordeIncreased.Invoke();
+                BattleParticipantPlayerIncreased.Invoke();
             }
             else
             {
@@ -244,6 +258,7 @@ POI: {FightingOver}
                 participant.AddHorde(horde, voluntary);
                 // Update stored copy
                 Participators.Set(horde.Player, participant);
+                BattleParticipantHordeIncreased.Invoke();
             }
 
             _participatorsLock.ReleaseMutex();
@@ -321,9 +336,13 @@ POI: {FightingOver}
             var copy = Participators.Get(horde.Player);
             copy.RemoveHorde(horde);
             Participators.Set(horde.Player, copy);
-
+            BattleParticipantHordeDecreased.Invoke();
             // Remove player from participators if that was the only horde it had in combat
-            if (!copy.Hordes.Any()) Participators.Remove(horde.Player);
+            if (!copy.Hordes.Any())
+            {
+                Participators.Remove(horde.Player);
+                BattleParticipantPlayerDecreased.Invoke();
+            }
             _participatorsLock.ReleaseMutex();
         }
     }

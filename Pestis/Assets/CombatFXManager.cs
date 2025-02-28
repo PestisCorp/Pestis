@@ -24,4 +24,10 @@ public class CombatFXManager : MonoBehaviour
         combatVFX.Stop();
         audioSource.Play();
     }
+
+    private void OnEnable()
+    {
+        combatController.BattleParticipantHordeDecreased.AddListener(combatStartFX);
+        combatController.BattleParticipantHordeIncreased.AddListener(combatEndFX);
+    }
 }
