@@ -82,7 +82,7 @@ jobs:
             projectPath: Pestis
             runAsHostUser: true
             chownFilesTo: ec2-user
-			
+
         # Output
         - name: Zip Windows build to hosting folder
           run: zip -urD /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/windows.zip build/StandaloneWindows64 
