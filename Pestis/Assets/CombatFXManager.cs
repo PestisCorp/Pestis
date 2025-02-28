@@ -9,17 +9,6 @@ public class CombatFXManager : MonoBehaviour
     public Horde.CombatController combatController;
 
 
-    private void OnEnable()
-    {
-        combatController.OnCombatStarted += combatStartFX;
-        combatController.OnCombatEnded += combatEndFX;
-    }
-
-    private void OnDisable()
-    {
-        combatController.OnCombatStarted -= combatStartFX;
-        combatController.OnCombatEnded -= combatEndFX;
-    }
     public void combatStartFX()
     {
         audioSource.Stop();
