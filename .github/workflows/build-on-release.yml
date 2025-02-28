@@ -58,14 +58,9 @@ jobs:
             runAsHostUser: true
             chownFilesTo: ec2-user
 
-        - name: Compress Linux Build
-          uses: somaz94/compress-decompress@v1
-          with:
-            command: compress
-            source: build/StandaloneLinux64
-            dest: /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name }}/linux.zip
-            includeRoot: false
-            format: zip
+        # Output
+        - name: Zip Linux build to hosting folder
+          run: zip -ur /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name }}/linux.zip build/StandaloneLinux64 
 
         # Build
         - name: Build Windows
@@ -82,15 +77,11 @@ jobs:
             runAsHostUser: true
             chownFilesTo: ec2-user
 
-        - name: Compress Windows Build
-          uses: somaz94/compress-decompress@v1
-          with:
-            command: compress
-            source: build/StandaloneWindows64
-            dest: /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name }}/windows.zip
-            includeRoot: false
-            format: zip
-  
+
+        # Output
+        - name: Zip Windows build to hosting folder
+          run: zip -ur /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name  }}/windows.zip build/StandaloneWindows64 
+     
 
         - name: Symlink to latest
           run: ln -sfn /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name }} /home/ec2-user/actions-runner/builds/stable
