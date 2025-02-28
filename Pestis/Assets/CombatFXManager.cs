@@ -11,6 +11,7 @@ public class CombatFXManager : MonoBehaviour
 
     public void combatStartFX()
     {
+        Debug.Log("Combat Start VFX");
         audioSource.Stop();
         audioSource.clip = startCombatSound;
         combatVFX.Play();
@@ -19,6 +20,7 @@ public class CombatFXManager : MonoBehaviour
 
     public void combatEndFX()
     {
+        Debug.Log("Combat End VFX");
         audioSource.Stop();
         audioSource.clip = endCombatSound;
         combatVFX.Stop();
