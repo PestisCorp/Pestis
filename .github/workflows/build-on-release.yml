@@ -57,11 +57,15 @@ jobs:
             projectPath: Pestis
             runAsHostUser: true
             chownFilesTo: ec2-user
-            
 
-        # Output
-        - name: Copy build to hosting folder
-          run: cp -rfT build/StandaloneLinux64/ /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name }}/linux
+        - name: Compress Linux Build
+          uses: somaz94/compress-decompress@v1
+          with:
+            command: compress
+            source: build/StandaloneLinux64
+            dest: /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name }}/linux.zip
+            includeRoot: false
+            format: zip
 
         # Build
         - name: Build Windows
@@ -78,10 +82,15 @@ jobs:
             runAsHostUser: true
             chownFilesTo: ec2-user
 
-
-        # Output
-        - name: Copy build to hosting folder
-          run: cp -rfT build/StandaloneWindows64/ /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name }}/windows
+        - name: Compress Windows Build
+          uses: somaz94/compress-decompress@v1
+          with:
+            command: compress
+            source: build/StandaloneWindows64
+            dest: /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name }}/windows.zip
+            includeRoot: false
+            format: zip
+  
 
         - name: Symlink to latest
           run: ln -sfn /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name }} /home/ec2-user/actions-runner/builds/stable

@@ -64,9 +64,19 @@ jobs:
             runAsHostUser: true
             chownFilesTo: ec2-user
 
+        - name: Compress Linux Build
+          uses: somaz94/compress-decompress@v1
+          with:
+            command: compress
+            source: build/StandaloneLinux64
+            dest: linux.zip
+            includeRoot: false
+            format: zip
+  
+
         # Output
-        - name: Copy build to hosting folder
-          run: cp -rfT build/StandaloneLinux64 /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/linux
+        - name: Copy Linux build to hosting folder
+          run: cp -rfT linux.zip /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/linux.zip
 
         # Build
         - name: Build Windows
@@ -83,7 +93,16 @@ jobs:
             runAsHostUser: true
             chownFilesTo: ec2-user
     
+        - name: Compress Windows Build
+          uses: somaz94/compress-decompress@v1
+          with:
+            command: compress
+            source: build/StandaloneWindows64
+            dest: windows.zip
+            includeRoot: false
+            format: zip
+
         # Output
-        - name: Copy build to hosting folder
-          run: cp -rfT build/StandaloneWindows64/ /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/windows
+        - name: Copy Windows build to hosting folder
+          run: cp -rfT windows.zip /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/windows.zip
      
