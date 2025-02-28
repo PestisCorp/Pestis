@@ -25,9 +25,14 @@ public class CombatFXManager : MonoBehaviour
         audioSource.Play();
     }
 
+
     private void OnEnable()
     {
         combatController.BattleParticipantHordeDecreased.AddListener(combatStartFX);
         combatController.BattleParticipantHordeIncreased.AddListener(combatEndFX);
+        combatController.BattleParticipantHordeDecreased.AddListener(() => Debug.Log("BattleParticipant Horde Decreased!"));
+        combatController.BattleParticipantHordeIncreased.AddListener(() => Debug.Log("BattleParticipant Horde Increased!"));
+        combatController.BattleParticipantPlayerDecreased.AddListener(() => Debug.Log("BattleParticipant Player Decreased!"));
+        combatController.BattleParticipantPlayerIncreased.AddListener(() => Debug.Log("BattleParticipant Player Increased!"));
     }
 }
