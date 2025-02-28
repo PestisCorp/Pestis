@@ -251,7 +251,6 @@ public class RatBoids : MonoBehaviour
         // Compute boid behaviours
         boidShader.Dispatch(updateBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
 
-
         boidShader.SetInt("numBoidsPrevious", numBoids);
         // Grid shader needs to be one iteration behind, for correct rearranging.
         gridShader.SetInt("numBoids", AliveRats);
@@ -497,9 +496,8 @@ public class RatBoids : MonoBehaviour
     public void AddBoids(ComputeBuffer newBoidsBuffer, int newBoidsCount)
     {
         Debug.Log("COMBAT BOIDS: Adding boids");
-
         // Resize buffers if too small
-        if (numBoids + newBoidsCount < boidBuffer.count) ResizeBuffers((numBoids + newBoidsCount) * 2);
+        if (numBoids + newBoidsCount > boidBuffer.count) ResizeBuffers((numBoids + newBoidsCount) * 2);
 
         // Load boids into memory
         var newBoids = new Boid[newBoidsCount];
@@ -507,7 +505,10 @@ public class RatBoids : MonoBehaviour
 
         // Send boids to buffer
         boidBuffer.SetData(newBoids, 0, numBoids, newBoidsCount);
+        boidBufferOut.SetData(newBoids, 0, numBoids, newBoidsCount);
+        AliveRats += newBoidsCount;
         numBoids += newBoidsCount;
+        boidShader.SetInt("numBoidsPrevious", numBoids);
     }
 
     /// <summary>
@@ -519,5 +520,6 @@ public class RatBoids : MonoBehaviour
         Debug.Log("BOIDS: Joining to combat");
         paused = true;
         combatBoids.AddBoids(boidBufferOut, numBoids);
+        combatBoids.TargetPos = TargetPos;
     }
 }
