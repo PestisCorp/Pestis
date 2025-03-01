@@ -5199,6 +5199,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fc0f394f1d4433faea6b58a882e00ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BattleParticipantHordeIncreased:
+    m_PersistentCalls:
+      m_Calls: []
+  BattleParticipantHordeDecreased:
+    m_PersistentCalls:
+      m_Calls: []
+  BattleParticipantPlayerIncreased:
+    m_PersistentCalls:
+      m_Calls: []
+  BattleParticipantPlayerDecreased:
+    m_PersistentCalls:
+      m_Calls: []
   _FightingOver: {fileID: 0}
 --- !u!114 &879091522348112644
 MonoBehaviour:
@@ -5214,7 +5226,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   combatVFX: {fileID: 8804037951415140023}
   audioSource: {fileID: 3199027473998183844}
-  startCombatSound: {fileID: 8300000, guid: 2eb7fb7c8c9f5294fb492350734d5e4f, type: 3}
+  startCombatSound: {fileID: 8300000, guid: 4aba1fb5de6b0fa4dbac198519e3a814, type: 3}
   endCombatSound: {fileID: 8300000, guid: 2eb7fb7c8c9f5294fb492350734d5e4f, type: 3}
   combatController: {fileID: 7949394547622356909}
 --- !u!1 &3577181395217153104
@@ -5415,14 +5427,14 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 2eb7fb7c8c9f5294fb492350734d5e4f, type: 3}
   m_Resource: {fileID: 8300000, guid: 2eb7fb7c8c9f5294fb492350734d5e4f, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.029
   m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 1
+  DopplerLevel: 0.33
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
@@ -5489,7 +5501,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0.664
       inSlope: 0
       outSlope: 0
       tangentMode: 0

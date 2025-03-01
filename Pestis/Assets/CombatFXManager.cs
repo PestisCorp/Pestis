@@ -30,8 +30,8 @@ public class CombatFXManager : MonoBehaviour
 
     private void OnEnable()
     {
-        combatController.BattleParticipantHordeDecreased.AddListener(combatStartFX);
-        combatController.BattleParticipantHordeIncreased.AddListener(combatEndFX);
+        combatController.BattleParticipantHordeDecreased.AddListener(combatEndFX);
+        combatController.BattleParticipantHordeIncreased.AddListener(combatStartFX);
         combatController.BattleParticipantHordeDecreased.AddListener(() => Debug.Log("BattleParticipant Horde Decreased!"));
         combatController.BattleParticipantHordeIncreased.AddListener(() => Debug.Log("BattleParticipant Horde Increased!"));
         combatController.BattleParticipantPlayerDecreased.AddListener(() => Debug.Log("BattleParticipant Player Decreased!"));
