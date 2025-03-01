@@ -495,6 +495,44 @@ public class RatBoids : MonoBehaviour
     }
 
     /// <summary>
+    ///     Called by the horde that wants its boids back from the combat boids.
+    /// </summary>
+    /// <param name="hordeBuffer">Buffer on the normal boids to put the combat boids into</param>
+    /// <param name="hordeBufferOut">BufferOut on the normal boids to put the combat boids into</param>
+    /// <param name="horde">The horde that is wanting its boids back</param>
+    public void RemoveBoids(ComputeBuffer hordeBuffer, ComputeBuffer hordeBufferOut, HordeController horde)
+    {
+        var boids = new Boid[numBoids];
+        var combatBoids = new List<Boid>();
+        var hordeBoids = new List<Boid>();
+
+        var hordeID = unchecked((int)horde.Object.Id.Raw);
+        foreach (var boid in boids)
+            if (boid.horde == hordeID)
+                hordeBoids.Add(boid);
+            else
+                combatBoids.Add(boid);
+
+        var hordeBoidsArr = hordeBoids.ToArray();
+        hordeBuffer.SetData(hordeBoids, 0, 0, hordeBoidsArr.Length);
+        hordeBufferOut.SetData(hordeBoids, 0, 0, hordeBoidsArr.Length);
+        var combatBoidsArr = combatBoids.ToArray();
+        boidBuffer.SetData(combatBoids, 0, 0, combatBoidsArr.Length);
+        boidBufferOut.SetData(combatBoids, 0, 0, combatBoidsArr.Length);
+    }
+
+    /// <summary>
+    ///     Get my boids back from a combat controller.
+    /// </summary>
+    /// <param name="combat">Combat controller that is currently controlling my boids</param>
+    /// <param name="myHorde">The horde that owns me</param>
+    public void GetBoidsBack(CombatController combat, HordeController myHorde)
+    {
+        combat.boids.RemoveBoids(boidBuffer, boidBufferOut, myHorde);
+        paused = false;
+    }
+
+    /// <summary>
     ///     Transfer control of my boids over to some combat boids controller.
     /// </summary>
     /// <param name="combatBoids">The combat boid controller</param>

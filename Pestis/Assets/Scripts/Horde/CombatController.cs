@@ -157,6 +157,7 @@ POI: {FightingOver}
                 var copy = Participators.Get(horde.Player);
                 copy.RemoveHorde(horde);
                 Participators.Set(horde.Player, copy);
+                horde.boids.GetBoidsBack(this, horde);
             }
 
             foreach (var player in playersToRemove)
@@ -189,6 +190,7 @@ POI: {FightingOver}
                 foreach (var hordeID in winnerParticipant.Hordes)
                 {
                     Runner.TryFindBehaviour(hordeID, out HordeController horde);
+                    horde.boids.GetBoidsBack(this, horde);
                     horde.EventWonCombatRpc();
                 }
 
