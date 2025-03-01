@@ -30,6 +30,8 @@ Shader "Unlit/boidShader"
             {
                 float2 pos;
                 float2 vel;
+                int player;
+                int horde;
             };
 
             void rotate2D(inout float2 v, float2 vel)

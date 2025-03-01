@@ -4,12 +4,12 @@ struct Boid
 {
     float2 pos;
     float2 vel;
+    int player;
+    int horde;
 };
 
 StructuredBuffer<Boid> boidsIn;
 RWStructuredBuffer<Boid> boidsOut;
-/// Get boid's player by boid index from boidsIn
-RWStructuredBuffer<int> boidPlayers;
 
 uniform uint numBoids;
 /// Number of boids in the previous frame
@@ -29,6 +29,10 @@ uniform float yBound;
 /// Target position for boids to move towards
 uniform float2 targetPos;
 uniform float targetFactor;
+// Player ID these boids belong to
+uniform int player;
+// Horde ID these boids belong to
+uniform int horde;
 
 /// Cumulative boid count for each grid cell
 /// I.e. count for block N is the sum of counts for blocks 0 to N
@@ -50,7 +54,7 @@ uint getGridID(uint2 pos)
     return (gridDimX * pos.y) + pos.x;
 }
 
-void MergedBehaviours(inout Boid boid, int player)
+void MergedBehaviours(inout Boid boid)
 {
     float2 center = 0;
     float2 close = 0;
@@ -75,7 +79,8 @@ void MergedBehaviours(inout Boid boid, int player)
 
             if (distSq > 0 && distSq < visualRangeSq)
             {
-                if (boidPlayers[i] == player)
+                // If friendly
+                if (other.player == boid.player)
                 {
                     if (distSq < minDistanceSq)
                     {
@@ -85,7 +90,7 @@ void MergedBehaviours(inout Boid boid, int player)
                     avgVel += other.vel;
                     neighbours++;
                 }
-                else
+                else // If enemy
                 {
                     // Aggressively head towards enemy boids
                     center += other.pos * 4.0f;
@@ -141,7 +146,8 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
     // Initialise new boid
     if (id.x >= numBoidsPrevious)
     {
-        boidPlayers[id.x] = -1;
+        boid.player = player;
+        boid.horde = horde;
         if (numBoidsPrevious == 0)
         {
             boid.pos = float2(0, 0);
@@ -154,7 +160,7 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
         }
     }
 
-    MergedBehaviours(boid, boidPlayers[id.x]);
+    MergedBehaviours(boid);
     LimitSpeed(boid);
     KeepInBounds(boid);
 

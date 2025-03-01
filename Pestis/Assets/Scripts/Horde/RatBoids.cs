@@ -11,6 +11,8 @@ internal struct Boid
 {
     public float2 pos;
     public float2 vel;
+    public int player;
+    public int horde;
 }
 
 public class RatBoids : MonoBehaviour
@@ -42,11 +44,7 @@ public class RatBoids : MonoBehaviour
 
     public List<HordeController> containedHordes;
 
-    private ComputeBuffer _boidPlayersBuffer;
-    private ComputeBuffer _boidPlayersBufferOut;
-
     private bool _started;
-    private bool _swapPlayerBuffer;
     private int blocks;
 
     private ComputeBuffer boidBuffer;
@@ -115,8 +113,6 @@ public class RatBoids : MonoBehaviour
         // Setup compute buffer
         boidBuffer = new ComputeBuffer(128, Marshal.SizeOf(typeof(Boid)));
         boidBufferOut = new ComputeBuffer(128, Marshal.SizeOf(typeof(Boid)));
-        _boidPlayersBuffer = new ComputeBuffer(128, Marshal.SizeOf(typeof(int)));
-        _boidPlayersBufferOut = new ComputeBuffer(128, Marshal.SizeOf(typeof(int)));
 
         boidShader.SetBuffer(updateBoidsKernel, "boidsIn", boidBufferOut);
         boidShader.SetBuffer(updateBoidsKernel, "boidsOut", boidBuffer);
@@ -187,6 +183,18 @@ public class RatBoids : MonoBehaviour
         boidShader.SetFloat("gridCellSize", gridCellSize);
         boidShader.SetInt("gridDimY", gridDimY);
         boidShader.SetInt("gridDimX", gridDimX);
+
+        var horde = gameObject.GetComponentInParent<HordeController>();
+        if (horde)
+        {
+            boidShader.SetInt("player", unchecked((int)horde.Player.Id.Object.Raw));
+            boidShader.SetInt("horde", unchecked((int)horde.Id.Object.Raw));
+        }
+        else
+        {
+            boidShader.SetInt("player", -1);
+            boidShader.SetInt("horde", -1);
+        }
     }
 
     // Update is called once per frame
@@ -233,22 +241,6 @@ public class RatBoids : MonoBehaviour
         gridShader.SetBuffer(addSumsKernel, "gridSumsBufferIn", swap ? gridSumsBuffer : gridSumsBuffer2);
         gridShader.Dispatch(addSumsKernel, blocks, 1, 1);
 
-
-        if (_swapPlayerBuffer)
-        {
-            gridShader.SetBuffer(rearrangeBoidsKernel, "boidPlayersIn", _boidPlayersBufferOut);
-            gridShader.SetBuffer(rearrangeBoidsKernel, "boidPlayersOut", _boidPlayersBuffer);
-            boidShader.SetBuffer(updateBoidsKernel, "boidPlayers", _boidPlayersBuffer);
-        }
-        else
-        {
-            gridShader.SetBuffer(rearrangeBoidsKernel, "boidPlayersIn", _boidPlayersBuffer);
-            gridShader.SetBuffer(rearrangeBoidsKernel, "boidPlayersOut", _boidPlayersBufferOut);
-            boidShader.SetBuffer(updateBoidsKernel, "boidPlayers", _boidPlayersBufferOut);
-        }
-
-        _swapPlayerBuffer = !_swapPlayerBuffer;
-
         // Rearrange boids
         gridShader.Dispatch(rearrangeBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
 
@@ -267,8 +259,6 @@ public class RatBoids : MonoBehaviour
     {
         boidBuffer.Release();
         boidBufferOut.Release();
-        _boidPlayersBuffer.Release();
-        _boidPlayersBufferOut.Release();
         gridBuffer.Release();
         gridOffsetBuffer.Release();
         gridOffsetBufferIn.Release();
@@ -293,20 +283,6 @@ public class RatBoids : MonoBehaviour
         newBuffer.SetData(boids);
         boidBufferOut.Release();
         boidBufferOut = newBuffer;
-
-        newBuffer = new ComputeBuffer(newSize, Marshal.SizeOf(typeof(int)));
-        var players = new int[numBoids];
-        _boidPlayersBuffer.GetData(players, 0, 0, numBoids);
-        newBuffer.SetData(players);
-        _boidPlayersBuffer.Release();
-        _boidPlayersBuffer = newBuffer;
-
-        newBuffer = new ComputeBuffer(newSize, Marshal.SizeOf(typeof(int)));
-        players = new int[numBoids];
-        _boidPlayersBufferOut.GetData(players, 0, 0, numBoids);
-        newBuffer.SetData(players);
-        _boidPlayersBufferOut.Release();
-        _boidPlayersBufferOut = newBuffer;
 
         // Resize grid buffer
         var grid = new uint2[numBoids];
@@ -512,6 +488,7 @@ public class RatBoids : MonoBehaviour
         boidBufferOut.SetData(newBoids, 0, numBoids, newBoidsCount);
         AliveRats += newBoidsCount;
         numBoids += newBoidsCount;
+        // So it doesn't override their current positions/other data
         boidShader.SetInt("numBoidsPrevious", numBoids);
 
         containedHordes.Add(boidsHorde);
