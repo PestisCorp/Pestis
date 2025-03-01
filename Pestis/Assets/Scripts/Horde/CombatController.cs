@@ -345,5 +345,10 @@ POI: {FightingOver}
             }
             _participatorsLock.ReleaseMutex();
         }
+
+        public NetworkDictionary<Player, CombatParticipant> GetParticipators()
+        {
+            return Participators;
+        }
     }
 }
