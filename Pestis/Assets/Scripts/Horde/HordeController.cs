@@ -227,28 +227,14 @@ Count: {AliveRats}
             CheckArrivedAtPoi();
             CheckArrivedAtCombat();
 
-            if (InCombat)
+            if (InCombat && CurrentCombatController!.boids.containedHordes.Contains(this))
             {
-                var enemy = CurrentCombatController!.GetNearestEnemy(this);
+                var enemyHordes =
+                    CurrentCombatController!.boids.containedHordes.Where(horde => horde.Player != Player).ToArray();
 
-                if (enemy) // Could be no enemy if we just joined it
-                {
-                    // If we chose to be in combat, move towards enemy
-                    if (CurrentCombatController.HordeIsVoluntary(this))
-                        // Teleports target, not us
-                        targetLocation.Teleport(enemy.GetBounds().center);
-
-                    // If close enough, start dealing damage, and animating rats.
-                    if (enemy.GetBounds().Intersects(HordeBounds))
-                    {
-                        enemy.DealDamageRpc(_populationController.GetState().Damage);
-                        HordeBeingDamaged = enemy;
-                    }
-                    else
-                    {
-                        HordeBeingDamaged = null;
-                    }
-                }
+                foreach (var enemy in enemyHordes)
+                    // Split damage dealt among enemy hordes
+                    enemy.DealDamageRpc(GetPopulationState().Damage / enemyHordes.Length);
             }
         }
 
@@ -301,7 +287,7 @@ Count: {AliveRats}
             // Already arrived at combat
             if (boids.paused) return;
 
-            boids.JoinCombat(CurrentCombatController.boids);
+            boids.JoinCombat(CurrentCombatController.boids, this);
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -519,6 +505,7 @@ Count: {AliveRats}
 
             TargetPoi = null;
 
+            targetLocation.Teleport(target.HordeBounds.center);
             if (target.InCombat) // If the target is already in combat, join it
             {
                 target.CurrentCombatController!.AddHordeRpc(this, true);
@@ -570,7 +557,7 @@ Count: {AliveRats}
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void AddBoidsToCombatRpc(CombatController combat)
         {
-            boids.JoinCombat(combat.boids);
+            boids.JoinCombat(combat.boids, this);
         }
     }
 }

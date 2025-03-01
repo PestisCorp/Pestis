@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Horde;
 using MoreLinq.Extensions;
 using Unity.Mathematics;
 using UnityEngine;
@@ -36,6 +38,10 @@ public class RatBoids : MonoBehaviour
 
     public Vector2 TargetPos;
 
+    public bool paused;
+
+    public List<HordeController> containedHordes;
+
     private ComputeBuffer _boidPlayersBuffer;
     private ComputeBuffer _boidPlayersBufferOut;
 
@@ -58,8 +64,6 @@ public class RatBoids : MonoBehaviour
     private float minSpeed;
 
     [Header("Performance")] private int numBoids;
-
-    public bool paused;
     private int previousNumBoids;
     private RenderParams rp;
     private GraphicsBuffer trianglePositions;
@@ -493,7 +497,7 @@ public class RatBoids : MonoBehaviour
     /// </summary>
     /// <param name="newBoidsBuffer">The compute buffer containing the boids to add</param>
     /// <param name="newBoidsCount">How many boids to add from the compute buffer</param>
-    public void AddBoids(ComputeBuffer newBoidsBuffer, int newBoidsCount)
+    public void AddBoids(ComputeBuffer newBoidsBuffer, int newBoidsCount, HordeController boidsHorde)
     {
         Debug.Log("COMBAT BOIDS: Adding boids");
         // Resize buffers if too small
@@ -509,17 +513,20 @@ public class RatBoids : MonoBehaviour
         AliveRats += newBoidsCount;
         numBoids += newBoidsCount;
         boidShader.SetInt("numBoidsPrevious", numBoids);
+
+        containedHordes.Add(boidsHorde);
     }
 
     /// <summary>
     ///     Transfer control of my boids over to some combat boids controller.
     /// </summary>
     /// <param name="combatBoids">The combat boid controller</param>
-    public void JoinCombat(RatBoids combatBoids)
+    /// <param name="myHorde">The horde which owns me</param>
+    public void JoinCombat(RatBoids combatBoids, HordeController myHorde)
     {
         Debug.Log("BOIDS: Joining to combat");
         paused = true;
-        combatBoids.AddBoids(boidBufferOut, numBoids);
+        combatBoids.AddBoids(boidBufferOut, numBoids, myHorde);
         combatBoids.TargetPos = TargetPos;
     }
 }
