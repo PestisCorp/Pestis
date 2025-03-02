@@ -12,7 +12,11 @@ internal struct Boid
     public float2 pos;
     public float2 vel;
     public int player;
+
     public int horde;
+
+    // 0 for dead, 1 for alive
+    public byte dead;
 }
 
 public class RatBoids : MonoBehaviour
@@ -32,6 +36,8 @@ public class RatBoids : MonoBehaviour
     [SerializeField] private ComputeShader boidShader;
     [SerializeField] private ComputeShader gridShader;
     [SerializeField] private Material boidMat;
+    [SerializeField] private Material deadBoidMat;
+
 
     /// <summary>
     ///     Set by HordeController, pulled from when sim updates. Inside this script you should only read from `numBoids`
@@ -49,6 +55,8 @@ public class RatBoids : MonoBehaviour
 
     private ComputeBuffer boidBuffer;
     private ComputeBuffer boidBufferOut;
+    private ComputeBuffer deadBoids;
+    private int deadBoidsCount;
 
     // Index is boid ID, x value is position flattened to 1D array, y value is grid cell offset
     private ComputeBuffer gridBuffer;
@@ -64,6 +72,7 @@ public class RatBoids : MonoBehaviour
     [Header("Performance")] private int numBoids;
     private int previousNumBoids;
     private RenderParams rp;
+    private RenderParams rpDead;
     private GraphicsBuffer trianglePositions;
     private Vector2[] triangleVerts;
     private float turnSpeed;
@@ -113,9 +122,11 @@ public class RatBoids : MonoBehaviour
         // Setup compute buffer
         boidBuffer = new ComputeBuffer(128, Marshal.SizeOf(typeof(Boid)));
         boidBufferOut = new ComputeBuffer(128, Marshal.SizeOf(typeof(Boid)));
+        deadBoids = new ComputeBuffer(128, Marshal.SizeOf(typeof(Boid)), ComputeBufferType.Append);
 
         boidShader.SetBuffer(updateBoidsKernel, "boidsIn", boidBufferOut);
         boidShader.SetBuffer(updateBoidsKernel, "boidsOut", boidBuffer);
+        boidShader.SetBuffer(updateBoidsKernel, "deadBoids", deadBoids);
 
         boidShader.SetInt("numBoids", numBoids);
         boidShader.SetFloat("maxSpeed", maxSpeed);
@@ -140,6 +151,12 @@ public class RatBoids : MonoBehaviour
         trianglePositions.SetData(triangleVerts);
         rp.matProps.SetBuffer("_Positions", trianglePositions);
 
+        rpDead = new RenderParams(new Material(deadBoidMat));
+        rpDead.matProps = new MaterialPropertyBlock();
+        rpDead.matProps.SetBuffer("boids", deadBoids);
+        rpDead.worldBounds = new Bounds(Vector3.zero, Vector3.one * 3000);
+        rpDead.matProps.SetBuffer("_Positions", trianglePositions);
+
         // Spatial grid setup
         gridCellSize = visualRange;
         gridDimX = Mathf.FloorToInt(xBound * 2 / gridCellSize) + 30;
@@ -156,6 +173,7 @@ public class RatBoids : MonoBehaviour
         gridShader.SetInt("numBoids", numBoids);
         gridShader.SetInt("numBoidsPrevious", 0);
         gridShader.SetBuffer(updateGridKernel, "boids", boidBuffer);
+        gridShader.SetBuffer(updateGridKernel, "deadBoids", deadBoids);
         gridShader.SetBuffer(updateGridKernel, "gridBuffer", gridBuffer);
         gridShader.SetBuffer(updateGridKernel, "gridOffsetBuffer", gridOffsetBufferIn);
         gridShader.SetBuffer(updateGridKernel, "gridSumsBuffer", gridSumsBuffer);
@@ -204,6 +222,31 @@ public class RatBoids : MonoBehaviour
 
         previousNumBoids = numBoids;
         var newNumBoids = AliveRats;
+
+        // Some boids have died
+        if (newNumBoids < numBoids)
+        {
+            deadBoidsCount += numBoids - newNumBoids;
+
+            var deadboids = new Boid[deadBoidsCount];
+            deadBoids.GetData(deadboids, 0, 0, deadBoidsCount);
+
+            var boids = new Boid[numBoids + deadBoidsCount];
+            boidBuffer.GetData(boids, 0, 0, numBoids + deadBoidsCount);
+
+            Debug.Log("Got dead boids");
+        }
+        else
+        {
+            var deadboids = new Boid[deadBoidsCount];
+            deadBoids.GetData(deadboids, 0, 0, deadBoidsCount);
+
+            var boids = new Boid[numBoids + deadBoidsCount];
+            boidBuffer.GetData(boids, 0, 0, numBoids + deadBoidsCount);
+
+            Debug.Log("Got dead boids");
+        }
+
         if (boidBuffer.count < newNumBoids) ResizeBuffers(newNumBoids * 2);
 
         // Increase separation force the bigger the horde is.
@@ -213,7 +256,7 @@ public class RatBoids : MonoBehaviour
         boidShader.SetFloats("targetPos", TargetPos.x,
             TargetPos.y);
 
-        boidShader.SetInt("numBoids", AliveRats);
+        boidShader.SetInt("numBoids", newNumBoids);
         numBoids = newNumBoids;
 
         // Clear indices
@@ -247,12 +290,15 @@ public class RatBoids : MonoBehaviour
         // Compute boid behaviours
         boidShader.Dispatch(updateBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
 
-        boidShader.SetInt("numBoidsPrevious", numBoids);
+        boidShader.SetInt("numBoidsPrevious", previousNumBoids);
         // Grid shader needs to be one iteration behind, for correct rearranging.
-        gridShader.SetInt("numBoids", AliveRats);
+        gridShader.SetInt("numBoids", numBoids);
+        gridShader.SetInt("numBoidsPrevious", previousNumBoids);
+
 
         // Actually draw the boids
         Graphics.RenderPrimitives(rp, MeshTopology.Quads, numBoids * 4);
+        Graphics.RenderPrimitives(rpDead, MeshTopology.Quads, deadBoidsCount * 4);
     }
 
     private void OnDestroy()
@@ -283,6 +329,12 @@ public class RatBoids : MonoBehaviour
         newBuffer.SetData(boids);
         boidBufferOut.Release();
         boidBufferOut = newBuffer;
+
+        newBuffer = new ComputeBuffer(newSize, Marshal.SizeOf(typeof(Boid)), ComputeBufferType.Append);
+        deadBoids.GetData(boids, 0, 0, deadBoidsCount);
+        newBuffer.SetData(boids);
+        deadBoids.Release();
+        deadBoids = newBuffer;
 
         // Resize grid buffer
         var grid = new uint2[numBoids];

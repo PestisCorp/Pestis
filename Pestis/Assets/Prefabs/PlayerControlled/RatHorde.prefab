@@ -254,6 +254,7 @@ MonoBehaviour:
   PopulationCooldown: 0
   _StationedAt: {fileID: 0}
   _TargetPoi: {fileID: 0}
+  _CurrentCombatController: {fileID: 0}
 --- !u!114 &4419380376764164480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -890,8 +891,11 @@ MonoBehaviour:
   boidShader: {fileID: 7200000, guid: 9c4516c864c64285a3313ea819bbf605, type: 3}
   gridShader: {fileID: 7200000, guid: 09b3d2d9369c4b7dab8d97a7e83f5eaf, type: 3}
   boidMat: {fileID: 2100000, guid: 14e523a1206d6077695982ee0599c60b, type: 2}
+  deadBoidMat: {fileID: 2100000, guid: 5f6be8f0d010ed2ca8a5dda610fa09ee, type: 2}
   AliveRats: 0
   TargetPos: {x: 0, y: 0}
+  paused: 0
+  containedHordes: []
 --- !u!222 &8096480468413857689
 CanvasRenderer:
   m_ObjectHideFlags: 0

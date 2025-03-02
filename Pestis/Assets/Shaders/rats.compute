@@ -6,6 +6,7 @@ struct Boid
     float2 vel;
     int player;
     int horde;
+    bool dead;
 };
 
 StructuredBuffer<Boid> boidsIn;
@@ -74,6 +75,10 @@ void MergedBehaviours(inout Boid boid)
         for (uint i = start; i < end; i++)
         {
             Boid other = boidsIn[i];
+            if (other.dead) // Don't change behaviour because of corpses
+            {
+                continue;
+            }
             float2 diff = boid.pos - other.pos;
             float distSq = dot(diff, diff);
 
@@ -138,8 +143,22 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
 {
     if (id.x >= numBoids)
     {
+        Boid boid = boidsIn[id.x];
+        boid.horde = numBoids;
+        boid.player = numBoidsPrevious;
+        boidsOut[id.x] = boid;
+        // Freshly died
+        if (id.x < numBoidsPrevious)
+        {
+            Boid boid = boidsIn[id.x];
+            boid.dead = true;
+            boidsOut[id.x] = boid;
+        }
+
+
         return;
     }
+
 
     Boid boid = boidsIn[id.x];
 
@@ -148,6 +167,7 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
     {
         boid.player = player;
         boid.horde = horde;
+        boid.dead = false;
         if (numBoidsPrevious == 0)
         {
             boid.pos = float2(0, 0);

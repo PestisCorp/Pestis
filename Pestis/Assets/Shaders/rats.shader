@@ -32,6 +32,7 @@ Shader "Unlit/boidShader"
                 float2 vel;
                 int player;
                 int horde;
+                bool dead;
             };
 
             void rotate2D(inout float2 v, float2 vel)
@@ -77,7 +78,14 @@ Shader "Unlit/boidShader"
                 o.pos = UnityObjectToClipPos(float4(pos * _Scale + boid.pos.xy, 0, 0));
                 if (vertexID % 4 == 0)
                 {
-                    o.otherData.uv = float2(0, 0);
+                    if (boid.dead)
+                    {
+                        o.otherData.uv = float2(0, 1);
+                    }
+                    else
+                    {
+                        o.otherData.uv = float2(0, 0);
+                    }
                 }
                 else if (vertexID % 4 == 1)
                 {

@@ -129,6 +129,8 @@ POI: {FightingOver}
         {
             if (Participators.Count == 0) return;
 
+            boids.AliveRats = boids.containedHordes.Sum(horde => horde.AliveRats);
+
             bounds = boids.GetBounds();
 
             List<HordeController> hordesToRemove = new();
