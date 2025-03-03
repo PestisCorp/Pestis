@@ -62,6 +62,8 @@ public class RatBoids : MonoBehaviour
     private ComputeBuffer deadBoids;
     private int deadBoidsCount;
 
+    private ComputeBuffer deadBoidsCountBuffer;
+
     // Index is boid ID, x value is position flattened to 1D array, y value is grid cell offset
     private ComputeBuffer gridBuffer;
     private float gridCellSize;
@@ -126,8 +128,13 @@ public class RatBoids : MonoBehaviour
         // Setup compute buffer
         boidBuffer = new ComputeBuffer(128, Marshal.SizeOf(typeof(Boid)));
         boidBufferOut = new ComputeBuffer(128, Marshal.SizeOf(typeof(Boid)));
-        deadBoids = new ComputeBuffer(128, Marshal.SizeOf(typeof(Boid)), ComputeBufferType.Append);
+        deadBoids = new ComputeBuffer(128, Marshal.SizeOf(typeof(Boid)));
 
+        deadBoidsCountBuffer = new ComputeBuffer(1, sizeof(uint));
+        var counter = new uint[1];
+        counter[0] = 0;
+        deadBoidsCountBuffer.SetData(counter, 0, 0, 1);
+        gridShader.SetBuffer(updateGridKernel, "deadBoidsCount", deadBoidsCountBuffer);
 
         boidShader.SetInt("numBoids", numBoids);
         boidShader.SetFloat("maxSpeed", maxSpeed);

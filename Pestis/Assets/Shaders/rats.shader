@@ -23,6 +23,7 @@ Shader "Unlit/boidShader"
         Pass
         {
             CGPROGRAM
+            #include "UnityCG.cginc"
             #pragma vertex vert
             #pragma fragment frag
 
@@ -32,7 +33,7 @@ Shader "Unlit/boidShader"
                 float2 vel;
                 int player;
                 int horde;
-                bool dead;
+                int dead;
             };
 
             void rotate2D(inout float2 v, float2 vel)
@@ -75,7 +76,7 @@ Shader "Unlit/boidShader"
                 float2 pos = _Positions[vertexID - instanceID * 4];
                 //rotate2D(pos, boid.vel);
                 v2f o;
-                o.pos = UnityObjectToClipPos(float4(pos * _Scale + boid.pos.xy, 0, 0));
+                o.pos = UnityWorldToClipPos(float4(pos + boid.pos, 0, 1));
                 if (vertexID % 4 == 0)
                 {
                     if (boid.dead)

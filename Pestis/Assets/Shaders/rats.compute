@@ -6,7 +6,7 @@ struct Boid
     float2 vel;
     int player;
     int horde;
-    bool dead;
+    int dead;
 };
 
 StructuredBuffer<Boid> boidsIn;
