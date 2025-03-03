@@ -138,7 +138,6 @@ POI: {FightingOver}
                         hordesToRemove.Add(horde);
                 }
                 
-                // If player has no hordes above 20% health participating
                 if (aliveHordes == 0) playersToRemove.Add(kvp.Key);
             }
 
@@ -169,6 +168,12 @@ POI: {FightingOver}
                     {
                         // Tell horde to run away to nearest friendly POI
                         horde.RetreatRpc();
+                    }
+                    else
+                    {
+                        horde.DestroyHordeRpc();
+                    }
+                }
                 return;
             }
 
@@ -233,14 +238,12 @@ POI: {FightingOver}
                 }
                 else
                 {
-                    Destroy(horde.gameObject);
+                    Debug.Log("Killing horde");
+                    horde.DestroyHordeRpc();
                 }
             }
 
             Destroy(gameObject);
-                }
-                Destroy(horde);
-            }
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]

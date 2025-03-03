@@ -354,6 +354,7 @@ Count: {AliveRats}
             _populationController = GetComponent<PopulationController>();
             Player = GetComponentInParent<Player>();
             boids = GetComponentInChildren<RatBoids>();
+            Player.Hordes.Add(this);
 
             if (HasStateAuthority) // Ensure only the host assigns colors
             {
@@ -575,6 +576,16 @@ Count: {AliveRats}
         public void AddBoidsToCombatRpc(CombatController combat)
         {
             boids.JoinCombat(combat.boids);
+        }
+        
+        /// <summary>
+        ///     Despawns the current horde
+        /// </summary>
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void DestroyHordeRpc()
+        {
+            Player.Hordes.Remove(this);
+            Runner.Despawn(Object);
         }
     }
 }
