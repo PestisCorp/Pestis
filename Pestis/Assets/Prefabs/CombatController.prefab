@@ -81,7 +81,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 2
   edgeMargin: 0.5
-  visualRange: 5
+  visualRange: 50
   minDistance: 0.4
   cohesionFactor: 3
   separationFactor: 100

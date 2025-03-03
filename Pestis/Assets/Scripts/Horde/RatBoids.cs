@@ -28,7 +28,7 @@ public class RatBoids : MonoBehaviour
     [Header("Settings")] [SerializeField] private float maxSpeed = 2;
 
     [SerializeField] private float edgeMargin = .5f;
-    [SerializeField] private float visualRange = 5.0f;
+    [SerializeField] private float visualRange = 50.0f;
     [SerializeField] private float minDistance = 0.4f;
     [SerializeField] private float cohesionFactor = 3;
     [SerializeField] private float separationFactor = 100;
@@ -105,8 +105,8 @@ public class RatBoids : MonoBehaviour
     {
         if (_started) return;
         _started = true;
-        xBound = Camera.main.orthographicSize * Camera.main.aspect - edgeMargin;
-        yBound = Camera.main.orthographicSize - edgeMargin;
+        xBound = 256;
+        yBound = 256;
         turnSpeed = 0.04f;
         minSpeed = maxSpeed * 0.75f;
 
@@ -128,9 +128,6 @@ public class RatBoids : MonoBehaviour
         boidBufferOut = new ComputeBuffer(128, Marshal.SizeOf(typeof(Boid)));
         deadBoids = new ComputeBuffer(128, Marshal.SizeOf(typeof(Boid)), ComputeBufferType.Append);
 
-        boidShader.SetBuffer(updateBoidsKernel, "boidsIn", boidBufferOut);
-        boidShader.SetBuffer(updateBoidsKernel, "boidsOut", boidBuffer);
-        boidShader.SetBuffer(updateBoidsKernel, "deadBoids", deadBoids);
 
         boidShader.SetInt("numBoids", numBoids);
         boidShader.SetFloat("maxSpeed", maxSpeed);
@@ -149,17 +146,13 @@ public class RatBoids : MonoBehaviour
         // Set render params
         rp = new RenderParams(new Material(boidMat));
         rp.matProps = new MaterialPropertyBlock();
-        rp.matProps.SetBuffer("boids", boidBuffer);
         rp.worldBounds = new Bounds(Vector3.zero, Vector3.one * 3000);
         trianglePositions = new GraphicsBuffer(GraphicsBuffer.Target.Structured, 4, 8);
         trianglePositions.SetData(triangleVerts);
-        rp.matProps.SetBuffer("_Positions", trianglePositions);
 
         rpDead = new RenderParams(new Material(deadBoidMat));
         rpDead.matProps = new MaterialPropertyBlock();
-        rpDead.matProps.SetBuffer("boids", deadBoids);
         rpDead.worldBounds = new Bounds(Vector3.zero, Vector3.one * 3000);
-        rpDead.matProps.SetBuffer("_Positions", trianglePositions);
 
         // Spatial grid setup
         gridCellSize = visualRange;
@@ -176,24 +169,7 @@ public class RatBoids : MonoBehaviour
         gridSumsBuffer2 = new ComputeBuffer(blocks, 4);
         gridShader.SetInt("numBoids", numBoids);
         gridShader.SetInt("numBoidsPrevious", 0);
-        gridShader.SetBuffer(updateGridKernel, "boids", boidBuffer);
-        gridShader.SetBuffer(updateGridKernel, "deadBoids", deadBoids);
-        gridShader.SetBuffer(updateGridKernel, "gridBuffer", gridBuffer);
-        gridShader.SetBuffer(updateGridKernel, "gridOffsetBuffer", gridOffsetBufferIn);
-        gridShader.SetBuffer(updateGridKernel, "gridSumsBuffer", gridSumsBuffer);
 
-        gridShader.SetBuffer(clearGridKernel, "gridOffsetBuffer", gridOffsetBufferIn);
-
-        gridShader.SetBuffer(prefixSumKernel, "gridOffsetBuffer", gridOffsetBuffer);
-        gridShader.SetBuffer(prefixSumKernel, "gridOffsetBufferIn", gridOffsetBufferIn);
-        gridShader.SetBuffer(prefixSumKernel, "gridSumsBuffer", gridSumsBuffer2);
-
-        gridShader.SetBuffer(addSumsKernel, "gridOffsetBuffer", gridOffsetBuffer);
-
-        gridShader.SetBuffer(rearrangeBoidsKernel, "gridBuffer", gridBuffer);
-        gridShader.SetBuffer(rearrangeBoidsKernel, "gridOffsetBuffer", gridOffsetBuffer);
-        gridShader.SetBuffer(rearrangeBoidsKernel, "boids", boidBuffer);
-        gridShader.SetBuffer(rearrangeBoidsKernel, "boidsOut", boidBufferOut);
 
         gridShader.SetFloat("gridCellSize", gridCellSize);
         gridShader.SetInt("gridDimY", gridDimY);
@@ -201,7 +177,6 @@ public class RatBoids : MonoBehaviour
         gridShader.SetInt("gridTotalCells", gridTotalCells);
         gridShader.SetInt("blocks", blocks);
 
-        boidShader.SetBuffer(updateBoidsKernel, "gridOffsetBuffer", gridOffsetBuffer);
         boidShader.SetFloat("gridCellSize", gridCellSize);
         boidShader.SetInt("gridDimY", gridDimY);
         boidShader.SetInt("gridDimX", gridDimX);
@@ -217,6 +192,8 @@ public class RatBoids : MonoBehaviour
             boidShader.SetInt("player", -1);
             boidShader.SetInt("horde", -1);
         }
+
+        AttachBuffers();
     }
 
     // Update is called once per frame
@@ -229,24 +206,8 @@ public class RatBoids : MonoBehaviour
 
         // Some boids have died
         if (newNumBoids < numBoids)
-        {
             // Don't exceed dead boids buffer
             deadBoidsCount = Math.Min(deadBoidsCount + numBoids - newNumBoids, deadBoids.count);
-
-            var deadboids = new Boid[deadBoidsCount];
-            deadBoids.GetData(deadboids, 0, 0, deadBoidsCount);
-
-            var boids = new Boid[numBoids + deadBoidsCount];
-            boidBuffer.GetData(boids, 0, 0, numBoids + deadBoidsCount);
-        }
-        else
-        {
-            var deadboids = new Boid[deadBoidsCount];
-            deadBoids.GetData(deadboids, 0, 0, deadBoidsCount);
-
-            var boids = new Boid[numBoids + deadBoidsCount];
-            boidBuffer.GetData(boids, 0, 0, numBoids + deadBoidsCount);
-        }
 
         if (boidBuffer.count < newNumBoids) ResizeBuffers(newNumBoids * 2);
 
@@ -314,6 +275,36 @@ public class RatBoids : MonoBehaviour
         trianglePositions.Release();
     }
 
+    private void AttachBuffers()
+    {
+        boidShader.SetBuffer(updateBoidsKernel, "boidsIn", boidBufferOut);
+        boidShader.SetBuffer(updateBoidsKernel, "boidsOut", boidBuffer);
+        boidShader.SetBuffer(updateBoidsKernel, "deadBoids", deadBoids);
+        rp.matProps.SetBuffer("boids", boidBuffer);
+        rp.matProps.SetBuffer("_Positions", trianglePositions);
+        rpDead.matProps.SetBuffer("boids", deadBoids);
+        rpDead.matProps.SetBuffer("_Positions", trianglePositions);
+        gridShader.SetBuffer(updateGridKernel, "boids", boidBuffer);
+        gridShader.SetBuffer(updateGridKernel, "deadBoids", deadBoids);
+        gridShader.SetBuffer(updateGridKernel, "gridBuffer", gridBuffer);
+        gridShader.SetBuffer(updateGridKernel, "gridOffsetBuffer", gridOffsetBufferIn);
+        gridShader.SetBuffer(updateGridKernel, "gridSumsBuffer", gridSumsBuffer);
+
+        gridShader.SetBuffer(clearGridKernel, "gridOffsetBuffer", gridOffsetBufferIn);
+
+        gridShader.SetBuffer(prefixSumKernel, "gridOffsetBuffer", gridOffsetBuffer);
+        gridShader.SetBuffer(prefixSumKernel, "gridOffsetBufferIn", gridOffsetBufferIn);
+        gridShader.SetBuffer(prefixSumKernel, "gridSumsBuffer", gridSumsBuffer2);
+
+        gridShader.SetBuffer(addSumsKernel, "gridOffsetBuffer", gridOffsetBuffer);
+
+        gridShader.SetBuffer(rearrangeBoidsKernel, "gridBuffer", gridBuffer);
+        gridShader.SetBuffer(rearrangeBoidsKernel, "gridOffsetBuffer", gridOffsetBuffer);
+        gridShader.SetBuffer(rearrangeBoidsKernel, "boids", boidBuffer);
+        gridShader.SetBuffer(rearrangeBoidsKernel, "boidsOut", boidBufferOut);
+        boidShader.SetBuffer(updateBoidsKernel, "gridOffsetBuffer", gridOffsetBuffer);
+    }
+
     private void ResizeBuffers(int newSize)
     {
         if (newSize < boidBuffer.count) throw new Exception("Tried to shrink buffers!");
@@ -345,17 +336,7 @@ public class RatBoids : MonoBehaviour
         gridBuffer.Release();
         gridBuffer = newBuffer;
 
-        boidShader.SetBuffer(updateBoidsKernel, "boidsIn", boidBufferOut);
-        boidShader.SetBuffer(updateBoidsKernel, "boidsOut", boidBuffer);
-
-        gridShader.SetBuffer(updateGridKernel, "boids", boidBuffer);
-        gridShader.SetBuffer(updateGridKernel, "gridBuffer", gridBuffer);
-
-        gridShader.SetBuffer(rearrangeBoidsKernel, "gridBuffer", gridBuffer);
-        gridShader.SetBuffer(rearrangeBoidsKernel, "boids", boidBuffer);
-        gridShader.SetBuffer(rearrangeBoidsKernel, "boidsOut", boidBufferOut);
-
-        rp.matProps.SetBuffer("boids", boidBuffer);
+        AttachBuffers();
     }
 
     private Vector2[] getTriangleVerts()
@@ -416,14 +397,15 @@ public class RatBoids : MonoBehaviour
         var gridID = getGridID(gridXY);
 
         // Get grid offset of this cell, and next cell
-        var gridOffsets = new int[2];
+        var gridOffsets = new uint[2];
         gridOffsetBuffer.GetData(gridOffsets, 0, gridID - 1, 2);
 
         // If grid offsets are identical then there are no boids in the grid cell where we clicked
         if (gridOffsets[0] == gridOffsets[1]) return false;
 
         boids = new Boid[gridOffsets[1] - gridOffsets[0]];
-        boidBufferOut.GetData(boids, 0, gridOffsets[0], gridOffsets[1] - gridOffsets[0]);
+        boidBufferOut.GetData(boids, 0, Convert.ToInt32(gridOffsets[0]),
+            Convert.ToInt32(gridOffsets[1] - gridOffsets[0]));
 
         return boids.Any(boid => (new Vector2(boid.pos.x, boid.pos.y) - pos).sqrMagnitude < rangeSq);
     }
@@ -438,7 +420,7 @@ public class RatBoids : MonoBehaviour
     {
         if (numBoids == 0) return new Bounds();
 
-        var offsets = new int[gridDimX * gridDimY];
+        var offsets = new uint[gridDimX * gridDimY];
         gridOffsetBuffer.GetData(offsets, 0, 0, gridDimX * gridDimY);
 
         var bottomLeft = Vector2.positiveInfinity;
@@ -450,7 +432,7 @@ public class RatBoids : MonoBehaviour
             if (rowBoids == 0) continue;
 
             var boids = new Boid[rowBoids];
-            boidBufferOut.GetData(boids, 0, offsets[y * gridDimX], rowBoids);
+            boidBufferOut.GetData(boids, 0, Convert.ToInt32(offsets[y * gridDimX]), Convert.ToInt32(rowBoids));
 
             bottomLeft.y = boids.Minima(boid => boid.pos.y).First().pos.y;
             break;
@@ -469,7 +451,8 @@ public class RatBoids : MonoBehaviour
                 empty = false;
 
                 var boids = new Boid[cellBoids];
-                boidBufferOut.GetData(boids, 0, y == 0 ? 0 : offsets[y * gridDimX + x - 1], cellBoids);
+                boidBufferOut.GetData(boids, 0, Convert.ToInt32(y == 0 ? 0 : offsets[y * gridDimX + x - 1]),
+                    Convert.ToInt32(cellBoids));
 
                 bottomLeft.x = Mathf.Min(bottomLeft.x, boids.Minima(boid => boid.pos.x).First().pos.x);
             }
@@ -487,7 +470,7 @@ public class RatBoids : MonoBehaviour
             if (rowBoids == 0) continue;
 
             var boids = new Boid[rowBoids];
-            boidBufferOut.GetData(boids, 0, offsets[y * gridDimX], rowBoids);
+            boidBufferOut.GetData(boids, 0, Convert.ToInt32(offsets[y * gridDimX]), Convert.ToInt32(rowBoids));
 
             topRight.y = boids.Maxima(boid => boid.pos.y).First().pos.y;
             break;
@@ -506,7 +489,8 @@ public class RatBoids : MonoBehaviour
                 empty = false;
 
                 var boids = new Boid[cellBoids];
-                boidBufferOut.GetData(boids, 0, y == 0 ? 0 : offsets[y * gridDimX + x - 1], cellBoids);
+                boidBufferOut.GetData(boids, 0, Convert.ToInt32(y == 0 ? 0 : offsets[y * gridDimX + x - 1]),
+                    Convert.ToInt32(cellBoids));
 
                 topRight.x = Mathf.Max(topRight.x, boids.Maxima(boid => boid.pos.x).First().pos.x);
             }
