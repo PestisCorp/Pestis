@@ -456,16 +456,23 @@ Count: {AliveRats}
         {
             Debug.Log("Retreating!");
             Vector3 baseCamp = transform.parent.position;
-            POIController closestPOI = Player.ControlledPOIs.Aggregate((closest, poi) =>
-                Vector3.Distance(HordeBounds.center, poi.transform.position) <
-                Vector3.Distance(HordeBounds.center, closest.transform.position)
-                    ? poi
-                    : closest);
-
-            if (Vector3.Distance(closestPOI.transform.position, HordeBounds.center) <
-                Vector3.Distance(baseCamp, HordeBounds.center))
+            if (Player.ControlledPOIs.Count > 0)
             {
-                StationAtRpc(closestPOI);
+                POIController closestPOI = Player.ControlledPOIs.Aggregate((closest, poi) =>
+                    Vector3.Distance(HordeBounds.center, poi.transform.position) <
+                    Vector3.Distance(HordeBounds.center, closest.transform.position)
+                        ? poi
+                        : closest);
+                if (Vector3.Distance(closestPOI.transform.position, HordeBounds.center) <
+                    Vector3.Distance(baseCamp, HordeBounds.center))
+                {
+                    StationAtRpc(closestPOI);
+                }
+                else
+                {
+                    targetLocation.Teleport(baseCamp);
+                    StationedAt = null;
+                }
             }
             else
             {
