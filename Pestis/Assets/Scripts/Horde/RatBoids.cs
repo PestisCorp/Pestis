@@ -214,7 +214,7 @@ public class RatBoids : MonoBehaviour
         var newNumBoids = AliveRats;
 
         // Some boids have died
-        if (newNumBoids < numBoids)
+        if (newNumBoids < numBoids && combat)
             // Don't exceed dead boids buffer
             deadBoidsCount = Math.Min(deadBoidsCount + numBoids - newNumBoids, deadBoids.count);
 

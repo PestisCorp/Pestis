@@ -159,7 +159,7 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
     if (id.x >= numBoids)
     {
         // Freshly died
-        if (id.x < numBoidsPrevious)
+        if (id.x < numBoidsPrevious && combatRats)
         {
             Boid boid = boidsIn[id.x];
             boid.dead = true;
