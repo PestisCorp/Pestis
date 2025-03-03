@@ -31,7 +31,7 @@ public class Tundra:BiomeClass
                 List<TileBase> tiles = TilesInArea(randomX, randomY, distanceFromNearestSeed * 2, map);
                 if (!tiles.OfType<BiomeTile>().Any())
                 {
-                    return new BiomeInstance(this, new Vector2Int(randomX, randomY));
+                    return new BiomeInstance(this, new Vector3Int(randomX, randomY, 0));
                 }
             }
         }
