@@ -15,8 +15,10 @@ internal struct Boid
 
     public int horde;
 
-    // 0 for dead, 1 for alive
-    public byte dead;
+    /// <summary>
+    ///     0 for alive, 1 for dead
+    /// </summary>
+    public int dead;
 }
 
 public class RatBoids : MonoBehaviour
@@ -55,6 +57,8 @@ public class RatBoids : MonoBehaviour
 
     private ComputeBuffer boidBuffer;
     private ComputeBuffer boidBufferOut;
+
+    private int corpseKernel;
     private ComputeBuffer deadBoids;
     private int deadBoidsCount;
 
@@ -226,15 +230,14 @@ public class RatBoids : MonoBehaviour
         // Some boids have died
         if (newNumBoids < numBoids)
         {
-            deadBoidsCount += numBoids - newNumBoids;
+            // Don't exceed dead boids buffer
+            deadBoidsCount = Math.Min(deadBoidsCount + numBoids - newNumBoids, deadBoids.count);
 
             var deadboids = new Boid[deadBoidsCount];
             deadBoids.GetData(deadboids, 0, 0, deadBoidsCount);
 
             var boids = new Boid[numBoids + deadBoidsCount];
             boidBuffer.GetData(boids, 0, 0, numBoids + deadBoidsCount);
-
-            Debug.Log("Got dead boids");
         }
         else
         {
@@ -243,8 +246,6 @@ public class RatBoids : MonoBehaviour
 
             var boids = new Boid[numBoids + deadBoidsCount];
             boidBuffer.GetData(boids, 0, 0, numBoids + deadBoidsCount);
-
-            Debug.Log("Got dead boids");
         }
 
         if (boidBuffer.count < newNumBoids) ResizeBuffers(newNumBoids * 2);
@@ -554,7 +555,9 @@ public class RatBoids : MonoBehaviour
     /// <param name="horde">The horde that is wanting its boids back</param>
     public void RemoveBoids(ComputeBuffer hordeBuffer, ComputeBuffer hordeBufferOut, HordeController horde)
     {
+        Debug.Log("COMBAT BOIDS: Removing boids");
         var boids = new Boid[numBoids];
+        boidBuffer.GetData(boids, 0, 0, numBoids);
         var combatBoids = new List<Boid>();
         var hordeBoids = new List<Boid>();
 
@@ -566,11 +569,13 @@ public class RatBoids : MonoBehaviour
                 combatBoids.Add(boid);
 
         var hordeBoidsArr = hordeBoids.ToArray();
-        hordeBuffer.SetData(hordeBoids, 0, 0, hordeBoidsArr.Length);
-        hordeBufferOut.SetData(hordeBoids, 0, 0, hordeBoidsArr.Length);
+        hordeBuffer.SetData(hordeBoidsArr, 0, 0, hordeBoidsArr.Length);
+        hordeBufferOut.SetData(hordeBoidsArr, 0, 0, hordeBoidsArr.Length);
         var combatBoidsArr = combatBoids.ToArray();
-        boidBuffer.SetData(combatBoids, 0, 0, combatBoidsArr.Length);
-        boidBufferOut.SetData(combatBoids, 0, 0, combatBoidsArr.Length);
+        boidBuffer.SetData(combatBoidsArr, 0, 0, combatBoidsArr.Length);
+        boidBufferOut.SetData(combatBoidsArr, 0, 0, combatBoidsArr.Length);
+        numBoids = combatBoidsArr.Length;
+        previousNumBoids = numBoids;
     }
 
     /// <summary>

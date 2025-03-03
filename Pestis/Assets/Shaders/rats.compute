@@ -143,10 +143,6 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
 {
     if (id.x >= numBoids)
     {
-        Boid boid = boidsIn[id.x];
-        boid.horde = numBoids;
-        boid.player = numBoidsPrevious;
-        boidsOut[id.x] = boid;
         // Freshly died
         if (id.x < numBoidsPrevious)
         {
@@ -154,7 +150,6 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
             boid.dead = true;
             boidsOut[id.x] = boid;
         }
-
 
         return;
     }
