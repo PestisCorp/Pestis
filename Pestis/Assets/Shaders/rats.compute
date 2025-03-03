@@ -35,6 +35,8 @@ uniform int player;
 // Horde ID these boids belong to
 uniform int horde;
 
+uniform bool combatRats;
+
 /// Cumulative boid count for each grid cell
 /// I.e. count for block N is the sum of counts for blocks 0 to N
 StructuredBuffer<uint> gridOffsetBuffer;
@@ -58,9 +60,13 @@ uint getGridID(uint2 pos)
 void MergedBehaviours(inout Boid boid)
 {
     float2 center = 0;
+    float2 enemyCenter = 0;
     float2 close = 0;
     float2 avgVel = 0;
     uint neighbours = 0;
+    // Whether the boid sees another enemy boid to attack
+    bool combat = false;
+    uint enemyNeighbours = 0;
 
     uint2 gridXY = getGridLocation(boid);
     uint cell = getGridID(gridXY);
@@ -97,24 +103,33 @@ void MergedBehaviours(inout Boid boid)
                 }
                 else // If enemy
                 {
+                    combat = true;
                     // Aggressively head towards enemy boids
-                    center += other.pos * 4.0f;
-                    neighbours++;
+                    enemyCenter += other.pos;
+                    enemyNeighbours++;
                 }
             }
         }
     }
 
-    if (neighbours > 0)
+    if (neighbours > 0 && !combat)
     {
         center /= neighbours;
         avgVel /= neighbours;
 
         boid.vel += (center - boid.pos) * (cohesionFactor * deltaTime * turnSpeed);
         boid.vel += (avgVel - boid.vel) * (alignmentFactor * deltaTime * turnSpeed);
+
+        boid.vel += close * (separationFactor * deltaTime * turnSpeed);
+    }
+    else if (enemyNeighbours > 0)
+    {
+        enemyCenter /= enemyNeighbours;
+
+        boid.vel += (enemyCenter - boid.pos) * (cohesionFactor * deltaTime * turnSpeed);
     }
 
-    boid.vel += close * (separationFactor * deltaTime * turnSpeed);
+
     boid.vel += normalize(targetPos - boid.pos) * (targetFactor * deltaTime * turnSpeed);
 }
 

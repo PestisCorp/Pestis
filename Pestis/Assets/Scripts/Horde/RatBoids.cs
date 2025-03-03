@@ -40,6 +40,7 @@ public class RatBoids : MonoBehaviour
     [SerializeField] private Material boidMat;
     [SerializeField] private Material deadBoidMat;
 
+    public bool combat;
 
     /// <summary>
     ///     Set by HordeController, pulled from when sim updates. Inside this script you should only read from `numBoids`
@@ -137,6 +138,7 @@ public class RatBoids : MonoBehaviour
         gridShader.SetBuffer(updateGridKernel, "deadBoidsCount", deadBoidsCountBuffer);
 
         boidShader.SetInt("numBoids", numBoids);
+        boidShader.SetBool("combatRats", combat);
         boidShader.SetFloat("maxSpeed", maxSpeed);
         boidShader.SetFloat("minSpeed", minSpeed);
         boidShader.SetFloat("edgeMargin", edgeMargin);
