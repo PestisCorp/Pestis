@@ -12,6 +12,7 @@ TagManager:
   - UI_button_action
   - UI_cooldown_bar
   - fight_button
+  - combat_info
   layers:
   - Default
   - TransparentFX

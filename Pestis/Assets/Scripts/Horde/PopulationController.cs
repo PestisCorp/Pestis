@@ -34,7 +34,7 @@ namespace Horde
         private const int PopMax = 1000;
 
         // The maximum change in a population per network tick
-        private const int MaxPopGrowth = 1;
+        private const int MaxPopGrowth = 3;
 
         private readonly Random _random = new();
         
@@ -52,6 +52,8 @@ namespace Horde
         private HordeController _hordeController;
 
         private int _populationPeak;
+
+        private Timer _populationClock;
 
 
         private List<double[]> _transitionMatrix;
@@ -185,12 +187,15 @@ namespace Horde
             
             _hordeController.TotalHealth = initialPopulation * State.HealthPerRat;
 
+            _populationClock.Start();
+
             _transitionMatrix = GenerateTransitionMatrix();
         }
 
         // Check for birth or death events
         private void PopulationEvent()
         {
+            _populationClock.Restart();
             if (_hordeController.AliveRats > _populationPeak)
             {
                 for (int i = _populationPeak + 1; i <= _hordeController.AliveRats; i++)
@@ -233,7 +238,7 @@ namespace Horde
         public override void FixedUpdateNetwork()
         {
             // Suspend population simulation during combat or retreat to avoid interference
-            if (!_hordeController.InCombat && _hordeController.PopulationCooldown == 0) PopulationEvent();
+            if (!_hordeController.InCombat && _hordeController.PopulationCooldown == 0 && _populationClock.ElapsedInMilliseconds > 500) PopulationEvent();
             _highestHealth = Mathf.Max(_hordeController.TotalHealth, _highestHealth);
         }
 
@@ -260,6 +265,11 @@ namespace Horde
         public void SetBirthRate(double birthRate)
         {
             State.BirthRate = birthRate;
+        }
+
+        public void SetDamageMult(float damageMult)
+        {
+            State.DamageMult = damageMult;
         }
         
         public void SetSepticMult(float damageMult)

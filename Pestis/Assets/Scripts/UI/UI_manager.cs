@@ -216,7 +216,30 @@ public class UI_Manager : MonoBehaviour
         string combatOption = "";
         foreach (var toggle in toggles)
         {
-            if (toggle.isOn) combatOption = toggle.GetComponentInChildren<TextMeshProUGUI>().text;
+            var toggleText = toggle.GetComponentInChildren<TextMeshProUGUI>().text.Trim('\n');
+            var optionInfo = toggle.GetComponent<CombatOptionInfo>();
+            if (toggle.isOn) combatOption = toggleText;
+            switch (toggleText)
+            {
+                case "Frontal Assault":
+                    optionInfo.optionText = "Consistently high damage per second, lower armor.";
+                    break;
+                case "Shock and Awe":
+                    optionInfo.optionText = "Massively buff damage. Large decrease in armor. Return to normal stats after 10 seconds. Lower ability cooldown.";
+                    break;
+                case "Envelopment":
+                    optionInfo.optionText = "Damage linearly scales with horde size.";
+                    break;
+                case "Fortify":
+                    optionInfo.optionText = "Gain large armor bonuses when near POIs you own.";
+                    break;
+                case "Hedgehog":
+                    optionInfo.optionText = "Buff armor, reduce damage. Reflect a small amount of damage received.";
+                    break;
+                case "All Round":
+                    optionInfo.optionText = "Armor scales with number of enemies in combat.";
+                    break;
+            }
         }
         if (combatOption != "") fightButton.onClick.AddListener(delegate {friendlyHorde.AttackHorde(enemyHorde, combatOption);});
         

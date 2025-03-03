@@ -35,7 +35,7 @@ namespace Horde
         public Player Player;
 
         public GameObject ratPrefab;
-
+        public bool isHedgehogged = false;
         public GameObject moraleAndFearInstance;
         // Do not use or edit yourself, used to expose internals to Editor
         [SerializeField] private int devToolsTotalRats;
@@ -267,6 +267,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
                     if (enemy.GetBounds().Intersects(HordeBounds))
                     {
                         enemy.DealDamageRpc(damage * _populationController.GetState().DamageMult * _populationController.GetState().SepticMult);
+                        if (enemy.isHedgehogged) DealDamageRpc(0.001f);
                         HordeBeingDamaged = enemy;
                     }
                     else
@@ -395,14 +396,21 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
                 if (bars[1].current == 0) return;
                 bars[1].current -= 5;
                 if (bars[1].current != 0) return;
-                StartCoroutine(FearDebuff(bars[0]));
+                StartCoroutine(FearDebuff(bars[1]));
             }
         }
 
         IEnumerator FearDebuff(CooldownBar bar)
         {
-            yield return new WaitForSeconds(20f);
-            bar.current = bar.maximum;
+            GetComponent<AbilityController>().feared = true;
+            var elapsedTime = 0.0f;
+            while (elapsedTime < 10f)
+            {
+                elapsedTime += Time.deltaTime;
+                bar.current = 0 + (int)(elapsedTime / 10 * bar.maximum);
+                yield return null;
+            }
+            GetComponent<AbilityController>().feared = false;
         }
 
         public override void Spawned()
@@ -481,6 +489,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             TotalHealth -= damage * _populationController.GetState().DamageReduction 
                                   * _populationController.GetState().DamageReductionMult
                                   * _populationController.GetState().SepticMult;
+            
             
         }
 
@@ -593,12 +602,81 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
                 CurrentCombatController.AddHordeRpc(target, false);
             }
 
-            switch (combatOption)
+            StartCoroutine(ApplyStrategy(combatOption));
+
+        }
+
+        IEnumerator ApplyStrategy(string action)
+        {
+            var oldAlive = AliveRats;
+            var oldEnemyAlive = CurrentCombatController!.GetNearestEnemy(this).AliveRats;
+            int poiCount = 0;
+            float poiMult = 1.0f;
+            switch (action)
             {
                 case "Frontal Assault":
+                    _populationController.SetDamageMult(GetPopulationState().DamageMult * 1.2f);
+                    _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult * 1.2f);
+                    break;
+                case "Shock and Awe":
+                    _populationController.SetDamageMult(GetPopulationState().DamageMult * 1.5f);
+                    _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult * 1.5f);
+                    _populationController.GetComponent<AbilityController>().abilityHaste += 10;
+                    
+                    yield return new WaitForSeconds(10f);
+                    
+                    _populationController.SetDamageMult(GetPopulationState().DamageMult / 1.5f);
+                    _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult / 1.5f);
+                    _populationController.GetComponent<AbilityController>().abilityHaste -= 10;
+                    break;
+                case "Envelopment":
+                    _populationController.SetDamageMult(GetPopulationState().DamageMult * (1 + oldAlive / 1000f));
+                    break;
+                case "Fortify":
+                    Collider2D[] colliders = Physics2D.OverlapCircleAll(GetBounds().center, 20f);
+                    foreach (var col in colliders)
+                    {
+                        POIController poi = col.GetComponentInParent<POIController>();
+                        if (poi) poiCount++;
+                    }
+
+                    poiMult = poiCount == 0 ? 1f : poiCount * 1.3f;
+                    _populationController.SetDamageMult(GetPopulationState().DamageMult * (poiMult));
+                    break;
+                case "Hedgehog":
+                    _populationController.SetDamageMult(GetPopulationState().DamageMult * 0.8f);
+                    _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult * 0.8f);
+                    isHedgehogged = true;
+                    break;
+                case "All Round":
+                    _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult / (1f + 0.2f * Mathf.Log10(1f + oldEnemyAlive)));
                     break;
             }
-            
+            while (InCombat)
+            {
+                yield return null;
+            }
+            switch (action)
+            {
+                case "Frontal Assault":
+                    _populationController.SetDamageMult(GetPopulationState().DamageMult / 1.2f);
+                    _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult / 1.2f);
+                    break;
+                case "Envelopment":
+                    _populationController.SetDamageMult(GetPopulationState().DamageMult / (1 + oldAlive / 1000f));
+                    break;
+                case "Hedgehog":
+                    _populationController.SetDamageMult(GetPopulationState().DamageMult / 0.8f);
+                    _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult / 0.8f);
+                    isHedgehogged = false;
+                    break;
+                case "Fortify":
+                    _populationController.SetDamageMult(GetPopulationState().DamageMult / poiMult);
+                    break;
+                case "All Round":
+                    _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult * (1f + 0.2f * Mathf.Log10(1f + oldEnemyAlive)));
+                    break;
+            }
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]

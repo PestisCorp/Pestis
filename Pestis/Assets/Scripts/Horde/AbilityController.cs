@@ -15,10 +15,17 @@ namespace Horde
     {
         private HordeController _hordeController;
         private PopulationController _populationController;
+        public int abilityHaste = 0;
+        public bool feared = false;
         public bool forceCooldownRefresh = false;
         
         public void UsePestis(Button calledBy)
         {
+            if (feared)
+            {
+                FindFirstObjectByType<UI_Manager>().AddNotification("You are feared and cannot use any abilities!", Color.red);
+                return;
+            }
             Collider2D[] hitColliders = Physics2D.OverlapCircleAll(_hordeController.GetBounds().center, 20f);
             HashSet<PopulationController> affectedHordes = new HashSet<PopulationController>();
             HashSet<HumanController> affectedHumans = new HashSet<HumanController>();
@@ -67,14 +74,19 @@ namespace Horde
             var elapsedTime = 0.0f;
             CooldownBar cooldownBar = calledBy.GetComponentInChildren<CooldownBar>();
             cooldownBar.current = 100;
-            while (elapsedTime < duration)
+            while (elapsedTime < duration - abilityHaste)
             {
                 elapsedTime += Time.deltaTime;
                 cooldownBar.current = 100 - (int)(elapsedTime / duration * 100);
                 yield return null;
             }
             calledBy.onClick.RemoveAllListeners();
-            calledBy.onClick.AddListener(delegate {UsePestis(calledBy);});
+            switch (abilityName)
+            {
+                case "Pestis":
+                    calledBy.onClick.AddListener(delegate {UsePestis(calledBy);});
+                    break;
+            }
         }
         
         public override void Spawned()
