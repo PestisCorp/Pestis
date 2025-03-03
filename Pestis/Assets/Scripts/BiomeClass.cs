@@ -54,36 +54,38 @@ public class BiomeClass : ScriptableObject
 
     public virtual void FeatureGeneration(Tilemap map, BiomeInstance biomeInstance, GameObject parent)
     {
-        // Convert our tile list to a random order.
+        // Convert tile list to a random order.
         System.Random rng = new System.Random();
         List<Vector2Int> shuffledTiles = biomeInstance.tilePositions.OrderBy(t => rng.Next()).ToList();
 
-        // We'll place exactly one city, plus some other POIs in a circle.
+        // We'll place exactly one city, plus circle POIs around it.
         int totalTiles = shuffledTiles.Count;
 
-        // We can also do some random number of circle POIs if you like:
-        int circlePoiCount = 4; // how many POIs in a circle
-        float circleRadius = 10f; // how far around the city
+        // Decide how many circle POIs to place around the city
+        int circlePoiCount = 6; // e.g. 6 other POIs
+        float avgRadius = 10f; // typical distance from the city
+        float radiusVariation = 3f; // how much the radius can vary
+        float minPoiDistance = 2.5f; // distance required between POIs
 
-        // A local list for POIs in this biome
+        // Local list for placed POI positions in this biome
         List<Vector3> placedPoiPositions = new List<Vector3>();
 
-        // STEP 1: Place exactly one city in this biome
+        // Step 1: Place exactly one city in this biome
         if (shuffledTiles.Count > 0)
         {
             Vector3 cityWorldPos = Vector3.zero;
             bool placedCity = false;
-            float minCityDistance = 30.0f; // distance required between new city and all other cities (global check)
+            float minCityDistance = 30.0f; // required distance from any other city (global check)
 
             foreach (var tilePos in shuffledTiles)
             {
                 cityWorldPos = map.CellToWorld((Vector3Int)tilePos);
 
-                // Check distance to all previously placed cities
+                // Check distance to previously placed cities (Generator.cityPositions)
                 bool tooCloseToCity = false;
-                foreach (var cPos in Generator.cityPositions) // e.g., a static list in your MapGenerator
+                foreach (var existingCityPos in Generator.cityPositions)
                 {
-                    if (Vector3.Distance(cityWorldPos, cPos) < minCityDistance)
+                    if (Vector3.Distance(cityWorldPos, existingCityPos) < minCityDistance)
                     {
                         tooCloseToCity = true;
                         break;
@@ -92,61 +94,92 @@ public class BiomeClass : ScriptableObject
 
                 if (!tooCloseToCity)
                 {
-                    // Place city here
+                    // Place the city
                     GameObject cityObj = Instantiate(cityPrefab, cityWorldPos, Quaternion.identity, parent.transform);
-                    Debug.Log($"City placed at {cityWorldPos}");
-
-                    // Add this city position to the global cityPositions so future biomes won't overlap
                     Generator.cityPositions.Add(cityWorldPos);
 
-                    // Also track it locally, so if you do further random POI checks, you skip the city spot
                     placedPoiPositions.Add(cityWorldPos);
+                    Debug.Log($"City placed at {cityWorldPos}");
 
                     placedCity = true;
-                    break; // done placing city
+                    break;
                 }
             }
 
-            // If no tile is found (all too close), skip city in this biome
             if (!placedCity)
             {
                 Debug.LogWarning("Could not place city in this biome due to minCityDistance constraints.");
-                return; // exit early or keep going without city
+                // Optional: return if each biome must have exactly one city
+                return;
             }
 
-            // STEP 2: Place other POIs in a circle around the city
-            PlacePoisInCircle(cityWorldPos, circlePoiCount, circleRadius, FeatureList, parent.transform);
+            // Step 2: Place other POIs in a circle around the city
+            PlacePoisInCircle(cityWorldPos, circlePoiCount, avgRadius, radiusVariation, minPoiDistance, FeatureList,
+                parent.transform);
         }
     }
 
+
+    /// <summary>
+    /// Spawns a number of POIs around a city, with random offsets in angle & radius,
+    /// giving a more natural placement.
+    /// </summary>
     private void PlacePoisInCircle(
         Vector3 cityPos,
         int numberPois,
-        float radius,
+        float averageRadius, // The typical distance from the city
+        float radiusSpread, // How much the radius can vary
+        float minDistance, // Minimum distance between POIs
         GameObject[] poiPrefabs,
-        Transform parent)
+        Transform parent
+    )
     {
-        // Evenly space POIs by angle
-        float angleIncrement = 360f / numberPois;
+        // Keep track of all placed POI positions so they don’t overlap
+        List<Vector3> placedPositions = new List<Vector3>();
+
+        // We'll distribute angles roughly evenly, but allow random offsets
+        float angleStep = 360f / numberPois;
 
         for (int i = 0; i < numberPois; i++)
         {
-            float angle = angleIncrement * i;
-            float radians = angle * Mathf.Deg2Rad;
+            // Try up to 10 times to find a spot that isn't too close
+            for (int attempt = 0; attempt < 10; attempt++)
+            {
+                // Base angle is i * angleStep, but add random offset within ±half step
+                float angle = (angleStep * i) + UnityEngine.Random.Range(-angleStep / 2f, angleStep / 2f);
+                float radians = angle * Mathf.Deg2Rad;
 
-            // Compute offset from cityPos
-            float offsetX = Mathf.Cos(radians) * radius;
-            float offsetY = Mathf.Sin(radians) * radius;
+                // Radius is average ± some random offset
+                float r = averageRadius + UnityEngine.Random.Range(-radiusSpread, radiusSpread);
 
-            Vector3 spawnPos = new Vector3(cityPos.x + offsetX, cityPos.y + offsetY, cityPos.z);
+                // Compute the final spawn position
+                float offsetX = Mathf.Cos(radians) * r;
+                float offsetY = Mathf.Sin(radians) * r;
+                Vector3 spawnPos = cityPos + new Vector3(offsetX, offsetY, 0);
 
-            // Randomly pick a prefab from your "other" POIs
-            GameObject selectedPOI = poiPrefabs[UnityEngine.Random.Range(0, poiPrefabs.Length)];
+                // Check if this spawnPos is too close to any already placed POI
+                bool tooClose = false;
+                foreach (var existingPos in placedPositions)
+                {
+                    if (Vector3.Distance(spawnPos, existingPos) < minDistance)
+                    {
+                        tooClose = true;
+                        break;
+                    }
+                }
 
-            Instantiate(selectedPOI, spawnPos, Quaternion.identity, parent);
-            Debug.Log($"Placed {selectedPOI.name} around city at angle {angle}, radius {radius}");
+                // If not too close, place the POI here
+                if (!tooClose)
+                {
+                    GameObject selectedPOI = poiPrefabs[UnityEngine.Random.Range(0, poiPrefabs.Length)];
+                    Instantiate(selectedPOI, spawnPos, Quaternion.identity, parent);
+                    placedPositions.Add(spawnPos);
+                    break; // success, move on to next i
+                }
+            }
         }
     }
+
 
     public virtual BiomeInstance sowSeed(Tilemap map)
     {
