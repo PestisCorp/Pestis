@@ -132,15 +132,13 @@ POI: {FightingOver}
                 foreach (var hordeID in kvp.Value.Hordes)
                 {
                     Runner.TryFindBehaviour(hordeID, out HordeController horde);
-                    var minimumHealth = kvp.Value.HordeStartingHealth.Get(hordeID) * 0.2f;
-                    
                     if (horde.TotalHealth > 0)
                         aliveHordes++;
                     else
                         hordesToRemove.Add(horde);
                 }
-
                 
+                // If player has no hordes above 20% health participating
                 if (aliveHordes == 0) playersToRemove.Add(kvp.Key);
             }
 
@@ -171,10 +169,6 @@ POI: {FightingOver}
                     {
                         // Tell horde to run away to nearest friendly POI
                         horde.RetreatRpc();
-                    }
-                    Destroy(horde);
-                }
-
                 return;
             }
 
@@ -236,6 +230,12 @@ POI: {FightingOver}
                 {
                     // Tell horde to run away to nearest friendly POI
                     horde.RetreatRpc();
+                }
+                else
+                {
+                    Destroy(horde.gameObject);
+                }
+            }
 
             Destroy(gameObject);
                 }
