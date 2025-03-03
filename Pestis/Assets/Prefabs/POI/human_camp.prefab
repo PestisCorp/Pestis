@@ -96,6 +96,8 @@ GameObject:
   - component: {fileID: 4631436103823232454}
   - component: {fileID: 8837734282123601821}
   - component: {fileID: 6961251568612682153}
+  - component: {fileID: -7888167734247629273}
+  - component: {fileID: 5401282242629592559}
   m_Layer: 6
   m_Name: human_camp
   m_TagString: Untagged
@@ -188,6 +190,40 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: d4051ca829ab49a2394af3a87b5a9015, type: 2}
+--- !u!114 &-7888167734247629273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7727599578141111434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a2b2d45d5384d9db834f00036e8fcf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ControlledBy: {fileID: 0}
+  _StationedHordes: []
+  _Combat: {fileID: 0}
+--- !u!114 &5401282242629592559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7727599578141111434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2951643043
+  ObjectInterest: 1
+  Flags: 1
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: -7888167734247629273}
+  ForceRemoteRenderTimeframe: 0
 --- !u!1001 &2847670266540172840
 PrefabInstance:
   m_ObjectHideFlags: 0

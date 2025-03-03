@@ -75,7 +75,7 @@ public class BiomeClass : ScriptableObject
         {
             Vector3 cityWorldPos = Vector3.zero;
             bool placedCity = false;
-            float minCityDistance = 50.0f; // required distance from any other city (global check)
+            float minCityDistance = 45.0f; // required distance from any other city (global check)
 
             foreach (var tilePos in shuffledTiles)
             {
