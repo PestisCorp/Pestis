@@ -12,7 +12,7 @@ namespace Map
         private FastNoise _noiseGenerator;
         public List<BiomeInstance> BiomeList = new(); //every instance of each biome
         public MapBehaviour Map;
-        public int RandomWalkSteps = 5000000;
+        public int RandomWalkSteps = 300000;
         public int Smoothing = 10;
         public float VoronoiFrequency = 0.025f;
 
