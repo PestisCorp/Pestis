@@ -171,8 +171,7 @@ POI: {FightingOver}
                     }
                     else
                     {
-                        Destroy(horde.gameObject);
-                        Destroy(horde);
+                        horde.DestroyHordeRpc();
                     }
                 }
                 return;
@@ -239,10 +238,8 @@ POI: {FightingOver}
                 }
                 else
                 {
-                    // Kill horde
                     Debug.Log("Killing horde");
-                    Destroy(horde.gameObject);
-                    Destroy(horde);
+                    horde.DestroyHordeRpc();
                 }
             }
 
