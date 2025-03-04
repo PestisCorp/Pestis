@@ -74,14 +74,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8f00068e7a42ceddbcf279ef5ffc107, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DirectionUp: {fileID: -4202000609020082505, guid: 9b13e6f8245479e84b7af05de8ecacab, type: 3}
-  DirectionUpLeft: {fileID: -7443959912818164703, guid: 6ea2893aa13e707e8adc867c503c9843, type: 3}
-  DirectionUpRight: {fileID: -3704545511530068664, guid: 793c7d44a132e5072a814c8da8306943, type: 3}
-  DirectionLeft: {fileID: 662428367056745634, guid: 3d770699a58e0209195682bfa1d11a38, type: 3}
-  DirectionRight: {fileID: -7806081692860196882, guid: 25c35e91c05601e82b998a6303b1a6db, type: 3}
-  DirectionDownLeft: {fileID: -2694355759020723325, guid: d93c7989abb0c5d8eb82f3f79e746a42, type: 3}
-  DirectionDown: {fileID: 2744072961811698543, guid: a4f1b5ab03587f9ac83cf8c82d2345af, type: 3}
-  DirectionDownRight: {fileID: -16738531109823586, guid: bc3eb020be9376f61a09d99e47b121ff, type: 3}
+  DirectionUp: {fileID: 1302826082025925638, guid: 4ba5cb578bf6c48e1aef4f60272dfc58, type: 3}
+  DirectionUpLeft: {fileID: -5037000891884739192, guid: a81384ec15946d63682deab95e6757c5, type: 3}
+  DirectionUpRight: {fileID: 8777677860731594960, guid: 32f50929797bf4c0d91b86e7ca2cdbae, type: 3}
+  DirectionLeft: {fileID: -5502719099052975798, guid: 4bbb650f363854ddb8d0b5df8dff4900, type: 3}
+  DirectionRight: {fileID: 9046549833322429051, guid: b2240f6cfba2d4f5d996b55a6aaabd17, type: 3}
+  DirectionDownLeft: {fileID: 9068040311361841342, guid: 1b750101de5444a2fbb73539b3ec3889, type: 3}
+  DirectionDown: {fileID: -223419772353849087, guid: ec20598e822f74b7e8b4dfdde0e71ee9, type: 3}
+  DirectionDownRight: {fileID: -1742159563612904278, guid: beb5cf4bccbec479781081a9fe0d4d4d, type: 3}
   Corpse: {fileID: -1664028933851132051, guid: 4cc09e621480d91dd84eafedef89df06, type: 3}
   deathCountdown: -1
   targetPoint: {x: 0, y: 0}
@@ -206,7 +206,7 @@ SpriteRenderer:
   m_Size: {x: 0.22, y: 0.27}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
 --- !u!58 &4179620838471125991

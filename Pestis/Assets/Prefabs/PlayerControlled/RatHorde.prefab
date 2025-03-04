@@ -200,7 +200,6 @@ GameObject:
   - component: {fileID: -7073726608519572895}
   - component: {fileID: 8072967729009948161}
   - component: {fileID: 2822140812086679925}
-  - component: {fileID: 7949394547622356909}
   - component: {fileID: 2298762105365068013}
   m_Layer: 0
   m_Name: RatHorde
@@ -243,6 +242,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
   ratPrefab: {fileID: 1194567179159515082, guid: 4091d5ba2e9491ad9a22f76d74336264, type: 3}
+  isHedgehogged: 0
+  moraleAndFearInstance: {fileID: 0}
   devToolsTotalRats: 0
   devToolsTotalHealth: 0
   devToolsTargetLocation: {x: 0, y: 0}
@@ -269,6 +270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21056fc1ac164f62ab126c09e6e0ed46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPopulation: 5
 --- !u!114 &-7073726608519572895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -302,7 +304,6 @@ MonoBehaviour:
   - {fileID: 4419380376764164480}
   - {fileID: -7073726608519572895}
   - {fileID: 2822140812086679925}
-  - {fileID: 7949394547622356909}
   - {fileID: 2298762105365068013}
   - {fileID: 6270358088513742782}
   ForceRemoteRenderTimeframe: 0
@@ -323,19 +324,6 @@ MonoBehaviour:
   SyncParent: 1
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
---- !u!114 &7949394547622356909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2093969167296477126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fc0f394f1d4433faea6b58a882e00ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _FightingOver: {fileID: 0}
 --- !u!114 &2298762105365068013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,6 +336,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e5121fa714640d78cc89c73a8985e8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilityHaste: 0
+  feared: 0
+  forceCooldownRefresh: 0
 --- !u!1 &3577181395217153104
 GameObject:
   m_ObjectHideFlags: 0
@@ -921,6 +912,7 @@ MonoBehaviour:
   gridShader: {fileID: 7200000, guid: 09b3d2d9369c4b7dab8d97a7e83f5eaf, type: 3}
   boidMat: {fileID: 2100000, guid: 14e523a1206d6077695982ee0599c60b, type: 2}
   deadBoidMat: {fileID: 2100000, guid: 5f6be8f0d010ed2ca8a5dda610fa09ee, type: 2}
+  combat: 0
   AliveRats: 0
   TargetPos: {x: 0, y: 0}
   paused: 0

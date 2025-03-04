@@ -63,7 +63,7 @@ public class RatBoids : MonoBehaviour
 
     private int corpseKernel;
     private ComputeBuffer deadBoids;
-    private int deadBoidsCount;
+    public int deadBoidsCount;
 
     private ComputeBuffer deadBoidsCountBuffer;
 

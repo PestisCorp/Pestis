@@ -238,10 +238,25 @@ Count: {AliveRats}
             {
                 var enemyHordes =
                     CurrentCombatController!.boids.containedHordes.Where(horde => horde.Player != Player).ToArray();
-
+                if (_evolutionManager.GetEvolutionaryState().AcquiredEffects.Contains("unlock_septic_bite"))
+                {
+                    var septicMult = _populationController.GetState().SepticMult;
+                    _populationController.SetSepticMult(septicMult * 1.005f);
+                }
                 foreach (var enemy in enemyHordes)
+                {
                     // Split damage dealt among enemy hordes
-                    enemy.DealDamageRpc(AliveRats / 50.0f * (GetPopulationState().Damage / enemyHordes.Length));
+                    float bonusDamage = 0;
+                    if (GetEvolutionState().AcquiredEffects.Contains("unlock_necrosis"))
+                        bonusDamage += boids.deadBoidsCount * 0.1f;
+                     
+                    enemy.DealDamageRpc(AliveRats / 50.0f * ((GetPopulationState().Damage 
+                                                              * GetPopulationState().DamageMult 
+                                                              * GetPopulationState().SepticMult + bonusDamage) 
+                                                             / enemyHordes.Length));
+                    if (enemy.isHedgehogged) DealDamageRpc(0.001f);
+                }
+
             }
         }
 
@@ -469,11 +484,8 @@ Count: {AliveRats}
         public void DealDamageRpc(float damage)
         {
             Debug.Log($"Damage Reduction: {_populationController.GetState().DamageReduction}");
-            TotalHealth -= damage * _populationController.GetState().DamageReduction 
-                                  * _populationController.GetState().DamageReductionMult
-                                  * _populationController.GetState().SepticMult;
-            
-            
+            TotalHealth -= damage * _populationController.GetState().DamageReduction
+                                  * _populationController.GetState().DamageReductionMult;
         }
 
         public Bounds GetBounds()

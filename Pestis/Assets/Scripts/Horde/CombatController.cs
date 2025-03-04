@@ -200,14 +200,12 @@ POI: {FightingOver}
                 foreach (var hordeID in winnerParticipant.Hordes)
                 {
                     Runner.TryFindBehaviour(hordeID, out HordeController horde);
-                    horde.EventWonCombatRpc(AllParticipants.ToArray());
-                    
                     if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredEffects.Contains("unlock_septic_bite"))
                     {
                         horde.GetComponent<PopulationController>().SetSepticMult(1.0f);
                     }
                     horde.boids.GetBoidsBack(this, horde);
-                    horde.EventWonCombatRpc();
+                    horde.EventWonCombatRpc(AllParticipants.ToArray());
                 }
 
                 if (FightingOver)
