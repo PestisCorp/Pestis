@@ -55,15 +55,16 @@ public class BiomeTile : TileBase
     }
     public virtual void automata(Tilemap map, Vector3Int position, List<BiomeInstance> biomeInstances)
     {
-        BiomeInstance centreBiome = GetBiomeInstanceAtPosition(position, biomeInstances);
+    
 
         List < (TileBase tile, Vector3Int position)> SurroundingTiles = TilesInArea(position.x, position.y, 2, map);
         if (SurroundingTiles.All(tile => tile.tile != null && tile.GetType() == this.GetType())){return; }// if surrounded by same tile type, no growth occurs
         TileBase mostCommonTile = GetMostCommonTile(SurroundingTiles);
-        Vector3Int commonPosition = SurroundingTiles.FirstOrDefault(t => t.tile == mostCommonTile).position;
-        BiomeInstance commmonBiome = GetBiomeInstanceAtPosition(commonPosition, biomeInstances);
-        if (mostCommonTile.GetType() != this.GetType())
+        BiomeInstance centreBiome = GetBiomeInstanceAtPosition(position, biomeInstances);
+        if (mostCommonTile.GetType() != this.GetType() && centreBiome.template.CompatableBiomeTiles.Contains(mostCommonTile))
             {
+            Vector3Int commonPosition = SurroundingTiles.FirstOrDefault(t => t.tile == mostCommonTile).position;
+            BiomeInstance commmonBiome = GetBiomeInstanceAtPosition(commonPosition, biomeInstances);
             int commonTileCount =  SurroundingTiles.Count(tile => tile.tile != null && tile.GetType() == mostCommonTile.GetType());
             if (commonTileCount >= 6) { centreBiome.swapTile(map, position, commmonBiome.template.getRandomBiomeTile(), commmonBiome); }
             else if (Random.value < commmonBiome.template.strength) { centreBiome.swapTile(map, position, commmonBiome.template.getRandomBiomeTile(), commmonBiome); }
@@ -72,8 +73,13 @@ public class BiomeTile : TileBase
 
         Vector3Int[] directions = { Vector3Int.up, Vector3Int.down, Vector3Int.left, Vector3Int.right };
         Vector3Int nextPosition = position + directions[Random.Range(0, 4)];
+        
         BiomeTile nextTile = map.GetTile(nextPosition) as BiomeTile;
-        nextTile.automata(map, nextPosition, biomeInstances);
+        if (nextTile != null)
+        {
+            
+            //nextTile.automata(map, nextPosition, biomeInstances);
+        }
 
     }
 

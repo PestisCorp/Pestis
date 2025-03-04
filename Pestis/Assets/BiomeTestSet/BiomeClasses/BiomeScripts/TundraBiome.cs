@@ -3,12 +3,13 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Tundra:BiomeClass 
+
+[CreateAssetMenu(menuName = "Biomes/TundraBiome")]
+public class TundraBiome:BiomeClass 
 {
-    public BiomeInstance sowSeed(Tilemap map)
+    public override BiomeInstance sowSeed(Tilemap map)
     {
         var bounds = map.cellBounds;
-        var success = false;
         while (true)
         {
 

@@ -23,6 +23,25 @@ namespace Map
             GenerateBiomes();
         }
 
+        private void automata()
+        {
+            BoundsInt bounds = Map.tilemap.cellBounds;
+            foreach (Vector3Int pos in bounds.allPositionsWithin)
+            {
+                UnityEngine.Tilemaps.TileBase tile = Map.tilemap.GetTile(pos);
+                if (tile is BiomeTile)
+                {
+                    BiomeTile tile1 = (BiomeTile)tile;
+                    tile1.automata(Map.tilemap, pos, BiomeList);
+                }
+                else
+                {
+                    Debug.Log(pos);
+                    Debug.Log(tile);
+                }
+            }
+        }
+
         private void GenerateBiomes()
         {
             BiomeList = new();
@@ -30,6 +49,11 @@ namespace Map
             foreach (var biome in BiomeList)
             {
                 biome.template.CellGeneration(Map.tilemap, biome);
+            }
+
+            automata(); automata(); automata();
+            foreach (var biome in BiomeList)
+            {
                 biome.template.FeatureGeneration(Map.tilemap, biome, Map.poi);
             }
         }

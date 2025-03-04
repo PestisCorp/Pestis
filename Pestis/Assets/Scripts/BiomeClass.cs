@@ -13,6 +13,7 @@ public class BiomeClass : ScriptableObject
     public GameObject[] FeatureList; //set of features that spawn in this biome
 
     public TileBase[] CompatableTerrainTypes; //can be altered to just be some preexisting tile
+    public BiomeTile[] CompatableBiomeTiles; //can be altered to just be some preexisting tile
     public int distanceFromNearestSeed = 3;
     //generation stuff
     public int seedCount;
@@ -140,7 +141,17 @@ public class BiomeClass : ScriptableObject
     {
         for (var i = 0; i < iteration; i++) drunkyardGrowth(biomeInstance.seedPosition, map, biomeInstance, walkLength);
     }
+
+    public virtual void callAutomata(BiomeInstance biome, Tilemap map, List<BiomeInstance> biomeInstances)
+    {
+        foreach (Vector3Int tilepos in biome.tilePositions)
+        {
+            BiomeTile tile = (BiomeTile)map.GetTile(tilepos);
+            tile.automata(map, tilepos, biomeInstances);
+        }
+    }
 }
+
 
 public class BiomeInstance
 {
@@ -156,7 +167,7 @@ public class BiomeInstance
         tilePositions.Add(position);
     }
 
-    public void swapTile(Tilemap map, Vector3Int position, BiomeTile tile, BiomeInstance newbiome)
+    public void swapTile(Tilemap map, Vector3Int position, BiomeTile tile, BiomeInstance newbiome) //removes tile and gives it to new biome instance
     {
         tilePositions.Remove(position);
         newbiome.setTile(map, position, tile);
