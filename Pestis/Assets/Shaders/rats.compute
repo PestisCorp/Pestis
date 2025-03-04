@@ -60,13 +60,12 @@ uint getGridID(uint2 pos)
 void MergedBehaviours(inout Boid boid)
 {
     float2 center = 0;
-    float2 enemyCenter = 0;
     float2 close = 0;
     float2 avgVel = 0;
     uint neighbours = 0;
-    // Whether the boid sees another enemy boid to attack
-    bool combat = false;
-    uint enemyNeighbours = 0;
+
+    float2 closestEnemy;
+    float closestEnemyDist = 99999999999999.0;
 
     uint2 gridXY = getGridLocation(boid);
     uint cell = getGridID(gridXY);
@@ -90,47 +89,45 @@ void MergedBehaviours(inout Boid boid)
 
             if (distSq > 0 && distSq < visualRangeSq)
             {
+                if (distSq < minDistanceSq)
+                {
+                    close += diff / distSq;
+                }
                 // If friendly
                 if (other.player == boid.player)
                 {
-                    if (distSq < minDistanceSq)
-                    {
-                        close += diff / distSq;
-                    }
                     center += other.pos;
                     avgVel += other.vel;
                     neighbours++;
                 }
                 else // If enemy
                 {
-                    combat = true;
-                    // Aggressively head towards enemy boids
-                    enemyCenter += other.pos;
-                    enemyNeighbours++;
+                    if (distSq < closestEnemyDist)
+                    {
+                        closestEnemy = other.pos;
+                    }
                 }
             }
         }
     }
 
-    if (neighbours > 0 && !combat)
+    if (neighbours > 0 && closestEnemyDist == 99999999999999.0)
     {
         center /= neighbours;
         avgVel /= neighbours;
 
         boid.vel += (center - boid.pos) * (cohesionFactor * deltaTime * turnSpeed);
         boid.vel += (avgVel - boid.vel) * (alignmentFactor * deltaTime * turnSpeed);
-
-        boid.vel += close * (separationFactor * deltaTime * turnSpeed);
     }
-    else if (enemyNeighbours > 0)
-    {
-        enemyCenter /= enemyNeighbours;
 
-        boid.vel += (enemyCenter - boid.pos) * (cohesionFactor * deltaTime * turnSpeed);
+    if (closestEnemyDist != 99999999999999.0)
+    {
+        boid.vel += (closestEnemy - boid.pos) * (cohesionFactor * deltaTime * turnSpeed);
     }
 
 
     boid.vel += normalize(targetPos - boid.pos) * (targetFactor * deltaTime * turnSpeed);
+    boid.vel += close * (separationFactor * deltaTime * turnSpeed);
 }
 
 void LimitSpeed(inout Boid boid)

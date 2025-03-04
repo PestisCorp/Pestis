@@ -208,7 +208,12 @@ public class RatBoids : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (AliveRats == 0 || paused) return;
+        if (AliveRats == 0 || paused)
+        {
+            previousNumBoids = AliveRats;
+            numBoids = AliveRats;
+            return;
+        }
 
         previousNumBoids = numBoids;
         var newNumBoids = AliveRats;
@@ -546,9 +551,11 @@ public class RatBoids : MonoBehaviour
     /// <param name="hordeBuffer">Buffer on the normal boids to put the combat boids into</param>
     /// <param name="hordeBufferOut">BufferOut on the normal boids to put the combat boids into</param>
     /// <param name="horde">The horde that is wanting its boids back</param>
-    public void RemoveBoids(ComputeBuffer hordeBuffer, ComputeBuffer hordeBufferOut, HordeController horde)
+    public void RemoveBoids(ComputeBuffer hordeBuffer, ComputeBuffer hordeBufferOut, ComputeBuffer hordeCorpses,
+        ComputeBuffer hordeCorpseCount, ref int hordeDeadBoidsCount, HordeController horde)
     {
         Debug.Log("COMBAT BOIDS: Removing boids");
+        // Transfer live boids
         var boids = new Boid[numBoids];
         boidBuffer.GetData(boids, 0, 0, numBoids);
         var combatBoids = new List<Boid>();
@@ -569,6 +576,31 @@ public class RatBoids : MonoBehaviour
         boidBufferOut.SetData(combatBoidsArr, 0, 0, combatBoidsArr.Length);
         numBoids = combatBoidsArr.Length;
         previousNumBoids = numBoids;
+
+        // Transfer corpses
+        boids = new Boid[deadBoidsCount];
+        deadBoids.GetData(boids, 0, 0, deadBoidsCount);
+        combatBoids.Clear();
+        hordeBoids.Clear();
+
+        foreach (var boid in boids)
+            if (boid.horde == hordeID)
+                hordeBoids.Add(boid);
+            else
+                combatBoids.Add(boid);
+
+        hordeBoidsArr = hordeBoids.ToArray();
+        combatBoidsArr = combatBoids.ToArray();
+
+        hordeCorpses.SetData(hordeBoidsArr, 0, 0, hordeBoidsArr.Length);
+        deadBoids.SetData(combatBoidsArr, 0, 0, combatBoidsArr.Length);
+
+        uint[] count = { Convert.ToUInt32(hordeBoidsArr.Length) };
+        hordeCorpseCount.SetData(count, 0, 0, 1);
+        hordeDeadBoidsCount = Convert.ToInt32(count[0]);
+        count[0] = Convert.ToUInt32(combatBoidsArr.Length);
+        deadBoidsCountBuffer.SetData(count, 0, 0, 1);
+        deadBoidsCount = combatBoidsArr.Length;
     }
 
     /// <summary>
@@ -578,7 +610,8 @@ public class RatBoids : MonoBehaviour
     /// <param name="myHorde">The horde that owns me</param>
     public void GetBoidsBack(CombatController combat, HordeController myHorde)
     {
-        combat.boids.RemoveBoids(boidBuffer, boidBufferOut, myHorde);
+        combat.boids.RemoveBoids(boidBuffer, boidBufferOut, deadBoids, deadBoidsCountBuffer, ref deadBoidsCount,
+            myHorde);
         paused = false;
     }
 
@@ -591,6 +624,9 @@ public class RatBoids : MonoBehaviour
     {
         Debug.Log("BOIDS: Joining to combat");
         paused = true;
+        // Delete old corpses
+        uint[] count = { 0 };
+        deadBoidsCountBuffer.SetData(count, 0, 0, 1);
         combatBoids.AddBoids(boidBufferOut, numBoids, myHorde);
         combatBoids.TargetPos = TargetPos;
     }
