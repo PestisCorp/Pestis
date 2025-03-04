@@ -234,7 +234,7 @@ Count: {AliveRats}
 
                 foreach (var enemy in enemyHordes)
                     // Split damage dealt among enemy hordes
-                    enemy.DealDamageRpc(AliveRats / 500.0f * (GetPopulationState().Damage / enemyHordes.Length));
+                    enemy.DealDamageRpc(AliveRats / 50.0f * (GetPopulationState().Damage / enemyHordes.Length));
             }
         }
 
@@ -458,8 +458,8 @@ Count: {AliveRats}
         public void RetreatRpc()
         {
             Debug.Log("Retreating!");
-            Vector3 baseCamp = transform.parent.position;
-            POIController closestPOI = Player.ControlledPOIs.Aggregate((closest, poi) =>
+            var baseCamp = transform.parent.position;
+            var closestPOI = Player.ControlledPOIs.Aggregate((closest, poi) =>
                 Vector3.Distance(HordeBounds.center, poi.transform.position) <
                 Vector3.Distance(HordeBounds.center, closest.transform.position)
                     ? poi
@@ -475,6 +475,7 @@ Count: {AliveRats}
                 targetLocation.Teleport(baseCamp);
                 StationedAt = null;
             }
+
             HordeBeingDamaged = null;
             CurrentCombatController = null;
             PopulationCooldown = 15.0f;
