@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 78548756937403997}
   - component: {fileID: 2022219447523529}
   - component: {fileID: 8880487867868318690}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Light 2D (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -198,7 +198,7 @@ GameObject:
   - component: {fileID: 1026039786577518595}
   - component: {fileID: 618062610096932049}
   - component: {fileID: 2569203174483584896}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -301,7 +301,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6808324368619473247}
   - component: {fileID: 3340918176293438740}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: exterminator_camp_8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -388,7 +388,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6714983942184648776}
   - component: {fileID: 4515529734845944236}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: exterminator_camp_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -475,7 +475,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3908676149515904815}
   - component: {fileID: 1984677718775099239}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: exterminator_camp_7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -563,7 +563,7 @@ GameObject:
   - component: {fileID: 3736164885664395960}
   - component: {fileID: 2797160012856067316}
   - component: {fileID: 5593950433212615417}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Light 2D (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -667,7 +667,7 @@ GameObject:
   - component: {fileID: 178331905412369752}
   - component: {fileID: 9192003208174330045}
   - component: {fileID: 2536516226809208546}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Light 2D (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -770,7 +770,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5529443703215605352}
   - component: {fileID: 7724783737703301269}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Layer 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -858,7 +858,9 @@ GameObject:
   - component: {fileID: 4631436103823232454}
   - component: {fileID: 8837734282123601821}
   - component: {fileID: 6961251568612682153}
-  m_Layer: 0
+  - component: {fileID: 4668771228012965489}
+  - component: {fileID: -7118694052808421423}
+  m_Layer: 6
   m_Name: Van
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -957,3 +959,37 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: d4051ca829ab49a2394af3a87b5a9015, type: 2}
+--- !u!114 &4668771228012965489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7727599578141111434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a2b2d45d5384d9db834f00036e8fcf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ControlledBy: {fileID: 0}
+  _StationedHordes: []
+  _Combat: {fileID: 0}
+--- !u!114 &-7118694052808421423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7727599578141111434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3859473980
+  ObjectInterest: 1
+  Flags: 1
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 4668771228012965489}
+  ForceRemoteRenderTimeframe: 0
