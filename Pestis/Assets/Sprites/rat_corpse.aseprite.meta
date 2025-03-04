@@ -125,7 +125,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: rat_corpse
     originalName: 
-    pivot: {x: 0.5586648, y: 0.34668937}
+    pivot: {x: 0.5416667, y: -0.9583334}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -157,8 +157,8 @@ ScriptedImporter:
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 38
-        y: 55
+        x: 6
+        y: 23
         width: 48
         height: 24
       spriteId: 725328f4725d4c3dbb14e42a798edc61
@@ -216,5 +216,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 128, y: 128}
+  canvasSize: {x: 64, y: 64}
   previousTextureSize: {x: 64, y: 32}

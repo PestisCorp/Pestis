@@ -120,14 +120,11 @@ public class InputHandler : MonoBehaviour
     [CanBeNull]
     public HordeController DidWeClickHorde(Vector2 mousePos)
     {
-        var ray = _mainCamera.ScreenPointToRay(mousePos);
-        var layerMask = LayerMask.GetMask("Rat Selection");
-        var hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity, layerMask);
-        if (hit)
-        {
-            var rat = hit.collider.GetComponentInParent<RatController>();
-            if (rat) return rat.GetHordeController();
-        }
+        var worldPoint = _mainCamera.ScreenToWorldPoint(mousePos);
+        foreach (var player in GameManager.Instance.Players)
+        foreach (var horde in player.Hordes)
+            if (horde.boids.PosInHorde(worldPoint, 2.0f))
+                return horde;
 
         return null;
     }

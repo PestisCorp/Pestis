@@ -41,26 +41,47 @@ jobs:
             githubToken: ${{ secrets.GITHUB_TOKEN }}
             projectPath: Pestis
             runAsHostUser: true
-            chownFilesTo: mediaserver
+            chownFilesTo: ec2-user
 
         # Build
-        - name: Build project
+        - name: Build Linux
           uses: game-ci/unity-builder@v4
           env:
             UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
             UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
             UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
           with:
-            targetPlatform: WebGL
+            targetPlatform: StandaloneLinux64
             versioning: Custom
             version: ${{github.event.release.tag_name }}
             projectPath: Pestis
             runAsHostUser: true
-            chownFilesTo: mediaserver
+            chownFilesTo: ec2-user
 
         # Output
-        - name: Copy build to hosting folder
-          run: cp -rfT build/WebGL/WebGL /home/mediaserver/configs/pestis-runner/builds/${{ github.event.release.tag_name }}
+        - name: Zip Linux build to hosting folder
+          run: zip -urD /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name }}/linux.zip build/StandaloneLinux64 
+
+        # Build
+        - name: Build Windows
+          uses: game-ci/unity-builder@v4
+          env:
+            UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+            UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+            UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          with:
+            targetPlatform: StandaloneWindows64
+            versioning: Custom
+            version: ${{github.event.release.tag_name }}
+            projectPath: Pestis
+            runAsHostUser: true
+            chownFilesTo: ec2-user
+
+
+        # Output
+        - name: Zip Windows build to hosting folder
+          run: zip -urD /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name  }}/windows.zip build/StandaloneWindows64 
+     
 
         - name: Symlink to latest
-          run: ln -sfn /home/mediaserver/configs/pestis-runner/builds/${{ github.event.release.tag_name }} /home/mediaserver/configs/pestis-runner/builds/stable
+          run: ln -sfn /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name }} /home/ec2-user/actions-runner/builds/stable

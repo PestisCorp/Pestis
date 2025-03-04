@@ -22,7 +22,7 @@ MonoBehaviour:
   cityPrefab: {fileID: 7727599578141111434, guid: dc9871f9bdee740e8a3fe2c2f8a96f71, type: 3}
   CompatableTerrainTypes:
   - {fileID: 11400000, guid: cab14d9d032db5776949d99fcbafeb09, type: 2}
-  seedCount: 250
-  walkLength: 200
-  iteration: 70
+  seedCount: 5
+  walkLength: 150
+  iteration: 50
   strength: 0

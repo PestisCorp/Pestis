@@ -1,3 +1,5 @@
 **/*.meta linguist-generated
-**/*.prefab
-**/*.asset
+**/*.prefab linguist-generated
+**/*.asset linguist-generated
+**/*.mat linguist-generated
+**/*.unity linguist-generated
