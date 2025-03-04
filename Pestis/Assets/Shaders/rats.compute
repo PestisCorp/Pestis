@@ -177,7 +177,7 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
         boid.dead = false;
         if (numBoidsPrevious == 0)
         {
-            boid.pos = float2(0, 0);
+            boid.pos = targetPos;
             boid.vel = float2(0, 0);
         }
         else
