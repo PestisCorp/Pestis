@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Sand
   m_EditorClassIdentifier: 
   TileList:
-  - {fileID: 11400000, guid: 2d2d89abcc800ea47a1c066123a495a7, type: 2}
+  - {fileID: 11400000, guid: 7d2c60f69ea46564faa2037126335fe7, type: 2}
   FeatureList:
   - {fileID: 7727599578141111434, guid: 27a3f781f19445ce181cdb9b55c37d7c, type: 3}
   CompatableTerrainTypes:

@@ -8,10 +8,11 @@ public class BiomeTile : TileBase
 {
     public int foodLevel, HumanLevel, climate = 0;
     public Sprite tile;
+    public Color tilecolor = Color.white;
     public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
     {
         tileData.sprite = this.tile;
-        tileData.color = Color.white;
+        tileData.color = this.tilecolor;
         tileData.flags = TileFlags.LockTransform;
         tileData.colliderType = Tile.ColliderType.None;
     }

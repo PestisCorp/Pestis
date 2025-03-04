@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: Grass
   m_EditorClassIdentifier: 
   TileList:
-  - {fileID: 11400000, guid: 5a8401a9ac76a3840bbdec3e82be9404, type: 2}
+  - {fileID: 11400000, guid: 8fd9656e3e876a744b2a9332078d94af, type: 2}
   FeatureList:
   - {fileID: 7727599578141111434, guid: 27a3f781f19445ce181cdb9b55c37d7c, type: 3}
   CompatableTerrainTypes:
   - {fileID: 11400000, guid: cab14d9d032db5776949d99fcbafeb09, type: 2}
+  distanceFromNearestSeed: 3
   seedCount: 0
   walkLength: 50
   iteration: 30
