@@ -62,20 +62,20 @@ public class BiomeClass : ScriptableObject
         int totalTiles = shuffledTiles.Count;
 
         // Decide how many circle POIs to place around the city
-        int circlePoiCount = 6; // e.g. 6 other POIs
-        float avgRadius = 10f; // typical distance from the city
-        float radiusVariation = 3f; // how much the radius can vary
-        float minPoiDistance = 2.5f; // distance required between POIs
+        int circlePoiCount = 7; // e.g. 6 other POIs
+        float avgRadius = 18f; // typical distance from the city
+        float radiusVariation = 7f; // how much the radius can vary
+        float minPoiDistance = 3f; // distance required between POIs
 
         // Local list for placed POI positions in this biome
         List<Vector3> placedPoiPositions = new List<Vector3>();
 
-        // Step 1: Place exactly one city in this biome
+        // 1: Place exactly one city in this biome
         if (shuffledTiles.Count > 0)
         {
             Vector3 cityWorldPos = Vector3.zero;
             bool placedCity = false;
-            float minCityDistance = 35.0f; // required distance from any other city (global check)
+            float minCityDistance = 65.0f; // required distance from any other city (global check)
 
             foreach (var tilePos in shuffledTiles)
             {
@@ -109,11 +109,11 @@ public class BiomeClass : ScriptableObject
             if (!placedCity)
             {
                 Debug.LogWarning("Could not place city in this biome due to minCityDistance constraints.");
-                // Optional: return if each biome must have exactly one city
+                //return if each biome must have exactly one city
                 return;
             }
 
-            // Step 2: Place other POIs in a circle around the city
+            //2: Place other POIs in a circle around the city
             PlacePoisInCircle(cityWorldPos, circlePoiCount, avgRadius, radiusVariation, minPoiDistance, FeatureList,
                 parent.transform);
         }
