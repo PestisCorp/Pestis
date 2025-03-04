@@ -52,11 +52,16 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             Debug.Log(
                 $"Changing POI Controller from {(ControlledBy ? ControlledBy.Object.Id : "None")} to {player.Object.Id}");
             if (ControlledBy)
+            {
                 // Remove Cheese benefits from previous controller
                 ControlledBy.DecrementCheeseIncrementRateRpc(_cheesePerTick);
+                // Remove this POI from previous controller
+                ControlledBy.ControlledPOIs.Remove(this);
+            }
 
+            // Give control to new controller
             ControlledBy = player;
-
+            player.ControlledPOIs.Add(this);
             // Add Cheese benefits to new controller
             ControlledBy.IncrementCheeseIncrementRateRpc(_cheesePerTick);
             StationedHordes.Clear();
@@ -77,9 +82,6 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void UnStationHordeRpc(HordeController horde, RpcInfo rpcInfo = default)
         {
-            if (horde.Object.StateAuthority != rpcInfo.Source)
-                throw new Exception("Only the controlling player can unstation a horde!");
-
             StationedHordes.Remove(horde);
         }
 

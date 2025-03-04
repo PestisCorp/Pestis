@@ -15,6 +15,8 @@ namespace Map
         public int RandomWalkSteps = 5000000;
         public int Smoothing = 10;
         public float VoronoiFrequency = 0.025f;
+        public static List<Vector3> cityPositions = new List<Vector3>();
+
 
         public void GenerateMap()
         {
