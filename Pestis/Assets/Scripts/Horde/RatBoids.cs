@@ -59,6 +59,8 @@ public class RatBoids : MonoBehaviour
     private ComputeBuffer boidBuffer;
     private ComputeBuffer boidBufferOut;
 
+    private Bounds bounds;
+
     private int corpseKernel;
     private ComputeBuffer deadBoids;
     private int deadBoidsCount;
@@ -393,19 +395,8 @@ public class RatBoids : MonoBehaviour
     {
         var rangeSq = range * range;
 
-        var boids = new Boid[2];
-
-        // Boids are sorted in position order from bottom left to top right
-        boidBufferOut.GetData(boids, 0, 0, 1);
-        boidBufferOut.GetData(boids, 1, previousNumBoids - 1, 1);
-        Vector2 bottomLeft = boids[0].pos;
-        Vector2 topRight = boids[1].pos;
-
-        // Early return if pos outside bounding box
-        if (pos.x < bottomLeft.x - range) return false;
-        if (pos.x > topRight.x + range) return false;
-        if (pos.y < bottomLeft.y - range) return false;
-        if (pos.y > topRight.y + range) return false;
+        // Early return if outside bounds
+        if (!bounds.Contains(pos)) return false;
 
         var gridXY = getGridLocation(pos);
         var gridID = getGridID(gridXY);
@@ -417,7 +408,7 @@ public class RatBoids : MonoBehaviour
         // If grid offsets are identical then there are no boids in the grid cell where we clicked
         if (gridOffsets[0] == gridOffsets[1]) return false;
 
-        boids = new Boid[gridOffsets[1] - gridOffsets[0]];
+        var boids = new Boid[gridOffsets[1] - gridOffsets[0]];
         boidBufferOut.GetData(boids, 0, Convert.ToInt32(gridOffsets[0]),
             Convert.ToInt32(gridOffsets[1] - gridOffsets[0]));
 
@@ -516,7 +507,8 @@ public class RatBoids : MonoBehaviour
         var center = bottomLeft + (topRight - bottomLeft) / 2.0f;
         var size = topRight - bottomLeft;
 
-        return new Bounds(center, size);
+        bounds = new Bounds(center, size);
+        return bounds;
     }
 
     /// <summary>

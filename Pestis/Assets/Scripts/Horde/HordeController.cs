@@ -234,7 +234,7 @@ Count: {AliveRats}
 
                 foreach (var enemy in enemyHordes)
                     // Split damage dealt among enemy hordes
-                    enemy.DealDamageRpc(GetPopulationState().Damage / enemyHordes.Length);
+                    enemy.DealDamageRpc(AliveRats / 500.0f * (GetPopulationState().Damage / enemyHordes.Length));
             }
         }
 
