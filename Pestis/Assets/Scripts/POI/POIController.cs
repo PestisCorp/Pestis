@@ -18,6 +18,7 @@ namespace POI
         
         private Sprite captureFlag;
         private GameObject flagObject;
+        private Camera camera;
 
         public Collider2D Collider { get; private set; }
 
@@ -104,20 +105,41 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             StationedHordes.Remove(horde);
         }
 
+        
+        public void Awake()
+        {
+            // Create a new GameObject for the icon
+            if (!flagObject)
+            {
+                // create canvas to display icon
+                GameObject canvasGO = new GameObject("Canvas");
+                canvasGO.transform.SetParent(transform);
+                canvasGO.transform.localPosition = new Vector3(0, 2f, 0);
+                
+                Canvas canvas = canvasGO.AddComponent<Canvas>();
+                canvas.renderMode = RenderMode.WorldSpace;
+                canvas.sortingLayerName = "UI&Icons";
+                
+                CanvasScaler canvasScaler = canvasGO.AddComponent<CanvasScaler>();
+                
+                flagObject = new GameObject("CaptureFlagIcon");
+                flagObject.transform.SetParent(canvasGO.transform); // Attach to canvas
+                
+                RectTransform rectTransform = flagObject.AddComponent<RectTransform>();
+                rectTransform.localPosition = Vector3.zero;
+                rectTransform.sizeDelta = new Vector2(2, 2);
+
+                // Find the uncaptured flag resource and display it
+                Image flag = flagObject.AddComponent<Image>();
+                captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_uncaptured");
+                flag.sprite = captureFlag;
+                
+            }
+        }
+
         public override void Spawned()
         {
             Collider = GetComponent<Collider2D>();
-            
-            // Create a new GameObject for the icon
-            flagObject = new GameObject("CaptureFlagIcon");
-            flagObject.transform.SetParent(transform); // Attach to prefab
-            flagObject.transform.localPosition = new Vector3(0, 2f, 0); // Adjust height
-
-            // Find the uncaptured flag resource and display it
-            Image flag = flagObject.AddComponent<Image>();
-            captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_uncaptured");
-            flag.sprite = captureFlag;
-
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]

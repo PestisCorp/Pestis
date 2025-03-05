@@ -54,5 +54,8 @@ TagManager:
   - name: POIs
     uniqueID: 2550426249
     locked: 0
+  - name: UI&Icons
+    uniqueID: 2982603979
+    locked: 0
   m_RenderingLayers:
   - Default
