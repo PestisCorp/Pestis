@@ -250,8 +250,7 @@ Count: {AliveRats}
                     // Split damage dealt among enemy hordes
                     float bonusDamage = 0;
                     if (GetEvolutionState().AcquiredEffects.Contains("unlock_necrosis"))
-                        bonusDamage += boids.deadBoidsCount * 0.1f;
-                     
+                        bonusDamage += CurrentCombatController.boids.totalDeathsPerHorde[this] * 0.1f;
                     enemy.DealDamageRpc(AliveRats / 50.0f * ((GetPopulationState().Damage 
                                                               * GetPopulationState().DamageMult 
                                                               * GetPopulationState().SepticMult + bonusDamage) 
