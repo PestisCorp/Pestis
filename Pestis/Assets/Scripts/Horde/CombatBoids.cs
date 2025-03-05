@@ -64,6 +64,7 @@ public class CombatBoids : MonoBehaviour
     private Dictionary<HordeController, int> numBoids = new();
     private RenderParams rp;
     private RenderParams rpDead;
+    public Dictionary<HordeController, int> totalDeathsPerHorde = new();
     private GraphicsBuffer trianglePositions;
     private Vector2[] triangleVerts;
     private float turnSpeed;
@@ -245,6 +246,12 @@ public class CombatBoids : MonoBehaviour
 
         var boidsToKillData = containedHordes.Select(horde => Math.Max(_previousNumBoids[horde] - numBoids[horde], 0))
             .ToArray();
+
+        foreach (var horde in containedHordes)
+            if (totalDeathsPerHorde.Keys.Contains(horde))
+                totalDeathsPerHorde[horde] += Math.Max(_previousNumBoids[horde] - numBoids[horde], 0);
+            else
+                totalDeathsPerHorde[horde] = Math.Max(_previousNumBoids[horde] - numBoids[horde], 0);
 
         boidsToKill.SetData(boidsToKillData, 0, 0, boidsToKillData.Length);
 
