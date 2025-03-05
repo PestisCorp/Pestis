@@ -7,21 +7,7 @@ using MoreLinq.Extensions;
 using Unity.Mathematics;
 using UnityEngine;
 
-internal struct Boid
-{
-    public float2 pos;
-    public float2 vel;
-    public int player;
-
-    public int horde;
-
-    /// <summary>
-    ///     0 for alive, 1 for dead
-    /// </summary>
-    public int dead;
-}
-
-public class RatBoids : MonoBehaviour
+public class CombatBoids : MonoBehaviour
 {
     private const float blockSize = 512f;
 
@@ -40,24 +26,21 @@ public class RatBoids : MonoBehaviour
     [SerializeField] private Material boidMat;
     [SerializeField] private Material deadBoidMat;
 
-    public bool combat;
-
-    /// <summary>
-    ///     Set by HordeController, pulled from when sim updates. Inside this script you should only read from `numBoids`
-    /// </summary>
-    public int AliveRats;
-
     public Vector2 TargetPos;
 
     public bool paused;
 
     public List<HordeController> containedHordes;
+    private Dictionary<HordeController, int> _previousNumBoids = new();
 
     private bool _started;
     private int blocks;
 
     private ComputeBuffer boidBuffer;
     private ComputeBuffer boidBufferOut;
+
+    // One element per horde, element reflects how many boids of that horde to kill
+    private ComputeBuffer boidsToKill;
 
     private Bounds bounds;
 
@@ -78,8 +61,7 @@ public class RatBoids : MonoBehaviour
 
     private float minSpeed;
 
-    [Header("Performance")] private int numBoids;
-    private int previousNumBoids;
+    private Dictionary<HordeController, int> numBoids = new();
     private RenderParams rp;
     private RenderParams rpDead;
     private GraphicsBuffer trianglePositions;
@@ -139,8 +121,9 @@ public class RatBoids : MonoBehaviour
         deadBoidsCountBuffer.SetData(counter, 0, 0, 1);
         gridShader.SetBuffer(updateGridKernel, "deadBoidsCount", deadBoidsCountBuffer);
 
-        boidShader.SetInt("numBoids", numBoids);
-        boidShader.SetBool("combatRats", combat);
+        boidsToKill = new ComputeBuffer(16, Marshal.SizeOf(typeof(int)));
+        boidShader.SetBuffer(updateBoidsKernel, "boidsToKill", boidsToKill);
+
         boidShader.SetFloat("maxSpeed", maxSpeed);
         boidShader.SetFloat("minSpeed", minSpeed);
         boidShader.SetFloat("edgeMargin", edgeMargin);
@@ -178,9 +161,6 @@ public class RatBoids : MonoBehaviour
         blocks = Mathf.CeilToInt(gridTotalCells / blockSize);
         gridSumsBuffer = new ComputeBuffer(blocks, 4);
         gridSumsBuffer2 = new ComputeBuffer(blocks, 4);
-        gridShader.SetInt("numBoids", numBoids);
-        gridShader.SetInt("numBoidsPrevious", 0);
-
 
         gridShader.SetFloat("gridCellSize", gridCellSize);
         gridShader.SetInt("gridDimY", gridDimY);
@@ -192,17 +172,9 @@ public class RatBoids : MonoBehaviour
         boidShader.SetInt("gridDimY", gridDimY);
         boidShader.SetInt("gridDimX", gridDimX);
 
-        var horde = gameObject.GetComponentInParent<HordeController>();
-        if (horde)
-        {
-            boidShader.SetInt("player", unchecked((int)horde.Player.Id.Object.Raw));
-            boidShader.SetInt("horde", unchecked((int)horde.Id.Object.Raw));
-        }
-        else
-        {
-            boidShader.SetInt("player", -1);
-            boidShader.SetInt("horde", -1);
-        }
+        boidShader.SetInt("player", -1);
+        boidShader.SetInt("horde", -1);
+
 
         AttachBuffers();
     }
@@ -210,38 +182,42 @@ public class RatBoids : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (AliveRats == 0 || paused)
+        if (numBoids.Values.Sum() == 0 || paused) return;
+
+        _previousNumBoids = numBoids;
+
+        // Add breakpoint in here if you need to inspect boid values
+        if (Debug.isDebugBuild)
         {
-            previousNumBoids = AliveRats;
-            numBoids = AliveRats;
-            return;
+            var boids = new Boid[numBoids.Values.Sum()];
+            boidBuffer.GetData(boids, 0, 0, numBoids.Values.Sum());
         }
 
-        previousNumBoids = numBoids;
-        var newNumBoids = AliveRats;
+        var newNumBoids = containedHordes.ToDictionary(x => x, x => x.AliveRats);
 
         // Some boids have died
-        if (newNumBoids < numBoids && combat)
+        if (newNumBoids.Values.Sum() < numBoids.Values.Sum())
             // Don't exceed dead boids buffer
-            deadBoidsCount = Math.Min(deadBoidsCount + numBoids - newNumBoids, deadBoids.count);
+            deadBoidsCount = Math.Min(deadBoidsCount + numBoids.Values.Sum() - newNumBoids.Values.Sum(),
+                deadBoids.count);
 
-        if (boidBuffer.count < newNumBoids) ResizeBuffers(newNumBoids * 2);
+        if (boidBuffer.count < newNumBoids.Values.Sum()) ResizeBuffers(newNumBoids.Values.Sum() * 2);
 
         // Increase separation force the bigger the horde is.
-        boidShader.SetFloat("separationFactor", separationFactor * (numBoids / 1000.0f));
+        boidShader.SetFloat("separationFactor", separationFactor * (numBoids.Values.Sum() / 1000.0f));
 
         boidShader.SetFloat("deltaTime", Time.deltaTime);
         boidShader.SetFloats("targetPos", TargetPos.x,
             TargetPos.y);
 
-        boidShader.SetInt("numBoids", newNumBoids);
+        boidShader.SetInt("numBoids", newNumBoids.Values.Sum());
         numBoids = newNumBoids;
 
         // Clear indices
         gridShader.Dispatch(clearGridKernel, blocks, 1, 1);
 
         // Populate grid
-        gridShader.Dispatch(updateGridKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
+        gridShader.Dispatch(updateGridKernel, Mathf.CeilToInt(numBoids.Values.Sum() / blockSize), 1, 1);
 
         // Generate Offsets (Prefix Sum)
         // Offsets in each block
@@ -263,19 +239,24 @@ public class RatBoids : MonoBehaviour
         gridShader.Dispatch(addSumsKernel, blocks, 1, 1);
 
         // Rearrange boids
-        gridShader.Dispatch(rearrangeBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
+        gridShader.Dispatch(rearrangeBoidsKernel, Mathf.CeilToInt(numBoids.Values.Sum() / blockSize), 1, 1);
 
         // Compute boid behaviours
-        boidShader.Dispatch(updateBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
 
-        boidShader.SetInt("numBoidsPrevious", previousNumBoids);
+        var boidsToKillData = containedHordes.Select(horde => Math.Max(numBoids[horde] - _previousNumBoids[horde], 0))
+            .ToArray();
+        boidsToKill.SetData(boidsToKillData, 0, 0, boidsToKillData.Length);
+
+        boidShader.Dispatch(updateBoidsKernel, containedHordes.Count,
+            Mathf.CeilToInt(numBoids.Values.Sum() / blockSize), 1);
+
+        boidShader.SetInt("numBoidsPrevious", numBoids.Values.Sum());
+        gridShader.SetInt("numBoidsPrevious", _previousNumBoids.Values.Sum());
         // Grid shader needs to be one iteration behind, for correct rearranging.
-        gridShader.SetInt("numBoids", numBoids);
-        gridShader.SetInt("numBoidsPrevious", previousNumBoids);
-
+        gridShader.SetInt("numBoids", numBoids.Values.Sum());
 
         // Actually draw the boids
-        Graphics.RenderPrimitives(rp, MeshTopology.Quads, numBoids * 4);
+        Graphics.RenderPrimitives(rp, MeshTopology.Quads, numBoids.Values.Sum() * 4);
         Graphics.RenderPrimitives(rpDead, MeshTopology.Quads, deadBoidsCount * 4);
     }
 
@@ -326,14 +307,14 @@ public class RatBoids : MonoBehaviour
         if (newSize < boidBuffer.count) throw new Exception("Tried to shrink buffers!");
         Debug.Log($"Resizing boid buffers to {newSize}");
         var newBuffer = new ComputeBuffer(newSize, Marshal.SizeOf(typeof(Boid)));
-        var boids = new Boid[numBoids];
-        boidBuffer.GetData(boids, 0, 0, numBoids);
+        var boids = new Boid[numBoids.Values.Sum()];
+        boidBuffer.GetData(boids, 0, 0, numBoids.Values.Sum());
         newBuffer.SetData(boids);
         boidBuffer.Release();
         boidBuffer = newBuffer;
 
         newBuffer = new ComputeBuffer(newSize, Marshal.SizeOf(typeof(Boid)));
-        boidBufferOut.GetData(boids, 0, 0, numBoids);
+        boidBufferOut.GetData(boids, 0, 0, numBoids.Values.Sum());
         newBuffer.SetData(boids);
         boidBufferOut.Release();
         boidBufferOut = newBuffer;
@@ -345,9 +326,9 @@ public class RatBoids : MonoBehaviour
         deadBoids = newBuffer;
 
         // Resize grid buffer
-        var grid = new uint2[numBoids];
+        var grid = new uint2[numBoids.Values.Sum()];
         newBuffer = new ComputeBuffer(newSize, 8);
-        gridBuffer.GetData(grid, 0, 0, numBoids);
+        gridBuffer.GetData(grid, 0, 0, numBoids.Values.Sum());
         newBuffer.SetData(grid);
         gridBuffer.Release();
         gridBuffer = newBuffer;
@@ -423,7 +404,7 @@ public class RatBoids : MonoBehaviour
     /// <returns>Bounds encapsulating all rats in the horde</returns>
     public Bounds GetBounds()
     {
-        if (numBoids == 0) return new Bounds();
+        if (numBoids.Values.Sum() == 0) return new Bounds();
 
         var offsets = new uint[gridDimX * gridDimY];
         gridOffsetBuffer.GetData(offsets, 0, 0, gridDimX * gridDimY);
@@ -512,30 +493,93 @@ public class RatBoids : MonoBehaviour
     }
 
     /// <summary>
-    ///     Get my boids back from a combat controller.
+    ///     Add new boids to myself (I am a combat boids controller)
     /// </summary>
-    /// <param name="combat">Combat controller that is currently controlling my boids</param>
-    /// <param name="myHorde">The horde that owns me</param>
-    public void GetBoidsBack(CombatController combat, HordeController myHorde)
+    /// <param name="newBoidsBuffer">The compute buffer containing the boids to add</param>
+    /// <param name="newBoidsCount">How many boids to add from the compute buffer</param>
+    public void AddBoids(ComputeBuffer newBoidsBuffer, int newBoidsCount, HordeController boidsHorde)
     {
-        combat.boids.RemoveBoids(boidBuffer, boidBufferOut, deadBoids, deadBoidsCountBuffer, ref deadBoidsCount,
-            myHorde);
-        paused = false;
+        Debug.Log("COMBAT BOIDS: Adding boids");
+        // Resize buffers if too small
+        if (numBoids.Values.Sum() + newBoidsCount > boidBuffer.count)
+            ResizeBuffers((numBoids.Values.Sum() + newBoidsCount) * 2);
+
+
+        // Load boids into memory
+        var newBoids = new Boid[newBoidsCount];
+        newBoidsBuffer.GetData(newBoids, 0, 0, newBoidsCount);
+
+        // Update horde number to use index in current combat
+        for (var i = 0; i < newBoidsCount; i++) newBoids[i].horde = containedHordes.Count;
+
+        // Append boids to buffer
+        boidBuffer.SetData(newBoids, 0, numBoids.Values.Sum(), newBoidsCount);
+        boidBufferOut.SetData(newBoids, 0, numBoids.Values.Sum(), newBoidsCount);
+        // So it doesn't override their current positions/other data
+        boidShader.SetInt("numBoidsPrevious", numBoids.Values.Sum());
+
+        _previousNumBoids.Add(boidsHorde, newBoidsCount);
+        numBoids.Add(boidsHorde, newBoidsCount);
+        containedHordes.Add(boidsHorde);
     }
 
     /// <summary>
-    ///     Transfer control of my boids over to some combat boids controller.
+    ///     Called by the horde that wants its boids back from the combat boids.
     /// </summary>
-    /// <param name="combatBoids">The combat boid controller</param>
-    /// <param name="myHorde">The horde which owns me</param>
-    public void JoinCombat(CombatBoids combatBoids, HordeController myHorde)
+    /// <param name="hordeBuffer">Buffer on the normal boids to put the combat boids into</param>
+    /// <param name="hordeBufferOut">BufferOut on the normal boids to put the combat boids into</param>
+    /// <param name="horde">The horde that is wanting its boids back</param>
+    public void RemoveBoids(ComputeBuffer hordeBuffer, ComputeBuffer hordeBufferOut, ComputeBuffer hordeCorpses,
+        ComputeBuffer hordeCorpseCount, ref int hordeDeadBoidsCount, HordeController horde)
     {
-        Debug.Log("BOIDS: Joining to combat");
-        paused = true;
-        // Delete old corpses
-        uint[] count = { 0 };
+        Debug.Log("COMBAT BOIDS: Removing boids");
+        // Transfer live boids
+        var boids = new Boid[numBoids.Values.Sum()];
+        boidBuffer.GetData(boids, 0, 0, numBoids.Values.Sum());
+        var combatBoids = new List<Boid>();
+        var hordeBoids = new List<Boid>();
+
+        var hordeID = unchecked((int)horde.Object.Id.Raw);
+        foreach (var boid in boids)
+            if (boid.horde == hordeID)
+                hordeBoids.Add(boid);
+            else
+                combatBoids.Add(boid);
+
+        var hordeBoidsArr = hordeBoids.ToArray();
+        hordeBuffer.SetData(hordeBoidsArr, 0, 0, hordeBoidsArr.Length);
+        hordeBufferOut.SetData(hordeBoidsArr, 0, 0, hordeBoidsArr.Length);
+        var combatBoidsArr = combatBoids.ToArray();
+        boidBuffer.SetData(combatBoidsArr, 0, 0, combatBoidsArr.Length);
+        boidBufferOut.SetData(combatBoidsArr, 0, 0, combatBoidsArr.Length);
+        numBoids.Remove(horde);
+        _previousNumBoids.Remove(horde);
+
+        // Transfer corpses
+        boids = new Boid[deadBoidsCount];
+        deadBoids.GetData(boids, 0, 0, deadBoidsCount);
+        combatBoids.Clear();
+        hordeBoids.Clear();
+
+        foreach (var boid in boids)
+            if (boid.horde == hordeID)
+                hordeBoids.Add(boid);
+            else
+                combatBoids.Add(boid);
+
+        hordeBoidsArr = hordeBoids.ToArray();
+        combatBoidsArr = combatBoids.ToArray();
+
+        hordeCorpses.SetData(hordeBoidsArr, 0, 0, hordeBoidsArr.Length);
+        deadBoids.SetData(combatBoidsArr, 0, 0, combatBoidsArr.Length);
+
+        uint[] count = { Convert.ToUInt32(hordeBoidsArr.Length) };
+        hordeCorpseCount.SetData(count, 0, 0, 1);
+        hordeDeadBoidsCount = Convert.ToInt32(count[0]);
+        count[0] = Convert.ToUInt32(combatBoidsArr.Length);
         deadBoidsCountBuffer.SetData(count, 0, 0, 1);
-        combatBoids.AddBoids(boidBufferOut, numBoids, myHorde);
-        combatBoids.TargetPos = TargetPos;
+        deadBoidsCount = combatBoidsArr.Length;
+
+        containedHordes.Remove(horde);
     }
 }

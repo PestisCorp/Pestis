@@ -483,8 +483,7 @@ Count: {AliveRats}
                 targetLocation.Teleport(baseCamp);
                 StationedAt = null;
             }
-
-
+            
             HordeBeingDamaged = null;
             CurrentCombatController = null;
             PopulationCooldown = 15.0f;

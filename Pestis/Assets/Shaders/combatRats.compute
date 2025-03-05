@@ -35,14 +35,15 @@ uniform int player;
 // Horde ID these boids belong to
 uniform int horde;
 
-uniform bool combatRats;
-
 /// Cumulative boid count for each grid cell
 /// I.e. count for block N is the sum of counts for blocks 0 to N
 StructuredBuffer<uint> gridOffsetBuffer;
 float gridCellSize;
 uint gridDimY;
 uint gridDimX;
+
+// One element per horde, element reflects how many boids of that horde to kill
+RWStructuredBuffer<int> boidsToKill;
 
 uint2 getGridLocation(Boid boid)
 {
@@ -155,35 +156,28 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
 {
     if (id.x >= numBoids)
     {
-        // Freshly died
-        if (id.x < numBoidsPrevious && combatRats)
-        {
-            Boid boid = boidsIn[id.x];
-            boid.dead = true;
-            boidsOut[id.x] = boid;
-        }
-
         return;
     }
 
-
     Boid boid = boidsIn[id.x];
 
-    // Initialise new boid
-    if (id.x >= numBoidsPrevious)
+    if (boid.dead) return;
+
+    // If we have neighbours and the horde needs to kill some boids
+    if (id.x != 0 && id.x != numBoids && boidsToKill[boid.horde] != 0)
     {
-        boid.player = player;
-        boid.horde = horde;
-        boid.dead = false;
-        if (numBoidsPrevious == 0)
+        // If we have an enemy neighbour
+        if (boidsIn[id.x - 1].player != boid.player || boidsIn[id.x + 1].player != boid.player)
         {
-            boid.pos = float2(0, 0);
-            boid.vel = float2(0, 0);
-        }
-        else
-        {
-            boid.pos = boidsIn[floor(numBoidsPrevious / 2.0f)].pos;
-            boid.vel = float2(0, 0);
+            int leftToKill;
+            // Sets `leftToKill` to the value that was in the buffer before the call
+            InterlockedAdd(boidsToKill[boid.horde], -1, leftToKill);
+            if (leftToKill > 0)
+            {
+                boid.dead = true;
+                boidsOut[id.x] = boid;
+                return;
+            }
         }
     }
 
