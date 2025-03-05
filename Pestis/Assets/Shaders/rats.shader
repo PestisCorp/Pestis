@@ -2,7 +2,7 @@ Shader "Unlit/boidShader"
 {
     Properties
     {
-        _Colour ("Colour", Color) = (1, 1, 0, 1)
+        _Colour ("Colour", Color) = (1, 1, 0, 0)
         _Scale ("Scale", Float) = 0.1
         _RatUp ("Rat Up", 2D) = "yellow"
         _RatUpRight ("Rat Up-Right", 2D) = "grey"
@@ -60,6 +60,7 @@ Shader "Unlit/boidShader"
             {
                 float2 uv;
                 int sprite;
+                bool dead;
             };
 
             struct v2f
@@ -77,16 +78,10 @@ Shader "Unlit/boidShader"
                 //rotate2D(pos, boid.vel);
                 v2f o;
                 o.pos = UnityWorldToClipPos(float4(pos + boid.pos, 0, 0));
+                o.otherData.dead = boid.dead;
                 if (vertexID % 4 == 0)
                 {
-                    if (boid.dead)
-                    {
-                        o.otherData.uv = float2(0, 1);
-                    }
-                    else
-                    {
-                        o.otherData.uv = float2(0, 0);
-                    }
+                    o.otherData.uv = float2(0, 0);
                 }
                 else if (vertexID % 4 == 1)
                 {
@@ -138,6 +133,11 @@ Shader "Unlit/boidShader"
 
             fixed4 frag(v2f i) : SV_Target
             {
+                if (i.otherData.dead)
+                {
+                    return _Colour;
+                }
+
                 switch (i.otherData.sprite)
                 {
                 case 0:
