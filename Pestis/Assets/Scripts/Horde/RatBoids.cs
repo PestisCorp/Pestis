@@ -113,7 +113,7 @@ public class RatBoids : MonoBehaviour
         xBound = 256;
         yBound = 256;
         turnSpeed = 1.5f;
-        minSpeed = maxSpeed * 0.75f;
+        minSpeed = maxSpeed * 0.2f;
 
         // Create new instance of shaders to stop them sharing data!
         boidShader = Instantiate(boidShader);

@@ -31,7 +31,11 @@ public class CombatBoids : MonoBehaviour
     public bool paused;
 
     public List<HordeController> containedHordes;
+
+    // Horde controller -> local combat ID of horde
+    private readonly Dictionary<HordeController, int> hordeIDs = new();
     private Dictionary<HordeController, int> _previousNumBoids = new();
+
 
     private bool _started;
     private int blocks;
@@ -57,6 +61,7 @@ public class CombatBoids : MonoBehaviour
     private ComputeBuffer gridOffsetBuffer;
     private ComputeBuffer gridOffsetBufferIn;
     private ComputeBuffer gridSumsBuffer;
+
     private ComputeBuffer gridSumsBuffer2;
 
     private float minSpeed;
@@ -95,8 +100,8 @@ public class CombatBoids : MonoBehaviour
         _started = true;
         xBound = 256;
         yBound = 256;
-        turnSpeed = 0.04f;
-        minSpeed = maxSpeed * 0.75f;
+        turnSpeed = 0.8f;
+        minSpeed = maxSpeed * 0.2f;
 
         // Create new instance of shaders to stop them sharing data!
         boidShader = Instantiate(boidShader);
@@ -211,7 +216,6 @@ public class CombatBoids : MonoBehaviour
         boidShader.SetFloats("targetPos", TargetPos.x,
             TargetPos.y);
 
-        boidShader.SetInt("numBoids", newNumBoids.Values.Sum());
         numBoids = newNumBoids;
 
         // Clear indices
@@ -258,7 +262,6 @@ public class CombatBoids : MonoBehaviour
         boidShader.Dispatch(updateBoidsKernel, containedHordes.Count,
             Mathf.CeilToInt(numBoids.Values.Sum() / blockSize), 1);
 
-        boidShader.SetInt("numBoidsPrevious", numBoids.Values.Sum());
         gridShader.SetInt("numBoidsPrevious", _previousNumBoids.Values.Sum());
         // Grid shader needs to be one iteration behind, for correct rearranging.
         gridShader.SetInt("numBoids", numBoids.Values.Sum());
@@ -628,15 +631,17 @@ public class CombatBoids : MonoBehaviour
         // Update horde number to use index in current combat
         for (var i = 0; i < newBoidsCount; i++) newBoids[i].horde = containedHordes.Count;
 
+        hordeIDs[boidsHorde] = containedHordes.Count;
+
         // Append boids to buffer
         boidBuffer.SetData(newBoids, 0, numBoids.Values.Sum(), newBoidsCount);
         boidBufferOut.SetData(newBoids, 0, numBoids.Values.Sum(), newBoidsCount);
-        // So it doesn't override their current positions/other data
-        boidShader.SetInt("numBoidsPrevious", numBoids.Values.Sum());
 
         _previousNumBoids.Add(boidsHorde, newBoidsCount);
         numBoids.Add(boidsHorde, newBoidsCount);
         containedHordes.Add(boidsHorde);
+
+        boidShader.SetInt("numBoids", numBoids.Values.Sum());
     }
 
     /// <summary>
@@ -651,16 +656,18 @@ public class CombatBoids : MonoBehaviour
         Debug.Log("COMBAT BOIDS: Removing boids");
         // Transfer live boids
         var boids = new Boid[numBoids.Values.Sum()];
-        boidBuffer.GetData(boids, 0, 0, numBoids.Values.Sum());
+        boidBufferOut.GetData(boids, 0, 0, numBoids.Values.Sum());
         var combatBoids = new List<Boid>();
         var hordeBoids = new List<Boid>();
 
-        var hordeID = unchecked((int)horde.Object.Id.Raw);
+        var hordeID = hordeIDs[horde];
         foreach (var boid in boids)
             if (boid.horde == hordeID)
                 hordeBoids.Add(boid);
             else
                 combatBoids.Add(boid);
+
+        Debug.Log($"COMBAT BOIDS: Giving horde back {hordeBoids.Count} and keeping {combatBoids.Count}");
 
         var hordeBoidsArr = hordeBoids.ToArray();
         hordeBuffer.SetData(hordeBoidsArr, 0, 0, hordeBoidsArr.Length);
@@ -697,5 +704,7 @@ public class CombatBoids : MonoBehaviour
         deadBoidsCount = combatBoidsArr.Length;
 
         containedHordes.Remove(horde);
+
+        boidShader.SetInt("numBoids", numBoids.Values.Sum());
     }
 }

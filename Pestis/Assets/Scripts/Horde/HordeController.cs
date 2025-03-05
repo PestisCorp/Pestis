@@ -13,6 +13,7 @@ using UI;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 namespace Horde
 {
@@ -62,6 +63,10 @@ namespace Horde
         ///     Seconds until we can start simulating population again after combat.
         /// </summary>
         public float PopulationCooldown;
+
+        [SerializeField] private GameObject hordeIcon;
+        [SerializeField] private Sprite enemyIcon;
+        [SerializeField] private Sprite ownIcon;
 
 
         private readonly List<RatController> _spawnedRats = new();
@@ -442,15 +447,34 @@ Count: {AliveRats}
 
             _playerText = transform.Find("Canvas/PlayerName").gameObject;
             _combatText = transform.Find("Canvas/PlayerName/Combat").gameObject;
-            var text = _playerText.GetComponentInChildren<TMP_Text>();
+
+            var text = _playerText.transform.Find("Border/Background/Text").GetComponent<TMP_Text>();
+
             text.text = Player.Username;
-            if (Player.IsLocal) text.color = Color.red;
             moraleAndFearInstance = Instantiate(FindFirstObjectByType<UI_Manager>().fearAndMorale);
             foreach (CooldownBar bar in moraleAndFearInstance.GetComponentsInChildren<CooldownBar>())
             {
                 bar.current = bar.maximum;
             }
             moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
+
+            hordeIcon = transform.Find("Canvas/PlayerName/HordeIcon").gameObject;
+            var icon = hordeIcon.GetComponent<Image>();
+
+            if (Player.IsLocal)
+            {
+                var iconSprite = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_self");
+
+                text.color = Color.red;
+                icon.sprite = iconSprite;
+            }
+            else
+            {
+                var iconSprite = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_enemy");
+
+                icon.sprite = iconSprite;
+            }
+
             // Needed to spawn in rats from joined session
             TotalHealthChanged();
         }
@@ -487,7 +511,6 @@ Count: {AliveRats}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void DealDamageRpc(float damage)
         {
-            Debug.Log($"Damage Reduction: {_populationController.GetState().DamageReduction}");
             TotalHealth -= damage * _populationController.GetState().DamageReduction
                                   * _populationController.GetState().DamageReductionMult;
         }
