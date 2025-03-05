@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using Players;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace POI
 {
@@ -14,6 +15,9 @@ namespace POI
         private readonly float _cheesePerTick = 0.3f;
 
         public float CheesePerSecond => _cheesePerTick / Runner.DeltaTime;
+        
+        private Sprite captureFlag;
+        private GameObject flagObject;
 
         public Collider2D Collider { get; private set; }
 
@@ -88,6 +92,17 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         public override void Spawned()
         {
             Collider = GetComponent<Collider2D>();
+            
+            // Create a new GameObject for the icon
+            flagObject = new GameObject("PrefabIcon");
+            flagObject.transform.SetParent(transform); // Attach to prefab
+            flagObject.transform.localPosition = new Vector3(0, 2f, 0); // Adjust height
+
+            // Find the uncaptured flag resource and display it
+            Image flag = flagObject.AddComponent<Image>();
+            captureFlag = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_enemy");
+            flag.sprite = captureFlag;
+
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
