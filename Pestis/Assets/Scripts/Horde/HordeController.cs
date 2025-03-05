@@ -163,10 +163,10 @@ namespace Horde
                 }
                 else if (AliveRats > 0) // Move horde center slowly to avoid jitter due to center rat changing
                 {
-                    var newBounds = boids.GetBounds();
-                    newBounds.center = Vector2.Lerp(HordeBounds.center, newBounds.center, Time.deltaTime);
-                    HordeBounds = newBounds;
-                    HordeBounds = boids.GetBounds();
+                    if (InCombat && CurrentCombatController!.boids.containedHordes.Contains(this))
+                        HordeBounds = CurrentCombatController!.boids.GetBounds(this);
+                    else
+                        HordeBounds = boids.GetBounds();
                 }
                 else
                 {
@@ -483,7 +483,7 @@ Count: {AliveRats}
                 targetLocation.Teleport(baseCamp);
                 StationedAt = null;
             }
-            
+
             HordeBeingDamaged = null;
             CurrentCombatController = null;
             PopulationCooldown = 15.0f;
