@@ -162,6 +162,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: RatHorde
       objectReference: {fileID: 0}
+    - target: {fileID: 2867504960344824529, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2867504960344824529, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2867504960344824529, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2867504960344824529, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2867504960344824529, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2867504960344824529, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3670710804318574543, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -284,6 +308,10 @@ PrefabInstance:
       objectReference: {fileID: 4068996100801692341}
     - target: {fileID: 8072967729009948161, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
       propertyPath: 'NetworkedBehaviours.Array.data[4]'
+      value: 
+      objectReference: {fileID: 8378574639641677574}
+    - target: {fileID: 8072967729009948161, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
+      propertyPath: 'NetworkedBehaviours.Array.data[5]'
       value: 
       objectReference: {fileID: 8378574639641677574}
     - target: {fileID: 8945814649589602907, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}

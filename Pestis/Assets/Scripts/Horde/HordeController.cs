@@ -10,7 +10,6 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 namespace Horde
 {
@@ -60,6 +59,10 @@ namespace Horde
         /// </summary>
         public float PopulationCooldown;
 
+        [SerializeField] private GameObject hordeIcon;
+        [SerializeField] private Sprite enemyIcon;
+        [SerializeField] private Sprite ownIcon;
+
 
         private readonly List<RatController> _spawnedRats = new();
         private Camera _camera;
@@ -71,9 +74,6 @@ namespace Horde
         private Vector2 _hordeCenter;
 
         private GameObject _playerText;
-        [SerializeField] private GameObject hordeIcon;
-        [SerializeField] private Sprite enemyIcon;
-        [SerializeField] private Sprite ownIcon;
 
 
         private PopulationController _populationController;
@@ -141,8 +141,6 @@ namespace Horde
         {
             if (_playerText)
                 _playerText.transform.position = _camera.WorldToScreenPoint(HordeBounds.center);
-            if (hordeIcon)
-                hordeIcon.transform.position = _camera.WorldToScreenPoint(HordeBounds.center + Vector3.up);
         }
 
         private void FixedUpdate()
@@ -389,23 +387,23 @@ Count: {AliveRats}
             _playerText = transform.Find("Canvas/PlayerName").gameObject;
             _combatText = transform.Find("Canvas/PlayerName/Combat").gameObject;
 
-            var text = _playerText.GetComponentInChildren<TMP_Text>();
+            var text = _playerText.transform.Find("Border/Background/Text").GetComponent<TMP_Text>();
 
             text.text = Player.Username;
 
-            hordeIcon = transform.Find("Canvas/HordeIcon").gameObject;
-            Image icon = hordeIcon.GetComponent<Image>();
+            hordeIcon = transform.Find("Canvas/PlayerName/HordeIcon").gameObject;
+            var icon = hordeIcon.GetComponent<Image>();
 
             if (Player.IsLocal)
             {
-                Sprite iconSprite = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_self");
+                var iconSprite = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_self");
 
                 text.color = Color.red;
                 icon.sprite = iconSprite;
             }
             else
             {
-                Sprite iconSprite = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_enemy");
+                var iconSprite = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_enemy");
 
                 icon.sprite = iconSprite;
             }
