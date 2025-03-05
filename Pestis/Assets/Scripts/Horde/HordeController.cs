@@ -417,6 +417,7 @@ Count: {AliveRats}
             _evolutionManager = GetComponent<EvolutionManager>();
             Player = GetComponentInParent<Player>();
             boids = GetComponentInChildren<RatBoids>();
+            Player.Hordes.Add(this);
 
             if (HasStateAuthority) // Ensure only the host assigns colors
             {
@@ -525,17 +526,24 @@ Count: {AliveRats}
         public void RetreatRpc()
         {
             Debug.Log("Retreating!");
-            var baseCamp = transform.parent.position;
-            var closestPOI = Player.ControlledPOIs.Aggregate((closest, poi) =>
-                Vector3.Distance(HordeBounds.center, poi.transform.position) <
-                Vector3.Distance(HordeBounds.center, closest.transform.position)
-                    ? poi
-                    : closest);
-
-            if (Vector3.Distance(closestPOI.transform.position, HordeBounds.center) <
-                Vector3.Distance(baseCamp, HordeBounds.center))
+            Vector3 baseCamp = transform.parent.position;
+            if (Player.ControlledPOIs.Count > 0)
             {
-                StationAtRpc(closestPOI);
+                POIController closestPOI = Player.ControlledPOIs.Aggregate((closest, poi) =>
+                    Vector3.Distance(HordeBounds.center, poi.transform.position) <
+                    Vector3.Distance(HordeBounds.center, closest.transform.position)
+                        ? poi
+                        : closest);
+                if (Vector3.Distance(closestPOI.transform.position, HordeBounds.center) <
+                    Vector3.Distance(baseCamp, HordeBounds.center))
+                {
+                    StationAtRpc(closestPOI);
+                }
+                else
+                {
+                    targetLocation.Teleport(baseCamp);
+                    StationedAt = null;
+                }
             }
             else
             {
@@ -771,6 +779,16 @@ Count: {AliveRats}
         public void AddBoidsToCombatRpc(CombatController combat)
         {
             boids.JoinCombat(combat.boids, this);
+        }
+        
+        /// <summary>
+        ///     Despawns the current horde
+        /// </summary>
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void DestroyHordeRpc()
+        {
+            Player.Hordes.Remove(this);
+            Runner.Despawn(Object);
         }
     }
 }
