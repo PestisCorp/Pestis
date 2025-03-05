@@ -252,8 +252,17 @@ Count: {AliveRats}
                     CurrentCombatController!.boids.containedHordes.Where(horde => horde.Player != Player).ToArray();
 
                 foreach (var enemy in enemyHordes)
+                {
                     // Split damage dealt among enemy hordes
-                    enemy.DealDamageRpc(AliveRats / 50.0f * (GetPopulationState().Damage / enemyHordes.Length));
+                    float bonusDamage = 0;
+                    if (GetEvolutionState().AcquiredEffects.Contains("unlock_necrosis"))
+                        bonusDamage += CurrentCombatController.boids.totalDeathsPerHorde[this] * 0.1f;
+                    enemy.DealDamageRpc(AliveRats / 50.0f * ((GetPopulationState().Damage 
+                                                                 * GetPopulationState().DamageMult 
+                                                                 * GetPopulationState().SepticMult + bonusDamage) 
+                                                             / enemyHordes.Length));
+                    if (enemy.isHedgehogged) DealDamageRpc(0.001f);
+                }
             }
         }
 
@@ -501,8 +510,8 @@ Count: {AliveRats}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void DealDamageRpc(float damage)
         {
-            TotalHealth -= damage * _populationController.GetState().DamageReduction 
-                                  * _populationController.GetState().DamageReductionMult
+            TotalHealth -= damage * _populationController.GetState().DamageReduction
+                                  * _populationController.GetState().DamageReductionMult;
         }
 
         public Bounds GetBounds()

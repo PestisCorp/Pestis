@@ -26,18 +26,30 @@ namespace Horde
                 FindFirstObjectByType<UI_Manager>().AddNotification("You are feared and cannot use any abilities!", Color.red);
                 return;
             }
+            
+            HashSet<HordeController> affectedHordes = new HashSet<HordeController>();
+            var players = GameManager.Instance.Players;
+            foreach (var player in players)
+            {
+                foreach (var horde in player.Hordes)
+                {
+                    if (horde.GetHashCode() == _hordeController.GetHashCode()) continue;
+                    var dist = ((Vector2)horde.GetBounds().center - (Vector2)_hordeController.GetBounds().center).sqrMagnitude;
+                    if (dist < 20f)
+                    {
+                        affectedHordes.Add(horde);
+                        var populationController = horde.GetComponent<PopulationController>();
+                        float damageReductionMult = horde.GetPopulationState().DamageReductionMult * 1.3f;
+                        populationController.SetDamageReductionMult(damageReductionMult);
+                        StartCoroutine(RemovePestisAfterDelayRat(populationController));
+                    }
+                }
+            }
+            
             Collider2D[] hitColliders = Physics2D.OverlapCircleAll(_hordeController.GetBounds().center, 20f);
-            HashSet<PopulationController> affectedHordes = new HashSet<PopulationController>();
             HashSet<HumanController> affectedHumans = new HashSet<HumanController>();
             foreach (var col in hitColliders)
             {
-                PopulationController affectedEnemy = col.GetComponentInParent<PopulationController>();
-                if (affectedEnemy && affectedHordes.Add(affectedEnemy) && !affectedEnemy.GetComponent<HordeController>().Player.IsLocal)
-                {
-                    float damageReductionMult = affectedEnemy.GetState().DamageReductionMult * 1.3f;
-                    affectedEnemy.SetDamageReductionMult(damageReductionMult);
-                    StartCoroutine(RemovePestisAfterDelayRat(affectedEnemy));
-                }
                 HumanController affectedHuman = col.GetComponentInParent<HumanController>();
                 if (affectedHuman && affectedHumans.Add(affectedHuman))
                 {
@@ -45,26 +57,27 @@ namespace Horde
                     StartCoroutine(RemovePestisAfterDelayHuman(affectedHuman));
                 }
             }
-            if (affectedHordes.Count == 0)
+            if (affectedHordes.Count == 0 && affectedHumans.Count == 0)
             {
-                FindFirstObjectByType<UI_Manager>().AddNotification("No enemy hordes nearby!", Color.red);
+                FindFirstObjectByType<UI_Manager>().AddNotification("No enemies nearby!", Color.red);
                 return;
             }
             _hordeController.TotalHealth = (int)Math.Ceiling(_hordeController.AliveRats * _populationController.GetState().HealthPerRat * 0.7);
-            
             StartCoroutine(Cooldown(60, calledBy, "Pestis"));
         }
         
         IEnumerator RemovePestisAfterDelayHuman(HumanController affectedHuman)
         {
             yield return new WaitForSeconds(30f);
-            affectedHuman.SetRadius(affectedHuman.GetRadius() - 10.0f);
+            if (affectedHuman)
+                affectedHuman.SetRadius(affectedHuman.GetRadius() - 10.0f);
         }
         
         IEnumerator RemovePestisAfterDelayRat(PopulationController affectedEnemy)
         {
             yield return new WaitForSeconds(30f);
-            affectedEnemy.SetDamageReductionMult(affectedEnemy.GetState().DamageReductionMult / 1.3f);
+            if (affectedEnemy)
+                affectedEnemy.SetDamageReductionMult(affectedEnemy.GetState().DamageReductionMult / 1.3f);
         }
 
         IEnumerator Cooldown(int duration, Button calledBy, string abilityName)

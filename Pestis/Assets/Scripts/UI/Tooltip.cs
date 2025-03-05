@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-//TODO: Fix tooltip bug where tooltip remains on screen after picking the mutation option
-
 namespace UI
 {
     public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
@@ -17,6 +15,7 @@ namespace UI
         public void OnPointerEnter(PointerEventData eventData)
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            Debug.Log("Pointer Entered");
             tooltipInstance = Instantiate(tooltipObject, mousePos, Quaternion.identity);
             tooltipInstance.transform.position = mousePos;
             tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = tooltipText;
