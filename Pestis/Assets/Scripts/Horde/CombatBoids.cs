@@ -95,8 +95,8 @@ public class CombatBoids : MonoBehaviour
         _started = true;
         xBound = 256;
         yBound = 256;
-        turnSpeed = 0.04f;
-        minSpeed = maxSpeed * 0.75f;
+        turnSpeed = 0.8f;
+        minSpeed = maxSpeed * 0.2f;
 
         // Create new instance of shaders to stop them sharing data!
         boidShader = Instantiate(boidShader);

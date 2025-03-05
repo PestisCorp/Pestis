@@ -79,20 +79,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c3bf954486c41d8a19b6f02478492a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 2
+  maxSpeed: 0.8
   edgeMargin: 0.5
   visualRange: 50
   minDistance: 0.4
-  cohesionFactor: 3
+  cohesionFactor: 0
   separationFactor: 100
-  alignmentFactor: 0.1
-  targetFactor: 50
+  alignmentFactor: 0
+  targetFactor: 1
   boidShader: {fileID: 7200000, guid: a84fc26fdda44fa8946142e0f9fa2867, type: 3}
   gridShader: {fileID: 7200000, guid: 09b3d2d9369c4b7dab8d97a7e83f5eaf, type: 3}
   boidMat: {fileID: 2100000, guid: 14e523a1206d6077695982ee0599c60b, type: 2}
   deadBoidMat: {fileID: 2100000, guid: 5f6be8f0d010ed2ca8a5dda610fa09ee, type: 2}
-  combat: 1
-  AliveRats: 0
   TargetPos: {x: 0, y: 0}
   paused: 0
   containedHordes: []
