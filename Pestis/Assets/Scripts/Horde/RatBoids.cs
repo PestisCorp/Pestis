@@ -231,8 +231,11 @@ public class RatBoids : MonoBehaviour
         boidShader.SetFloat("separationFactor", separationFactor * (numBoids / 1000.0f));
 
         boidShader.SetFloat("deltaTime", Time.deltaTime);
-        boidShader.SetFloats("targetPos", TargetPos.x,
-            TargetPos.y);
+        // If I don't add something to it, the first time the shader accesses it in the shader it is NaN !?
+        boidShader.SetFloats("targetPos", TargetPos.x, TargetPos.y);
+        boidShader.SetFloat("targetPosX", TargetPos.x + 0.01f);
+        boidShader.SetFloat("targetPosY", TargetPos.y + 0.01f);
+
 
         boidShader.SetInt("numBoids", newNumBoids);
         numBoids = newNumBoids;
