@@ -30,6 +30,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7a02a1dd1fefb554088334d88fca65c3, type: 2}
   distanceFromNearestSeed: 80
   seedCount: 3
-  walkLength: 2000
+  walkLength: 1600
   iteration: 14
   strength: 0.5
