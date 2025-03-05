@@ -112,7 +112,7 @@ public class RatBoids : MonoBehaviour
         _started = true;
         xBound = 256;
         yBound = 256;
-        turnSpeed = 0.04f;
+        turnSpeed = 1.5f;
         minSpeed = maxSpeed * 0.75f;
 
         // Create new instance of shaders to stop them sharing data!
@@ -512,90 +512,6 @@ public class RatBoids : MonoBehaviour
     }
 
     /// <summary>
-    ///     Add new boids to myself (I am a combat boids controller)
-    /// </summary>
-    /// <param name="newBoidsBuffer">The compute buffer containing the boids to add</param>
-    /// <param name="newBoidsCount">How many boids to add from the compute buffer</param>
-    public void AddBoids(ComputeBuffer newBoidsBuffer, int newBoidsCount, HordeController boidsHorde)
-    {
-        Debug.Log("COMBAT BOIDS: Adding boids");
-        // Resize buffers if too small
-        if (numBoids + newBoidsCount > boidBuffer.count) ResizeBuffers((numBoids + newBoidsCount) * 2);
-
-        // Load boids into memory
-        var newBoids = new Boid[newBoidsCount];
-        newBoidsBuffer.GetData(newBoids, 0, 0, newBoidsCount);
-
-        // Send boids to buffer
-        boidBuffer.SetData(newBoids, 0, numBoids, newBoidsCount);
-        boidBufferOut.SetData(newBoids, 0, numBoids, newBoidsCount);
-        AliveRats += newBoidsCount;
-        numBoids += newBoidsCount;
-        // So it doesn't override their current positions/other data
-        boidShader.SetInt("numBoidsPrevious", numBoids);
-
-        containedHordes.Add(boidsHorde);
-    }
-
-    /// <summary>
-    ///     Called by the horde that wants its boids back from the combat boids.
-    /// </summary>
-    /// <param name="hordeBuffer">Buffer on the normal boids to put the combat boids into</param>
-    /// <param name="hordeBufferOut">BufferOut on the normal boids to put the combat boids into</param>
-    /// <param name="horde">The horde that is wanting its boids back</param>
-    public void RemoveBoids(ComputeBuffer hordeBuffer, ComputeBuffer hordeBufferOut, ComputeBuffer hordeCorpses,
-        ComputeBuffer hordeCorpseCount, ref int hordeDeadBoidsCount, HordeController horde)
-    {
-        Debug.Log("COMBAT BOIDS: Removing boids");
-        // Transfer live boids
-        var boids = new Boid[numBoids];
-        boidBuffer.GetData(boids, 0, 0, numBoids);
-        var combatBoids = new List<Boid>();
-        var hordeBoids = new List<Boid>();
-
-        var hordeID = unchecked((int)horde.Object.Id.Raw);
-        foreach (var boid in boids)
-            if (boid.horde == hordeID)
-                hordeBoids.Add(boid);
-            else
-                combatBoids.Add(boid);
-
-        var hordeBoidsArr = hordeBoids.ToArray();
-        hordeBuffer.SetData(hordeBoidsArr, 0, 0, hordeBoidsArr.Length);
-        hordeBufferOut.SetData(hordeBoidsArr, 0, 0, hordeBoidsArr.Length);
-        var combatBoidsArr = combatBoids.ToArray();
-        boidBuffer.SetData(combatBoidsArr, 0, 0, combatBoidsArr.Length);
-        boidBufferOut.SetData(combatBoidsArr, 0, 0, combatBoidsArr.Length);
-        numBoids = combatBoidsArr.Length;
-        previousNumBoids = numBoids;
-
-        // Transfer corpses
-        boids = new Boid[deadBoidsCount];
-        deadBoids.GetData(boids, 0, 0, deadBoidsCount);
-        combatBoids.Clear();
-        hordeBoids.Clear();
-
-        foreach (var boid in boids)
-            if (boid.horde == hordeID)
-                hordeBoids.Add(boid);
-            else
-                combatBoids.Add(boid);
-
-        hordeBoidsArr = hordeBoids.ToArray();
-        combatBoidsArr = combatBoids.ToArray();
-
-        hordeCorpses.SetData(hordeBoidsArr, 0, 0, hordeBoidsArr.Length);
-        deadBoids.SetData(combatBoidsArr, 0, 0, combatBoidsArr.Length);
-
-        uint[] count = { Convert.ToUInt32(hordeBoidsArr.Length) };
-        hordeCorpseCount.SetData(count, 0, 0, 1);
-        hordeDeadBoidsCount = Convert.ToInt32(count[0]);
-        count[0] = Convert.ToUInt32(combatBoidsArr.Length);
-        deadBoidsCountBuffer.SetData(count, 0, 0, 1);
-        deadBoidsCount = combatBoidsArr.Length;
-    }
-
-    /// <summary>
     ///     Get my boids back from a combat controller.
     /// </summary>
     /// <param name="combat">Combat controller that is currently controlling my boids</param>
@@ -612,7 +528,7 @@ public class RatBoids : MonoBehaviour
     /// </summary>
     /// <param name="combatBoids">The combat boid controller</param>
     /// <param name="myHorde">The horde which owns me</param>
-    public void JoinCombat(RatBoids combatBoids, HordeController myHorde)
+    public void JoinCombat(CombatBoids combatBoids, HordeController myHorde)
     {
         Debug.Log("BOIDS: Joining to combat");
         paused = true;

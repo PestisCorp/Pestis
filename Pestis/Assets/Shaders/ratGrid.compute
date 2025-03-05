@@ -57,6 +57,13 @@ void UpdateGrid(uint3 id : SV_DispatchThreadID, uint localID : SV_GROUPTHREADID)
         return;
     }
 
+    if (boids[id.x].dead) // process freshly dead boids
+    {
+        uint index = 0;
+        InterlockedAdd(deadBoidsCount[0], 1, index);
+        deadBoids[index] = boids[id.x];
+        return;
+    }
 
     // Set boid's new location.
     // Get index of Cell the boid belongs to

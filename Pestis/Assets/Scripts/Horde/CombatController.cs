@@ -62,7 +62,8 @@ namespace Horde
     {
         public const int MAX_PARTICIPANTS = 6;
 
-        public RatBoids boids;
+        public CombatBoids boids;
+
 
         /// <summary>
         ///     Lock that must be acquired to use `Participators` to prevent races
@@ -130,8 +131,6 @@ POI: {FightingOver}
         public override void FixedUpdateNetwork()
         {
             if (Participators.Count == 0) return;
-
-            boids.AliveRats = boids.containedHordes.Sum(horde => horde.AliveRats);
 
             bounds = boids.GetBounds();
 
@@ -380,6 +379,19 @@ POI: {FightingOver}
         public override void Spawned()
         {
             boids.Start();
+        }
+
+        public List<HordeController> GetHordes()
+        {
+            List<HordeController> list = new();
+            foreach (var participant in Participators)
+            foreach (var hordeID in participant.Value.Hordes)
+            {
+                Runner.TryFindBehaviour(hordeID, out HordeController horde);
+                list.Add(horde);
+            }
+
+            return list;
         }
     }
 }
