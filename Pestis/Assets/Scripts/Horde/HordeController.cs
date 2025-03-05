@@ -29,7 +29,6 @@ namespace Horde
 
         private static int nextColorIndex; // Tracks the next color index
 
-
         public Player Player;
 
         public GameObject ratPrefab;
@@ -59,8 +58,10 @@ namespace Horde
         /// </summary>
         public float PopulationCooldown;
 
+
         private readonly List<RatController> _spawnedRats = new();
         private Camera _camera;
+        private GameObject _combatText;
 
         /// <summary>
         ///     Mid-point of all the rats in the horde
@@ -68,6 +69,7 @@ namespace Horde
         private Vector2 _hordeCenter;
 
         private GameObject _playerText;
+
 
         private PopulationController _populationController;
 
@@ -287,6 +289,7 @@ Count: {AliveRats}
             // Already arrived at combat
             if (boids.paused) return;
 
+            _combatText.SetActive(true);
             boids.JoinCombat(CurrentCombatController.boids, this);
         }
 
@@ -377,6 +380,7 @@ Count: {AliveRats}
             targetLocation = transform.Find("TargetLocation").gameObject.GetComponent<NetworkTransform>();
 
             _playerText = transform.Find("Canvas/PlayerName").gameObject;
+            _combatText = transform.Find("Canvas/PlayerName/Combat").gameObject;
             var text = _playerText.GetComponentInChildren<TMP_Text>();
             text.text = Player.Username;
             if (Player.IsLocal) text.color = Color.red;
@@ -458,6 +462,9 @@ Count: {AliveRats}
         public void RetreatRpc()
         {
             Debug.Log("Retreating!");
+
+            _combatText.SetActive(false);
+
             var baseCamp = transform.parent.position;
             if (Player.ControlledPOIs.Count != 0)
             {
@@ -528,6 +535,8 @@ Count: {AliveRats}
 
             TargetPoi = null;
 
+            _combatText.SetActive(true);
+
             targetLocation.Teleport(target.HordeBounds.center);
             if (target.InCombat) // If the target is already in combat, join it
             {
@@ -546,6 +555,8 @@ Count: {AliveRats}
         public void EventWonCombatRpc()
         {
             Debug.Log($"We ({Object.Id}) won combat!");
+            _combatText.SetActive(false);
+
             CurrentCombatController = null;
             HordeBeingDamaged = null;
             PopulationCooldown = 20.0f;
@@ -573,6 +584,7 @@ Count: {AliveRats}
             FindAnyObjectByType<InputHandler>().LocalPlayer?.SelectHorde(this);
         }
 
+
         /// <summary>
         ///     Sent to *all* machines so they can update their local boid sims
         /// </summary>
@@ -581,6 +593,7 @@ Count: {AliveRats}
         public void AddBoidsToCombatRpc(CombatController combat)
         {
             boids.JoinCombat(combat.boids, this);
+            _combatText.SetActive(true);
         }
     }
 }

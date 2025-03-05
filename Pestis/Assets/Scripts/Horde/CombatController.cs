@@ -64,6 +64,7 @@ namespace Horde
 
         public CombatBoids boids;
 
+
         /// <summary>
         ///     Lock that must be acquired to use `Participators` to prevent races
         /// </summary>
@@ -349,6 +350,19 @@ POI: {FightingOver}
         public override void Spawned()
         {
             boids.Start();
+        }
+
+        public List<HordeController> GetHordes()
+        {
+            List<HordeController> list = new();
+            foreach (var participant in Participators)
+            foreach (var hordeID in participant.Value.Hordes)
+            {
+                Runner.TryFindBehaviour(hordeID, out HordeController horde);
+                list.Add(horde);
+            }
+
+            return list;
         }
     }
 }
