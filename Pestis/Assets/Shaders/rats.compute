@@ -28,7 +28,7 @@ uniform float turnSpeed;
 uniform float xBound;
 uniform float yBound;
 /// Target position for boids to move towards
-uniform float2 targetPos;
+float2 targetPos = float2(0, 0);
 uniform float targetFactor;
 // Player ID these boids belong to
 uniform int player;
@@ -37,6 +37,8 @@ uniform int horde;
 
 uniform bool combatRats;
 
+float targetPosX;
+float targetPosY;
 /// Cumulative boid count for each grid cell
 /// I.e. count for block N is the sum of counts for blocks 0 to N
 StructuredBuffer<uint> gridOffsetBuffer;
@@ -160,7 +162,7 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
         boid.dead = false;
         if (numBoidsPrevious == 0)
         {
-            boid.pos = float2(0, 0);
+            boid.pos = float2(targetPosX, targetPosY);
             boid.vel = float2(0, 0);
         }
         else
