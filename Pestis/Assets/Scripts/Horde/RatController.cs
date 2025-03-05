@@ -50,6 +50,7 @@ namespace Horde
         {
             if (deathCountdown != -1) return;
 
+            // Update sprite rotation
             var angle = Vector2.SignedAngle(transform.up, Vector2.up);
 
             // Normalise to clockwise
@@ -182,10 +183,6 @@ namespace Horde
             return _rigidbody.linearVelocity;
         }
 
-        public Vector2 GetPosition()
-        {
-            return transform.position;
-        }
 
         /// <summary>
         ///     Kill rat and leave corpse

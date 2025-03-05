@@ -1,0 +1,175 @@
+#define blockSize 512
+
+struct Boid
+{
+    float2 pos;
+    float2 vel;
+    int player;
+    int horde;
+    int dead;
+};
+
+StructuredBuffer<Boid> boids;
+RWStructuredBuffer<Boid> boidsOut;
+// Boids that should be rendered as corpses, and not included in the sim
+RWStructuredBuffer<Boid> deadBoids;
+/// Stores the Grid Index & Offset of each boid by Boid Index
+RWStructuredBuffer<uint2> gridBuffer;
+/// Cumulative boid count for each grid cell
+/// I.e. count for block N is the sum of counts for blocks 0 to N
+RWStructuredBuffer<uint> gridOffsetBuffer;
+StructuredBuffer<uint> gridOffsetBufferIn;
+RWStructuredBuffer<uint> gridSumsBuffer;
+StructuredBuffer<uint> gridSumsBufferIn;
+
+RWStructuredBuffer<uint> deadBoidsCount;
+
+float gridCellSize;
+uint gridDimY;
+uint gridDimX;
+uint gridTotalCells;
+uint blocks;
+uint numBoids;
+uint numBoidsPrevious;
+uint d;
+
+uint getGridID(Boid boid)
+{
+    int x = floor(boid.pos.x / gridCellSize + gridDimX / 2);
+    int y = floor(boid.pos.y / gridCellSize + gridDimY / 2);
+    return (gridDimX * y) + x;
+}
+
+#pragma kernel UpdateGrid // ID 0
+[numthreads(blockSize, 1, 1)]
+void UpdateGrid(uint3 id : SV_DispatchThreadID, uint localID : SV_GROUPTHREADID)
+{
+    if (id.x >= numBoids)
+    {
+        if (id.x < numBoidsPrevious && boids[id.x].dead) // process freshly dead boids
+        {
+            uint index = 0;
+            InterlockedAdd(deadBoidsCount[0], 1, index);
+            deadBoids[index] = boids[id.x];
+            return;
+        }
+
+        return;
+    }
+
+    if (boids[id.x].dead) // process freshly dead boids
+    {
+        uint index = 0;
+        InterlockedAdd(deadBoidsCount[0], 1, index);
+        deadBoids[index] = boids[id.x];
+        return;
+    }
+
+    // Set boid's new location.
+    // Get index of Cell the boid belongs to
+    int gridID = getGridID(boids[id.x]);
+    gridBuffer[id.x].x = gridID;
+    // Set index of boid within that Cell
+    InterlockedAdd(gridOffsetBuffer[gridID], 1, gridBuffer[id.x].y);
+}
+
+#pragma kernel ClearGrid // ID 1
+[numthreads(blockSize, 1, 1)]
+void ClearGrid(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= gridTotalCells)
+    {
+        return;
+    }
+
+    gridOffsetBuffer[id.x] = 0;
+}
+
+/// Sum boid counts in each block cumulatively
+/// I.e. count for block N is the sum of counts for blocks 0 to N
+groupshared int temp[blockSize * 2];
+#pragma kernel PrefixSum // ID 2
+[numthreads(blockSize, 1, 1)]
+void PrefixSum(uint globalID : SV_DispatchThreadID, uint localID : SV_GROUPTHREADID, uint groupID : SV_GROUPID)
+{
+    int pout = 0, pin = 1;
+    temp[localID] = gridOffsetBufferIn[globalID];
+    GroupMemoryBarrierWithGroupSync();
+
+    [unroll]
+    for (uint offset = 1; offset < blockSize; offset *= 2)
+    {
+        pout = 1 - pout; // swap double buffer indices
+        pin = 1 - pout;
+        if (localID >= offset)
+        {
+            temp[pout * blockSize + localID] = temp[pin * blockSize + localID] + temp[pin * blockSize + localID -
+                offset];
+        }
+        else
+        {
+            temp[pout * blockSize + localID] = temp[pin * blockSize + localID];
+        }
+        GroupMemoryBarrierWithGroupSync();
+    }
+
+    // Don't write out of bounds
+    if (globalID >= gridTotalCells)
+    {
+        return;
+    }
+
+    gridOffsetBuffer[globalID] = temp[pout * blockSize + localID];
+    if (localID == 0)
+    {
+        gridSumsBuffer[groupID] = temp[pout * blockSize + blockSize - 1];
+    }
+}
+
+/// Rearrange boids to be in grid order instead of random order
+#pragma kernel RearrangeBoids // ID 3
+[numthreads(blockSize, 1, 1)]
+void RearrangeBoids(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= numBoids || boids[id.x].dead)
+    {
+        return;
+    }
+
+    uint gridID = gridBuffer[id.x].x;
+    uint cellOffset = gridBuffer[id.x].y;
+    uint index = gridOffsetBuffer[gridID] - 1 - cellOffset;
+    boidsOut[index] = boids[id.x];
+}
+
+#pragma kernel SumBlocks // ID 4
+[numthreads(blockSize, 1, 1)]
+void SumBlocks(uint3 id : SV_DISPATCHTHREADID)
+{
+    if (id.x >= blocks)
+    {
+        return;
+    }
+
+    uint k = id.x;
+
+    if (k < d)
+    {
+        gridSumsBuffer[k] = gridSumsBufferIn[k];
+    }
+    else
+    {
+        gridSumsBuffer[k] = gridSumsBufferIn[k] + gridSumsBufferIn[k - d];
+    }
+}
+
+#pragma kernel AddSums // ID 5
+[numthreads(blockSize, 1, 1)]
+void AddSums(uint globalID : SV_DISPATCHTHREADID, uint groupID : SV_GROUPID)
+{
+    if (groupID == 0 || globalID > gridTotalCells)
+    {
+        return;
+    }
+    gridOffsetBuffer[globalID] += gridSumsBufferIn[groupID - 1];
+}

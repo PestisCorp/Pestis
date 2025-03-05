@@ -32,6 +32,7 @@ public class UI_Manager : MonoBehaviour
     public TextMeshProUGUI popTotalText;
 
     public TextMeshProUGUI hordeTotalText;
+
     // References to the buttons that need some added function
     // Button type wouldn't show in inspector so using GameObject instead
     public GameObject moveButton;
@@ -87,8 +88,7 @@ public class UI_Manager : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    private void Update()
+    private void FixedUpdate()
     {
         //Only display resources if they player hasn't opted to show info
         if (localPlayer != null && !displayResourceInfo)

@@ -238,7 +238,7 @@ namespace Players
             // If less than 60 seconds since the horde has been in combat,
             // reduce desirability by a nice curve that heavily discourages early re-engagement, but reduces effects closer to 60
             if (Time.time - myHorde.lastInCombat < 60)
-                desirability += Mathf.Cos(_timeSinceLastUpdate / 20.0f + 3.14f) / 3.0f - 0.35f;
+                desirability += Mathf.Cos((Time.time - myHorde.lastInCombat) / 20.0f + 3.14f) / 3.0f - 0.35f;
 
             return Mathf.Clamp(desirability, 0.0f, 1.0f);
         }
