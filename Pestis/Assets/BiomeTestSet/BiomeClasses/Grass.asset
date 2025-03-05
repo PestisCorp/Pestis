@@ -18,6 +18,7 @@ MonoBehaviour:
   - {fileID: 7727599578141111434, guid: 27a3f781f19445ce181cdb9b55c37d7c, type: 3}
   CompatableTerrainTypes:
   - {fileID: 11400000, guid: cab14d9d032db5776949d99fcbafeb09, type: 2}
+  - {fileID: 11400000, guid: e3781974b500dca4e91279596353436e, type: 2}
   CompatableBiomeTiles:
   - {fileID: 11400000, guid: 8fd9656e3e876a744b2a9332078d94af, type: 2}
   - {fileID: 11400000, guid: 7d2c60f69ea46564faa2037126335fe7, type: 2}
@@ -26,5 +27,5 @@ MonoBehaviour:
   distanceFromNearestSeed: 3
   seedCount: 1
   walkLength: 0
-  iteration: 0
+  iteration: 1
   strength: 0.5
