@@ -58,6 +58,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
                 // Remove this POI from previous controller
                 ControlledBy.ControlledPOIs.Remove(this);
             }
+
             // Give control to new controller
             ControlledBy = player;
             player.ControlledPOIs.Add(this);
@@ -81,9 +82,6 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void UnStationHordeRpc(HordeController horde, RpcInfo rpcInfo = default)
         {
-            if (horde.Object.StateAuthority != rpcInfo.Source)
-                throw new Exception("Only the controlling player can unstation a horde!");
-
             StationedHordes.Remove(horde);
         }
 
@@ -113,8 +111,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             if (!Combat)
             {
                 Debug.Log("Changing POI Combat Controller");
-                Combat = horde.GetComponent<CombatController>();
-                if (!Combat) throw new NullReferenceException("Failed to get Combat Controller from horde.");
+                Combat = Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
                 Combat!.SetFightingOverRpc(this);
                 foreach (var defender in StationedHordes) Combat.AddHordeRpc(defender, false);
             }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
 {
-    private const int numBots = 4;
+    private const int numBots = 5;
     private const int spawnSeed = 312;
     private static readonly Vector2 spawnCenter = new(0, 0);
 
@@ -17,7 +17,7 @@ public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
         if (player == Runner.LocalPlayer)
         {
             Debug.Log($"Spawning player {player.AsIndex}");
-            const float A = 8;
+            const float A = 4;
             const float dtheta = (float)(40 * Math.PI / 180); // 20 degrees.
             List<Vector2> spawnPositions = new();
             for (var theta = dtheta * 4 + player.AsIndex * 5 * dtheta;; theta += dtheta)

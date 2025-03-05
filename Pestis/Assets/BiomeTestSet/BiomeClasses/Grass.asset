@@ -16,6 +16,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8fd9656e3e876a744b2a9332078d94af, type: 2}
   FeatureList:
   - {fileID: 7727599578141111434, guid: 27a3f781f19445ce181cdb9b55c37d7c, type: 3}
+  - {fileID: 7727599578141111434, guid: 13407f781d1484269808226466e6268d, type: 3}
+  - {fileID: 7727599578141111434, guid: 84078d546cca84bbd9df51f2ef5c40ed, type: 3}
+  - {fileID: 7727599578141111434, guid: 170ab43fc245946609ba9e1a63a81bcb, type: 3}
+  cityPrefab: {fileID: 7727599578141111434, guid: dc9871f9bdee740e8a3fe2c2f8a96f71, type: 3}
   CompatableTerrainTypes:
   - {fileID: 11400000, guid: cab14d9d032db5776949d99fcbafeb09, type: 2}
   - {fileID: 11400000, guid: e3781974b500dca4e91279596353436e, type: 2}

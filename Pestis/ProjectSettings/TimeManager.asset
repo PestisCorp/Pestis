@@ -4,10 +4,10 @@
 TimeManager:
   m_ObjectHideFlags: 0
   Fixed Timestep:
-    m_Count: 5880000
+    m_Count: 14112000
     m_Rate:
       m_Denominator: 1
       m_Numerator: 141120000
-  Maximum Allowed Timestep: 0.05
+  Maximum Allowed Timestep: 0.5
   m_TimeScale: 1
-  Maximum Particle Timestep: 0.041666668
+  Maximum Particle Timestep: 0.2
