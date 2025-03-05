@@ -13,8 +13,6 @@ StructuredBuffer<Boid> boidsIn;
 RWStructuredBuffer<Boid> boidsOut;
 
 uniform uint numBoids;
-/// Number of boids in the previous frame
-uniform uint numBoidsPrevious;
 uniform float deltaTime;
 uniform float maxSpeed;
 uniform float minSpeed;

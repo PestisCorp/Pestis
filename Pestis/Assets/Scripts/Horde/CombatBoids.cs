@@ -216,7 +216,6 @@ public class CombatBoids : MonoBehaviour
         boidShader.SetFloats("targetPos", TargetPos.x,
             TargetPos.y);
 
-        boidShader.SetInt("numBoids", newNumBoids.Values.Sum());
         numBoids = newNumBoids;
 
         // Clear indices
@@ -263,7 +262,6 @@ public class CombatBoids : MonoBehaviour
         boidShader.Dispatch(updateBoidsKernel, containedHordes.Count,
             Mathf.CeilToInt(numBoids.Values.Sum() / blockSize), 1);
 
-        boidShader.SetInt("numBoidsPrevious", numBoids.Values.Sum());
         gridShader.SetInt("numBoidsPrevious", _previousNumBoids.Values.Sum());
         // Grid shader needs to be one iteration behind, for correct rearranging.
         gridShader.SetInt("numBoids", numBoids.Values.Sum());
@@ -638,12 +636,12 @@ public class CombatBoids : MonoBehaviour
         // Append boids to buffer
         boidBuffer.SetData(newBoids, 0, numBoids.Values.Sum(), newBoidsCount);
         boidBufferOut.SetData(newBoids, 0, numBoids.Values.Sum(), newBoidsCount);
-        // So it doesn't override their current positions/other data
-        boidShader.SetInt("numBoidsPrevious", numBoids.Values.Sum());
 
         _previousNumBoids.Add(boidsHorde, newBoidsCount);
         numBoids.Add(boidsHorde, newBoidsCount);
         containedHordes.Add(boidsHorde);
+
+        boidShader.SetInt("numBoids", numBoids.Values.Sum());
     }
 
     /// <summary>
@@ -706,5 +704,7 @@ public class CombatBoids : MonoBehaviour
         deadBoidsCount = combatBoidsArr.Length;
 
         containedHordes.Remove(horde);
+
+        boidShader.SetInt("numBoids", numBoids.Values.Sum());
     }
 }
