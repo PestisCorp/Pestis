@@ -998,14 +998,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35719502745a45e6a830b4f92c4e09a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 1
+  maxSpeed: 3
   edgeMargin: 0.5
   visualRange: 50
   minDistance: 0.4
-  cohesionFactor: 3
-  separationFactor: 100
-  alignmentFactor: 0.1
-  targetFactor: 50
+  cohesionFactor: 1
+  separationFactor: 5
+  alignmentFactor: 0.5
+  targetFactor: 4
   boidShader: {fileID: 7200000, guid: 9c4516c864c64285a3313ea819bbf605, type: 3}
   gridShader: {fileID: 7200000, guid: 09b3d2d9369c4b7dab8d97a7e83f5eaf, type: 3}
   boidMat: {fileID: 2100000, guid: 14e523a1206d6077695982ee0599c60b, type: 2}

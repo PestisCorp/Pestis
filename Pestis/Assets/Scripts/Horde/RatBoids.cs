@@ -112,7 +112,7 @@ public class RatBoids : MonoBehaviour
         _started = true;
         xBound = 256;
         yBound = 256;
-        turnSpeed = 0.04f;
+        turnSpeed = 1.5f;
         minSpeed = maxSpeed * 0.75f;
 
         // Create new instance of shaders to stop them sharing data!

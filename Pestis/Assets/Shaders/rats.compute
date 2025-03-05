@@ -64,9 +64,6 @@ void MergedBehaviours(inout Boid boid)
     float2 avgVel = 0;
     uint neighbours = 0;
 
-    float2 closestEnemy;
-    float closestEnemyDist = 99999999999999.0;
-
     uint2 gridXY = getGridLocation(boid);
     uint cell = getGridID(gridXY);
 
@@ -92,37 +89,23 @@ void MergedBehaviours(inout Boid boid)
                 if (distSq < minDistanceSq)
                 {
                     close += diff / distSq;
-                }
-                // If friendly
-                if (other.player == boid.player)
-                {
+
+
                     center += other.pos;
                     avgVel += other.vel;
                     neighbours++;
-                }
-                else // If enemy
-                {
-                    if (distSq < closestEnemyDist)
-                    {
-                        closestEnemy = other.pos;
-                    }
                 }
             }
         }
     }
 
-    if (neighbours > 0 && closestEnemyDist == 99999999999999.0)
+    if (neighbours > 0)
     {
         center /= neighbours;
         avgVel /= neighbours;
 
         boid.vel += (center - boid.pos) * (cohesionFactor * deltaTime * turnSpeed);
         boid.vel += (avgVel - boid.vel) * (alignmentFactor * deltaTime * turnSpeed);
-    }
-
-    if (closestEnemyDist != 99999999999999.0)
-    {
-        boid.vel += (closestEnemy - boid.pos) * (cohesionFactor * deltaTime * turnSpeed);
     }
 
 
