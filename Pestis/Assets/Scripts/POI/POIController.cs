@@ -65,10 +65,25 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
 
             // Give control to new controller
             ControlledBy = player;
+            
             player.ControlledPOIs.Add(this);
             // Add Cheese benefits to new controller
             ControlledBy.IncrementCheeseIncrementRateRpc(_cheesePerTick);
             StationedHordes.Clear();
+
+            Image flag = flagObject.GetComponent<Image>();
+            
+            if (ControlledBy.IsLocal)
+            {
+                captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_owned");
+                flag.sprite = captureFlag;
+            }
+            else
+            {
+                Sprite iconSprite = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_enemy");
+
+                flag.sprite = captureFlag;
+            }
         }
 
         private void StationHorde(HordeController horde)
@@ -94,13 +109,13 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             Collider = GetComponent<Collider2D>();
             
             // Create a new GameObject for the icon
-            flagObject = new GameObject("PrefabIcon");
+            flagObject = new GameObject("CaptureFlagIcon");
             flagObject.transform.SetParent(transform); // Attach to prefab
             flagObject.transform.localPosition = new Vector3(0, 2f, 0); // Adjust height
 
             // Find the uncaptured flag resource and display it
             Image flag = flagObject.AddComponent<Image>();
-            captureFlag = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_enemy");
+            captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_uncaptured");
             flag.sprite = captureFlag;
 
         }
