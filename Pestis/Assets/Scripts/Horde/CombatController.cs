@@ -143,15 +143,12 @@ POI: {FightingOver}
                 foreach (var hordeID in kvp.Value.Hordes)
                 {
                     Runner.TryFindBehaviour(hordeID, out HordeController horde);
-                    var minimumHealth = kvp.Value.HordeStartingHealth.Get(hordeID) * 0.2f;
-                    // If horde is above 20% of it's starting health
-                    if (horde.TotalHealth > minimumHealth)
+                    if (horde.TotalHealth > 0)
                         aliveHordes++;
                     else
                         hordesToRemove.Add(horde);
                 }
-
-                // If player has no hordes above 20% health participating
+                
                 if (aliveHordes == 0) playersToRemove.Add(kvp.Key);
             }
 
@@ -178,11 +175,18 @@ POI: {FightingOver}
                 // It's safe to call the RPCs now
                 foreach (var horde in hordesToRemove)
                 {
-                    // Tell horde to run away to nearest friendly POI
-                    horde.RetreatRpc();
                     if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredEffects.Contains("unlock_septic_bite"))
                     {
                         horde.GetComponent<PopulationController>().SetSepticMult(1.0f);
+                    }
+                    if (horde.Player.Hordes.Count == 1)
+                    {
+                        // Tell horde to run away to nearest friendly POI
+                        horde.RetreatRpc();
+                    }
+                    else
+                    {
+                        horde.DestroyHordeRpc();
                     }
                 }
                 return;
@@ -246,8 +250,19 @@ POI: {FightingOver}
 
             // It's safe to call the RPCs now
             foreach (var horde in hordesToRemove)
-                // Tell horde to run away to nearest friendly POI
-                horde.RetreatRpc();
+            {
+                // If last horde of that player
+                if (horde.Player.Hordes.Count == 1)
+                {
+                    // Tell horde to run away to nearest friendly POI
+                    horde.RetreatRpc();
+                }
+                else
+                {
+                    Debug.Log("Killing horde");
+                    horde.DestroyHordeRpc();
+                }
+            }
 
             Destroy(gameObject);
         }

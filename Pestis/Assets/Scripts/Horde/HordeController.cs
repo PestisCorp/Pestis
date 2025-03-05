@@ -424,6 +424,7 @@ Count: {AliveRats}
             _evolutionManager = GetComponent<EvolutionManager>();
             Player = GetComponentInParent<Player>();
             boids = GetComponentInChildren<RatBoids>();
+            Player.Hordes.Add(this);
 
             if (HasStateAuthority) // Ensure only the host assigns colors
             {
@@ -551,18 +552,14 @@ Count: {AliveRats}
         public void RetreatRpc()
         {
             Debug.Log("Retreating!");
-
-            _combatText.SetActive(false);
-
-            var baseCamp = transform.parent.position;
-            if (Player.ControlledPOIs.Count != 0)
+            Vector3 baseCamp = transform.parent.position;
+            if (Player.ControlledPOIs.Count > 0)
             {
-                var closestPOI = Player.ControlledPOIs.Aggregate((closest, poi) =>
+                POIController closestPOI = Player.ControlledPOIs.Aggregate((closest, poi) =>
                     Vector3.Distance(HordeBounds.center, poi.transform.position) <
                     Vector3.Distance(HordeBounds.center, closest.transform.position)
                         ? poi
                         : closest);
-
                 if (Vector3.Distance(closestPOI.transform.position, HordeBounds.center) <
                     Vector3.Distance(baseCamp, HordeBounds.center))
                 {
@@ -814,6 +811,16 @@ Count: {AliveRats}
         {
             boids.JoinCombat(combat.boids, this);
             _combatText.SetActive(true);
+        }
+        
+        /// <summary>
+        ///     Despawns the current horde
+        /// </summary>
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void DestroyHordeRpc()
+        {
+            Player.Hordes.Remove(this);
+            Runner.Despawn(Object);
         }
     }
 }
