@@ -33,8 +33,9 @@ namespace Horde
             {
                 foreach (var horde in player.Hordes)
                 {
+                    if (horde.GetHashCode() == _hordeController.GetHashCode()) continue;
                     var dist = ((Vector2)horde.GetBounds().center - (Vector2)_hordeController.GetBounds().center).sqrMagnitude;
-                    if (dist < 20f)
+                    if (dist < 10f)
                     {
                         affectedHordes.Add(horde);
                         var populationController = horde.GetComponent<PopulationController>();
@@ -68,13 +69,15 @@ namespace Horde
         IEnumerator RemovePestisAfterDelayHuman(HumanController affectedHuman)
         {
             yield return new WaitForSeconds(30f);
-            affectedHuman.SetRadius(affectedHuman.GetRadius() - 10.0f);
+            if (affectedHuman)
+                affectedHuman.SetRadius(affectedHuman.GetRadius() - 10.0f);
         }
         
         IEnumerator RemovePestisAfterDelayRat(PopulationController affectedEnemy)
         {
             yield return new WaitForSeconds(30f);
-            affectedEnemy.SetDamageReductionMult(affectedEnemy.GetState().DamageReductionMult / 1.3f);
+            if (affectedEnemy)
+                affectedEnemy.SetDamageReductionMult(affectedEnemy.GetState().DamageReductionMult / 1.3f);
         }
 
         IEnumerator Cooldown(int duration, Button calledBy, string abilityName)
