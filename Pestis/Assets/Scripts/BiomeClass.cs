@@ -63,7 +63,7 @@ public class BiomeClass : ScriptableObject
     {
         // Convert tile list to a random order.
         System.Random rng = new System.Random();
-        List<Vector2Int> shuffledTiles = biomeInstance.tilePositions.OrderBy(t => rng.Next()).ToList();
+        List<Vector3Int> shuffledTiles = biomeInstance.tilePositions.OrderBy(t => rng.Next()).ToList();
 
         // We'll place exactly one city, plus circle POIs around it.
         int totalTiles = shuffledTiles.Count;
@@ -82,7 +82,7 @@ public class BiomeClass : ScriptableObject
         {
             Vector3 cityWorldPos = Vector3.zero;
             bool placedCity = false;
-            float minCityDistance = 35.0f; // required distance from any other city (global check)
+            float minCityDistance = 30.0f; // required distance from any other city (global check)
 
             foreach (var tilePos in shuffledTiles)
             {

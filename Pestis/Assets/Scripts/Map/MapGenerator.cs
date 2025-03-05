@@ -14,10 +14,10 @@ namespace Map
         private FastNoise _noiseGenerator;
         public List<BiomeInstance> BiomeList = new(); //every instance of each biome
         public MapBehaviour Map;
-        public int RandomWalkSteps = 850000;
-        public int Smoothing = 3;
+        public int RandomWalkSteps = 300000;
+        public int Smoothing = 2;
         public float VoronoiFrequency = 0.00f;
-
+        public static List<Vector3> cityPositions = new List<Vector3>();
         public void GenerateMap()
         {
             Map.mapObject.tileIndices = new int[Map.mapObject.width * Map.mapObject.height];

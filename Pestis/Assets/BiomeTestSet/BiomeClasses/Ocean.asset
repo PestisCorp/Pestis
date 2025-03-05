@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TileList:
   - {fileID: 11400000, guid: 97111af94a490894385d5ee062502201, type: 2}
-  FeatureList: []
+  FeatureList:
+  - {fileID: 0}
+  cityPrefab: {fileID: 7727599578141111434, guid: dc9871f9bdee740e8a3fe2c2f8a96f71, type: 3}
   CompatableTerrainTypes:
   - {fileID: 11400000, guid: b85b6c7b0af394f438789f6ceca17ae4, type: 2}
   CompatableBiomeTiles: []

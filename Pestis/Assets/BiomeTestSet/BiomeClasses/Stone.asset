@@ -16,6 +16,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7a02a1dd1fefb554088334d88fca65c3, type: 2}
   FeatureList:
   - {fileID: 7727599578141111434, guid: 27a3f781f19445ce181cdb9b55c37d7c, type: 3}
+  cityPrefab: {fileID: 7727599578141111434, guid: dc9871f9bdee740e8a3fe2c2f8a96f71, type: 3}
   CompatableTerrainTypes:
   - {fileID: 11400000, guid: cab14d9d032db5776949d99fcbafeb09, type: 2}
   - {fileID: 11400000, guid: e3781974b500dca4e91279596353436e, type: 2}
@@ -24,8 +25,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7d2c60f69ea46564faa2037126335fe7, type: 2}
   - {fileID: 11400000, guid: 1c700d74599161c44937b74579189f89, type: 2}
   - {fileID: 11400000, guid: 7a02a1dd1fefb554088334d88fca65c3, type: 2}
-  distanceFromNearestSeed: 15
-  seedCount: 6
-  walkLength: 1500
-  iteration: 30
+  distanceFromNearestSeed: 80
+  seedCount: 3
+  walkLength: 1200
+  iteration: 14
   strength: 0.5
