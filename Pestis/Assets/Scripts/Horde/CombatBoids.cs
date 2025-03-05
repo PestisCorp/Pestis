@@ -243,8 +243,15 @@ public class CombatBoids : MonoBehaviour
 
         // Compute boid behaviours
 
-        var boidsToKillData = containedHordes.Select(horde => Math.Max(numBoids[horde] - _previousNumBoids[horde], 0))
+        var boidsToKillData = containedHordes.Select(horde => Math.Max(_previousNumBoids[horde] - numBoids[horde], 0))
             .ToArray();
+
+        if (boidsToKillData.Any(x => x != 0))
+        {
+            Debug.Log("boids died");
+            Debug.Log("lol");
+        }
+
         boidsToKill.SetData(boidsToKillData, 0, 0, boidsToKillData.Length);
 
         boidShader.Dispatch(updateBoidsKernel, containedHordes.Count,
