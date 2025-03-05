@@ -54,7 +54,7 @@ Shader "Unlit/deadBoidShader"
                 Boid boid = boids[instanceID];
                 float2 pos = _Positions[vertexID - instanceID * 4];
                 v2f o;
-                o.pos = UnityObjectToClipPos(float4(pos + boid.pos, 0, 0));
+                o.pos = UnityWorldToClipPos(float4(pos + boid.pos, 0, 0));
                 if (vertexID % 4 == 0)
                 {
                     o.uv = float2(0, 0);

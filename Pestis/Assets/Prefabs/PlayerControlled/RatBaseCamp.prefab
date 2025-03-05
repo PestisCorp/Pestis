@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2065030354367770915}
   - component: {fileID: 1733681384128497525}
   - component: {fileID: -5284016957979711463}
+  - component: {fileID: 4327016018417077576}
   m_Layer: 0
   m_Name: RatBaseCamp
   m_TagString: Untagged
@@ -109,6 +110,7 @@ MonoBehaviour:
   - {fileID: 6001773465433005753}
   NetworkedBehaviours:
   - {fileID: -5284016957979711463}
+  - {fileID: 4327016018417077576}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &-5284016957979711463
 MonoBehaviour:
@@ -124,10 +126,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 0
   hordePrefab: {fileID: 2093969167296477126, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
+  cheeseConsumptionRate: 0.001
   _Hordes: []
+  _ControlledPOIs: []
   _Username: 
   _CurrentCheese: 0
   _CheeseIncrementRate: 0.03
+  _FixedCheeseGain: 0.03
+--- !u!114 &4327016018417077576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6124682003357980499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0.15
+  SyncScale: 0
+  SyncParent: 1
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
 --- !u!1001 &2540703415486097592
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -250,7 +272,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8072967729009948161, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
       propertyPath: NetworkedBehaviours.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8072967729009948161, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
       propertyPath: 'NetworkedBehaviours.Array.data[1]'
@@ -259,7 +281,7 @@ PrefabInstance:
     - target: {fileID: 8072967729009948161, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
       propertyPath: 'NetworkedBehaviours.Array.data[3]'
       value: 
-      objectReference: {fileID: 8378574639641677574}
+      objectReference: {fileID: 4068996100801692341}
     - target: {fileID: 8072967729009948161, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
       propertyPath: 'NetworkedBehaviours.Array.data[4]'
       value: 
@@ -291,7 +313,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2093969167296477126, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4068996100801692341}
   m_SourcePrefab: {fileID: 100100000, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
 --- !u!4 &1275249099690704759 stripped
 Transform:
@@ -303,18 +328,40 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4419380376764164480, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
   m_PrefabInstance: {fileID: 2540703415486097592}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 4489281334052134782}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 21056fc1ac164f62ab126c09e6e0ed46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &4489281334052134782 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2093969167296477126, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
+  m_PrefabInstance: {fileID: 2540703415486097592}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4068996100801692341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4489281334052134782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0.15
+  SyncScale: 0
+  SyncParent: 1
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
 --- !u!114 &6001773465433005753 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8072967729009948161, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
   m_PrefabInstance: {fileID: 2540703415486097592}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 4489281334052134782}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}

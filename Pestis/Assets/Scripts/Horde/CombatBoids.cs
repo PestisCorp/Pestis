@@ -31,7 +31,11 @@ public class CombatBoids : MonoBehaviour
     public bool paused;
 
     public List<HordeController> containedHordes;
+
+    // Horde controller -> local combat ID of horde
+    private readonly Dictionary<HordeController, int> hordeIDs = new();
     private Dictionary<HordeController, int> _previousNumBoids = new();
+
 
     private bool _started;
     private int blocks;
@@ -57,6 +61,7 @@ public class CombatBoids : MonoBehaviour
     private ComputeBuffer gridOffsetBuffer;
     private ComputeBuffer gridOffsetBufferIn;
     private ComputeBuffer gridSumsBuffer;
+
     private ComputeBuffer gridSumsBuffer2;
 
     private float minSpeed;
@@ -628,6 +633,8 @@ public class CombatBoids : MonoBehaviour
         // Update horde number to use index in current combat
         for (var i = 0; i < newBoidsCount; i++) newBoids[i].horde = containedHordes.Count;
 
+        hordeIDs[boidsHorde] = containedHordes.Count;
+
         // Append boids to buffer
         boidBuffer.SetData(newBoids, 0, numBoids.Values.Sum(), newBoidsCount);
         boidBufferOut.SetData(newBoids, 0, numBoids.Values.Sum(), newBoidsCount);
@@ -651,16 +658,18 @@ public class CombatBoids : MonoBehaviour
         Debug.Log("COMBAT BOIDS: Removing boids");
         // Transfer live boids
         var boids = new Boid[numBoids.Values.Sum()];
-        boidBuffer.GetData(boids, 0, 0, numBoids.Values.Sum());
+        boidBufferOut.GetData(boids, 0, 0, numBoids.Values.Sum());
         var combatBoids = new List<Boid>();
         var hordeBoids = new List<Boid>();
 
-        var hordeID = unchecked((int)horde.Object.Id.Raw);
+        var hordeID = hordeIDs[horde];
         foreach (var boid in boids)
             if (boid.horde == hordeID)
                 hordeBoids.Add(boid);
             else
                 combatBoids.Add(boid);
+
+        Debug.Log($"COMBAT BOIDS: Giving horde back {hordeBoids.Count} and keeping {combatBoids.Count}");
 
         var hordeBoidsArr = hordeBoids.ToArray();
         hordeBuffer.SetData(hordeBoidsArr, 0, 0, hordeBoidsArr.Length);

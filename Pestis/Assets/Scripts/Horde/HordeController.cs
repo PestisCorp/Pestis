@@ -421,7 +421,6 @@ Count: {AliveRats}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void DealDamageRpc(float damage)
         {
-            Debug.Log($"Damage Reduction: {_populationController.GetState().DamageReduction}");
             TotalHealth -= damage * _populationController.GetState().DamageReduction;
         }
 
