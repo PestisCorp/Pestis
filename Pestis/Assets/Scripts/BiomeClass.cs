@@ -18,15 +18,21 @@ public class BiomeClass : ScriptableObject
 
 
     public TileBase[] CompatableTerrainTypes; //can be altered to just be some preexisting tile
-    public static Dictionary<Vector2Int, BiomeInstance> TileBiomeMap = new ();
-
+    public BiomeTile[] CompatableBiomeTiles; //can be altered to just be some preexisting tile
+    public int distanceFromNearestSeed = 3;
     //generation stuff
     public int seedCount;
     public int walkLength;
     public int iteration;
-    public int strength;
+    public float strength;
 
     //in game stuff
+
+
+
+
+
+
 
 
     private void Shuffle<T>(T[] array)
@@ -57,7 +63,7 @@ public class BiomeClass : ScriptableObject
     {
         // Convert tile list to a random order.
         System.Random rng = new System.Random();
-        List<Vector2Int> shuffledTiles = biomeInstance.tilePositions.OrderBy(t => rng.Next()).ToList();
+        List<Vector3Int> shuffledTiles = biomeInstance.tilePositions.OrderBy(t => rng.Next()).ToList();
 
         // We'll place exactly one city, plus circle POIs around it.
         int totalTiles = shuffledTiles.Count;
@@ -76,7 +82,7 @@ public class BiomeClass : ScriptableObject
         {
             Vector3 cityWorldPos = Vector3.zero;
             bool placedCity = false;
-            float minCityDistance = 35.0f; // required distance from any other city (global check)
+            float minCityDistance = 20.0f; // required distance from any other city (global check)
 
             foreach (var tilePos in shuffledTiles)
             {
@@ -181,11 +187,23 @@ public class BiomeClass : ScriptableObject
         }
     }
 
+    internal List<TileBase> TilesInArea(int x, int y, int size, Tilemap map)
+    {
+        List<TileBase> tiles = new List<TileBase>();
+        for (int dx = -size / 2; dx <= size / 2; dx++)
+        {
+            for (int dy = -size / 2; dy <= size / 2; dy++)
+            {
+                var checkPosition = new Vector3Int(x + dx, y + dy);
+                tiles.Add(map.GetTile(checkPosition));
+            }
+        }
+        return tiles;
+    }
 
     public virtual BiomeInstance sowSeed(Tilemap map)
     {
         var bounds = map.cellBounds;
-        var success = false;
         while (true)
         {
             var randomX = UnityEngine.Random.Range(bounds.xMin, bounds.xMax);
@@ -195,25 +213,25 @@ public class BiomeClass : ScriptableObject
             // Check if the current tile is of a specific type (e.g., Grass)
             if (CompatableTerrainTypes.Contains(currentTile))
             {
-                map.SetTile(randomPosition, getRandomBiomeTile());
-                var instance = new BiomeInstance(this, new Vector2Int(randomX, randomY));
-                instance.tilePositions.Add(new Vector2Int(randomX, randomY));
-                TileBiomeMap[new Vector2Int(randomX, randomY)] = instance;
-                return instance;
+                List < TileBase > tiles = TilesInArea(randomX, randomY, distanceFromNearestSeed*2, map);
+                if (!tiles.OfType<BiomeTile>().Any())
+                {
+                    return new BiomeInstance(this, new Vector3Int(randomX, randomY));
+                }
             }
         }
     }
 
     public virtual void
-        Growth(Vector2Int currentPosition, Tilemap map, BiomeInstance biomeInstance,
-            int walkLength) //generate biomes by seeding 1 biomeTile and then repeatedly "growing" it
+        drunkyardGrowth(Vector3Int currentPosition, Tilemap map, BiomeInstance biomeInstance,
+            int walkLength) 
     {
         var bounds = map.cellBounds;
         // Perform the drunkard's walk
         for (var i = 0; i < walkLength; i++)
         {
             // Pick a random direction (Up, Down, Left, Right)
-            Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
+            Vector3Int[] directions = { Vector3Int.up, Vector3Int.down, Vector3Int.left, Vector3Int.right };
             Shuffle(directions);
             var valid = 0;
             var index = 0;
@@ -230,9 +248,7 @@ public class BiomeClass : ScriptableObject
                 {
                     valid = 2;
                     currentPosition = newPosition;
-                    map.SetTile(new Vector3Int(newPosition.x, newPosition.y, 0), getRandomBiomeTile());
-                    biomeInstance.tilePositions.Add(currentPosition);
-                    TileBiomeMap[currentPosition] = biomeInstance;
+                    biomeInstance.setTile(map, new Vector3Int(newPosition.x, newPosition.y, 0), getRandomBiomeTile());
                 }
 
                 index += 1;
@@ -244,29 +260,44 @@ public class BiomeClass : ScriptableObject
             currentPosition.y = Mathf.Clamp(currentPosition.y, bounds.yMin, bounds.yMax);
         }
     }
-
     public virtual void
         CellGeneration(Tilemap map,
             BiomeInstance biomeInstance) //generate biomes by seeding 1 biomeTile and then repeatedly "growing" it
     {
-        for (var i = 0; i < iteration; i++) Growth(biomeInstance.seedPosition, map, biomeInstance, walkLength);
+        for (var i = 0; i < iteration; i++) drunkyardGrowth(biomeInstance.seedPosition, map, biomeInstance, walkLength);
     }
-    
-    public static BiomeInstance GetBiomeAtPosition(Vector3Int tilePosition)
+
+    public virtual void callAutomata(BiomeInstance biome, Tilemap map, List<BiomeInstance> biomeInstances)
     {
-        Vector2Int pos = (Vector2Int)tilePosition;
-        return TileBiomeMap.TryGetValue(pos, out var biomeInstance) ? biomeInstance : null;
+        foreach (Vector3Int tilepos in biome.tilePositions)
+        {
+            BiomeTile tile = (BiomeTile)map.GetTile(tilepos);
+            tile.automata(map, tilepos, biomeInstances);
+        }
     }
 }
 
+
 public class BiomeInstance
 {
-    public Vector2Int seedPosition;
+    public Vector3Int seedPosition;
     public BiomeClass template; // Reference to the template (BiomeClass)
 
-    public List<Vector2Int> tilePositions = new(); // Stores generated tiles for this biome
+    public List<Vector3Int> tilePositions = new(); // Stores generated tiles for this biome
 
-    public BiomeInstance(BiomeClass template, Vector2Int position)
+
+    public void setTile(Tilemap map, Vector3Int position, BiomeTile tile)
+    {
+        map.SetTile(position, tile);
+        tilePositions.Add(position);
+    }
+
+    public void swapTile(Tilemap map, Vector3Int position, BiomeTile tile, BiomeInstance newbiome) //removes tile and gives it to new biome instance
+    {
+        tilePositions.Remove(position);
+        newbiome.setTile(map, position, tile);
+    }
+    public BiomeInstance(BiomeClass template, Vector3Int position)
     {
         this.template = template;
         seedPosition = position;
