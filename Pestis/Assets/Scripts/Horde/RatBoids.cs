@@ -99,6 +99,8 @@ public class RatBoids : MonoBehaviour
 
     private float visualRangeSq => visualRange * visualRange;
     private float minDistanceSq => minDistance * minDistance;
+    
+    private HordeController hordeController;
 
     private void Awake()
     {
@@ -109,6 +111,7 @@ public class RatBoids : MonoBehaviour
     public void Start()
     {
         if (_started) return;
+        hordeController = GetComponentInParent<HordeController>();
         _started = true;
         xBound = 256;
         yBound = 256;
@@ -222,8 +225,18 @@ public class RatBoids : MonoBehaviour
 
         // Some boids have died
         if (newNumBoids < numBoids && combat)
+        {
             // Don't exceed dead boids buffer
             deadBoidsCount = Math.Min(deadBoidsCount + numBoids - newNumBoids, deadBoids.count);
+            if (numBoids - newNumBoids > 0)
+            {
+                for (int i = 0; i < numBoids - newNumBoids; i++)
+                {
+                    hordeController.IncreaseFear();
+                }
+            }
+        }
+            
 
         if (boidBuffer.count < newNumBoids) ResizeBuffers(newNumBoids * 2);
 

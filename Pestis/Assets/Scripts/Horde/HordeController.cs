@@ -60,6 +60,7 @@ namespace Horde
         /// </summary>
         public NetworkTransform targetLocation;
 
+        private CooldownBar[] fearAndMoraleBars;
         /// <summary>
         ///     Distance a rat must get to its current intra-horde target to move onto the next one
         /// </summary>
@@ -396,23 +397,22 @@ Count: {AliveRats}
             }
         }
 
-        private void IncreaseFear()
+        public void IncreaseFear()
         {
-            CooldownBar[] bars = moraleAndFearInstance.GetComponentsInChildren<CooldownBar>();
-            if (bars[0].name == "FearBar")
+            if (fearAndMoraleBars[0].name == "FearBar")
             {
-                if (bars[0].current == 0) return;
-                bars[0].current -= 5;
-                if (bars[0].current != 0) return;
-                StartCoroutine(FearDebuff(bars[0]));
+                if (fearAndMoraleBars[0].current == 0) return;
+                fearAndMoraleBars[0].current -= 5;
+                if (fearAndMoraleBars[0].current != 0) return;
+                StartCoroutine(FearDebuff(fearAndMoraleBars[0]));
 
             }
             else
             {
-                if (bars[1].current == 0) return;
-                bars[1].current -= 5;
-                if (bars[1].current != 0) return;
-                StartCoroutine(FearDebuff(bars[1]));
+                if (fearAndMoraleBars[1].current == 0) return;
+                fearAndMoraleBars[1].current -= 5;
+                if (fearAndMoraleBars[1].current != 0) return;
+                StartCoroutine(FearDebuff(fearAndMoraleBars[1]));
             }
         }
 
@@ -481,7 +481,8 @@ Count: {AliveRats}
             }
 
             moraleAndFearInstance = Instantiate(FindFirstObjectByType<UI_Manager>().fearAndMorale);
-            foreach (CooldownBar bar in moraleAndFearInstance.GetComponentsInChildren<CooldownBar>())
+            fearAndMoraleBars = moraleAndFearInstance.GetComponentsInChildren<CooldownBar>();
+            foreach (CooldownBar bar in fearAndMoraleBars)
             {
                 bar.current = bar.maximum;
             }

@@ -230,6 +230,7 @@ namespace Horde
                     count = tagCount + 1;
                 }
                 _evolutionaryState.ActiveMutations.SetWeight(_evolutionaryState.ActiveMutations[i], count);
+                GameManager.Instance.terrainMap.GetTile(_hordeController.GetBounds().center);
                 //var biome = BiomeClass.GetBiomeAtPosition(tilemap.WorldToCell(_hordeController.GetBounds().center)).template.name;
             }
         }
