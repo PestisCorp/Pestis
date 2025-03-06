@@ -11,8 +11,8 @@ namespace POI
 {
     public class POIController : NetworkBehaviour
     {
-        private readonly float _cheesePerTick = 0.3f;
         public ParticleSystem captureEffect;
+        private readonly float _cheesePerTick = 0.3f;
         public float CheesePerSecond => _cheesePerTick / Runner.DeltaTime;
 
         public Collider2D Collider { get; private set; }
@@ -66,16 +66,15 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             ControlledBy.IncrementCheeseIncrementRateRpc(_cheesePerTick);
             StationedHordes.Clear();
         }
+
         public void EmitCaptureEffect()
         {
             Debug.Log("particle effect");
-            if (captureEffect == null)
-            {
-                Debug.LogError("captureEffect is not assigned!");
-            }
+            if (captureEffect == null) Debug.LogError("captureEffect is not assigned!");
             captureEffect.Stop();
             captureEffect.Play();
         }
+
         private void StationHorde(HordeController horde)
         {
             EmitCaptureEffect();
@@ -97,7 +96,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
 
         public override void Spawned()
         {
-            Collider = GetComponent<Collider2D>();
+            Collider = GetComponentInChildren<Collider2D>();
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
