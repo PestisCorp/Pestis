@@ -4,15 +4,10 @@ using UnityEngine;
 public class Panner : MonoBehaviour
 {
 
-    public bool shouldPan;
+    public bool shouldPan = false;
     private const float TimeToMove = 1f;
-
     public Vector3 target;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start()
-    {
-        shouldPan = false;
-    }
+
 
     // Update is called once per frame
     private void Update()
