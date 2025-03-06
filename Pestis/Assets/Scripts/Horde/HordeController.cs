@@ -295,7 +295,7 @@ Count: {AliveRats}
             if (boids.paused) return;
 
             _combatText.SetActive(true);
-            boids.JoinCombat(CurrentCombatController.boids, this);
+            AddBoidsToCombatRpc(CurrentCombatController);
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -485,7 +485,7 @@ Count: {AliveRats}
         {
             Debug.Log("Retreating!");
 
-            _combatText.SetActive(false);
+            CurrentCombatController = null;
 
             var baseCamp = transform.parent.position;
             if (Player.ControlledPOIs.Count != 0)
@@ -514,7 +514,6 @@ Count: {AliveRats}
             }
 
             HordeBeingDamaged = null;
-            CurrentCombatController = null;
             PopulationCooldown = 15.0f;
             lastInCombat = Time.time;
         }
@@ -577,7 +576,6 @@ Count: {AliveRats}
         public void EventWonCombatRpc()
         {
             Debug.Log($"We ({Object.Id}) won combat!");
-            _combatText.SetActive(false);
 
             CurrentCombatController = null;
             HordeBeingDamaged = null;
@@ -614,8 +612,21 @@ Count: {AliveRats}
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void AddBoidsToCombatRpc(CombatController combat)
         {
+            Debug.Log($"HORDE of {Player.Username}: Joining boids to combat");
             boids.JoinCombat(combat.boids, this);
             _combatText.SetActive(true);
+        }
+
+        /// <summary>
+        ///     Sent to *all* machines so they can update their local boid sims
+        /// </summary>
+        /// <param name="combat"></param>
+        [Rpc(RpcSources.All, RpcTargets.All)]
+        public void RemoveBoidsFromCombatRpc(CombatController combat)
+        {
+            Debug.Log($"HORDE of {Player.Username}: Removing boids from combat");
+            boids.GetBoidsBack(combat, this);
+            _combatText.SetActive(false);
         }
     }
 }

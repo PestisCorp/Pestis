@@ -158,7 +158,6 @@ POI: {FightingOver}
                 var copy = Participators.Get(horde.Player);
                 copy.RemoveHorde(horde);
                 Participators.Set(horde.Player, copy);
-                horde.boids.GetBoidsBack(this, horde);
             }
 
             foreach (var player in playersToRemove)
@@ -175,8 +174,12 @@ POI: {FightingOver}
             {
                 // It's safe to call the RPCs now
                 foreach (var horde in hordesToRemove)
+                {
+                    horde.RemoveBoidsFromCombatRpc(this);
                     // Tell horde to run away to nearest friendly POI
                     horde.RetreatRpc();
+                }
+
                 return;
             }
 
@@ -191,7 +194,7 @@ POI: {FightingOver}
                 foreach (var hordeID in winnerParticipant.Hordes)
                 {
                     Runner.TryFindBehaviour(hordeID, out HordeController horde);
-                    horde.boids.GetBoidsBack(this, horde);
+                    horde.RemoveBoidsFromCombatRpc(this);
                     horde.EventWonCombatRpc();
                 }
 
@@ -233,10 +236,22 @@ POI: {FightingOver}
 
             // It's safe to call the RPCs now
             foreach (var horde in hordesToRemove)
+            {
+                horde.RemoveBoidsFromCombatRpc(this);
                 // Tell horde to run away to nearest friendly POI
                 horde.RetreatRpc();
+            }
 
-            Destroy(gameObject);
+
+            void Despawn()
+            {
+                Debug.Log("COMBAT CONTROLLER: Despawning now");
+                Runner.Despawn(Object);
+            }
+
+            Debug.Log("COMBAT CONTROLLER: Despawning in 10 secs");
+            // Don't despawn immediately, to allow remote sims to get their boids back
+            Invoke(nameof(Despawn), 10);
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
