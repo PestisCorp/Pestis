@@ -12,8 +12,8 @@ namespace Map
     public class MapScriptableObject : ScriptableObject
     {
         internal const int WaterValue = int.MaxValue;
-        public int width = 1024;
-        public int height = 1024;
+        public int width = 256;
+        public int height = 256;
         public int saa = 0;
         public TileBase water;
         public TileBase[] landTiles;

@@ -223,6 +223,7 @@ GameObject:
   - component: {fileID: 7358542239574007796}
   - component: {fileID: 7119494179627085907}
   - component: {fileID: 5005151174778688156}
+  - component: {fileID: 9119248649617340992}
   m_Layer: 5
   m_Name: Button_mutation_1
   m_TagString: Untagged
@@ -333,6 +334,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &9119248649617340992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1757501264432777808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03766d63899e4938906b7c05e4d5d1e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tooltipText: 
+  tooltipObject: {fileID: 0}
+  tooltipInstance: {fileID: 0}
 --- !u!1 &4155569210907065844
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,6 +361,7 @@ GameObject:
   - component: {fileID: 2212066978128678093}
   - component: {fileID: 1260763520698559588}
   - component: {fileID: 973165307912030440}
+  - component: {fileID: 5140284908161110878}
   m_Layer: 5
   m_Name: Button_mutation_2
   m_TagString: Untagged
@@ -455,6 +472,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5140284908161110878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4155569210907065844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03766d63899e4938906b7c05e4d5d1e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tooltipText: 
+  tooltipObject: {fileID: 0}
+  tooltipInstance: {fileID: 0}
 --- !u!1 &4965580267257120164
 GameObject:
   m_ObjectHideFlags: 0
@@ -605,6 +637,7 @@ GameObject:
   - component: {fileID: 7090679547161354060}
   - component: {fileID: 9013669918470996289}
   - component: {fileID: 1590108691227282079}
+  - component: {fileID: 3826965502641947840}
   m_Layer: 5
   m_Name: Button_mutation_3
   m_TagString: Untagged
@@ -715,6 +748,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3826965502641947840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5911409008383303437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03766d63899e4938906b7c05e4d5d1e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tooltipText: 
+  tooltipObject: {fileID: 0}
+  tooltipInstance: {fileID: 0}
 --- !u!1 &5926185786748616799
 GameObject:
   m_ObjectHideFlags: 0
@@ -944,7 +992,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2130453607030511112
 RectTransform:
   m_ObjectHideFlags: 0

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ProceduralToolkit;
 using ProceduralToolkit.FastNoiseLib;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using Random = System.Random;
 
 namespace Map
@@ -12,12 +14,10 @@ namespace Map
         private FastNoise _noiseGenerator;
         public List<BiomeInstance> BiomeList = new(); //every instance of each biome
         public MapBehaviour Map;
-        public int RandomWalkSteps = 5000000;
-        public int Smoothing = 10;
-        public float VoronoiFrequency = 0.025f;
+        public int RandomWalkSteps = 300000;
+        public int Smoothing = 2;
+        public float VoronoiFrequency = 0.00f;
         public static List<Vector3> cityPositions = new List<Vector3>();
-
-
         public void GenerateMap()
         {
             BiomeList.Clear(); // Clear old map biome lists
@@ -27,18 +27,50 @@ namespace Map
             GenerateBiomes();
         }
 
+
+
+
+
+        private void Callautomata()
+        {
+            BoundsInt bounds = Map.tilemap.cellBounds;
+            foreach (Vector3Int pos in bounds.allPositionsWithin)
+            {
+                UnityEngine.Tilemaps.TileBase tile = Map.tilemap.GetTile(pos);
+                if (tile is BiomeTile)
+                {
+                    BiomeTile tile1 = (BiomeTile)tile;
+                    tile1.automata(Map.tilemap, pos, BiomeList);
+                }
+                else
+                {
+                    Debug.Log(pos);
+                    Debug.Log(tile);
+                }
+            }
+        }
+
+
         private void GenerateBiomes()
         {
+            BiomeList = new();
+            //Map.poi = new();
             sowSeed();
             foreach (var biome in BiomeList)
             {
                 biome.template.CellGeneration(Map.tilemap, biome);
+            }
+
+            //automata(); automata(); automata();
+            foreach (var biome in BiomeList)
+            {
                 biome.template.FeatureGeneration(Map.tilemap, biome, Map.poi);
             }
         }
 
         private void sowSeed()
         {
+            
             var bounds = Map.tilemap.cellBounds;
 
             for (var i = 0; i < Map.mapObject.BiomeClasses.Length; i++)

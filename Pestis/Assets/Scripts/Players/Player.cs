@@ -48,6 +48,11 @@ namespace Players
 
         [Networked] public float FixedCheeseGain { get; private set; } = 0.03f;
 
+        private void OnDestroy()
+        {
+            GameManager.Instance.Players.Remove(this);
+        }
+
         public int GetHordeCount()
         {
             return Hordes.Count;
@@ -75,6 +80,8 @@ namespace Players
             }
 
             foreach (var horde in GetComponentsInChildren<HordeController>()) Hordes.Add(horde);
+
+            GameManager.Instance.Players.Add(this);
         }
 
         // Manage Cheese
@@ -151,6 +158,7 @@ namespace Players
 
             var totalHealth = toSplit.TotalHealth;
             var populationState = toSplit.GetPopulationState();
+            var evolutionaryState = toSplit.GetEvolutionState();
             var newHorde = Runner.Spawn(hordePrefab, Vector3.zero,
                     Quaternion.identity,
                     null, (runner, NO) =>
@@ -163,8 +171,9 @@ namespace Players
                     })
                 .GetComponent<HordeController>();
             toSplit.TotalHealth = totalHealth * (1.0f - splitPercentage);
+            newHorde.SetEvolutionaryState(evolutionaryState.DeepCopy());
             newHorde.SetPopulationState(populationState);
-
+            newHorde.SetPopulationInit(toSplit.AliveRats);
             // Move two hordes slightly apart
             newHorde.Move(toSplit.targetLocation.transform.position - toSplit.GetBounds().extents);
             toSplit.Move(toSplit.targetLocation.transform.position + toSplit.GetBounds().extents);

@@ -1,17 +1,33 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Fusion;
 using JetBrains.Annotations;
+using KaimiraGames;
+using MoreLinq;
 using Players;
 using POI;
 using TMPro;
+using UI;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 namespace Horde
 {
+    public enum CombatOptions
+    {
+        FrontalAssault, 
+        ShockAndAwe, 
+        Envelopment, 
+        Fortify, 
+        Hedgehog, 
+        AllRound
+    }
+    
+    
     public class HordeController : NetworkBehaviour
 
     {
@@ -28,10 +44,12 @@ namespace Horde
         };
 
         private static int nextColorIndex; // Tracks the next color index
+
         public Player Player;
 
         public GameObject ratPrefab;
-
+        public bool isHedgehogged = false;
+        public GameObject moraleAndFearInstance;
         // Do not use or edit yourself, used to expose internals to Editor
         [SerializeField] private int devToolsTotalRats;
         [SerializeField] private float devToolsTotalHealth;
@@ -57,8 +75,14 @@ namespace Horde
         /// </summary>
         public float PopulationCooldown;
 
+        [SerializeField] private GameObject hordeIcon;
+        [SerializeField] private Sprite enemyIcon;
+        [SerializeField] private Sprite ownIcon;
+
+
         private readonly List<RatController> _spawnedRats = new();
         private Camera _camera;
+        private GameObject _combatText;
 
         /// <summary>
         ///     Mid-point of all the rats in the horde
@@ -67,7 +91,9 @@ namespace Horde
 
         private GameObject _playerText;
 
+
         private PopulationController _populationController;
+        private EvolutionManager _evolutionManager;
 
         /// <summary>
         ///     How many rats we need to spawn to have the correct amount visible.
@@ -77,8 +103,11 @@ namespace Horde
         private Light2D _selectionLightPoi;
 
         private Light2D _selectionLightTerrain;
+        
 
         [CanBeNull] private Action OnArriveAtTarget;
+
+        public RatBoids boids { get; private set; }
 
         /// <summary>
         ///     Time in seconds since game start when the horde last finished combat
@@ -95,7 +124,7 @@ namespace Horde
 
         [Networked]
         [OnChangedRender(nameof(TotalHealthChanged))]
-        internal float TotalHealth { get; set; }
+        internal float TotalHealth { get; set; } = 25.0f;
 
         /// <summary>
         ///     Bounds containing every rat in Horde
@@ -116,7 +145,7 @@ namespace Horde
         /// </summary>
         [Networked]
         [CanBeNull]
-        private CombatController CurrentCombatController { get; set; }
+        public CombatController CurrentCombatController { get; private set; }
 
         public bool InCombat => CurrentCombatController && CurrentCombatController.HordeInCombat(this);
 
@@ -147,58 +176,39 @@ namespace Horde
                 OnArriveAtTarget = null;
             }
 
-            // Spawn at center of horde if there is one, or base if there isn't one yet.
-            if (_spawnedRats.Count == 0)
-                _hordeCenter = HordeBounds.center == Vector3.zero ? transform.position : HordeBounds.center;
-
-            // Only spawn up to one rat each tick to avoid freezes
-            if (_ratsToSpawn != 0)
-            {
-                // Spawn a Rat
-                var rat = Instantiate(ratPrefab, _hordeCenter, Quaternion.identity, transform);
-                var ratController = rat.GetComponent<RatController>();
-                ratController.SetHordeController(this);
-                ratController.SetColor(_hordeColor); //Apply horde color
-                ratController.Start();
-                _spawnedRats.Add(ratController);
-                _ratsToSpawn--;
-            }
-
-            // Can't calculate the bounds of nothing
-            if (_spawnedRats.Count == 0) return;
-
-
-            devToolsTargetLocation = targetLocation.transform.position;
-
-            // Calculate bounding box that contains all rats
-            var b = new Bounds(_spawnedRats[0].transform.position, Vector2.zero);
-            foreach (var rat in _spawnedRats) b.Encapsulate(rat.GetPosition());
-
-            b.Expand(1.0f);
+            boids.AliveRats = AliveRats;
+            boids.TargetPos = targetLocation.transform.position;
 
             // If we're the owner of this Horde, we are the authoritative source for the horde bounds
-            if (HasStateAuthority) HordeBounds = b;
+            if (HasStateAuthority)
+            {
+                if (AliveRats == 1)
+                {
+                    HordeBounds = boids.GetBounds();
+                }
+                else if (AliveRats > 0) // Move horde center slowly to avoid jitter due to center rat changing
+                {
+                    if (InCombat && CurrentCombatController!.boids.containedHordes.Contains(this))
+                        HordeBounds = CurrentCombatController!.boids.GetBounds(this);
+                    else
+                        HordeBounds = boids.GetBounds();
+                }
+                else
+                {
+                    HordeBounds = new Bounds(new Vector3(0, 0, 0), new Vector3(0, 0, 0));
+                }
+            }
 
-            _selectionLightTerrain.pointLightInnerRadius = b.extents.magnitude * 0.9f + 0.5f;
-            _selectionLightTerrain.pointLightOuterRadius = b.extents.magnitude * 1.0f + 0.5f;
-            _selectionLightTerrain.transform.position = b.center;
+            _selectionLightTerrain.pointLightInnerRadius = HordeBounds.extents.magnitude * 0.9f + 0.5f;
+            _selectionLightTerrain.pointLightOuterRadius = HordeBounds.extents.magnitude * 1.0f + 0.5f;
+            _selectionLightTerrain.transform.position = HordeBounds.center;
 
 
-            _selectionLightPoi.pointLightInnerRadius = b.extents.magnitude * 0.9f + 0.5f;
-            _selectionLightPoi.pointLightOuterRadius = b.extents.magnitude * 1.0f + 0.5f;
-            _selectionLightPoi.transform.position = b.center;
+            _selectionLightPoi.pointLightInnerRadius = HordeBounds.extents.magnitude * 0.9f + 0.5f;
+            _selectionLightPoi.pointLightOuterRadius = HordeBounds.extents.magnitude * 1.0f + 0.5f;
+            _selectionLightPoi.transform.position = HordeBounds.center;
 
-            intraHordeTargets[0] = new Vector2(targetLocation.transform.position.x - b.extents.x * 0.65f,
-                targetLocation.transform.position.y + b.extents.y * 0.65f);
-            intraHordeTargets[1] = new Vector2(targetLocation.transform.position.x - b.extents.x * 0.65f,
-                targetLocation.transform.position.y - b.extents.y * 0.65f);
-            intraHordeTargets[2] = new Vector2(targetLocation.transform.position.x + b.extents.x * 0.65f,
-                targetLocation.transform.position.y - b.extents.y * 0.65f);
-            intraHordeTargets[3] = new Vector2(targetLocation.transform.position.x + b.extents.x * 0.65f,
-                targetLocation.transform.position.y + b.extents.y * 0.65f);
-            targetTolerance = b.extents.magnitude * 0.1f;
-
-            _hordeCenter = b.center;
+            _hordeCenter = HordeBounds.center;
         }
 
 #if UNITY_EDITOR
@@ -218,6 +228,7 @@ Combat: {InCombat}
 Horde Target: {(HordeBeingDamaged ? HordeBeingDamaged.Object.Id : "None")}
 Stationed At {(StationedAt ? StationedAt.Object.Id : "None")}
 POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
+Count: {AliveRats}
 ");
             HandleUtility.Repaint();
         }
@@ -239,28 +250,29 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         public override void FixedUpdateNetwork()
         {
             CheckArrivedAtPoi();
+            CheckArrivedAtCombat();
 
-            if (InCombat)
+            if (InCombat && CurrentCombatController!.boids.containedHordes.Contains(this))
             {
-                var enemy = CurrentCombatController!.GetNearestEnemy(this);
-
-                if (enemy) // Could be no enemy if we just joined it
+                if (_evolutionManager.GetEvolutionaryState().AcquiredEffects.Contains("unlock_septic_bite"))
                 {
-                    // If we chose to be in combat, move towards enemy
-                    if (CurrentCombatController.HordeIsVoluntary(this))
-                        // Teleports target, not us
-                        targetLocation.Teleport(enemy.GetBounds().center);
+                    var septicMult = _populationController.GetState().SepticMult;
+                    _populationController.SetSepticMult(septicMult * 1.005f);
+                }
+                var enemyHordes =
+                    CurrentCombatController!.boids.containedHordes.Where(horde => horde.Player != Player).ToArray();
 
-                    // If close enough, start dealing damage, and animating rats.
-                    if (enemy.GetBounds().Intersects(HordeBounds))
-                    {
-                        enemy.DealDamageRpc(_populationController.GetState().Damage);
-                        HordeBeingDamaged = enemy;
-                    }
-                    else
-                    {
-                        HordeBeingDamaged = null;
-                    }
+                foreach (var enemy in enemyHordes)
+                {
+                    // Split damage dealt among enemy hordes
+                    float bonusDamage = 0;
+                    if (GetEvolutionState().AcquiredEffects.Contains("unlock_necrosis"))
+                        bonusDamage += CurrentCombatController.boids.totalDeathsPerHorde[this] * 0.1f;
+                    enemy.DealDamageRpc(AliveRats / 50.0f * ((GetPopulationState().Damage 
+                                                                 * GetPopulationState().DamageMult 
+                                                                 * GetPopulationState().SepticMult + bonusDamage) 
+                                                             / enemyHordes.Length));
+                    if (enemy.isHedgehogged) DealDamageRpc(0.001f);
                 }
             }
         }
@@ -299,6 +311,23 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             Debug.Log("Arrived at POI, initiating combat!");
             TargetPoi.AttackRpc(this);
             TargetPoi = null;
+        }
+
+        /// <summary>
+        ///     Check if we've arrived at the combat we're in.
+        ///     If we have, transfer control of our boids over to the combat controller.
+        /// </summary>
+        private void CheckArrivedAtCombat()
+        {
+            if (!CurrentCombatController) return;
+
+            if (!HordeBounds.Intersects(CurrentCombatController.bounds)) return;
+
+            // Already arrived at combat
+            if (boids.paused) return;
+
+            _combatText.SetActive(true);
+            boids.JoinCombat(CurrentCombatController.boids, this);
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -351,10 +380,14 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
                 {
                     // Only leave corpse if in combat
                     if (InCombat)
+                    {
                         sortedByDistanceFromEnemy[sortedByDistanceFromEnemy.Count - 1 + i].Value.Kill();
+                        IncreaseFear();
+                    }
                     else
                         sortedByDistanceFromEnemy[sortedByDistanceFromEnemy.Count - 1 + i].Value.KillInstant();
                     indexesToRemove.Add(sortedByDistanceFromEnemy[sortedByDistanceFromEnemy.Count - 1 + i].Key);
+                    
                 }
 
                 indexesToRemove.Sort();
@@ -363,14 +396,50 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             }
         }
 
+        private void IncreaseFear()
+        {
+            CooldownBar[] bars = moraleAndFearInstance.GetComponentsInChildren<CooldownBar>();
+            if (bars[0].name == "FearBar")
+            {
+                if (bars[0].current == 0) return;
+                bars[0].current -= 5;
+                if (bars[0].current != 0) return;
+                StartCoroutine(FearDebuff(bars[0]));
+
+            }
+            else
+            {
+                if (bars[1].current == 0) return;
+                bars[1].current -= 5;
+                if (bars[1].current != 0) return;
+                StartCoroutine(FearDebuff(bars[1]));
+            }
+        }
+
+        IEnumerator FearDebuff(CooldownBar bar)
+        {
+            GetComponent<AbilityController>().feared = true;
+            var elapsedTime = 0.0f;
+            while (elapsedTime < 10f)
+            {
+                elapsedTime += Time.deltaTime;
+                bar.current = 0 + (int)(elapsedTime / 10 * bar.maximum);
+                yield return null;
+            }
+            GetComponent<AbilityController>().feared = false;
+        }
+
         public override void Spawned()
         {
             _populationController = GetComponent<PopulationController>();
+            _evolutionManager = GetComponent<EvolutionManager>();
             Player = GetComponentInParent<Player>();
-
+            boids = GetComponentInChildren<RatBoids>();
+            Player.Hordes.Add(this);
 
             if (HasStateAuthority) // Ensure only the host assigns colors
             {
+                
                 HordeColorIndex = (int)Object.Id.Raw % predefinedHordeColors.Length;
                 _hordeColor =
                     predefinedHordeColors
@@ -388,10 +457,35 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             targetLocation = transform.Find("TargetLocation").gameObject.GetComponent<NetworkTransform>();
 
             _playerText = transform.Find("Canvas/PlayerName").gameObject;
-            var text = _playerText.GetComponentInChildren<TMP_Text>();
-            text.text = Player.Username;
-            if (Player.IsLocal) text.color = Color.red;
+            _combatText = transform.Find("Canvas/PlayerName/Combat").gameObject;
 
+            var text = _playerText.transform.Find("Border/Background/Text").GetComponent<TMP_Text>();
+
+            text.text = Player.Username;
+
+            hordeIcon = transform.Find("Canvas/PlayerName/HordeIcon").gameObject;
+            var icon = hordeIcon.GetComponent<Image>();
+
+            if (Player.IsLocal)
+            {
+                var iconSprite = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_self");
+
+                text.color = Color.red;
+                icon.sprite = iconSprite;
+            }
+            else
+            {
+                var iconSprite = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_enemy");
+
+                icon.sprite = iconSprite;
+            }
+
+            moraleAndFearInstance = Instantiate(FindFirstObjectByType<UI_Manager>().fearAndMorale);
+            foreach (CooldownBar bar in moraleAndFearInstance.GetComponentsInChildren<CooldownBar>())
+            {
+                bar.current = bar.maximum;
+            }
+            moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
             // Needed to spawn in rats from joined session
             TotalHealthChanged();
         }
@@ -428,8 +522,8 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void DealDamageRpc(float damage)
         {
-            Debug.Log($"Damage Reduction: {_populationController.GetState().DamageReduction}");
-            TotalHealth -= damage * _populationController.GetState().DamageReduction;
+            TotalHealth -= damage * _populationController.GetState().DamageReduction
+                                  * _populationController.GetState().DamageReductionMult;
         }
 
         public Bounds GetBounds()
@@ -470,22 +564,30 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         {
             Debug.Log("Retreating!");
             Vector3 baseCamp = transform.parent.position;
-            POIController closestPOI = Player.ControlledPOIs.Aggregate((closest, poi) =>
-                Vector3.Distance(HordeBounds.center, poi.transform.position) <
-                Vector3.Distance(HordeBounds.center, closest.transform.position)
-                    ? poi
-                    : closest);
-
-            if (Vector3.Distance(closestPOI.transform.position, HordeBounds.center) <
-                Vector3.Distance(baseCamp, HordeBounds.center))
+            if (Player.ControlledPOIs.Count > 0)
             {
-                StationAtRpc(closestPOI);
+                POIController closestPOI = Player.ControlledPOIs.Aggregate((closest, poi) =>
+                    Vector3.Distance(HordeBounds.center, poi.transform.position) <
+                    Vector3.Distance(HordeBounds.center, closest.transform.position)
+                        ? poi
+                        : closest);
+                if (Vector3.Distance(closestPOI.transform.position, HordeBounds.center) <
+                    Vector3.Distance(baseCamp, HordeBounds.center))
+                {
+                    StationAtRpc(closestPOI);
+                }
+                else
+                {
+                    targetLocation.Teleport(baseCamp);
+                    StationedAt = null;
+                }
             }
             else
             {
                 targetLocation.Teleport(baseCamp);
                 StationedAt = null;
             }
+
             HordeBeingDamaged = null;
             CurrentCombatController = null;
             PopulationCooldown = 15.0f;
@@ -510,7 +612,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             targetLocation.Teleport(poi.transform.position);
         }
 
-        public void AttackHorde(HordeController target)
+        public void AttackHorde(HordeController target, string combatOption)
         {
             // Don't fight if we're below 10 rats
             if (TotalHealth < 10 * _populationController.GetState().HealthPerRat) return;
@@ -530,26 +632,144 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
 
             TargetPoi = null;
 
+            _combatText.SetActive(true);
+
+            targetLocation.Teleport(target.HordeBounds.center);
             if (target.InCombat) // If the target is already in combat, join it
             {
                 target.CurrentCombatController!.AddHordeRpc(this, true);
             }
             else // Otherwise start new combat and add the target to it
             {
-                CurrentCombatController = GetComponent<CombatController>();
+                CurrentCombatController =
+                    Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
                 CurrentCombatController!.AddHordeRpc(this, true);
                 CurrentCombatController.AddHordeRpc(target, false);
+            }
+
+            Enum.TryParse(combatOption.Replace(" ", ""), out CombatOptions option);
+            StartCoroutine(ApplyStrategy(option));
+
+        }
+
+        IEnumerator ApplyStrategy(CombatOptions action)
+        {
+            var oldAlive = AliveRats;
+            var oldEnemyAlive = CurrentCombatController!.GetNearestEnemy(this).AliveRats;
+            int poiCount = 0;
+            float poiMult = 1.0f;
+            switch (action)
+            {
+                case CombatOptions.FrontalAssault:
+                    _populationController.SetDamageMult(GetPopulationState().DamageMult * 1.2f);
+                    _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult * 1.2f);
+                    break;
+                case CombatOptions.ShockAndAwe:
+                    _populationController.SetDamageMult(GetPopulationState().DamageMult * 1.5f);
+                    _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult * 1.5f);
+                    _populationController.GetComponent<AbilityController>().abilityHaste += 10;
+                    
+                    yield return new WaitForSeconds(10f);
+                    
+                    _populationController.SetDamageMult(GetPopulationState().DamageMult / 1.5f);
+                    _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult / 1.5f);
+                    _populationController.GetComponent<AbilityController>().abilityHaste -= 10;
+                    break;
+                case CombatOptions.Envelopment:
+                    _populationController.SetDamageMult(GetPopulationState().DamageMult * (1 + oldAlive / 1000f));
+                    break;
+                case CombatOptions.Fortify:
+                    Collider2D[] colliders = Physics2D.OverlapCircleAll(GetBounds().center, 20f);
+                    foreach (var col in colliders)
+                    {
+                        POIController poi = col.GetComponentInParent<POIController>();
+                        if (poi) poiCount++;
+                    }
+
+                    poiMult = poiCount == 0 ? 1f : poiCount * 1.3f;
+                    _populationController.SetDamageMult(GetPopulationState().DamageMult * (poiMult));
+                    break;
+                case CombatOptions.Hedgehog:
+                    _populationController.SetDamageMult(GetPopulationState().DamageMult * 0.8f);
+                    _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult * 0.8f);
+                    isHedgehogged = true;
+                    break;
+                case CombatOptions.AllRound:
+                    _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult / (1f + 0.2f * Mathf.Log10(1f + oldEnemyAlive)));
+                    break;
+            }
+            while (InCombat)
+            {
+                yield return null;
+            }
+            switch (action)
+            {
+                case CombatOptions.FrontalAssault:
+                    _populationController.SetDamageMult(GetPopulationState().DamageMult / 1.2f);
+                    _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult / 1.2f);
+                    break;
+                case CombatOptions.Envelopment:
+                    _populationController.SetDamageMult(GetPopulationState().DamageMult / (1 + oldAlive / 1000f));
+                    break;
+                case CombatOptions.Hedgehog:
+                    _populationController.SetDamageMult(GetPopulationState().DamageMult / 0.8f);
+                    _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult / 0.8f);
+                    isHedgehogged = false;
+                    break;
+                case CombatOptions.Fortify:
+                    _populationController.SetDamageMult(GetPopulationState().DamageMult / poiMult);
+                    break;
+                case CombatOptions.AllRound:
+                    _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult * (1f + 0.2f * Mathf.Log10(1f + oldEnemyAlive)));
+                    break;
             }
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void EventWonCombatRpc()
+        public void EventWonCombatRpc(NetworkBehaviourId[] hordes)
         {
             Debug.Log($"We ({Object.Id}) won combat!");
+            _combatText.SetActive(false);
+
+            
+            EvolutionaryState state = GetEvolutionState();
+            WeightedList<ActiveMutation> newMutations = new WeightedList<ActiveMutation>();
+            foreach (var hordeID in hordes)
+            {
+                CurrentCombatController.Runner.TryFindBehaviour(hordeID, out HordeController horde);
+                if (horde.Id == hordeID) continue;
+                state.PassiveEvolutions["attack"][1] = Math.Max(horde.GetPopulationState().Damage * 0.8,
+                    state.PassiveEvolutions["attack"][1]);
+                state.PassiveEvolutions["health"][1] = Math.Max(horde.GetPopulationState().HealthPerRat * 0.8,
+                    state.PassiveEvolutions["health"][1]);
+                state.PassiveEvolutions["defense"][1] = Math.Max(horde.GetPopulationState().DamageReduction * 0.8,
+                    state.PassiveEvolutions["defense"][1]);
+                foreach (var mut in horde.GetEvolutionState().AcquiredMutations)
+                {
+                    if (state.ActiveMutations.Contains(mut))
+                    {
+                        newMutations.Add(mut, 1);
+                    }
+                }
+            }
+
+            if (newMutations.Count > 0)
+            {
+                ActiveMutation newMutation = newMutations.Next();
+                _evolutionManager.ApplyActiveEffects(newMutation);
+                FindFirstObjectByType<UI_Manager>().AddNotification($"You acquired a mutation, {newMutation.MutationName}, from your enemy.", Color.red);
+            }
+            
+            if (state.PassiveEvolutions != GetEvolutionState().PassiveEvolutions)
+            {
+                FindFirstObjectByType<UI_Manager>().AddNotification("In your conquests you have gained the strength of your subjects", Color.red);
+            }
             CurrentCombatController = null;
             HordeBeingDamaged = null;
             PopulationCooldown = 20.0f;
             lastInCombat = Time.time;
+            
+
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -568,9 +788,51 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             _populationController.SetState(newState);
         }
 
+        public void SetPopulationInit(int initialPopulation)
+        {
+            _populationController.initialPopulation = initialPopulation;
+        }
+
+        public EvolutionaryState GetEvolutionState()
+        {
+            return _evolutionManager.GetEvolutionaryState();
+        }
+
+        public void SetEvolutionaryState(EvolutionaryState newState)
+        {
+            _evolutionManager.SetEvolutionaryState(newState);
+        }
+        
+        public Vector2 GetCenter()
+        {
+            return _hordeCenter;
+        }
+
         public void Select()
         {
             FindAnyObjectByType<InputHandler>().LocalPlayer?.SelectHorde(this);
+        }
+
+
+        /// <summary>
+        ///     Sent to *all* machines so they can update their local boid sims
+        /// </summary>
+        /// <param name="combat"></param>
+        [Rpc(RpcSources.All, RpcTargets.All)]
+        public void AddBoidsToCombatRpc(CombatController combat)
+        {
+            boids.JoinCombat(combat.boids, this);
+            _combatText.SetActive(true);
+        }
+        
+        /// <summary>
+        ///     Despawns the current horde
+        /// </summary>
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void DestroyHordeRpc()
+        {
+            Player.Hordes.Remove(this);
+            Runner.Despawn(Object);
         }
     }
 }

@@ -1,0 +1,50 @@
+[
+	{
+		"MutationName": "Septic bite",
+		"MutationTag" : "disease",
+		"MutationWeight": 10,
+		"Effects": ["unlock_septic_bite"],
+		"Tooltip": "Your rats live in squalor and never brush their teeth. Now their bites shut down your enemies' organs. Deal ramping damage that ignores armor.",
+		"IsAbility": false
+	},
+	{
+		"MutationName": "Pestis",
+		"MutationTag": "disease",
+		"MutationWeight": 10,
+		"Effects": ["unlock_pestis", "unlock_disease_resistance", "unlock_human_aggression"],
+		"Tooltip": "Unleash the plague onto all nearby hordes or human controlled locations by sacrificing 30% of your population. If you spread it to a horde, they suffer from reduced armor and increased resource needs for one minute. Pest exterminators extend their patrol radius. Gain immunity to disease.",
+		"IsAbility": true
+	},
+	{
+		"MutationName": "Sewer Dwellers",
+		"MutationTag" : "disease",
+		"MutationWeight": 10,
+		"Effects": ["unlock_city_boost", "unlock_sewer_travel"],
+		"Tooltip": "Your rats thrive in the city sewers, gaining a boost to all basal stats in the city. You can use the sewers to instantly travel between cities you control.",
+		"IsAbility": true
+	},
+	{
+		"MutationName": "Fester",
+		"MutationTag": "disease",
+		"MutationWeight": 10,
+		"Effects": ["unlock_fester"],
+		"Tooltip": "What do your rats hate more than humans? The advent of modern medicine. Gain an instant 10% boost to all stats, and every subsequent disease type mutation grants the same buff. Additionally, any disease abilities you have that do combat damage are 10% more effective.",
+		"IsAbility": false
+	},
+	{
+		"MutationName": "Necrosis",
+		"MutationTag": "disease",
+		"MutationWeight": 10,
+		"Effects": ["unlock_necrosis"],
+		"Tooltip": "Your rats are having trouble keeping their flesh on their bones. You armor is reduced by 20% but the corpses of your fallen souls deal damage to your enemies with their noxious gases.",
+		"IsAbility": false
+	},
+	{
+		"MutationName": "Agriculturalist",
+		"MutationTag": "grassland",
+		"MutationWeight": 10,
+		"Effects": [""],
+		"Tooltip": "Your time in grassy lands has given your rats the chance to rediscover the wonders of irrigation. All resource output in grassy lands is increased by 20%. Additionally, gain the ability to convert other POIs into farms.",
+		"IsAbility": true
+	}
+]
