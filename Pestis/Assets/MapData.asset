@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 276475c4f2b2b0641abb3bc0a74df767, type: 3}
   m_Name: MapData
   m_EditorClassIdentifier: 
-  width: 256
-  height: 256
+  width: 512
+  height: 512
   saa: 0
   water: {fileID: 11400000, guid: b85b6c7b0af394f438789f6ceca17ae4, type: 2}
   landTiles:
   - {fileID: 11400000, guid: cab14d9d032db5776949d99fcbafeb09, type: 2}
+  - {fileID: 11400000, guid: e55c7208262a4544da4b1ce2c978be6a, type: 2}
+  - {fileID: 11400000, guid: 8e7ccfaabc0a8d64ab7511c7767e25a9, type: 2}
+  - {fileID: 11400000, guid: 8a3d44a113478e64fb3051a9d7e902e2, type: 2}
   BiomeClasses:
   - {fileID: 11400000, guid: 35428bc3879f77f479236b513dec1caa, type: 2}
   - {fileID: 11400000, guid: 55d21574e3c3e2d44babc3ccb3848260, type: 2}
