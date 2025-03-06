@@ -225,7 +225,7 @@ public class RatBoids : MonoBehaviour
         if (boidBuffer.count < newNumBoids) ResizeBuffers(newNumBoids * 2);
 
         // Increase separation force the bigger the horde is.
-        boidShader.SetFloat("separationFactor", separationFactor * (numBoids / 1000.0f));
+        boidShader.SetFloat("separationFactor", separationFactor);
 
         boidShader.SetFloat("deltaTime", Time.deltaTime);
         // If I don't add something to it, the first time the shader accesses it in the shader it is NaN !?
