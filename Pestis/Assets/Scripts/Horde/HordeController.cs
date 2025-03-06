@@ -17,6 +17,17 @@ using UnityEngine.UI;
 
 namespace Horde
 {
+    public enum CombatOptions
+    {
+        FrontalAssault, 
+        ShockAndAwe, 
+        Envelopment, 
+        Fortify, 
+        Hedgehog, 
+        AllRound
+    }
+    
+    
     public class HordeController : NetworkBehaviour
 
     {
@@ -636,11 +647,12 @@ Count: {AliveRats}
                 CurrentCombatController.AddHordeRpc(target, false);
             }
 
-            StartCoroutine(ApplyStrategy(combatOption));
+            Enum.TryParse(combatOption.Replace(" ", ""), out CombatOptions option);
+            StartCoroutine(ApplyStrategy(option));
 
         }
 
-        IEnumerator ApplyStrategy(string action)
+        IEnumerator ApplyStrategy(CombatOptions action)
         {
             var oldAlive = AliveRats;
             var oldEnemyAlive = CurrentCombatController!.GetNearestEnemy(this).AliveRats;
@@ -648,11 +660,11 @@ Count: {AliveRats}
             float poiMult = 1.0f;
             switch (action)
             {
-                case "Frontal Assault":
+                case CombatOptions.FrontalAssault:
                     _populationController.SetDamageMult(GetPopulationState().DamageMult * 1.2f);
                     _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult * 1.2f);
                     break;
-                case "Shock and Awe":
+                case CombatOptions.ShockAndAwe:
                     _populationController.SetDamageMult(GetPopulationState().DamageMult * 1.5f);
                     _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult * 1.5f);
                     _populationController.GetComponent<AbilityController>().abilityHaste += 10;
@@ -663,10 +675,10 @@ Count: {AliveRats}
                     _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult / 1.5f);
                     _populationController.GetComponent<AbilityController>().abilityHaste -= 10;
                     break;
-                case "Envelopment":
+                case CombatOptions.Envelopment:
                     _populationController.SetDamageMult(GetPopulationState().DamageMult * (1 + oldAlive / 1000f));
                     break;
-                case "Fortify":
+                case CombatOptions.Fortify:
                     Collider2D[] colliders = Physics2D.OverlapCircleAll(GetBounds().center, 20f);
                     foreach (var col in colliders)
                     {
@@ -677,12 +689,12 @@ Count: {AliveRats}
                     poiMult = poiCount == 0 ? 1f : poiCount * 1.3f;
                     _populationController.SetDamageMult(GetPopulationState().DamageMult * (poiMult));
                     break;
-                case "Hedgehog":
+                case CombatOptions.Hedgehog:
                     _populationController.SetDamageMult(GetPopulationState().DamageMult * 0.8f);
                     _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult * 0.8f);
                     isHedgehogged = true;
                     break;
-                case "All Round":
+                case CombatOptions.AllRound:
                     _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult / (1f + 0.2f * Mathf.Log10(1f + oldEnemyAlive)));
                     break;
             }
@@ -692,22 +704,22 @@ Count: {AliveRats}
             }
             switch (action)
             {
-                case "Frontal Assault":
+                case CombatOptions.FrontalAssault:
                     _populationController.SetDamageMult(GetPopulationState().DamageMult / 1.2f);
                     _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult / 1.2f);
                     break;
-                case "Envelopment":
+                case CombatOptions.Envelopment:
                     _populationController.SetDamageMult(GetPopulationState().DamageMult / (1 + oldAlive / 1000f));
                     break;
-                case "Hedgehog":
+                case CombatOptions.Hedgehog:
                     _populationController.SetDamageMult(GetPopulationState().DamageMult / 0.8f);
                     _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult / 0.8f);
                     isHedgehogged = false;
                     break;
-                case "Fortify":
+                case CombatOptions.Fortify:
                     _populationController.SetDamageMult(GetPopulationState().DamageMult / poiMult);
                     break;
-                case "All Round":
+                case CombatOptions.AllRound:
                     _populationController.SetDamageReductionMult(GetPopulationState().DamageReductionMult * (1f + 0.2f * Mathf.Log10(1f + oldEnemyAlive)));
                     break;
             }
