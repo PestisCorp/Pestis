@@ -70,6 +70,8 @@ namespace Horde
         /// </summary>
         private readonly Mutex _participatorsLock = new();
 
+        [Networked] [Capacity(MAX_PARTICIPANTS)] private NetworkLinkedList<NetworkBehaviourId> AllParticipants => default;
+        
         /// <summary>
         ///     Bounds of all *actively* participating hordes i.e. hordes which are dealing damage due to proximity.
         /// </summary>
@@ -141,15 +143,12 @@ POI: {FightingOver}
                 foreach (var hordeID in kvp.Value.Hordes)
                 {
                     Runner.TryFindBehaviour(hordeID, out HordeController horde);
-                    var minimumHealth = kvp.Value.HordeStartingHealth.Get(hordeID) * 0.2f;
-                    // If horde is above 20% of it's starting health
-                    if (horde.TotalHealth > minimumHealth)
+                    if (horde.TotalHealth > 0)
                         aliveHordes++;
                     else
                         hordesToRemove.Add(horde);
                 }
-
-                // If player has no hordes above 20% health participating
+                
                 if (aliveHordes == 0) playersToRemove.Add(kvp.Key);
             }
 
@@ -175,8 +174,21 @@ POI: {FightingOver}
             {
                 // It's safe to call the RPCs now
                 foreach (var horde in hordesToRemove)
-                    // Tell horde to run away to nearest friendly POI
-                    horde.RetreatRpc();
+                {
+                    if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredEffects.Contains("unlock_septic_bite"))
+                    {
+                        horde.GetComponent<PopulationController>().SetSepticMult(1.0f);
+                    }
+                    if (horde.Player.Hordes.Count == 1)
+                    {
+                        // Tell horde to run away to nearest friendly POI
+                        horde.RetreatRpc();
+                    }
+                    else
+                    {
+                        horde.DestroyHordeRpc();
+                    }
+                }
                 return;
             }
 
@@ -192,12 +204,17 @@ POI: {FightingOver}
                 {
                     Runner.TryFindBehaviour(hordeID, out HordeController horde);
                     horde.boids.GetBoidsBack(this, horde);
-                    horde.EventWonCombatRpc();
+                    if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredEffects.Contains("unlock_septic_bite"))
+                    {
+                        horde.GetComponent<PopulationController>().SetSepticMult(1.0f);
+                    }
+                    horde.EventWonCombatRpc(AllParticipants.ToArray());
                 }
 
                 if (FightingOver)
                 {
                     FightingOver.EventCombatOverRpc();
+                    AllParticipants.Clear();
                     Debug.Log($"COMBAT: Current Controller {FightingOver.ControlledBy.Id}, winner is {winner.Id}");
                 }
 
@@ -233,8 +250,19 @@ POI: {FightingOver}
 
             // It's safe to call the RPCs now
             foreach (var horde in hordesToRemove)
-                // Tell horde to run away to nearest friendly POI
-                horde.RetreatRpc();
+            {
+                // If last horde of that player
+                if (horde.Player.Hordes.Count == 1)
+                {
+                    // Tell horde to run away to nearest friendly POI
+                    horde.RetreatRpc();
+                }
+                else
+                {
+                    Debug.Log("Killing horde");
+                    horde.DestroyHordeRpc();
+                }
+            }
 
             Destroy(gameObject);
         }
@@ -249,6 +277,7 @@ POI: {FightingOver}
             {
                 Debug.Log("COMBAT: Adding player");
                 Participators.Add(horde.Player, new CombatParticipant(horde.Player, horde, voluntary));
+                AllParticipants.Add(horde.Id);
             }
             else
             {
