@@ -11,7 +11,7 @@ namespace POI
 {
     public class POIController : NetworkBehaviour
     {
-        private readonly float _cheesePerTick = 0.3f;
+        private float _cheesePerTick;
 
         public float CheesePerSecond => _cheesePerTick / Runner.DeltaTime;
 
@@ -63,6 +63,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             ControlledBy = player;
             player.ControlledPOIs.Add(this);
             // Add Cheese benefits to new controller
+            Debug.Log($"Fixed cheese rate is {_cheesePerTick}");
             ControlledBy.IncrementCheeseIncrementRateRpc(_cheesePerTick);
             StationedHordes.Clear();
         }
@@ -88,6 +89,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         public override void Spawned()
         {
             Collider = GetComponent<Collider2D>();
+            _cheesePerTick = 0.3f;
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]

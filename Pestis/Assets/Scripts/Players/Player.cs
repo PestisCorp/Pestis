@@ -35,7 +35,7 @@ namespace Players
         public bool IsLocal => Type != PlayerType.Bot && HasStateAuthority;
 
         [Networked] [Capacity(32)] public NetworkLinkedList<HordeController> Hordes { get; } = default;
-        
+
         [Networked] [Capacity(64)] public NetworkLinkedList<POIController> ControlledPOIs { get; } = default;
 
         [Networked] public string Username { get; private set; }
@@ -45,6 +45,8 @@ namespace Players
         [Networked] public float CurrentCheese { get; private set; }
 
         [Networked] public float CheeseIncrementRate { get; private set; } = 0.03f;
+
+        public float CheesePerSecond => CheeseIncrementRate / Runner.DeltaTime;
 
         [Networked] public float FixedCheeseGain { get; private set; } = 0.03f;
 
@@ -106,6 +108,7 @@ namespace Players
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void IncrementCheeseIncrementRateRpc(float amount)
         {
+            Debug.Log($"PLAYER: Increasing cheese rate by {amount}");
             FixedCheeseGain += amount;
         }
 
@@ -130,13 +133,8 @@ namespace Players
 
                 // handle boundary values
                 if (CheeseIncrementRate < 0.005f && CheeseIncrementRate >= 0.00)
-                {
                     CheeseIncrementRate = 0.00f;
-                }
-                else if (CheeseIncrementRate > -0.005f && CheeseIncrementRate < 0.00)
-                {
-                    CheeseIncrementRate = 0.00f;
-                }
+                else if (CheeseIncrementRate > -0.005f && CheeseIncrementRate < 0.00) CheeseIncrementRate = 0.00f;
 
                 // Prevent negative cheese values
                 CurrentCheese = Mathf.Max(0, CurrentCheese + CheeseIncrementRate);

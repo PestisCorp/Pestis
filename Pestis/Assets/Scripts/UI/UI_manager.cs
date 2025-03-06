@@ -78,7 +78,10 @@ public class UI_Manager : MonoBehaviour
 
             // Display cheese increment rate with a + sign and to 2 decimal places
             if (cheeseRateText != null)
-                cheeseRateText.text = "+" + localPlayer?.player.CheeseIncrementRate.ToString("F2");
+            {
+                var cheeseRate = localPlayer!.player.CheesePerSecond;
+                cheeseRateText.text = cheeseRate >= 0 ? "+" + cheeseRate.ToString("F2") : cheeseRate.ToString("F2");
+            }
 
             // Update total pop text field
             if (popTotalText != null)
