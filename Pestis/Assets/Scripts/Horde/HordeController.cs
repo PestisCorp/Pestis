@@ -193,6 +193,11 @@ namespace Horde
             _hordeCenter = HordeBounds.center;
         }
 
+        private void OnDestroy()
+        {
+            Player.Hordes.Remove(this);
+        }
+
 #if UNITY_EDITOR
         [DrawGizmo(GizmoType.Selected ^ GizmoType.NonSelected)]
         public void OnDrawGizmos()

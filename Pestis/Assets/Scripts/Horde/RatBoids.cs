@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Horde;
@@ -50,8 +49,6 @@ public class RatBoids : MonoBehaviour
     public Vector2 TargetPos;
 
     public bool paused;
-
-    public List<HordeController> containedHordes;
 
     private bool _started;
     private int blocks;
@@ -393,13 +390,18 @@ public class RatBoids : MonoBehaviour
     /// </summary>
     /// <param name="pos">Position to check</param>
     /// <param name="range">Range which pos must be within from a boid center to be in the horde</param>
+    /// <param name="hordeBounds">The bounds of the horde these boids belong to</param>
     /// <returns></returns>
-    public bool PosInHorde(Vector2 pos, float range)
+    public bool PosInHorde(Vector2 pos, float range, Bounds hordeBounds)
     {
         var rangeSq = range * range;
 
+        // Expand bounds to account for slight mismatches between machine states
+        var biggerBounds = new Bounds(hordeBounds.center, hordeBounds.extents);
+        biggerBounds.Expand(5.0f);
+
         // Early return if outside bounds
-        if (!bounds.Contains(pos)) return false;
+        if (!biggerBounds.Contains(pos)) return false;
 
         var gridXY = getGridLocation(pos);
         var gridID = getGridID(gridXY);
