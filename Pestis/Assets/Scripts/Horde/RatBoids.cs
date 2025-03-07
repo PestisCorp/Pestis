@@ -543,4 +543,36 @@ public class RatBoids : MonoBehaviour
         combatBoids.AddBoids(boidBufferOut, numBoids, myHorde);
         combatBoids.TargetPos = TargetPos;
     }
+
+    /// <summary>
+    ///     Set my internal boids to some specific boids, used for transferring boids from one to another when splitting horde.
+    /// </summary>
+    /// <param name="newBoids"></param>
+    private void SetBoids(Boid[] newBoids)
+    {
+        if (newBoids.Length >= boidBuffer.count) ResizeBuffers(newBoids.Length * 2);
+        boidBuffer.SetData(newBoids, 0, 0, newBoids.Length);
+        boidBufferOut.SetData(newBoids, 0, 0, newBoids.Length);
+        numBoids = newBoids.Length;
+        previousNumBoids = newBoids.Length;
+    }
+
+    /// <summary>
+    ///     Send some of our boids over to another boids sim
+    /// </summary>
+    /// <param name="numBoidsFromAuthority">
+    ///     The numBoidsCount on the State Authority when it called the RPC, to avoid race
+    ///     conditions
+    /// </param>
+    /// <param name="boidsToMove">How many boids to send to the other sim</param>
+    /// <param name="otherBoids">The other boid sim to send boids to</param>
+    public void SplitBoids(int numBoidsFromAuthority, int boidsToMove, RatBoids otherBoids)
+    {
+        otherBoids.Start();
+        var boids = new Boid[boidsToMove];
+        boidBuffer.GetData(boids, 0, numBoidsFromAuthority - boidsToMove, boidsToMove);
+        numBoids = numBoidsFromAuthority - boidsToMove;
+        previousNumBoids = numBoidsFromAuthority - boidsToMove;
+        otherBoids.SetBoids(boids);
+    }
 }

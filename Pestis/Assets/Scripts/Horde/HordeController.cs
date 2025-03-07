@@ -633,5 +633,17 @@ Count: {AliveRats}
             boids.GetBoidsBack(combat, this);
             _combatText.SetActive(false);
         }
+
+        /// <summary>
+        ///     Split our boids, sending some to the other horde
+        /// </summary>
+        /// <param name="other">The other horde controller that should receive boids</param>
+        /// <param name="numToSplit">How many boids to send to the other horde</param>
+        /// <param name="numBoids">How many boids we have on the state authority</param>
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        public void SplitBoidsRpc(HordeController other, int numToSplit, int numBoids)
+        {
+            boids.SplitBoids(numBoids, numToSplit, other.boids);
+        }
     }
 }

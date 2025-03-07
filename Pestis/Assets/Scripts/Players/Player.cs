@@ -167,6 +167,7 @@ namespace Players
                         horde.TotalHealth = totalHealth * splitPercentage;
                     })
                 .GetComponent<HordeController>();
+            toSplit.SplitBoidsRpc(newHorde, toSplit.AliveRats / 2, toSplit.AliveRats);
             toSplit.TotalHealth = totalHealth * (1.0f - splitPercentage);
             newHorde.SetPopulationState(populationState);
 

@@ -11,12 +11,9 @@ namespace UI
         public TMP_Text maxAmountText;
         public Slider slider;
         public Button button;
-        private float _splitPercentage;
-
-        private int SplitAmount =>
-            (int)(_splitPercentage * InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats);
-        private int splitAmount;
         private int maxPop;
+
+        private int splitAmount;
 
         private void Update()
         {
@@ -34,12 +31,13 @@ namespace UI
 
             button.interactable = true;
 
+            splitAmount = (int)slider.value;
             selectedAmountText.text = "Horde 1: " + $"{splitAmount}";
             maxAmountText.text = "Horde 2: " + $"{maxPop - splitAmount}";
 
             // Both hordes must stay above initial population!
             slider.minValue = PopulationController.INITIAL_POPULATION;
-            slider.maxValue = (maxPop - PopulationController.INITIAL_POPULATION);
+            slider.maxValue = maxPop - PopulationController.INITIAL_POPULATION;
         }
 
         private void OnEnable()
@@ -51,13 +49,9 @@ namespace UI
         public void SplitHorde()
         {
             var horde = InputHandler.Instance.LocalPlayer?.selectedHorde;
-            horde?.Player.SplitHorde(horde, _splitPercentage);
+            horde?.Player.SplitHorde(horde,
+                (float)splitAmount / InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats);
             gameObject.SetActive(false);
-        }
-
-        public void SetHordeSplitNumber()
-        {
-            splitAmount = (int)slider.value;
         }
     }
 }
