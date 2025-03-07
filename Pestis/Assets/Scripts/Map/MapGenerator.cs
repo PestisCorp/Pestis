@@ -20,6 +20,8 @@ namespace Map
         public static List<Vector3> cityPositions = new List<Vector3>();
         public void GenerateMap()
         {
+            BiomeList.Clear(); // Clear old map biome lists
+            cityPositions.Clear(); // Clear old city references
             Map.mapObject.tileIndices = new int[Map.mapObject.width * Map.mapObject.height];
             Voronoi(Dilation(RandomWalk()));
             GenerateBiomes();
