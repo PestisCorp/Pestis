@@ -11,11 +11,10 @@ namespace UI
         public TMP_Text maxAmountText;
         public Slider slider;
         public Button button;
+        private int initialPopulation;
         private int maxPop;
 
         private int splitAmount;
-        private int maxPop;
-        private int initialPopulation;
 
         private void Update()
         {
@@ -40,7 +39,7 @@ namespace UI
 
             // Both hordes must stay above initial population!
             slider.minValue = initialPopulation;
-            slider.maxValue = (maxPop - initialPopulation);
+            slider.maxValue = maxPop - initialPopulation;
         }
 
         private void OnEnable()

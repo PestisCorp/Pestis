@@ -98,7 +98,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
 
         public override void Spawned()
         {
-            Collider = GetComponent<Collider2D>();
+            Collider = GetComponentInChildren<Collider2D>();
             _cheesePerTick = 0.3f;
         }
 
