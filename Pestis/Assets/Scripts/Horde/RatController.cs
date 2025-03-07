@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Horde
@@ -49,6 +50,7 @@ namespace Horde
         {
             if (deathCountdown != -1) return;
 
+            // Update sprite rotation
             var angle = Vector2.SignedAngle(transform.up, Vector2.up);
 
             // Normalise to clockwise
@@ -81,6 +83,23 @@ namespace Horde
                 transform.rotation = Quaternion.Euler(Vector3.zero);
                 _rigidbody.freezeRotation = true;
                 _rigidbody.linearDamping = 15;
+                if (_hordeController.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredEffects.Contains("unlock_necrosis"))
+                {
+                    Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 20f);
+                    Dictionary<HordeController, int> affectedHordes = new Dictionary<HordeController, int>();
+                    foreach (var col in hitColliders)
+                    {
+                        HordeController affectedEnemy = col.GetComponentInParent<HordeController>();
+                        if (affectedEnemy && (affectedEnemy.GetHashCode() != _hordeController.GetHashCode()) && (affectedHordes.ContainsKey(affectedEnemy)))
+                        {
+                            affectedHordes[affectedEnemy] += 1;
+                        }
+                    }
+                    foreach (var horde in affectedHordes)
+                    {
+                        horde.Key.DealDamageRpc(horde.Value * 0.1f);
+                    }
+                }
                 deathCountdown -= Time.deltaTime;
                 if (deathCountdown <= 0) Destroy(gameObject);
                 return;
@@ -164,10 +183,6 @@ namespace Horde
             return _rigidbody.linearVelocity;
         }
 
-        public Vector2 GetPosition()
-        {
-            return transform.position;
-        }
 
         /// <summary>
         ///     Kill rat and leave corpse

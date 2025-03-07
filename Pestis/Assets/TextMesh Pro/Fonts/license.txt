@@ -1,0 +1,71 @@
+USER LICENSE
+
+Below, the following terms detail how the acquired "ASSETS" (item this license applies to) may be used in "PRODUCTS" (anything generated using the assets).  All of the following terms apply:
+
+==========================================================================
+==========================================================================
+
+-Single Product usage per Purchase
+For each SINGULAR (1) PURCHASE of an asset, it may be used in a SINGULAR (1) PRODUCT - for example, one Video Game or one YouTube Video or one Illustration.
+
+-Unlimited Products for Free Assets
+For assets acquired via a "free" listing on itch.io, or given out by the copyright holder, the asset is exempt from the above limitation regarding single product usage per purchase. Assets acquired via a "free" listing or giveaway are still subject to all other terms.
+
+-Commercial Usage
+Resulting products created using the assets MAY be used commercially, for products that you charge money for.
+
+-Printed Products
+Resulting products MAY NOT be printed products - No clothing, prints, posters, mugs, stickers, etc.
+
+-Modifying Assets
+The assets MAY be modified in any way to support the development of a product, given that the modified assets continue to adhere to the terms being covered in this document.
+
+-Reselling and Bundling
+The assets MAY NOT be resold or redistributed for others to use - neither commercially nor freely, regardless if being offered individually or as part of a bundle, and regardless if the assets have been modified in any shape or form.
+
+-Artificial Intelligence
+The assets MAY NOT be used in any machine learning datasets.
+
+-Blockchain projects, NFTs, crypto, Web3
+The assets MAY NOT be used in any products or projects utilizing blockchain technology, nor in Non-Fungible Tokens (NFTs), nor in any cryptocurrency or product relating to cryptocurrency, nor in any Web3-related product.
+
+-Generative Content
+The assets MAY NOT be used to generate, whether manually or algorithmically, unique individual products which are then granted ownership to others.
+
+-Restrictions on Bigotry and Unethical Content
+The copyright holder reserves the right to revoke association or attribution with any product that promotes unethical or bigoted viewpoints, including but not limited to: racism, sexism, homophobia, transphobia, non-consensual sex, worker exploitation, deliberate scams, destruction of the environment, promoting conspiracy theories, facism.
+
+-Transferability
+The ownership of a purchase may be transferred FREELY to a SINGULAR (1) OTHER person, but the limitation of use in a SINGULAR (1) PRODUCT per SINGULAR (1) PURCHASE remains, and all terms continue to apply.
+
+-Attribution
+For any product that features a section for accreditation, it is very appreciated, but NOT REQUIRED, to include a credit, referencing either the page or store where the asset was acquired, or reference the copyright holder, or both.
+
+-Other Terms
+-For topics or details not covered here, refer to Envato's standard extended license, located here: https://graphicriver.net/licenses/terms/extended. ALL TERMS DETAILED HERE TAKE PRECEDENCE over the linked Envato's license.
+
+-Termination
+This license becomes null and void if any of the above conditions are
+not met.
+
+-Disclaimer
+Assets are provided "as is", without warranty of any kind,
+express or implied, including but not limited to any warranties of
+merchantability, fitness for a particular purpose and noninfringement
+of copyright, patent, trademark, or other right. In no event shall the
+copyright holder be liable for any claim, damages or other liability,
+including any general, special, indirect, incidental, or consequential
+damages, whether in an action of contract, tort or otherwise, arising
+from, out of the use or inability to use the assets.
+
+-Exceptions
+If you wish to aqcuire these assets under a different license than is being offered, please send inquiries to complaintophil@gmail.com
+
+==========================================================================
+==========================================================================
+A note from the copyright holder:
+
+Thank you for supporting an independent creator! I would love to see what you make <3
+-Philtacular
+
+philtacular.itch.io

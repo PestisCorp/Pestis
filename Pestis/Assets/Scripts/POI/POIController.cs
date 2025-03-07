@@ -11,8 +11,8 @@ namespace POI
 {
     public class POIController : NetworkBehaviour
     {
+        public ParticleSystem captureEffect;
         private readonly float _cheesePerTick = 0.3f;
-
         public float CheesePerSecond => _cheesePerTick / Runner.DeltaTime;
 
         public Collider2D Collider { get; private set; }
@@ -58,6 +58,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
                 // Remove this POI from previous controller
                 ControlledBy.ControlledPOIs.Remove(this);
             }
+
             // Give control to new controller
             ControlledBy = player;
             player.ControlledPOIs.Add(this);
@@ -66,8 +67,17 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             StationedHordes.Clear();
         }
 
+        public void EmitCaptureEffect()
+        {
+            Debug.Log("particle effect");
+            if (captureEffect == null) Debug.LogError("captureEffect is not assigned!");
+            captureEffect.Stop();
+            captureEffect.Play();
+        }
+
         private void StationHorde(HordeController horde)
         {
+            EmitCaptureEffect();
             Debug.Log($"Adding horde {horde.Object.Id} to myself (POI): {Object.Id}");
             StationedHordes.Add(horde);
         }
@@ -81,15 +91,12 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void UnStationHordeRpc(HordeController horde, RpcInfo rpcInfo = default)
         {
-            if (horde.Object.StateAuthority != rpcInfo.Source)
-                throw new Exception("Only the controlling player can unstation a horde!");
-
             StationedHordes.Remove(horde);
         }
 
         public override void Spawned()
         {
-            Collider = GetComponent<Collider2D>();
+            Collider = GetComponentInChildren<Collider2D>();
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -113,8 +120,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             if (!Combat)
             {
                 Debug.Log("Changing POI Combat Controller");
-                Combat = horde.GetComponent<CombatController>();
-                if (!Combat) throw new NullReferenceException("Failed to get Combat Controller from horde.");
+                Combat = Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
                 Combat!.SetFightingOverRpc(this);
                 foreach (var defender in StationedHordes) Combat.AddHordeRpc(defender, false);
             }

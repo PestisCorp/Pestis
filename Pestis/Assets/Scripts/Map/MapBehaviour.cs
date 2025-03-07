@@ -11,9 +11,10 @@ namespace Map
         public MapScriptableObject mapObject;
         public Tilemap tilemap;
         public GameObject poi;
+
         public void Start()
         {
-            LoadRuntime();
+            //LoadRuntime();
         }
 
         public void LoadRuntime()

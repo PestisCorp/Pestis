@@ -36,6 +36,7 @@ namespace Horde
         [Capacity(5)]
         public NetworkDictionary<NetworkBehaviourId, float> HordeStartingHealth => default;
 
+
         public CombatParticipant(Player player, HordeController hordeController, bool voluntary)
         {
             Player = player;
@@ -71,10 +72,20 @@ namespace Horde
 
         public const int MAX_PARTICIPANTS = 6;
 
+        public CombatBoids boids;
+
+
         /// <summary>
         ///     Lock that must be acquired to use `Participators` to prevent races
         /// </summary>
         private readonly Mutex _participatorsLock = new();
+
+        [Networked] [Capacity(MAX_PARTICIPANTS)] private NetworkLinkedList<NetworkBehaviourId> AllParticipants => default;
+        
+        /// <summary>
+        ///     Bounds of all *actively* participating hordes i.e. hordes which are dealing damage due to proximity.
+        /// </summary>
+        public Bounds bounds { private set; get; }
 
         [Networked] private Player InitiatingPlayer { get; set; }
 
@@ -131,6 +142,8 @@ POI: {FightingOver}
         {
             if (Participators.Count == 0) return;
 
+            bounds = boids.GetBounds();
+
             List<HordeController> hordesToRemove = new();
             List<Player> playersToRemove = new();
             _participatorsLock.WaitOne(-1);
@@ -140,17 +153,14 @@ POI: {FightingOver}
                 foreach (var hordeID in kvp.Value.Hordes)
                 {
                     Runner.TryFindBehaviour(hordeID, out HordeController horde);
-                    var minimumHealth = kvp.Value.HordeStartingHealth.Get(hordeID) * 0.2f;
-                    // If horde is above 20% of it's starting health
-                    if (horde.TotalHealth > minimumHealth)
+                    if (horde.TotalHealth > 0)
                         aliveHordes++;
                     else
                         hordesToRemove.Add(horde);
                 }
 
-                // If player has no hordes above 20% health participating
-                if (aliveHordes == 0) 
-                    playersToRemove.Add(kvp.Key);
+                
+                if (aliveHordes == 0) playersToRemove.Add(kvp.Key);
             }
 
             foreach (var horde in hordesToRemove)
@@ -159,6 +169,7 @@ POI: {FightingOver}
                 BattleParticipantHordeDecreased.Invoke();
                 copy.RemoveHorde(horde);
                 Participators.Set(horde.Player, copy);
+                horde.boids.GetBoidsBack(this, horde);
             }
 
             foreach (var player in playersToRemove)
@@ -176,8 +187,21 @@ POI: {FightingOver}
             {
                 // It's safe to call the RPCs now
                 foreach (var horde in hordesToRemove)
-                    // Tell horde to run away to nearest friendly POI
-                    horde.RetreatRpc();
+                {
+                    if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredEffects.Contains("unlock_septic_bite"))
+                    {
+                        horde.GetComponent<PopulationController>().SetSepticMult(1.0f);
+                    }
+                    if (horde.Player.Hordes.Count == 1)
+                    {
+                        // Tell horde to run away to nearest friendly POI
+                        horde.RetreatRpc();
+                    }
+                    else
+                    {
+                        horde.DestroyHordeRpc();
+                    }
+                }
                 return;
             }
 
@@ -192,12 +216,18 @@ POI: {FightingOver}
                 foreach (var hordeID in winnerParticipant.Hordes)
                 {
                     Runner.TryFindBehaviour(hordeID, out HordeController horde);
-                    horde.EventWonCombatRpc();
+                    horde.boids.GetBoidsBack(this, horde);
+                    if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredEffects.Contains("unlock_septic_bite"))
+                    {
+                        horde.GetComponent<PopulationController>().SetSepticMult(1.0f);
+                    }
+                    horde.EventWonCombatRpc(AllParticipants.ToArray());
                 }
 
                 if (FightingOver)
                 {
                     FightingOver.EventCombatOverRpc();
+                    AllParticipants.Clear();
                     Debug.Log($"COMBAT: Current Controller {FightingOver.ControlledBy.Id}, winner is {winner.Id}");
                 }
 
@@ -233,8 +263,21 @@ POI: {FightingOver}
 
             // It's safe to call the RPCs now
             foreach (var horde in hordesToRemove)
-                // Tell horde to run away to nearest friendly POI
-                horde.RetreatRpc();
+            {
+                // If last horde of that player
+                if (horde.Player.Hordes.Count == 1)
+                {
+                    // Tell horde to run away to nearest friendly POI
+                    horde.RetreatRpc();
+                }
+                else
+                {
+                    Debug.Log("Killing horde");
+                    horde.DestroyHordeRpc();
+                }
+            }
+
+            Destroy(gameObject);
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -249,6 +292,8 @@ POI: {FightingOver}
                 Participators.Add(horde.Player, new CombatParticipant(horde.Player, horde, voluntary));
                 BattleParticipantHordeIncreased.Invoke();
                 BattleParticipantPlayerIncreased.Invoke();
+
+                AllParticipants.Add(horde.Id);
             }
             else
             {
@@ -263,7 +308,13 @@ POI: {FightingOver}
 
             _participatorsLock.ReleaseMutex();
 
-            if (!voluntary) horde.EventAttackedRpc(this);
+            if (!voluntary)
+            {
+                horde.EventAttackedRpc(this);
+                // Immediately transfer defending horde to combat boids sim
+                // Other hordes will then get transferred when they intersect the combat boids
+                horde.AddBoidsToCombatRpc(this);
+            }
         }
 
         public HordeController GetNearestEnemy(HordeController me)
@@ -346,9 +397,28 @@ POI: {FightingOver}
             _participatorsLock.ReleaseMutex();
         }
 
+
         public NetworkDictionary<Player, CombatParticipant> GetParticipators()
         {
             return Participators;
+        }
+        public override void Spawned()
+        {
+            boids.Start();
+        }
+
+        public List<HordeController> GetHordes()
+        {
+            List<HordeController> list = new();
+            foreach (var participant in Participators)
+            foreach (var hordeID in participant.Value.Hordes)
+            {
+                Runner.TryFindBehaviour(hordeID, out HordeController horde);
+                list.Add(horde);
+            }
+
+            return list;
+
         }
     }
 }
