@@ -37,7 +37,7 @@ namespace Players
         [Networked] [Capacity(32)] public NetworkLinkedList<HordeController> Hordes { get; } = default;
 
         [Networked] [Capacity(64)] public NetworkLinkedList<POIController> ControlledPOIs { get; } = default;
-
+        
         [Networked] public string Username { get; private set; }
 
 
