@@ -92,7 +92,6 @@ void MergedBehaviours(inout Boid boid)
                 {
                     close += diff / distSq;
 
-
                     center += other.pos;
                     avgVel += other.vel;
                     neighbours++;

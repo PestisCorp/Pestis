@@ -50,6 +50,8 @@ public class RatBoids : MonoBehaviour
 
     public bool paused;
 
+    public int numBoids;
+
     private bool _started;
     private int blocks;
 
@@ -74,8 +76,6 @@ public class RatBoids : MonoBehaviour
     private ComputeBuffer gridSumsBuffer2;
 
     private float minSpeed;
-
-    [Header("Performance")] private int numBoids;
     private int previousNumBoids;
     private RenderParams rp;
     private RenderParams rpDead;
@@ -207,12 +207,7 @@ public class RatBoids : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (AliveRats == 0 || paused)
-        {
-            previousNumBoids = AliveRats;
-            numBoids = AliveRats;
-            return;
-        }
+        if (AliveRats == 0 || paused) return;
 
         previousNumBoids = numBoids;
         var newNumBoids = AliveRats;
@@ -232,7 +227,6 @@ public class RatBoids : MonoBehaviour
         boidShader.SetFloats("targetPos", TargetPos.x, TargetPos.y);
         boidShader.SetFloat("targetPosX", TargetPos.x + 0.01f);
         boidShader.SetFloat("targetPosY", TargetPos.y + 0.01f);
-
 
         boidShader.SetInt("numBoids", newNumBoids);
         numBoids = newNumBoids;
@@ -265,10 +259,11 @@ public class RatBoids : MonoBehaviour
         // Rearrange boids
         gridShader.Dispatch(rearrangeBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
 
+        boidShader.SetInt("numBoidsPrevious", previousNumBoids);
+
         // Compute boid behaviours
         boidShader.Dispatch(updateBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
 
-        boidShader.SetInt("numBoidsPrevious", previousNumBoids);
         // Grid shader needs to be one iteration behind, for correct rearranging.
         gridShader.SetInt("numBoids", numBoids);
         gridShader.SetInt("numBoidsPrevious", previousNumBoids);
@@ -428,7 +423,7 @@ public class RatBoids : MonoBehaviour
     /// <returns>Bounds encapsulating all rats in the horde</returns>
     public Bounds GetBounds()
     {
-        if (numBoids == 0) return new Bounds();
+        if (numBoids == 0) return new Bounds(TargetPos, Vector3.zero);
 
         var offsets = new uint[gridDimX * gridDimY];
         gridOffsetBuffer.GetData(offsets, 0, 0, gridDimX * gridDimY);
@@ -440,6 +435,9 @@ public class RatBoids : MonoBehaviour
         {
             var rowBoids = offsets[(y + 1) * gridDimX - 1] - offsets[y * gridDimX];
             if (rowBoids == 0) continue;
+
+            // Setting boids (when we split a horde) messes up the offsets for one iteration
+            if (rowBoids > 4244857296) return new Bounds(TargetPos, Vector3.zero);
 
             var boids = new Boid[rowBoids];
             boidBufferOut.GetData(boids, 0, Convert.ToInt32(offsets[y * gridDimX]), Convert.ToInt32(rowBoids));

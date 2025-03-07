@@ -23,7 +23,7 @@ namespace UI
             maxPop = InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats;
             initialPopulation = InputHandler.Instance.LocalPlayer!.selectedHorde!.GetComponent<PopulationController>()
                 .initialPopulation;
-            if (maxPop < 2 * initialPopulation)
+            if (maxPop < 10)
             {
                 selectedAmountText.text = "Too small to split";
                 maxAmountText.text = "";

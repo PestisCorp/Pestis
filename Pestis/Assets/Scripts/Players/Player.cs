@@ -153,6 +153,7 @@ namespace Players
         {
             if (!HasStateAuthority) throw new Exception("Only State Authority can split a horde");
 
+            var newRats = (int)(toSplit.TotalHealth * splitPercentage / toSplit.GetPopulationState().HealthPerRat);
 
             var totalHealth = toSplit.TotalHealth;
             var populationState = toSplit.GetPopulationState();
@@ -166,13 +167,14 @@ namespace Players
                         NO.transform.position = toSplit.GetBounds().center;
                         var horde = NO.GetComponent<HordeController>();
                         horde.TotalHealth = totalHealth * splitPercentage;
+                        horde.SetPopulationState(populationState);
+                        horde.SetPopulationInit(newRats);
                     })
                 .GetComponent<HordeController>();
-            toSplit.SplitBoidsRpc(newHorde, toSplit.AliveRats / 2, toSplit.AliveRats);
+            toSplit.SplitBoidsRpc(newHorde, newRats, toSplit.AliveRats);
             toSplit.TotalHealth = totalHealth * (1.0f - splitPercentage);
             newHorde.SetEvolutionaryState(evolutionaryState.DeepCopy());
-            newHorde.SetPopulationState(populationState);
-            newHorde.SetPopulationInit(toSplit.AliveRats);
+
             // Move two hordes slightly apart
             newHorde.Move(toSplit.targetLocation.transform.position - toSplit.GetBounds().extents);
             toSplit.Move(toSplit.targetLocation.transform.position + toSplit.GetBounds().extents);
