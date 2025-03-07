@@ -14,14 +14,17 @@ namespace UI
         private int maxPop;
 
         private int splitAmount;
+        private int maxPop;
+        private int initialPopulation;
 
         private void Update()
         {
             if (!InputHandler.Instance.LocalPlayer || !InputHandler.Instance.LocalPlayer!.selectedHorde) return;
 
             maxPop = InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats;
-
-            if (maxPop < 2 * PopulationController.INITIAL_POPULATION)
+            initialPopulation = InputHandler.Instance.LocalPlayer!.selectedHorde!.GetComponent<PopulationController>()
+                .initialPopulation;
+            if (maxPop < 2 * initialPopulation)
             {
                 selectedAmountText.text = "Too small to split";
                 maxAmountText.text = "";
@@ -36,8 +39,8 @@ namespace UI
             maxAmountText.text = "Horde 2: " + $"{maxPop - splitAmount}";
 
             // Both hordes must stay above initial population!
-            slider.minValue = PopulationController.INITIAL_POPULATION;
-            slider.maxValue = maxPop - PopulationController.INITIAL_POPULATION;
+            slider.minValue = initialPopulation;
+            slider.maxValue = (maxPop - initialPopulation);
         }
 
         private void OnEnable()

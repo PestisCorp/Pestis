@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: sand_64x32_0
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: -1596298463, guid: 81fd301f24b8f224999720ecc18a9195, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.83699995, g: 0.83699995, b: 0.83699995, a: 1}
   m_Transform:
     e00: 1
     e01: 0
@@ -32,5 +32,5 @@ MonoBehaviour:
     e32: 0
     e33: 1
   m_InstancedGameObject: {fileID: 0}
-  m_Flags: 1
+  m_Flags: 3
   m_ColliderType: 1

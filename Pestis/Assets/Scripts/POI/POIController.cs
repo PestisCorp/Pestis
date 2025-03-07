@@ -11,6 +11,7 @@ namespace POI
 {
     public class POIController : NetworkBehaviour
     {
+        public ParticleSystem captureEffect;
         private float _cheesePerTick;
 
         public float CheesePerSecond => _cheesePerTick / Runner.DeltaTime;
@@ -68,8 +69,17 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             StationedHordes.Clear();
         }
 
+        public void EmitCaptureEffect()
+        {
+            Debug.Log("particle effect");
+            if (captureEffect == null) Debug.LogError("captureEffect is not assigned!");
+            captureEffect.Stop();
+            captureEffect.Play();
+        }
+
         private void StationHorde(HordeController horde)
         {
+            EmitCaptureEffect();
             Debug.Log($"Adding horde {horde.Object.Id} to myself (POI): {Object.Id}");
             StationedHordes.Add(horde);
         }

@@ -274,6 +274,7 @@ GameObject:
   - component: {fileID: 4419380376764164480}
   - component: {fileID: -7073726608519572895}
   - component: {fileID: 8072967729009948161}
+  - component: {fileID: 2298762105365068013}
   - component: {fileID: 6693759847198177699}
   m_Layer: 0
   m_Name: RatHorde
@@ -316,6 +317,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
   ratPrefab: {fileID: 1194567179159515082, guid: 4091d5ba2e9491ad9a22f76d74336264, type: 3}
+  isHedgehogged: 0
+  moraleAndFearInstance: {fileID: 0}
   devToolsTotalRats: 0
   devToolsTotalHealth: 0
   devToolsTargetLocation: {x: 0, y: 0}
@@ -345,6 +348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21056fc1ac164f62ab126c09e6e0ed46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPopulation: 5
 --- !u!114 &-7073726608519572895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -377,9 +381,25 @@ MonoBehaviour:
   - {fileID: 6619829849645989142}
   - {fileID: 4419380376764164480}
   - {fileID: -7073726608519572895}
+  - {fileID: 2298762105365068013}
   - {fileID: 6693759847198177699}
   - {fileID: 6270358088513742782}
   ForceRemoteRenderTimeframe: 0
+--- !u!114 &2298762105365068013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2093969167296477126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e5121fa714640d78cc89c73a8985e8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityHaste: 0
+  feared: 0
+  forceCooldownRefresh: 0
 --- !u!114 &6693759847198177699
 MonoBehaviour:
   m_ObjectHideFlags: 0
