@@ -261,6 +261,12 @@ public class RatBoids : MonoBehaviour
 
         boidShader.SetInt("numBoidsPrevious", previousNumBoids);
 
+        // 0,0 case is overriden in the shader to use an approximate center
+        if (bounds.size.sqrMagnitude == 0 || float.IsNaN(bounds.center.x) || float.IsNaN(bounds.center.y))
+            boidShader.SetFloats("spawnPoint", 0, 0);
+        else
+            boidShader.SetFloats("spawnPoint", bounds.center.x + 0.01f, bounds.center.y + 0.01f);
+
         // Compute boid behaviours
         boidShader.Dispatch(updateBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
 

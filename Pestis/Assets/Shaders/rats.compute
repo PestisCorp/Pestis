@@ -37,6 +37,8 @@ uniform int horde;
 
 uniform bool combatRats;
 
+float2 spawnPoint;
+
 float targetPosX;
 float targetPosY;
 /// Cumulative boid count for each grid cell
@@ -166,7 +168,14 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
         }
         else
         {
-            boid.pos = boidsIn[floor(numBoidsPrevious / 2.0f)].pos;
+            if (spawnPoint.x == 0 && spawnPoint.y == 0)
+            {
+                boid.pos = boidsIn[floor(numBoidsPrevious / 2.0f)].pos;
+            }
+            else
+            {
+                boid.pos = spawnPoint;
+            }
             boid.vel = float2(0, 0);
         }
     }
