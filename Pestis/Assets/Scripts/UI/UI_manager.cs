@@ -25,6 +25,7 @@ public class UI_Manager : MonoBehaviour
     public GameObject splitPanel;
     public GameObject abilityToolbar;
     public GameObject fearAndMorale;
+    public GameObject objectives;
 
     // References to the resource text fields
     public TextMeshProUGUI cheeseTotalText;
@@ -324,6 +325,18 @@ public class UI_Manager : MonoBehaviour
         if (resourceStats != null) resourceStats.SetActive(false);
     }
 
+    private void ObjectiveChecklistEnable()
+    {
+        ResetUI();
+        if (objectives != null) objectives.SetActive(true);
+    }
+
+    private void ObjectiveChecklistDisable()
+    {
+        ResetUI();
+        if (objectives != null) objectives.SetActive(false);
+    }
+    
     //To display the correct UI the LocalPlayer will be monitored and when they select a horde the toolbar will be displayed
     //The selected horde game object will also be acquired so the horde statistics can be retrieved and displayed
 

@@ -14,7 +14,7 @@ namespace Players
         public bool IsLocal;
 
         public Player player;
-
+        
         private UI_Manager UI_manager;
 
         private void Awake()
