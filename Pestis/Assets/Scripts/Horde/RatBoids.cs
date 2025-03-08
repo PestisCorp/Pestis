@@ -20,6 +20,18 @@ internal struct Boid
     public int dead;
 }
 
+public struct BoidPoi
+{
+    public float2 Pos;
+    public float RadiusSq;
+
+    public BoidPoi(float2 pos, float radiusSq)
+    {
+        Pos = pos;
+        RadiusSq = radiusSq;
+    }
+}
+
 public class RatBoids : MonoBehaviour
 {
     private const float blockSize = 512f;
@@ -150,6 +162,13 @@ public class RatBoids : MonoBehaviour
         boidShader.SetFloat("separationFactor", separationFactor);
         boidShader.SetFloat("alignmentFactor", alignmentFactor);
         boidShader.SetFloat("targetFactor", targetFactor);
+
+        boidShader.SetBuffer(updateBoidsKernel, "pois", GameManager.Instance.poiBuffer);
+        boidShader.SetBuffer(updateBoidsKernel, "poiOffsets", GameManager.Instance.poiOffsetBuffer);
+        boidShader.SetFloat("poiGridCellSize", GameManager.Instance.poiGridCellSize);
+        boidShader.SetInt("poiGridDimX", GameManager.Instance.poiGridDimX);
+        boidShader.SetInt("poiGridDimY", GameManager.Instance.poiGridDimY);
+
 
         // Set render params
         rp = new RenderParams(new Material(boidMat));
