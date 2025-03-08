@@ -37,7 +37,20 @@ public class CombatFXManager : MonoBehaviour
         endnoise = true;
     }
 
+    void UpdateParticleBounds(Bounds bounds)
+    {
 
+        // Configure the Shape Module
+        var shape = combatVFX.shape;
+        shape.shapeType = ParticleSystemShapeType.Circle;
+        shape.scale = bounds.size;
+        shape.position = bounds.center - transform.position; // Align the box with the object's position
+    }
+
+    private void FixedUpdate()
+    {
+        UpdateParticleBounds(combatController.bounds);
+    }
     private void OnEnable()
     {
         audioSource.Stop();
