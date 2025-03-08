@@ -81,8 +81,6 @@ namespace Players
                 Username = $"Bot {Object.Id.Raw}";
             }
 
-            foreach (var horde in GetComponentsInChildren<HordeController>()) Hordes.Add(horde);
-
             GameManager.Instance.Players.Add(this);
         }
 
@@ -120,6 +118,8 @@ namespace Players
 
         public override void FixedUpdateNetwork()
         {
+            if (Hordes.Count == 0) throw new Exception("Player has no hordes!");
+
             if (HasStateAuthority)
             {
                 // Consume cheese

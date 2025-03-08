@@ -88,6 +88,8 @@ namespace Horde
 
         private readonly List<RatController> _spawnedRats = new();
         private Camera _camera;
+
+        [CanBeNull] private string _combatStrategy;
         private GameObject _combatText;
         private EvolutionManager _evolutionManager;
 
@@ -101,6 +103,8 @@ namespace Horde
         private Light2D _selectionLightPoi;
 
         private Light2D _selectionLightTerrain;
+
+        [CanBeNull] private HordeController _targetHorde;
 
 
         [CanBeNull] private Action OnArriveAtTarget;
@@ -267,7 +271,8 @@ Count: {AliveRats}
                     // Split damage dealt among enemy hordes
                     float bonusDamage = 0;
                     if (GetEvolutionState().AcquiredEffects.Contains("unlock_necrosis"))
-                        bonusDamage += CurrentCombatController.boids.totalDeathsPerHorde[this] * 0.1f;
+                        bonusDamage += CurrentCombatController.boids.totalDeathsPerHorde.GetValueOrDefault(this, 0) *
+                                       0.1f;
                     enemy.DealDamageRpc(AliveRats / 50.0f * ((GetPopulationState().Damage
                                                                  * GetPopulationState().DamageMult
                                                                  * GetPopulationState().SepticMult + bonusDamage)
@@ -319,15 +324,35 @@ Count: {AliveRats}
         /// </summary>
         private void CheckArrivedAtCombat()
         {
-            if (!CurrentCombatController) return;
+            // Not targeting a horde
+            if (!_targetHorde) return;
 
-            if (!HordeBounds.Intersects(CurrentCombatController.bounds)) return;
+            // Already in combat
+            if (CurrentCombatController) return;
+
+            if (!HordeBounds.Intersects(_targetHorde.HordeBounds)) return;
 
             // Already arrived at combat
             if (boids.paused) return;
 
             _combatText.SetActive(true);
+            if (_targetHorde.InCombat) // If the target is already in combat, join it
+            {
+                _targetHorde.CurrentCombatController!.AddHordeRpc(this, true);
+            }
+            else // Otherwise start new combat and add the target to it
+            {
+                CurrentCombatController =
+                    Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
+                CurrentCombatController!.AddHordeRpc(this, true);
+                CurrentCombatController.AddHordeRpc(_targetHorde, false);
+            }
+
+            Enum.TryParse(_combatStrategy!.Replace(" ", ""), out CombatOptions option);
+            StartCoroutine(ApplyStrategy(option));
             AddBoidsToCombatRpc(CurrentCombatController);
+            _combatStrategy = null;
+            _targetHorde = null;
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -579,23 +604,9 @@ Count: {AliveRats}
 
             TargetPoi = null;
 
-            _combatText.SetActive(true);
-
             targetLocation.Teleport(target.HordeBounds.center);
-            if (target.InCombat) // If the target is already in combat, join it
-            {
-                target.CurrentCombatController!.AddHordeRpc(this, true);
-            }
-            else // Otherwise start new combat and add the target to it
-            {
-                CurrentCombatController =
-                    Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
-                CurrentCombatController!.AddHordeRpc(this, true);
-                CurrentCombatController.AddHordeRpc(target, false);
-            }
-
-            Enum.TryParse(combatOption.Replace(" ", ""), out CombatOptions option);
-            StartCoroutine(ApplyStrategy(option));
+            _targetHorde = target;
+            _combatStrategy = combatOption;
         }
 
         private IEnumerator ApplyStrategy(CombatOptions action)

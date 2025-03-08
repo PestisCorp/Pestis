@@ -60,7 +60,7 @@ uniform float poiGridCellSize;
 uniform uint poiGridDimX;
 uniform uint poiGridDimY;
 
-uint2 getPOIGridID(Boid boid)
+uint getPOIGridID(Boid boid)
 {
     int x = floor(boid.pos.x / poiGridCellSize + poiGridDimX / 2);
     int y = floor(boid.pos.y / poiGridCellSize + poiGridDimY / 2);

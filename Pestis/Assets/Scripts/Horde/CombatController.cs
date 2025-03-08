@@ -17,6 +17,7 @@ namespace Horde
     {
         public Player Player;
 
+
         [Networked] [Capacity(5)] public NetworkLinkedList<NetworkBehaviourId> Hordes => default;
 
 
@@ -69,6 +70,8 @@ namespace Horde
         ///     Lock that must be acquired to use `Participators` to prevent races
         /// </summary>
         private readonly Mutex _participatorsLock = new();
+
+        private bool _initiated;
 
         [Networked]
         [Capacity(MAX_PARTICIPANTS)]
@@ -132,7 +135,7 @@ POI: {FightingOver}
 
         public override void FixedUpdateNetwork()
         {
-            if (Participators.Count == 0) return;
+            if (Participators.Count == 0 || !_initiated) return;
 
             bounds = boids.GetBounds();
 
@@ -172,9 +175,11 @@ POI: {FightingOver}
 
             // Combat still going
             if (Participators.Count > 1)
+            {
                 // It's safe to call the RPCs now
                 foreach (var horde in hordesToRemove)
                 {
+                    Debug.Log($"COMBAT: Removing {horde.Object.Id} from combat");
                     horde.RemoveBoidsFromCombatRpc(this);
 
                     if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredEffects
@@ -185,6 +190,10 @@ POI: {FightingOver}
                     else
                         horde.DestroyHordeRpc();
                 }
+
+                return;
+            }
+
 
             // If there's only one person left in combat they are the winner! Otherwise we tied
             if (Participators.Count == 1)
@@ -253,7 +262,7 @@ POI: {FightingOver}
                 }
                 else
                 {
-                    Debug.Log("Killing horde");
+                    Debug.Log("COMBAT: Killing horde");
                     horde.DestroyHordeRpc();
                 }
             }
@@ -300,6 +309,8 @@ POI: {FightingOver}
                 // Other hordes will then get transferred when they intersect the combat boids
                 horde.AddBoidsToCombatRpc(this);
             }
+
+            if (Participators.Count > 1) _initiated = true;
         }
 
         public HordeController GetNearestEnemy(HordeController me)
