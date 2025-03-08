@@ -1,0 +1,13 @@
+[package]
+name = "leaderboard-backend"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+warp = "*"
+tokio = { version = "*", features = ["rt", "rt-multi-thread", "macros"] }
+serde = { version = "*", features = ["derive"] }
+serde_json = "*"
+anyhow = "*"
+env_logger = "0.11.6"
+log = "0.4.26"
