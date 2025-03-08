@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq;
 using Fusion;
 using Horde;
@@ -6,6 +7,7 @@ using JetBrains.Annotations;
 using POI;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Players
 {
@@ -31,6 +33,8 @@ namespace Players
         [CanBeNull] private BotPlayer _botPlayer;
 
         [CanBeNull] private HumanPlayer _humanPlayer;
+
+        private TickTimer _leaderboardUpdateTimer;
 
         public bool IsLocal => Type != PlayerType.Bot && HasStateAuthority;
 
@@ -82,6 +86,8 @@ namespace Players
             }
 
             GameManager.Instance.Players.Add(this);
+
+            if (HasStateAuthority) StartCoroutine(JoinStats());
         }
 
         // Manage Cheese
@@ -116,29 +122,87 @@ namespace Players
             FixedCheeseGain -= amount;
         }
 
+        private IEnumerator JoinStats()
+        {
+#if UNITY_EDITOR
+            var uri = "http://localhost:8081/api/join";
+#else
+            string uri = "https://pestis.murraygrov.es/api/join";
+#endif
+            var jsonObj = new JoinRequest
+            {
+                id = Object.Id.Raw,
+                username = Username
+            };
+            var json = JsonUtility.ToJson(jsonObj);
+
+            var uwr = UnityWebRequest.Put(uri, json);
+            uwr.method = "POST";
+            uwr.SetRequestHeader("Content-Type", "application/json");
+            yield return uwr.SendWebRequest();
+        }
+
+        private IEnumerator UpdateStats()
+        {
+#if UNITY_EDITOR
+            var uri = "http://localhost:8081/api/update";
+#else
+            string uri = "https://pestis.murraygrov.es/api/update";
+#endif
+            var jsonObj = new StatsUpdate
+            {
+                tick = (ulong)Runner.Tick.Raw,
+                player = new PlayerUpdate
+                {
+                    id = Object.Id.Raw,
+                    username = Username,
+                    hordes = Hordes.Select(horde => new HordeUpdate
+                    {
+                        id = horde.Object.Id.Raw,
+                        rats = (ulong)horde.AliveRats
+                    }).ToArray(),
+                    pois = ControlledPOIs.Select(poi => new POIUpdate
+                    {
+                        id = poi.Object.Id.Raw
+                    }).ToArray(),
+                    score = 0
+                }
+            };
+            var json = JsonUtility.ToJson(jsonObj);
+
+            var uwr = UnityWebRequest.Put(uri, json);
+            uwr.method = "POST";
+            uwr.SetRequestHeader("Content-Type", "application/json");
+            yield return uwr.SendWebRequest();
+        }
+
         public override void FixedUpdateNetwork()
         {
             if (Hordes.Count == 0) throw new Exception("Player has no hordes!");
 
-            if (HasStateAuthority)
+            if (_leaderboardUpdateTimer.ExpiredOrNotRunning(Runner))
             {
-                // Consume cheese
-                var totalRatsCount = Hordes.Select(horde => horde.AliveRats).Sum();
-
-                // Cheese consumption formula
-                var cheeseConsumed = cheeseConsumptionRate * totalRatsCount;
-
-                // Cheese gain per game tick
-                CheeseIncrementRate = FixedCheeseGain - cheeseConsumed;
-
-                // handle boundary values
-                if (CheeseIncrementRate < 0.005f && CheeseIncrementRate >= 0.00)
-                    CheeseIncrementRate = 0.00f;
-                else if (CheeseIncrementRate > -0.005f && CheeseIncrementRate < 0.00) CheeseIncrementRate = 0.00f;
-
-                // Prevent negative cheese values
-                CurrentCheese = Mathf.Max(0, CurrentCheese + CheeseIncrementRate);
+                _leaderboardUpdateTimer = TickTimer.CreateFromSeconds(Runner, 60);
+                StartCoroutine(UpdateStats());
             }
+
+
+            // Consume cheese
+            var totalRatsCount = Hordes.Select(horde => horde.AliveRats).Sum();
+
+            // Cheese consumption formula
+            var cheeseConsumed = cheeseConsumptionRate * totalRatsCount;
+
+            // Cheese gain per game tick
+            CheeseIncrementRate = FixedCheeseGain - cheeseConsumed;
+
+            // handle boundary values
+            if (CheeseIncrementRate < 0.005f && CheeseIncrementRate >= 0.00)
+                CheeseIncrementRate = 0.00f;
+            else if (CheeseIncrementRate > -0.005f && CheeseIncrementRate < 0.00) CheeseIncrementRate = 0.00f;
+
+            // Prevent negative cheese values
+            CurrentCheese = Mathf.Max(0, CurrentCheese + CheeseIncrementRate);
         }
 
 
@@ -183,6 +247,43 @@ namespace Players
 
             Debug.Log(
                 $"Split Horde {Object.Id}, creating new Horde {newHorde.Object.Id} with {splitPercentage}x health");
+        }
+
+        [Serializable]
+        private struct JoinRequest
+        {
+            public ulong id;
+            public string username;
+        }
+
+        [Serializable]
+        private struct HordeUpdate
+        {
+            public ulong rats;
+            public ulong id;
+        }
+
+        [Serializable]
+        private struct POIUpdate
+        {
+            public ulong id;
+        }
+
+        [Serializable]
+        private struct PlayerUpdate
+        {
+            public ulong id;
+            public string username;
+            public HordeUpdate[] hordes;
+            public POIUpdate[] pois;
+            public ulong score;
+        }
+
+        [Serializable]
+        private struct StatsUpdate
+        {
+            public ulong tick;
+            public PlayerUpdate player;
         }
     }
 }

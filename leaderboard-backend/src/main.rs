@@ -1,22 +1,24 @@
-use log::info;
+use log::{debug, info};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+use std::io::Read;
 use std::sync::Arc;
 use tokio::sync::RwLock;
 use warp::Filter;
+use warp::hyper::body::Bytes;
 
-#[derive(Clone, Serialize, Deserialize, Eq, PartialEq)]
+#[derive(Clone, Serialize, Deserialize, Eq, PartialEq, Debug)]
 struct Horde {
     rats: u64,
     id: u64,
 }
 
-#[derive(Clone, Serialize, Deserialize, Eq, PartialEq)]
+#[derive(Clone, Serialize, Deserialize, Eq, PartialEq, Debug)]
 struct POI {
     id: u64,
 }
 
-#[derive(Clone, Serialize, Deserialize, Eq, PartialEq)]
+#[derive(Clone, Serialize, Deserialize, Eq, PartialEq, Debug)]
 struct Player {
     id: PlayerID,
     username: String,
@@ -25,13 +27,13 @@ struct Player {
     pois: Vec<POI>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 struct Update {
     tick: u64,
     player: Player,
 }
 
-#[derive(Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, Debug)]
 struct PlayerID(u64);
 
 #[derive(Clone)]
@@ -99,10 +101,8 @@ async fn update_player(
     players.insert(update.player.id, update.player.clone());
     drop(players);
     let mut history = manager.history.write().await;
-    let player_history = history
-        .entry(update.player.id)
-        .or_insert(vec![]);
-    
+    let player_history = history.entry(update.player.id).or_insert(vec![]);
+
     // Only add the update if the player has changed
     if player_history.is_empty() || player_history.last().unwrap().player != update.player {
         player_history.push(update);
@@ -143,9 +143,10 @@ async fn main() {
     let update = warp::post()
         .and(warp::path("api"))
         .and(warp::path("update"))
+
         .and(warp::body::json())
         .and(warp::body::content_length_limit(1024 * 16))
-        .and_then(move |body| {
+        .and_then(move | body| {
             let manager = manager_clone.clone();
             async move { update_player(body, manager).await }
         });
