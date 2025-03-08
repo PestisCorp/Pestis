@@ -12,26 +12,6 @@ public class CombatFXManager : MonoBehaviour
     bool startnoise = true;
     bool endnoise = true;
     private float currentTime = 0f;   // Current time for the timer
-    public void combatStartFX()
-    {
-        if (startnoise)
-        {
-            startnoise = false;
-            endnoise = false;
-            StartCoroutine(PlaySFX(startCombatSound, 8f));
-        }
-    }
-
-    public void combatEndFX()
-    {
-        if (endnoise)
-        {
-            endnoise = false;
-            //checks first if combat has ended for 3 seconds before playing the sound
-            StartCoroutine(PlaySFX(endCombatSound, 6f));
-        }
-    }
-
 
     private IEnumerator PlaySFX(AudioClip sound, float delay)
     {
@@ -40,7 +20,7 @@ public class CombatFXManager : MonoBehaviour
         {
             yield return null; // Wait for the next frame until battleSoundMuteX is true
         }
-        battleSoundMuteX = false;  // Prevent sound from being played while waiting for delay
+        battleSoundMuteX = false;  
 
         // Start playing sound and VFX
         Debug.Log("playing sfx");
@@ -60,7 +40,16 @@ public class CombatFXManager : MonoBehaviour
 
     private void OnEnable()
     {
-        combatController.BattleParticipantHordeDecreased.AddListener(combatEndFX);
-        combatController.BattleParticipantHordeIncreased.AddListener(combatStartFX);
+        audioSource.Stop();
+        audioSource.clip = startCombatSound;
+        audioSource.Play();
+
+    }
+
+    private void OnDestroy()
+    {
+        audioSource.Stop();
+        audioSource.clip = endCombatSound;
+        audioSource.Play();
     }
 }
