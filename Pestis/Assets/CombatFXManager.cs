@@ -7,7 +7,7 @@ public class CombatFXManager : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip startCombatSound;
     public AudioClip endCombatSound;
-    public Horde.CombatController combatController;
+    public Horde.HordeController HordeController;
     bool battleSoundMuteX = true; //helps to reduce the same battle start effect being repeatedly played
     bool startnoise = true;
     bool endnoise = true;
@@ -49,7 +49,7 @@ public class CombatFXManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        UpdateParticleBounds(combatController.bounds);
+        UpdateParticleBounds(ratBoids.bounds);
     }
     private void OnEnable()
     {
@@ -59,7 +59,7 @@ public class CombatFXManager : MonoBehaviour
 
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         audioSource.Stop();
         audioSource.clip = endCombatSound;
