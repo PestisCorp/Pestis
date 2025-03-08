@@ -5,18 +5,18 @@ use std::sync::Arc;
 use tokio::sync::RwLock;
 use warp::Filter;
 
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize, Eq, PartialEq)]
 struct Horde {
     rats: u64,
     id: u64,
 }
 
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize, Eq, PartialEq)]
 struct POI {
     id: u64,
 }
 
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize, Eq, PartialEq)]
 struct Player {
     id: PlayerID,
     username: String,
@@ -25,18 +25,26 @@ struct Player {
     pois: Vec<POI>,
 }
 
+#[derive(Serialize, Deserialize)]
+struct Update {
+    tick: u64,
+    player: Player,
+}
+
 #[derive(Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 struct PlayerID(u64);
 
 #[derive(Clone)]
 struct LeaderboardManager {
     players: Arc<RwLock<HashMap<PlayerID, Player>>>,
+    history: Arc<RwLock<HashMap<PlayerID, Vec<Update>>>>,
 }
 
 impl LeaderboardManager {
     fn new() -> Self {
         LeaderboardManager {
             players: Arc::new(RwLock::new(HashMap::new())),
+            history: Arc::new(RwLock::new(HashMap::new())),
         }
     }
 
@@ -84,11 +92,21 @@ async fn get_leaderboard(manager: LeaderboardManager) -> Result<impl warp::Reply
 }
 
 async fn update_player(
-    player: Player,
+    update: Update,
     manager: LeaderboardManager,
 ) -> Result<impl warp::Reply, warp::Rejection> {
     let mut players = manager.players.write().await;
-    players.insert(player.id, player);
+    players.insert(update.player.id, update.player.clone());
+    drop(players);
+    let mut history = manager.history.write().await;
+    let player_history = history
+        .entry(update.player.id)
+        .or_insert(vec![]);
+    
+    // Only add the update if the player has changed
+    if player_history.is_empty() || player_history.last().unwrap().player != update.player {
+        player_history.push(update);
+    }
     Ok(warp::reply::with_status("ok", warp::http::StatusCode::OK))
 }
 
