@@ -34,6 +34,8 @@ public class CombatBoids : MonoBehaviour
 
     // Horde controller -> local combat ID of horde
     private readonly Dictionary<HordeController, int> hordeIDs = new();
+
+    private bool _justAddedBoids;
     private Dictionary<HordeController, int> _previousNumBoids = new();
 
 
@@ -142,6 +144,13 @@ public class CombatBoids : MonoBehaviour
         boidShader.SetFloat("separationFactor", separationFactor);
         boidShader.SetFloat("alignmentFactor", alignmentFactor);
         boidShader.SetFloat("targetFactor", targetFactor);
+
+        boidShader.SetBuffer(updateBoidsKernel, "pois", GameManager.Instance.poiBuffer);
+        boidShader.SetBuffer(updateBoidsKernel, "poiOffsets", GameManager.Instance.poiOffsetBuffer);
+        boidShader.SetFloat("poiGridCellSize", GameManager.Instance.poiGridCellSize);
+        boidShader.SetInt("poiGridDimX", GameManager.Instance.poiGridDimX);
+        boidShader.SetInt("poiGridDimY", GameManager.Instance.poiGridDimY);
+
 
         // Set render params
         rp = new RenderParams(new Material(boidMat));
@@ -269,6 +278,8 @@ public class CombatBoids : MonoBehaviour
         // Actually draw the boids
         Graphics.RenderPrimitives(rp, MeshTopology.Quads, numBoids.Values.Sum() * 4);
         Graphics.RenderPrimitives(rpDead, MeshTopology.Quads, deadBoidsCount * 4);
+
+        _justAddedBoids = false;
     }
 
     private void OnDestroy()
@@ -415,7 +426,7 @@ public class CombatBoids : MonoBehaviour
     /// <returns>Bounds encapsulating all rats in the horde</returns>
     public Bounds GetBounds()
     {
-        if (numBoids.Values.Sum() == 0) return new Bounds();
+        if (numBoids.Values.Sum() == 0 || _justAddedBoids) return new Bounds(TargetPos, Vector3.zero);
 
         var offsets = new uint[gridDimX * gridDimY];
         gridOffsetBuffer.GetData(offsets, 0, 0, gridDimX * gridDimY);
@@ -427,6 +438,9 @@ public class CombatBoids : MonoBehaviour
         {
             var rowBoids = offsets[(y + 1) * gridDimX - 1] - offsets[y * gridDimX];
             if (rowBoids == 0) continue;
+
+            // Setting boids (when we split a horde) messes up the offsets for one iteration
+            if (rowBoids > 4244857296) return new Bounds(TargetPos, Vector3.zero);
 
             var boids = new Boid[rowBoids];
             boidBufferOut.GetData(boids, 0, Convert.ToInt32(offsets[y * gridDimX]), Convert.ToInt32(rowBoids));
@@ -503,6 +517,7 @@ public class CombatBoids : MonoBehaviour
         return bounds;
     }
 
+
     /// <summary>
     ///     EXPENSIVE, should only be used by HordeController to update bounds each frame, otherwise you should get the bounds
     ///     from the HordeController.
@@ -510,7 +525,7 @@ public class CombatBoids : MonoBehaviour
     /// <returns>Bounds encapsulating all rats in the horde</returns>
     public Bounds GetBounds(HordeController horde)
     {
-        if (numBoids.Values.Sum() == 0) return new Bounds();
+        if (numBoids.Values.Sum() == 0 || _justAddedBoids) return new Bounds();
 
         var hordeIndex = containedHordes.IndexOf(horde);
 
@@ -642,6 +657,7 @@ public class CombatBoids : MonoBehaviour
         containedHordes.Add(boidsHorde);
 
         boidShader.SetInt("numBoids", numBoids.Values.Sum());
+        _justAddedBoids = true;
     }
 
     /// <summary>
@@ -706,5 +722,6 @@ public class CombatBoids : MonoBehaviour
         containedHordes.Remove(horde);
 
         boidShader.SetInt("numBoids", numBoids.Values.Sum());
+        _justAddedBoids = true;
     }
 }

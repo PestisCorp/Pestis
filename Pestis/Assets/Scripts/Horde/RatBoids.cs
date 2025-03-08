@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Horde;
@@ -19,6 +18,18 @@ internal struct Boid
     ///     0 for alive, 1 for dead
     /// </summary>
     public int dead;
+}
+
+public struct BoidPoi
+{
+    public float2 Pos;
+    public float RadiusSq;
+
+    public BoidPoi(float2 pos, float radiusSq)
+    {
+        Pos = pos;
+        RadiusSq = radiusSq;
+    }
 }
 
 public class RatBoids : MonoBehaviour
@@ -51,7 +62,7 @@ public class RatBoids : MonoBehaviour
 
     public bool paused;
 
-    public List<HordeController> containedHordes;
+    public int numBoids;
 
     private bool _started;
     private int blocks;
@@ -77,8 +88,6 @@ public class RatBoids : MonoBehaviour
     private ComputeBuffer gridSumsBuffer2;
 
     private float minSpeed;
-
-    [Header("Performance")] private int numBoids;
     private int previousNumBoids;
     private RenderParams rp;
     private RenderParams rpDead;
@@ -154,6 +163,13 @@ public class RatBoids : MonoBehaviour
         boidShader.SetFloat("alignmentFactor", alignmentFactor);
         boidShader.SetFloat("targetFactor", targetFactor);
 
+        boidShader.SetBuffer(updateBoidsKernel, "pois", GameManager.Instance.poiBuffer);
+        boidShader.SetBuffer(updateBoidsKernel, "poiOffsets", GameManager.Instance.poiOffsetBuffer);
+        boidShader.SetFloat("poiGridCellSize", GameManager.Instance.poiGridCellSize);
+        boidShader.SetInt("poiGridDimX", GameManager.Instance.poiGridDimX);
+        boidShader.SetInt("poiGridDimY", GameManager.Instance.poiGridDimY);
+
+
         // Set render params
         rp = new RenderParams(new Material(boidMat));
         rp.matProps = new MaterialPropertyBlock();
@@ -210,12 +226,7 @@ public class RatBoids : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (AliveRats == 0 || paused)
-        {
-            previousNumBoids = AliveRats;
-            numBoids = AliveRats;
-            return;
-        }
+        if (AliveRats == 0 || paused) return;
 
         previousNumBoids = numBoids;
         var newNumBoids = AliveRats;
@@ -228,14 +239,13 @@ public class RatBoids : MonoBehaviour
         if (boidBuffer.count < newNumBoids) ResizeBuffers(newNumBoids * 2);
 
         // Increase separation force the bigger the horde is.
-        boidShader.SetFloat("separationFactor", separationFactor * (numBoids / 1000.0f));
+        boidShader.SetFloat("separationFactor", separationFactor);
 
         boidShader.SetFloat("deltaTime", Time.deltaTime);
         // If I don't add something to it, the first time the shader accesses it in the shader it is NaN !?
         boidShader.SetFloats("targetPos", TargetPos.x, TargetPos.y);
         boidShader.SetFloat("targetPosX", TargetPos.x + 0.01f);
         boidShader.SetFloat("targetPosY", TargetPos.y + 0.01f);
-
 
         boidShader.SetInt("numBoids", newNumBoids);
         numBoids = newNumBoids;
@@ -268,10 +278,17 @@ public class RatBoids : MonoBehaviour
         // Rearrange boids
         gridShader.Dispatch(rearrangeBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
 
+        boidShader.SetInt("numBoidsPrevious", previousNumBoids);
+
+        // 0,0 case is overriden in the shader to use an approximate center
+        if (bounds.size.sqrMagnitude == 0 || float.IsNaN(bounds.center.x) || float.IsNaN(bounds.center.y))
+            boidShader.SetFloats("spawnPoint", 0, 0);
+        else
+            boidShader.SetFloats("spawnPoint", bounds.center.x + 0.01f, bounds.center.y + 0.01f);
+
         // Compute boid behaviours
         boidShader.Dispatch(updateBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
 
-        boidShader.SetInt("numBoidsPrevious", previousNumBoids);
         // Grid shader needs to be one iteration behind, for correct rearranging.
         gridShader.SetInt("numBoids", numBoids);
         gridShader.SetInt("numBoidsPrevious", previousNumBoids);
@@ -393,13 +410,18 @@ public class RatBoids : MonoBehaviour
     /// </summary>
     /// <param name="pos">Position to check</param>
     /// <param name="range">Range which pos must be within from a boid center to be in the horde</param>
+    /// <param name="hordeBounds">The bounds of the horde these boids belong to</param>
     /// <returns></returns>
-    public bool PosInHorde(Vector2 pos, float range)
+    public bool PosInHorde(Vector2 pos, float range, Bounds hordeBounds)
     {
         var rangeSq = range * range;
 
+        // Expand bounds to account for slight mismatches between machine states
+        var biggerBounds = new Bounds(hordeBounds.center, hordeBounds.extents);
+        biggerBounds.Expand(5.0f);
+
         // Early return if outside bounds
-        if (!bounds.Contains(pos)) return false;
+        if (!biggerBounds.Contains(pos)) return false;
 
         var gridXY = getGridLocation(pos);
         var gridID = getGridID(gridXY);
@@ -426,7 +448,7 @@ public class RatBoids : MonoBehaviour
     /// <returns>Bounds encapsulating all rats in the horde</returns>
     public Bounds GetBounds()
     {
-        if (numBoids == 0) return new Bounds();
+        if (numBoids == 0) return new Bounds(TargetPos, Vector3.zero);
 
         var offsets = new uint[gridDimX * gridDimY];
         gridOffsetBuffer.GetData(offsets, 0, 0, gridDimX * gridDimY);
@@ -438,6 +460,9 @@ public class RatBoids : MonoBehaviour
         {
             var rowBoids = offsets[(y + 1) * gridDimX - 1] - offsets[y * gridDimX];
             if (rowBoids == 0) continue;
+
+            // Setting boids (when we split a horde) messes up the offsets for one iteration
+            if (rowBoids > 4244857296) return new Bounds(TargetPos, Vector3.zero);
 
             var boids = new Boid[rowBoids];
             boidBufferOut.GetData(boids, 0, Convert.ToInt32(offsets[y * gridDimX]), Convert.ToInt32(rowBoids));
@@ -540,5 +565,37 @@ public class RatBoids : MonoBehaviour
         deadBoidsCountBuffer.SetData(count, 0, 0, 1);
         combatBoids.AddBoids(boidBufferOut, numBoids, myHorde);
         combatBoids.TargetPos = TargetPos;
+    }
+
+    /// <summary>
+    ///     Set my internal boids to some specific boids, used for transferring boids from one to another when splitting horde.
+    /// </summary>
+    /// <param name="newBoids"></param>
+    private void SetBoids(Boid[] newBoids)
+    {
+        if (newBoids.Length >= boidBuffer.count) ResizeBuffers(newBoids.Length * 2);
+        boidBuffer.SetData(newBoids, 0, 0, newBoids.Length);
+        boidBufferOut.SetData(newBoids, 0, 0, newBoids.Length);
+        numBoids = newBoids.Length;
+        previousNumBoids = newBoids.Length;
+    }
+
+    /// <summary>
+    ///     Send some of our boids over to another boids sim
+    /// </summary>
+    /// <param name="numBoidsFromAuthority">
+    ///     The numBoidsCount on the State Authority when it called the RPC, to avoid race
+    ///     conditions
+    /// </param>
+    /// <param name="boidsToMove">How many boids to send to the other sim</param>
+    /// <param name="otherBoids">The other boid sim to send boids to</param>
+    public void SplitBoids(int numBoidsFromAuthority, int boidsToMove, RatBoids otherBoids)
+    {
+        otherBoids.Start();
+        var boids = new Boid[boidsToMove];
+        boidBuffer.GetData(boids, 0, numBoidsFromAuthority - boidsToMove, boidsToMove);
+        numBoids = numBoidsFromAuthority - boidsToMove;
+        previousNumBoids = numBoidsFromAuthority - boidsToMove;
+        otherBoids.SetBoids(boids);
     }
 }

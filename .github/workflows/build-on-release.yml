@@ -60,7 +60,7 @@ jobs:
 
         # Output
         - name: Zip Linux build to hosting folder
-          run: zip -urD /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name }}/linux.zip build/StandaloneLinux64 
+          run:  mkdir -p /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name  }}/ && zip -urD /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name }}/linux.zip build/StandaloneLinux64 
 
         # Build
         - name: Build Windows

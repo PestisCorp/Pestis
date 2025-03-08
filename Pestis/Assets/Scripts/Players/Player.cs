@@ -35,7 +35,7 @@ namespace Players
         public bool IsLocal => Type != PlayerType.Bot && HasStateAuthority;
 
         [Networked] [Capacity(32)] public NetworkLinkedList<HordeController> Hordes { get; } = default;
-        
+
         [Networked] [Capacity(64)] public NetworkLinkedList<POIController> ControlledPOIs { get; } = default;
 
         [Networked] public string Username { get; private set; }
@@ -45,6 +45,8 @@ namespace Players
         [Networked] public float CurrentCheese { get; private set; }
 
         [Networked] public float CheeseIncrementRate { get; private set; } = 0.03f;
+
+        public float CheesePerSecond => CheeseIncrementRate / Runner.DeltaTime;
 
         [Networked] public float FixedCheeseGain { get; private set; } = 0.03f;
 
@@ -79,8 +81,6 @@ namespace Players
                 Username = $"Bot {Object.Id.Raw}";
             }
 
-            foreach (var horde in GetComponentsInChildren<HordeController>()) Hordes.Add(horde);
-
             GameManager.Instance.Players.Add(this);
         }
 
@@ -106,6 +106,7 @@ namespace Players
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void IncrementCheeseIncrementRateRpc(float amount)
         {
+            Debug.Log($"PLAYER: Increasing cheese rate by {amount}");
             FixedCheeseGain += amount;
         }
 
@@ -117,6 +118,8 @@ namespace Players
 
         public override void FixedUpdateNetwork()
         {
+            if (Hordes.Count == 0) throw new Exception("Player has no hordes!");
+
             if (HasStateAuthority)
             {
                 // Consume cheese
@@ -130,13 +133,8 @@ namespace Players
 
                 // handle boundary values
                 if (CheeseIncrementRate < 0.005f && CheeseIncrementRate >= 0.00)
-                {
                     CheeseIncrementRate = 0.00f;
-                }
-                else if (CheeseIncrementRate > -0.005f && CheeseIncrementRate < 0.00)
-                {
-                    CheeseIncrementRate = 0.00f;
-                }
+                else if (CheeseIncrementRate > -0.005f && CheeseIncrementRate < 0.00) CheeseIncrementRate = 0.00f;
 
                 // Prevent negative cheese values
                 CurrentCheese = Mathf.Max(0, CurrentCheese + CheeseIncrementRate);
@@ -155,6 +153,7 @@ namespace Players
         {
             if (!HasStateAuthority) throw new Exception("Only State Authority can split a horde");
 
+            var newRats = (int)(toSplit.TotalHealth * splitPercentage / toSplit.GetPopulationState().HealthPerRat);
 
             var totalHealth = toSplit.TotalHealth;
             var populationState = toSplit.GetPopulationState();
@@ -168,12 +167,14 @@ namespace Players
                         NO.transform.position = toSplit.GetBounds().center;
                         var horde = NO.GetComponent<HordeController>();
                         horde.TotalHealth = totalHealth * splitPercentage;
+                        horde.SetPopulationState(populationState);
+                        horde.SetPopulationInit(newRats);
                     })
                 .GetComponent<HordeController>();
+            toSplit.SplitBoidsRpc(newHorde, newRats, toSplit.AliveRats);
             toSplit.TotalHealth = totalHealth * (1.0f - splitPercentage);
             newHorde.SetEvolutionaryState(evolutionaryState.DeepCopy());
-            newHorde.SetPopulationState(populationState);
-            newHorde.SetPopulationInit(toSplit.AliveRats);
+
             // Move two hordes slightly apart
             newHorde.Move(toSplit.targetLocation.transform.position - toSplit.GetBounds().extents);
             toSplit.Move(toSplit.targetLocation.transform.position + toSplit.GetBounds().extents);
