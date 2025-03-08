@@ -167,6 +167,11 @@ namespace Horde
         private void RareEvolutionaryEvent()
         {
             _rareMutationClock.Reset();
+            if (_evolutionaryState.ActiveMutations.Count < 3) 
+            {
+                FindFirstObjectByType<UI_Manager>().AddNotification("This horde has acquired the maximum number of mutations." , _hordeColor);
+                return;
+            }
             var firstMut = _evolutionaryState.ActiveMutations.Next();
             var secondMut = _evolutionaryState.ActiveMutations.Next();
             var thirdMut = _evolutionaryState.ActiveMutations.Next();
