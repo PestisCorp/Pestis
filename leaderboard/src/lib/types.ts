@@ -8,10 +8,11 @@ export interface POI {
 }
 
 export interface Player {
-	name: string;
+	username: string;
 	score: number;
 	hordes: Horde[];
 	pois: POI[];
+	id: number;
 }
 
 export interface PageData {
