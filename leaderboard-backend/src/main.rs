@@ -58,6 +58,19 @@ impl LeaderboardManager {
         players
     }
 
+    async fn get_alltime_leaderboard(&self) -> Vec<Player> {
+        let history = self.history.read().await;
+        // Get the update for each player where they had their highest score
+        let mut players: Vec<Player> = history
+            .iter()
+            .filter_map(|(_, updates)| updates.iter().max_by_key(|update| update.player.score))
+            .map(|update| update.player.clone())
+            .collect();
+        players.sort_by_key(|p| p.score);
+        players.reverse();
+        players
+    }
+
     async fn add_player(&self, id: u64, username: String) {
         let mut players = self.players.write().await;
         players.insert(
@@ -90,6 +103,13 @@ async fn join(
 /// Get the current leaderboard: GET /api/leaderboard
 async fn get_leaderboard(manager: LeaderboardManager) -> Result<impl warp::Reply, warp::Rejection> {
     let leaderboard = manager.get_sorted_players().await;
+    Ok(warp::reply::json(&leaderboard))
+}
+
+async fn get_alltime_leaderboard(
+    manager: LeaderboardManager,
+) -> Result<impl warp::Reply, warp::Rejection> {
+    let leaderboard = manager.get_alltime_leaderboard().await;
     Ok(warp::reply::json(&leaderboard))
 }
 
@@ -139,20 +159,30 @@ async fn main() {
         });
 
     let manager_clone = manager.clone();
+    // Get the current leaderboard: GET /api/leaderboard
+    let alltime_leaderboard = warp::get()
+        .and(warp::path("api"))
+        .and(warp::path("alltime"))
+        .and_then(move || {
+            let manager = manager_clone.clone();
+            async move { get_alltime_leaderboard(manager).await }
+        });
+
+    let manager_clone = manager.clone();
     // Notify that the client has joined the session: POST /api/join {username: String}
     let update = warp::post()
         .and(warp::path("api"))
         .and(warp::path("update"))
-
         .and(warp::body::json())
         .and(warp::body::content_length_limit(1024 * 16))
-        .and_then(move | body| {
+        .and_then(move |body| {
             let manager = manager_clone.clone();
             async move { update_player(body, manager).await }
         });
 
     let handler = join
         .or(leaderboard)
+        .or(alltime_leaderboard)
         .or(update)
         .with(warp::log("pestis::api"))
         .with(

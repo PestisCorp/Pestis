@@ -1,8 +1,11 @@
 import { BACKEND_URL } from '$env/static/private';
+import type { Player } from '$lib/types';
 
 export const load = async () => {
-	const resp = await fetch(`${BACKEND_URL}/api/leaderboard`);
-	const leaderboard = await resp.json();
-	console.log(leaderboard);
-	return { leaderboard };
+	let resp = await fetch(`${BACKEND_URL}/api/leaderboard`);
+	const leaderboard: Player[] = await resp.json();
+
+	resp = await fetch(`${BACKEND_URL}/api/alltime`);
+	const allTime: Player[] = await resp.json();
+	return { leaderboard, allTime };
 };
