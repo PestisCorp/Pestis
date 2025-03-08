@@ -1,22 +1,22 @@
 use log::info;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::sync::Arc;
 use tokio::sync::RwLock;
 use warp::Filter;
 
-#[derive(Clone, Serialize)]
+#[derive(Clone, Serialize, Deserialize)]
 struct Horde {
     rats: u64,
     id: u64,
 }
 
-#[derive(Clone, Serialize)]
+#[derive(Clone, Serialize, Deserialize)]
 struct POI {
     id: u64,
 }
 
-#[derive(Clone, Serialize)]
+#[derive(Clone, Serialize, Deserialize)]
 struct Player {
     id: PlayerID,
     username: String,
@@ -25,7 +25,7 @@ struct Player {
     pois: Vec<POI>,
 }
 
-#[derive(Copy, Clone, PartialEq, Eq, Hash, Serialize)]
+#[derive(Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 struct PlayerID(u64);
 
 #[derive(Clone)]
@@ -83,6 +83,15 @@ async fn get_leaderboard(manager: LeaderboardManager) -> Result<impl warp::Reply
     Ok(warp::reply::json(&leaderboard))
 }
 
+async fn update_player(
+    player: Player,
+    manager: LeaderboardManager,
+) -> Result<impl warp::Reply, warp::Rejection> {
+    let mut players = manager.players.write().await;
+    players.insert(player.id, player);
+    Ok(warp::reply::with_status("ok", warp::http::StatusCode::OK))
+}
+
 #[tokio::main]
 async fn main() {
     env_logger::init();
@@ -111,14 +120,28 @@ async fn main() {
             async move { get_leaderboard(manager).await }
         });
 
+    let manager_clone = manager.clone();
+    // Notify that the client has joined the session: POST /api/join {username: String}
+    let update = warp::post()
+        .and(warp::path("api"))
+        .and(warp::path("update"))
+        .and(warp::body::json())
+        .and(warp::body::content_length_limit(1024 * 16))
+        .and_then(move |body| {
+            let manager = manager_clone.clone();
+            async move { update_player(body, manager).await }
+        });
+
     let handler = join
         .or(leaderboard)
-        .with(warp::log("pestis::api")).with(
-        warp::cors()
-            .allow_any_origin()
-            .allow_methods(vec!["GET", "POST", "OPTIONS"])
-            .allow_header("content-type"),
-    );
+        .or(update)
+        .with(warp::log("pestis::api"))
+        .with(
+            warp::cors()
+                .allow_any_origin()
+                .allow_methods(vec!["GET", "POST", "OPTIONS"])
+                .allow_header("content-type"),
+        );
 
     info!("Starting server");
 
