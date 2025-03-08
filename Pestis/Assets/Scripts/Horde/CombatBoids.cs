@@ -143,6 +143,13 @@ public class CombatBoids : MonoBehaviour
         boidShader.SetFloat("alignmentFactor", alignmentFactor);
         boidShader.SetFloat("targetFactor", targetFactor);
 
+        boidShader.SetBuffer(updateBoidsKernel, "pois", GameManager.Instance.poiBuffer);
+        boidShader.SetBuffer(updateBoidsKernel, "poiOffsets", GameManager.Instance.poiOffsetBuffer);
+        boidShader.SetFloat("poiGridCellSize", GameManager.Instance.poiGridCellSize);
+        boidShader.SetInt("poiGridDimX", GameManager.Instance.poiGridDimX);
+        boidShader.SetInt("poiGridDimY", GameManager.Instance.poiGridDimY);
+
+
         // Set render params
         rp = new RenderParams(new Material(boidMat));
         rp.matProps = new MaterialPropertyBlock();
