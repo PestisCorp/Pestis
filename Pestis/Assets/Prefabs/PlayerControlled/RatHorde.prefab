@@ -596,7 +596,7 @@ MonoBehaviour:
   audioSource: {fileID: 3288228862200422688}
   startCombatSound: {fileID: 8300000, guid: 4aba1fb5de6b0fa4dbac198519e3a814, type: 3}
   endCombatSound: {fileID: 8300000, guid: 2eb7fb7c8c9f5294fb492350734d5e4f, type: 3}
-  ratBoids: {fileID: 0}
+  HordeController: {fileID: 6619829849645989142}
 --- !u!1 &2981364978231739085
 GameObject:
   m_ObjectHideFlags: 0
@@ -11008,9 +11008,6 @@ MonoBehaviour:
   TargetPos: {x: 0, y: 0}
   paused: 0
   containedHordes: []
-  bounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!222 &8096480468413857689
 CanvasRenderer:
   m_ObjectHideFlags: 0

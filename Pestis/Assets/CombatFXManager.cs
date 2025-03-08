@@ -49,7 +49,7 @@ public class CombatFXManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        UpdateParticleBounds(ratBoids.bounds);
+        UpdateParticleBounds(HordeController.GetBounds());
     }
     private void OnEnable()
     {
