@@ -190,6 +190,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3779915976853807964}
   - {fileID: 6732788276756403029}
   m_Father: {fileID: 3670710804318574543}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -287,11 +288,11 @@ Transform:
   m_GameObject: {fileID: 1642781959468579572}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -374.25, y: -205.5, z: 0.004425277}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7024703977245443517}
+  m_Father: {fileID: 1376086926097632983}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &3288228862200422688
 AudioSource:
@@ -306,7 +307,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.53
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -576,7 +577,6 @@ Transform:
   m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3779915976853807964}
   - {fileID: 1015998346053455966}
   m_Father: {fileID: 3232489604842089083}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -703,7 +703,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -713,7 +713,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 3
+      scalar: 1
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -1348,7 +1348,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 3
+      value: 1
       mode: 0
       spread: 0
       speed:
@@ -1406,7 +1406,7 @@ ParticleSystem:
           m_RotationOrder: 4
     arc:
       value: 360
-      mode: 1
+      mode: 0
       spread: 0
       speed:
         serializedVersion: 2
@@ -1467,7 +1467,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 7
+      scalar: 2.7
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -2098,7 +2098,7 @@ ParticleSystem:
     tilesY: 5
     animationType: 0
     rowIndex: 0
-    cycles: 3
+    cycles: 1.5
     uvChannelMask: -1
     rowMode: 1
     sprites:
@@ -5540,7 +5540,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 76.1183, y: -23.776402}
+  m_AnchoredPosition: {x: 48.86325, y: -48.690002}
   m_SizeDelta: {x: 52.12, y: 11.18}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4507319734205443045
@@ -5918,7 +5918,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -6563,7 +6563,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 3
+      value: 1
       mode: 0
       spread: 0
       speed:
@@ -6682,7 +6682,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 11
+      scalar: 0
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -9630,7 +9630,7 @@ ParticleSystem:
       emitter: {fileID: 521059224091302874}
       type: 0
       properties: 0
-      emitProbability: 0.2
+      emitProbability: 1
   LightsModule:
     enabled: 0
     ratio: 0

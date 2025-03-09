@@ -42,12 +42,13 @@ public class CombatFXManager : MonoBehaviour
 
         // Configure the Shape Module
         var shape = combatVFX.shape;
-        shape.shapeType = ParticleSystemShapeType.Circle;
-        shape.scale = bounds.size;
-        shape.position = bounds.center - transform.position; // Align the box with the object's position
+        combatVFX.transform.position = bounds.center;
+        shape.scale = bounds.size/2;
+        float radius = (bounds.size.x) + 0.5f;
+        combatVFX.emissionRate =  (radius * radius) * 1.3f ;
     }
 
-    private void FixedUpdate()
+    void Update()
     {
         UpdateParticleBounds(HordeController.GetBounds());
     }
