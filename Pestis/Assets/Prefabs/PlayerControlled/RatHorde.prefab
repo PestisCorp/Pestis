@@ -191,6 +191,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3779915976853807964}
+  - {fileID: 1015998346053455966}
   - {fileID: 6732788276756403029}
   m_Father: {fileID: 3670710804318574543}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -578,8 +579,7 @@ Transform:
   m_LocalPosition: {x: -401.50507, y: -56.2236, z: 0.004425277}
   m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1015998346053455966}
+  m_Children: []
   m_Father: {fileID: 3232489604842089083}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2639721867894554855
@@ -649,7 +649,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -5840,12 +5840,12 @@ Transform:
   m_GameObject: {fileID: 7273290053757099526}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -401.50507, y: -230.4136, z: 0.004425277}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8301905140077550538}
-  m_Father: {fileID: 7024703977245443517}
+  m_Father: {fileID: 1376086926097632983}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &5171531828854684892
 ParticleSystem:
@@ -5863,8 +5863,8 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
   looping: 1
-  prewarm: 0
-  playOnAwake: 1
+  prewarm: 1
+  playOnAwake: 0
   useUnscaledTime: 1
   autoRandomSeed: 1
   startDelay:
@@ -11009,6 +11009,7 @@ MonoBehaviour:
   AliveRats: 0
   TargetPos: {x: 0, y: 0}
   paused: 0
+  numBoids: 0
 --- !u!222 &8096480468413857689
 CanvasRenderer:
   m_ObjectHideFlags: 0

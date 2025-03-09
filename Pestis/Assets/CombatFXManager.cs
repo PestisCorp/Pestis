@@ -45,7 +45,7 @@ public class CombatFXManager : MonoBehaviour
         combatVFX.transform.position = bounds.center;
         shape.scale = bounds.size/2;
         float radius = (bounds.size.x) + 0.5f;
-        combatVFX.emissionRate =  (radius * radius) * 1.3f ;
+        combatVFX.emissionRate =  (radius * radius) * 1.2f ;
     }
 
     void Update()
@@ -54,6 +54,7 @@ public class CombatFXManager : MonoBehaviour
     }
     private void OnEnable()
     {
+        combatVFX.Play();
         audioSource.Stop();
         audioSource.clip = startCombatSound;
         audioSource.Play();
@@ -62,6 +63,7 @@ public class CombatFXManager : MonoBehaviour
 
     private void OnDisable()
     {
+        combatVFX.Stop();
         audioSource.Stop();
         audioSource.clip = endCombatSound;
         audioSource.Play();
