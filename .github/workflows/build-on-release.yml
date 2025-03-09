@@ -5,83 +5,141 @@ on:
     types: [created]
 
 jobs:
-    build:
-      permissions:
-        contents: write
-        checks: write
-        statuses: write
-      name: Build release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      runs-on: self-hosted
-      steps:
-
-        # Checkout
-        - name: Checkout repository
-          uses: actions/checkout@v4
-          with:
-            lfs: true
-
-        # Cache
-        - uses: actions/cache@v3
-          with:
-            path: Pestis/Library
-            key: Pestis/Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-            restore-keys: |
-              Pestis/Library-
-
-        # Test
-        - name: Run tests
-          uses: game-ci/unity-test-runner@v4
-          env:
-            UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-            UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-            UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-          with:
-            githubToken: ${{ secrets.GITHUB_TOKEN }}
-            projectPath: Pestis
-            runAsHostUser: true
-            chownFilesTo: ec2-user
-
-        # Build
-        - name: Build Linux
-          uses: game-ci/unity-builder@v4
-          env:
-            UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-            UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-            UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-          with:
-            targetPlatform: StandaloneLinux64
-            versioning: Custom
-            version: ${{github.event.release.tag_name }}
-            projectPath: Pestis
-            runAsHostUser: true
-            chownFilesTo: ec2-user
-
-        # Output
-        - name: Zip Linux build to hosting folder
-          run:  mkdir -p /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name  }}/ && zip -urD /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name }}/linux.zip build/StandaloneLinux64 
-
-        # Build
-        - name: Build Windows
-          uses: game-ci/unity-builder@v4
-          env:
-            UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-            UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-            UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-          with:
-            targetPlatform: StandaloneWindows64
-            versioning: Custom
-            version: ${{github.event.release.tag_name }}
-            projectPath: Pestis
-            runAsHostUser: true
-            chownFilesTo: ec2-user
-
-
-        # Output
-        - name: Zip Windows build to hosting folder
-          run: zip -urD /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name  }}/windows.zip build/StandaloneWindows64 
-     
-
-        - name: Symlink to latest
-          run: ln -sfn /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name }} /home/ec2-user/actions-runner/builds/stable
+  test:
+    permissions:
+      contents: write
+      checks: write
+      statuses: write
+    name: Build release
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    runs-on: self-hosted
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+  
+      # Cache
+      - uses: actions/cache@v3
+        with:
+          path: Pestis/Library
+          key: Pestis/Library
+          restore-keys: |
+            Pestis/Library-
+            Library-Pestis
+            Library-
+  
+      # Test
+      - name: Run tests
+        uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          projectPath: Pestis
+          runAsHostUser: true
+          chownFilesTo: ec2-user
+  
+  build-linux:
+    permissions:
+      contents: write
+      checks: write
+      statuses: write
+    name: Build Linux
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    runs-on: self-hosted
+    steps:
+      - uses: rymndhng/release-on-push-action@master
+        id: release
+        with:
+          bump_version_scheme: minor
+    
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+  
+      # Cache
+      - uses: actions/cache@v3
+        with:
+          path: Pestis/Library
+          key: Pestis/Library-Linux
+          restore-keys: |
+            Pestis/Library-
+            Library-Pestis
+            Library-
+  
+      # Build
+      - name: Build Linux
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: StandaloneLinux64
+          versioning: Custom
+          version: ${{github.event.release.tag_name }}
+          projectPath: Pestis
+          runAsHostUser: true
+          chownFilesTo: ec2-user
+  
+      # Output
+      - name: Zip Linux build to hosting folder
+        run:  mkdir -p /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name   }}/ && zip -urD /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name  }}/linux.zip build/StandaloneLinux64 
+  
+  build-windows:
+    permissions:
+      contents: write
+      checks: write
+      statuses: write
+    name: Build Windows
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    runs-on: self-hosted
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+  
+      # Cache
+      - uses: actions/cache@v3
+        with:
+          path: Pestis/Library
+          key: Pestis/Library-Windows
+          restore-keys: |
+            Pestis/Library-
+            Library-Pestis
+            Library-
+    
+      # Build
+      - name: Build Windows
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: StandaloneWindows64
+          versioning: Custom
+          version: ${{github.event.release.tag_name  }}
+          projectPath: Pestis
+          runAsHostUser: true
+          chownFilesTo: ec2-user
+  
+  
+      # Output
+      - name: Zip Windows build to hosting folder
+        run: zip -urD /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name  }}/windows.zip build/StandaloneWindows64 
+  
+      - name: Symlink to stable
+        run: ln -sfn /home/ec2-user/actions-runner/builds/${{ github.event.release.tag_name }} /home/ec2-user/actions-runner/builds/stable
+  
