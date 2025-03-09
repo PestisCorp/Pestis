@@ -274,7 +274,6 @@ GameObject:
   - component: {fileID: 4419380376764164480}
   - component: {fileID: -7073726608519572895}
   - component: {fileID: 8072967729009948161}
-  - component: {fileID: 7949394547622356909}
   - component: {fileID: 2298762105365068013}
   - component: {fileID: 6693759847198177699}
   m_Layer: 0
@@ -334,6 +333,8 @@ MonoBehaviour:
   hordeIcon: {fileID: 0}
   enemyIcon: {fileID: 0}
   ownIcon: {fileID: 0}
+  _populationController: {fileID: 4419380376764164480}
+  boids: {fileID: 3442052912350168715}
   _StationedAt: {fileID: 0}
   _TargetPoi: {fileID: 0}
   _CurrentCombatController: {fileID: 0}
@@ -382,25 +383,10 @@ MonoBehaviour:
   - {fileID: 6619829849645989142}
   - {fileID: 4419380376764164480}
   - {fileID: -7073726608519572895}
-  - {fileID: 7949394547622356909}
   - {fileID: 2298762105365068013}
   - {fileID: 6693759847198177699}
   - {fileID: 6270358088513742782}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &7949394547622356909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2093969167296477126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fc0f394f1d4433faea6b58a882e00ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boids: {fileID: 0}
-  _FightingOver: {fileID: 0}
 --- !u!114 &2298762105365068013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1057,7 +1043,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 1
+  m_overflowMode: 3
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
@@ -1137,7 +1123,7 @@ MonoBehaviour:
   visualRange: 50
   minDistance: 0.8
   cohesionFactor: 1
-  separationFactor: 10
+  separationFactor: 5
   alignmentFactor: 0.5
   targetFactor: 4
   boidShader: {fileID: 7200000, guid: 9c4516c864c64285a3313ea819bbf605, type: 3}
@@ -1148,7 +1134,6 @@ MonoBehaviour:
   AliveRats: 0
   TargetPos: {x: 0, y: 0}
   paused: 0
-  containedHordes: []
 --- !u!222 &8096480468413857689
 CanvasRenderer:
   m_ObjectHideFlags: 0

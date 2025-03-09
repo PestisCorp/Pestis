@@ -19,7 +19,9 @@ namespace Horde
         ///     How much damage the horde does to other hordes per tick in combat
         /// </summary>
         internal float Damage;
+
         internal float DamageReduction;
+
         // Multipliers applied to damage original state
         internal float DamageMult;
         internal float DamageReductionMult;
@@ -28,16 +30,15 @@ namespace Horde
 
     public class PopulationController : NetworkBehaviour
     {
-        public int initialPopulation = 5;
-
         // Soft population limit, should be extremely difficult for the player to grow beyond this, but still possible
         private const int PopMax = 1000;
 
         // The maximum change in a population per network tick
         private const int MaxPopGrowth = 3;
+        public int initialPopulation = 5;
 
         private readonly Random _random = new();
-        
+
         // Weights are reversed because weight decreases with distance from n
         // e.g. the probability of going from population n to n + 5 should be
         // smaller than going from n to n + 1, so the weight applied is smaller
@@ -51,9 +52,9 @@ namespace Horde
 
         private HordeController _hordeController;
 
-        private int _populationPeak;
-
         private Timer _populationClock;
+
+        private int _populationPeak;
 
 
         private List<double[]> _transitionMatrix;
@@ -175,16 +176,16 @@ namespace Horde
             _hordeController = GetComponent<HordeController>();
             State.BirthRate = 0.01;
             State.DeathRate = 0.005;
-            
+
             State.HealthPerRat = 5.0f;
             State.Damage = 0.5f;
             State.DamageReduction = 1.0f;
-            
-            
+
+
             State.DamageMult = 1.0f;
             State.DamageReductionMult = 1.0f;
             State.SepticMult = 1.0f;
-            
+
             _hordeController.TotalHealth = initialPopulation * State.HealthPerRat;
 
             _populationClock.Start();
@@ -198,10 +199,7 @@ namespace Horde
             _populationClock.Restart();
             if (_hordeController.AliveRats > _populationPeak)
             {
-                for (int i = _populationPeak + 1; i <= _hordeController.AliveRats; i++)
-                {
-                    UpdateTransitionMatrix(i);
-                }
+                for (var i = _populationPeak + 1; i <= _hordeController.AliveRats; i++) UpdateTransitionMatrix(i);
                 _populationPeak = _hordeController.AliveRats;
             }
 
@@ -238,7 +236,8 @@ namespace Horde
         public override void FixedUpdateNetwork()
         {
             // Suspend population simulation during combat or retreat to avoid interference
-            if (!_hordeController.InCombat && _hordeController.PopulationCooldown == 0 && _populationClock.ElapsedInMilliseconds > 500) PopulationEvent();
+            if (!_hordeController.InCombat && _hordeController.PopulationCooldown == 0 &&
+                _populationClock.ElapsedInMilliseconds > 50) PopulationEvent();
             _highestHealth = Mathf.Max(_hordeController.TotalHealth, _highestHealth);
         }
 
@@ -271,12 +270,12 @@ namespace Horde
         {
             State.DamageMult = damageMult;
         }
-        
+
         public void SetSepticMult(float damageMult)
         {
             State.DamageMult = damageMult;
         }
-        
+
         public PopulationState GetState()
         {
             return State;
