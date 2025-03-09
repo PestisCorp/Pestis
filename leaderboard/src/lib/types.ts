@@ -13,6 +13,7 @@ export interface Player {
 	hordes: Horde[];
 	pois: POI[];
 	id: number;
+	damage: number;
 }
 
 export interface PageData {

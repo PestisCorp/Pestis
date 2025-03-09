@@ -11,7 +11,7 @@
 		// Reload the page every minute
 		setTimeout(() => {
 			location.reload();
-		}, 60000);
+		}, 30000);
 	})
 
 </script>
@@ -39,7 +39,7 @@
 				</h2>
 				<h2 class="mt-5 text-2xl">
 					Current
-					Hordes: {data.leaderboard.map(player => player.hordes.length).reduce((sum, hordes) => sum + hordes)}
+					Hordes: {data.leaderboard.length === 0 ? 0 : (data.leaderboard.map(player => player.hordes.length).reduce((sum, hordes) => sum + hordes))}
 				</h2>
 				<h2 class="mt-5 text-2xl">
 					Current

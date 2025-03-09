@@ -25,6 +25,7 @@ struct Player {
     score: u64,
     hordes: Vec<Horde>,
     pois: Vec<POI>,
+    damage: u64,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -83,8 +84,7 @@ impl LeaderboardManager {
         let len = fps.len();
         if len == 0 {
             0.0
-        }
-        else if len % 2 == 0 {
+        } else if len % 2 == 0 {
             (fps[len / 2] + fps[len / 2 + 1]) / 2.0
         } else {
             fps[len / 2]
@@ -101,6 +101,7 @@ impl LeaderboardManager {
                 score: 0,
                 hordes: vec![],
                 pois: vec![],
+                damage: 0,
             },
         );
     }
@@ -204,7 +205,6 @@ async fn main() {
             let manager = manager_clone.clone();
             async move { update_player(body, manager).await }
         });
-
 
     let manager_clone = manager.clone();
     let median_fps = warp::get()

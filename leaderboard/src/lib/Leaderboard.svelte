@@ -10,8 +10,9 @@
 		<p class="flex-3">Username</p>
 		<p class="flex-2">Score</p>
 		<p class="flex-2">Rats</p>
-		<p class="flex-2">Hordes</p>
-		<p class="flex-2">POIs</p>
+		<p class="flex-1 pr-3">Hordes</p>
+		<p class="flex-1 pr-3">POIs</p>
+		<p class="flex-3">Damage Dealt</p>
 	</div>
 
 	{#each leaderboard as player, i (player.id)}
@@ -22,6 +23,7 @@
 			<p class="flex-2">{player.hordes.length === 0 ? 0 : player.hordes.map(horde => horde.rats).reduce((sum, rats) => sum + rats)}</p>
 			<p class="flex-2">{player.hordes.length}</p>
 			<p class="flex-2">{player.pois.length}</p>
+			<p class="flex-2">{player.damage}</p>
 		</div>
 	{/each}
 </div>

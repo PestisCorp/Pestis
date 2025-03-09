@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Fusion;
 using Horde;
@@ -29,6 +30,8 @@ namespace Players
         public GameObject hordePrefab;
 
         [SerializeField] private float cheeseConsumptionRate = 0.001f; // k value
+
+        [DoNotSerialize] public double TotalDamageDealt;
 
         [CanBeNull] private BotPlayer _botPlayer;
 
@@ -63,7 +66,6 @@ namespace Players
         {
             return Hordes.Count;
         }
-
 
         public override void Spawned()
         {
@@ -166,7 +168,8 @@ namespace Players
                     {
                         id = poi.Object.Id.Raw
                     }).ToArray(),
-                    score = 0
+                    score = CalculateScore(),
+                    damage = Convert.ToUInt64(TotalDamageDealt)
                 }
             };
             var json = JsonUtility.ToJson(jsonObj);
@@ -250,6 +253,36 @@ namespace Players
                 $"Split Horde {Object.Id}, creating new Horde {newHorde.Object.Id} with {splitPercentage}x health");
         }
 
+        public ulong CalculateScore()
+        {
+            ulong score = 0;
+
+            score += (ulong)Hordes.Sum(horde => horde.AliveRats);
+            score += (ulong)(100 * Hordes.Count);
+            score += (ulong)(300 * ControlledPOIs.Count);
+
+            HashSet<ActiveMutation> allMutations = new();
+            HashSet<string> mutationTags = new();
+            foreach (var horde in Hordes)
+            {
+                var mutations = horde.GetEvolutionState().AcquiredMutations;
+                foreach (var mutation in mutations)
+                {
+                    allMutations.Add(mutation);
+                    mutationTags.Add(mutation.MutationTag);
+                }
+            }
+
+            score += (ulong)(300 * allMutations.Count);
+            score += (ulong)(500 * mutationTags.Count);
+
+            Debug.Log($"Score before total damage is {score}");
+            Debug.Log($"Total Damage Dealt is {TotalDamageDealt}");
+            score += Convert.ToUInt64(TotalDamageDealt / 5.0);
+
+            return score;
+        }
+
         [Serializable]
         private struct JoinRequest
         {
@@ -278,6 +311,7 @@ namespace Players
             public HordeUpdate[] hordes;
             public POIUpdate[] pois;
             public ulong score;
+            public ulong damage;
         }
 
         [Serializable]
