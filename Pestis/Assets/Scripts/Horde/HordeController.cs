@@ -273,10 +273,12 @@ Count: {AliveRats}
                     if (GetEvolutionState().AcquiredEffects.Contains("unlock_necrosis"))
                         bonusDamage += CurrentCombatController.boids.totalDeathsPerHorde.GetValueOrDefault(this, 0) *
                                        0.1f;
-                    enemy.DealDamageRpc(AliveRats / 50.0f * ((GetPopulationState().Damage
-                                                                 * GetPopulationState().DamageMult
-                                                                 * GetPopulationState().SepticMult + bonusDamage)
-                                                             / enemyHordes.Length));
+                    var damageToDeal = AliveRats / 50.0f * ((GetPopulationState().Damage
+                                                                * GetPopulationState().DamageMult
+                                                                * GetPopulationState().SepticMult + bonusDamage)
+                                                            / enemyHordes.Length);
+                    enemy.DealDamageRpc(damageToDeal);
+                    Player.TotalDamageDealt += damageToDeal;
                     if (enemy.isHedgehogged) DealDamageRpc(0.001f);
                 }
             }
