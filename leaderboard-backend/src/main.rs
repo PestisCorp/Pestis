@@ -33,6 +33,7 @@ struct Update {
     tick: u64,
     player: Player,
     fps: f32,
+    timestamp: u64,
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, Debug)]
@@ -104,6 +105,35 @@ impl LeaderboardManager {
                 damage: 0,
             },
         );
+    }
+
+    async fn remove_idle_players(&self) {
+        let players_lock = self.players.read().await;
+        let players = players_lock.keys().cloned().collect::<Vec<PlayerID>>();
+        drop(players_lock);
+        let mut to_remove = Vec::new();
+        let history = self.history.read().await;
+
+        let current_timestamp = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_secs();
+        
+        for player in players {
+            let latest_update = history.get(&player).and_then(|updates| updates.last());
+            if let Some(update) = latest_update {
+                // If the player hasn't updated in 2 minutes, remove them
+                if current_timestamp - update.timestamp > 120 {
+                    to_remove.push(player.clone());
+                }
+            } else {
+                to_remove.push(player.clone());
+            }
+        }
+
+        drop(history);
+        let mut players = self.players.write().await;
+        players.retain(|_, player| !to_remove.contains(&player.id));
     }
 }
 
@@ -227,6 +257,17 @@ async fn main() {
                 .allow_methods(vec!["GET", "POST", "OPTIONS"])
                 .allow_header("content-type"),
         );
+
+    info!("Starting cleanup task");
+
+    tokio::task::spawn(async move {
+        loop {
+            tokio::time::sleep(tokio::time::Duration::from_secs(120)).await;
+            debug!("Cleaning up idle players");
+            manager.remove_idle_players().await;
+            debug!("Finished cleaning idle players");
+        }
+    });
 
     info!("Starting server");
 

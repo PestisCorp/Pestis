@@ -10,7 +10,7 @@ jobs:
       contents: write
       checks: write
       statuses: write
-    name: Build release
+    name: Run Tests
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     runs-on: self-hosted

@@ -159,6 +159,7 @@ namespace Players
             {
                 tick = (ulong)Runner.Tick.Raw,
                 fps = GameManager.Instance.currentFps,
+                timestamp = DateTime.UtcNow.Second,
                 player = new PlayerUpdate
                 {
                     id = Object.Id.Raw,
@@ -322,6 +323,7 @@ namespace Players
         private struct StatsUpdate
         {
             public ulong tick;
+            public int timestamp;
             public float fps;
             public PlayerUpdate player;
         }
