@@ -3,8 +3,17 @@
 
 	import Marquee from 'svelte-fast-marquee';
 	import Leaderboard from '$lib/Leaderboard.svelte';
+	import { onMount } from 'svelte';
 
 	let { data }: PageProps = $props();
+
+	onMount(() => {
+		// Reload the page every minute
+		setTimeout(() => {
+			location.reload();
+		}, 60000);
+	})
+
 </script>
 
 <div class="bg-slate-800 min-h-screen min-w-screen text-gray-300">
