@@ -97,7 +97,9 @@ public class InputHandler : MonoBehaviour
             if (clickedHorde && clickedHorde.Player != LocalPlayer?.selectedHorde.Player)
             {
                 Debug.Log("Attacking horde");
-                LocalPlayer?.selectedHorde.AttackHorde(clickedHorde, "");
+                LocalPlayer!.selectedEnemyHorde=clickedHorde;
+                clickedHorde.Highlight();
+                UIManager.AttackPanelEnable();
             }
             else
             {

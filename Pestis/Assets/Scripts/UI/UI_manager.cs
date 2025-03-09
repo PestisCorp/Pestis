@@ -52,6 +52,8 @@ public class UI_Manager : MonoBehaviour
     private TMP_Text _notificationText;
     
     private readonly Queue<(ActiveMutation, ActiveMutation, ActiveMutation, EvolutionManager, HordeController)> _mutationQueue = new();
+
+    
     
     private bool displayResourceInfo;
 
@@ -184,10 +186,14 @@ public class UI_Manager : MonoBehaviour
     public void AttackPanelEnable()
     {
         ResetUI();
+        if (attackPanel != null) attackPanel.SetActive(true);
+        
+    }
+
+    public void AttackPanelRefresh()
+    {
         var fightButton = attackPanel.GetComponentInChildren<Button>();
         fightButton.onClick.RemoveAllListeners();
-        if (attackPanel != null) attackPanel.SetActive(true);
-
         // Find all GameObjects with the tag "UI_stats_text"
         var uiStatsTextObjects = GameObject.FindGameObjectsWithTag("UI_stats_text");
 
@@ -244,13 +250,13 @@ public class UI_Manager : MonoBehaviour
                     break;
             }
         }
-        if (combatOption != "") fightButton.onClick.AddListener(delegate {friendlyHorde.AttackHorde(enemyHorde, combatOption);});
-        
-    }
 
-    public void AttackPanelRefresh()
-    {
-        AttackPanelDisable();
+        if (combatOption != "")
+        {
+            fightButton.onClick.AddListener(delegate {friendlyHorde.AttackHorde(enemyHorde, combatOption);});
+            fightButton.onClick.AddListener(AttackPanelDisable);
+        }
+        
         AttackPanelEnable();
     }
 
@@ -592,6 +598,8 @@ public class UI_Manager : MonoBehaviour
         }
 
     }
+
+    
     
     public void AddNotification(string message, Color hordeColor)
     {

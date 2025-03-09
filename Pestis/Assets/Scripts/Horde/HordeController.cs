@@ -9,6 +9,7 @@ using Players;
 using POI;
 using TMPro;
 using UI;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -81,6 +82,7 @@ namespace Horde
         [SerializeField] private Sprite enemyIcon;
         [SerializeField] private Sprite ownIcon;
 
+        [SerializeField] private GameObject speechBubble;
 
         [SerializeField] private PopulationController _populationController;
 
@@ -110,6 +112,9 @@ namespace Horde
 
         [CanBeNull] private Action OnArriveAtTarget;
 
+        private readonly Queue<Sprite> _speechBubbles = new();
+        private bool _speechBubbleActive;
+        
         /// <summary>
         ///     Time in seconds since game start when the horde last finished combat
         /// </summary>
@@ -282,6 +287,27 @@ Count: {AliveRats}
                 }
             }
         }
+        
+        public void AddSpeechBubble(Sprite bubble)
+        {
+            _speechBubbles.Enqueue(bubble);
+            if (!_speechBubbleActive) StartCoroutine(ShowSpeechBubble());
+        }
+
+        private IEnumerator ShowSpeechBubble()
+        {
+            if (_speechBubbles.Count == 0) yield break;
+            _speechBubbleActive = true;
+            var bubble = _speechBubbles.Dequeue();
+            var icon = speechBubble.GetComponent<Image>();
+            icon.sprite = bubble;
+            yield return new WaitForSeconds(5f);
+            icon.sprite = null;
+            if (_speechBubbles.Count > 0)
+                StartCoroutine(ShowSpeechBubble());
+            else
+                _speechBubbleActive = false;
+        }
 
         /// <summary>
         ///     Check if we've arrived at the target POI.
@@ -308,6 +334,8 @@ Count: {AliveRats}
             // If the POI isn't being defended, we can just take over without combat.
             if (TargetPoi.StationedHordes.Count == 0)
             {
+                var icon = Resources.Load<Sprite>("UI_design/Emotes/defend_emote");
+                AddSpeechBubble(icon);
                 TargetPoi.ChangeController(Player);
                 StationAtRpc(TargetPoi);
                 return;
@@ -375,7 +403,8 @@ Count: {AliveRats}
             StationedAt = null;
         }
 
-        private void IncreaseFear()
+        
+        public void IncreaseFear()
         {
             if (fearAndMoraleBars[0].name == "FearBar")
             {
@@ -396,6 +425,8 @@ Count: {AliveRats}
 
         private IEnumerator FearDebuff(CooldownBar bar)
         {
+            var icon = Resources.Load<Sprite>("UI_design/Emotes/traumatised_emote");
+            AddSpeechBubble(icon);
             GetComponent<AbilityController>().feared = true;
             var elapsedTime = 0.0f;
             while (elapsedTime < 10f)
@@ -438,14 +469,14 @@ Count: {AliveRats}
             var text = _playerText.transform.Find("Border/Background/Text").GetComponent<TMP_Text>();
 
             text.text = Player.Username;
-
             hordeIcon = transform.Find("Canvas/PlayerName/HordeIcon").gameObject;
             var icon = hordeIcon.GetComponent<Image>();
+            
+            speechBubble = transform.Find("Canvas/PlayerName/SpeechBubble").gameObject;
 
             if (Player.IsLocal)
             {
                 var iconSprite = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_self");
-
                 text.color = Color.red;
                 icon.sprite = iconSprite;
             }
@@ -612,6 +643,8 @@ Count: {AliveRats}
             targetLocation.Teleport(target.HordeBounds.center);
             _targetHorde = target;
             _combatStrategy = combatOption;
+            var icon = Resources.Load<Sprite>("UI_design/Emotes/attack_emote");
+            AddSpeechBubble(icon);
         }
 
         private IEnumerator ApplyStrategy(CombatOptions action)

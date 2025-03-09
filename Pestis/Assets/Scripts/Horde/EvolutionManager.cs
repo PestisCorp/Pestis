@@ -121,12 +121,16 @@ namespace Horde
             switch (mutation)
             {
                 case "attack":
+                    var icon = Resources.Load<Sprite>("UI_design/Emotes/damage_buff_emote");
+                    _hordeController.AddSpeechBubble(icon);
                     _populationController.SetDamage((float)mutEffect);
                     break;
                 case "health":
                     _populationController.SetHealthPerRat((float)mutEffect);
                     break;
                 case "defense":
+                    icon = Resources.Load<Sprite>("UI_design/Emotes/damage_reduction_buff_emote");
+                    _hordeController.AddSpeechBubble(icon);
                     _populationController.SetDamageReduction((float)mutEffect);
                     break;
                 case "birth rate":
@@ -183,6 +187,8 @@ namespace Horde
             }
             
             FindFirstObjectByType<UI_Manager>().RareMutationPopup((firstMut, secondMut, thirdMut), this, _hordeController);
+            var icon = Resources.Load<Sprite>("UI_design/Emotes/evolution_emote");
+            _hordeController.AddSpeechBubble(icon);
             _rareMutationClock.Start();
         }
 
@@ -235,7 +241,7 @@ namespace Horde
                     count = tagCount + 1;
                 }
                 _evolutionaryState.ActiveMutations.SetWeight(_evolutionaryState.ActiveMutations[i], count);
-                GameManager.Instance.terrainMap.GetTile(_hordeController.GetBounds().center);
+                //GameManager.Instance.terrainMap.GetTile(_hordeController.GetBounds().center);
                 //var biome = BiomeClass.GetBiomeAtPosition(tilemap.WorldToCell(_hordeController.GetBounds().center)).template.name;
             }
         }
