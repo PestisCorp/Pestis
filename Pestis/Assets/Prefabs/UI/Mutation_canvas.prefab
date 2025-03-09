@@ -347,7 +347,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tooltipText: 
-  tooltipObject: {fileID: 0}
+  tooltipObject: {fileID: 537699768847741873, guid: 1a729c8c51156474eb475e40837a1ea2, type: 3}
   tooltipInstance: {fileID: 0}
 --- !u!1 &4155569210907065844
 GameObject:
@@ -485,7 +485,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tooltipText: 
-  tooltipObject: {fileID: 0}
+  tooltipObject: {fileID: 537699768847741873, guid: 1a729c8c51156474eb475e40837a1ea2, type: 3}
   tooltipInstance: {fileID: 0}
 --- !u!1 &4965580267257120164
 GameObject:
@@ -761,7 +761,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tooltipText: 
-  tooltipObject: {fileID: 0}
+  tooltipObject: {fileID: 537699768847741873, guid: 1a729c8c51156474eb475e40837a1ea2, type: 3}
   tooltipInstance: {fileID: 0}
 --- !u!1 &5926185786748616799
 GameObject:
