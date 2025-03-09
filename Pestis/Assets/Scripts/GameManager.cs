@@ -34,6 +34,8 @@ public class GameManager : MonoBehaviour
     public int poiGridDimX;
     public int poiGridDimY;
 
+    public string localUsername;
+
     private readonly float[] fpsWindow = new float[60];
     private int fpsIndex;
 

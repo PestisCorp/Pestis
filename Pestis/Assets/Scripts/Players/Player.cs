@@ -75,9 +75,13 @@ namespace Players
                 _humanPlayer!.player = this;
 
                 if (HasStateAuthority)
+                {
                     FindAnyObjectByType<Grid>().GetComponent<InputHandler>().LocalPlayer = _humanPlayer;
-
-                Username = $"Player {Object.StateAuthority.PlayerId}";
+                    if (GameManager.Instance.localUsername.Length != 0)
+                        Username = GameManager.Instance.localUsername;
+                    else
+                        Username = $"Player {Object.StateAuthority}";
+                }
             }
             else
             {
