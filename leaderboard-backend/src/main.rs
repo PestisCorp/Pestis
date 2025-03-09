@@ -1,7 +1,7 @@
 use log::{debug, info};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use std::io::Read;
+use std::io::{Read, Write};
 use std::sync::Arc;
 use tokio::sync::RwLock;
 use warp::Filter;
@@ -47,9 +47,18 @@ struct LeaderboardManager {
 
 impl LeaderboardManager {
     fn new() -> Self {
+        let filename = chrono::Utc::now().format("%Y-%m-%d");
+        let filename = format!("{}-leaderboard.json", filename);
+        let history = if let Ok(mut file) = std::fs::File::open(&filename) {
+            let mut contents = String::new();
+            file.read_to_string(&mut contents).unwrap();
+            serde_json::from_str(&contents).unwrap()
+        } else {
+            HashMap::new()
+        };
         LeaderboardManager {
             players: Arc::new(RwLock::new(HashMap::new())),
-            history: Arc::new(RwLock::new(HashMap::new())),
+            history: Arc::new(RwLock::new(history)),
         }
     }
 
@@ -118,7 +127,7 @@ impl LeaderboardManager {
             .duration_since(std::time::UNIX_EPOCH)
             .unwrap()
             .as_secs();
-        
+
         for player in players {
             let latest_update = history.get(&player).and_then(|updates| updates.last());
             if let Some(update) = latest_update {
@@ -134,6 +143,14 @@ impl LeaderboardManager {
         drop(history);
         let mut players = self.players.write().await;
         players.retain(|_, player| !to_remove.contains(&player.id));
+    }
+
+    async fn save_to_file(&self) {
+        let current_date = chrono::Utc::now().format("%Y-%m-%d");
+        let history = self.history.read().await;
+        let mut file = std::fs::File::create(format!("{}-leaderboard.json", current_date)).unwrap();
+        let data = serde_json::to_string(&*history).unwrap();
+        file.write_all(data.as_bytes()).unwrap();
     }
 }
 
@@ -258,14 +275,16 @@ async fn main() {
                 .allow_header("content-type"),
         );
 
-    info!("Starting cleanup task");
+    info!("Starting managements tasks");
 
     tokio::task::spawn(async move {
         loop {
             tokio::time::sleep(tokio::time::Duration::from_secs(120)).await;
-            debug!("Cleaning up idle players");
+            debug!("Running management tasks");
             manager.remove_idle_players().await;
             debug!("Finished cleaning idle players");
+            manager.save_to_file().await;
+            debug!("Saved leaderboard to file");
         }
     });
 
