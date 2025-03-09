@@ -31,6 +31,7 @@ struct Player {
 struct Update {
     tick: u64,
     player: Player,
+    fps: f32,
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, Debug)]
@@ -69,6 +70,22 @@ impl LeaderboardManager {
         players.sort_by_key(|p| p.score);
         players.reverse();
         players
+    }
+
+    async fn median_fps(&self) -> f32 {
+        let history = self.history.read().await;
+        let fps: Vec<f32> = history
+            .values()
+            .flat_map(|updates| updates.iter().map(|update| update.fps))
+            .collect();
+        let mut fps = fps;
+        fps.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        let len = fps.len();
+        if len % 2 == 0 {
+            (fps[len / 2] + fps[len / 2 + 1]) / 2.0
+        } else {
+            fps[len / 2]
+        }
     }
 
     async fn add_player(&self, id: u64, username: String) {
@@ -111,6 +128,11 @@ async fn get_alltime_leaderboard(
 ) -> Result<impl warp::Reply, warp::Rejection> {
     let leaderboard = manager.get_alltime_leaderboard().await;
     Ok(warp::reply::json(&leaderboard))
+}
+
+async fn get_median_fps(manager: LeaderboardManager) -> Result<impl warp::Reply, warp::Rejection> {
+    let fps = manager.median_fps().await;
+    Ok(warp::reply::json(&fps))
 }
 
 async fn update_player(
@@ -180,10 +202,21 @@ async fn main() {
             async move { update_player(body, manager).await }
         });
 
+
+    let manager_clone = manager.clone();
+    let median_fps = warp::get()
+        .and(warp::path("api"))
+        .and(warp::path("fps"))
+        .and_then(move || {
+            let manager = manager_clone.clone();
+            async move { get_median_fps(manager).await }
+        });
+
     let handler = join
         .or(leaderboard)
         .or(alltime_leaderboard)
         .or(update)
+        .or(median_fps)
         .with(warp::log("pestis::api"))
         .with(
             warp::cors()

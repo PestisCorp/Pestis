@@ -152,6 +152,7 @@ namespace Players
             var jsonObj = new StatsUpdate
             {
                 tick = (ulong)Runner.Tick.Raw,
+                fps = GameManager.Instance.currentFps,
                 player = new PlayerUpdate
                 {
                     id = Object.Id.Raw,
@@ -283,6 +284,7 @@ namespace Players
         private struct StatsUpdate
         {
             public ulong tick;
+            public float fps;
             public PlayerUpdate player;
         }
     }

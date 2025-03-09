@@ -4,7 +4,7 @@
 	export let leaderboard: Player[] = [];
 </script>
 
-<table class="w-full border-2 mx-auto text-left h-5/6">
+<table class="w-full border-2 mx-auto text-left h-5/6 overflow-scroll">
 	<thead>
 	<tr>
 		<th class="p-3">Rank</th>
@@ -21,7 +21,7 @@
 			<td class="p-3">{i + 1}.</td>
 			<td>{player.username}</td>
 			<td>{player.score}</td>
-			<td>{player.hordes.map(horde => horde.rats).reduce((sum, rats) => sum + rats)}</td>
+			<td>{player.hordes.length === 0 ? 0 : player.hordes.map(horde => horde.rats).reduce((sum, rats) => sum + rats)}</td>
 			<td>{player.hordes.length}</td>
 			<td>{player.pois.length}</td>
 

@@ -7,5 +7,8 @@ export const load = async () => {
 
 	resp = await fetch(`${BACKEND_URL}/api/alltime`);
 	const allTime: Player[] = await resp.json();
-	return { leaderboard, allTime };
+
+	resp = await fetch(`${BACKEND_URL}/api/fps`);
+	const fps: number = await resp.json();
+	return { leaderboard, allTime, fps };
 };

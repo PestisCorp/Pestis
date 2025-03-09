@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
 
     public TMP_Text fpsText;
     public TMP_Text boidText;
+    public float currentFps;
 
     public float poiGridCellSize = 5;
     public int poiGridDimX;
@@ -113,7 +114,7 @@ public class GameManager : MonoBehaviour
         poiOffsetBuffer = new ComputeBuffer(poiGridDimX * poiGridDimY, Marshal.SizeOf(typeof(uint)));
         poiOffsetBuffer.SetData(gridOffsets);
 
-        Application.targetFrameRate = 58;
+        Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 0;
     }
 
@@ -126,7 +127,8 @@ public class GameManager : MonoBehaviour
         else
             fpsIndex++;
 
-        fpsText.text = $"FPS: {60.0f / fpsWindow.Sum()}";
+        currentFps = 60.0f / fpsWindow.Sum();
+        fpsText.text = $"FPS: {currentFps}";
         boidText.text = $"Boids: {Players.Sum(player => player.Hordes.Sum(horde => horde.AliveRats))}";
 #endif
     }

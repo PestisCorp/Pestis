@@ -26,7 +26,7 @@
 				<h1 class="text-4xl">Rat-based Domination!</h1>
 				<h2 class="mt-5 text-2xl">
 					Current
-					Rats: {data.leaderboard.map(player => player.hordes.map(horde => horde.rats).reduce((sum, rats) => sum + rats)).reduce((sum, rats) => sum + rats)}
+					Rats: {data.leaderboard.length === 0 ? 0 : (data.leaderboard.map(player => player.hordes.length === 0 ? 0 : player.hordes.map(horde => horde.rats).reduce((sum, rats) => sum + rats)).reduce((sum, rats) => sum + rats))}
 				</h2>
 				<h2 class="mt-5 text-2xl">
 					Current
@@ -35,6 +35,10 @@
 				<h2 class="mt-5 text-2xl">
 					Current
 					Players: {data.leaderboard.length}
+				</h2>
+				<h2 class="mt-5 text-2xl">
+					Median
+					FPS: {data.fps.toFixed(0)}
 				</h2>
 			</div>
 		</div>
