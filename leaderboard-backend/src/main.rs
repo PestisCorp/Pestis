@@ -76,12 +76,15 @@ impl LeaderboardManager {
         let history = self.history.read().await;
         let fps: Vec<f32> = history
             .values()
-            .flat_map(|updates| updates.iter().map(|update| update.fps))
+            .filter_map(|updates| updates.iter().last().map(|update| update.fps))
             .collect();
         let mut fps = fps;
         fps.sort_by(|a, b| a.partial_cmp(b).unwrap());
         let len = fps.len();
-        if len % 2 == 0 {
+        if len == 0 {
+            0.0
+        }
+        else if len % 2 == 0 {
             (fps[len / 2] + fps[len / 2 + 1]) / 2.0
         } else {
             fps[len / 2]
