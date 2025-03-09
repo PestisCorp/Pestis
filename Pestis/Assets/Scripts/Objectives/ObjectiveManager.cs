@@ -3,12 +3,23 @@ using System.Collections.Generic;
 
 namespace Objectives
 {
+    public enum ObjectiveTrigger
+    {
+        CombatStarted,
+        POICaptured,
+        HordeSplit,
+        HumanPatrolDefeated,
+        SwimmingUnlocked,
+        BattleWon
+    }
+    
     public class ObjectiveManager
     {
         public Action<Objective> OnObjectiveAdded;
         public List<Objective> Objectives { get; } = new();
-        private readonly Dictionary<string, List<Objective>> _objectiveMap = new();
         
+        private readonly Dictionary<ObjectiveTrigger, List<Objective>> _objectiveMap = new();
+
         /// <summary>
         /// Adds an objective to the objective manager.
         /// If the objective has an EventTrigger, its progress will be incremented
@@ -18,25 +29,25 @@ namespace Objectives
         public void AddObjective(Objective objective)
         {
             Objectives.Add(objective);
-            if (!string.IsNullOrEmpty(objective.EventTrigger))
+
+
+            if (!_objectiveMap.ContainsKey(objective.ObjectiveTrigger))
             {
-                if (!_objectiveMap.ContainsKey(objective.EventTrigger))
-                {
-                    _objectiveMap.Add(objective.EventTrigger, new List<Objective>());
-                }
-                _objectiveMap[objective.EventTrigger].Add(objective);
+                _objectiveMap.Add(objective.ObjectiveTrigger, new List<Objective>());
             }
+
+            _objectiveMap[objective.ObjectiveTrigger].Add(objective);
             OnObjectiveAdded?.Invoke(objective);
         }
-        
-        public void AddProgress(string eventTrigger, int value)
+
+        public void AddProgress(ObjectiveTrigger objectiveTrigger, int value)
         {
-            if (!_objectiveMap.ContainsKey(eventTrigger))
+            if (!_objectiveMap.ContainsKey(objectiveTrigger))
             {
                 return;
             }
 
-            foreach (var objective in _objectiveMap[eventTrigger])
+            foreach (var objective in _objectiveMap[objectiveTrigger])
             {
                 objective.AddProgress(value);
             }

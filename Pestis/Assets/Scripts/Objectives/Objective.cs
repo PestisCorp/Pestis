@@ -9,7 +9,7 @@ namespace Objectives
         public Action OnValueChange;
         /// Used to AddProgress from ObjectiveManager.
         /// Can be empty if objective progress is managed elsewhere.
-        public string EventTrigger { get; }
+        public ObjectiveTrigger ObjectiveTrigger { get; }
         public bool IsComplete { get; private set; }
         public int MaxValue { get; }
         public int CurrentValue { get; private set; }
@@ -20,14 +20,12 @@ namespace Objectives
         /// Status text can have 2 parameters {0} and {1} for current and max value.
         /// Example: "Kill {0} of {1} enemies".
         /// </summary>
-        public Objective(string eventTrigger, string statusText, int maxValue)
+        public Objective(ObjectiveTrigger objectiveTrigger, string statusText, int maxValue)
         {
-            EventTrigger = eventTrigger;
+            ObjectiveTrigger = objectiveTrigger;
             _statusText = statusText;
             MaxValue = maxValue;
         }
-        
-        public Objective(string statusText, int maxValue) : this("", statusText, maxValue) {}
 
         private void CheckCompletion()
         {

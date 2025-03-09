@@ -46,12 +46,12 @@ public class GameManager : MonoBehaviour
         QualitySettings.vSyncCount = 0;
         
         ObjectiveManager = new ObjectiveManager();
-        Objective fightHorde = new Objective("Combat", "Fight a horde", 1);
-        Objective capturePOI = new Objective("CapturePOI", "Capture a POI", 1);
-        Objective splitHorde = new Objective("SplitHorde", "Split your horde", 1);
-        Objective defeatHumanPatrol = new Objective("DefeatHumanPatrol", "Defeat a human patrol", 1);
-        Objective learnToSwim = new Objective("SwimmingMutation", "Learn to swim", 1);
-        Objective winBattles = new Objective("Combat", "Win {0}/{1} battles", 10);
+        Objective fightHorde = new Objective(ObjectiveTrigger.CombatStarted, "Fight a horde", 1);
+        Objective capturePOI = new Objective(ObjectiveTrigger.POICaptured, "Capture a POI", 1);
+        Objective splitHorde = new Objective(ObjectiveTrigger.HordeSplit, "Split your horde", 1);
+        Objective defeatHumanPatrol = new Objective(ObjectiveTrigger.HumanPatrolDefeated, "Defeat a human patrol", 1);
+        Objective learnToSwim = new Objective(ObjectiveTrigger.SwimmingUnlocked, "Learn to swim", 1);
+        Objective winBattles = new Objective(ObjectiveTrigger.BattleWon, "Win {0}/{1} battles", 10);
         ObjectiveManager.AddObjective(fightHorde);
         ObjectiveManager.AddObjective(capturePOI);
         ObjectiveManager.AddObjective(splitHorde);

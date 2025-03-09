@@ -6,6 +6,7 @@ using Fusion;
 using JetBrains.Annotations;
 using KaimiraGames;
 using MoreLinq;
+using Objectives;
 using Players;
 using POI;
 using TMPro;
@@ -649,7 +650,8 @@ Count: {AliveRats}
 
             Enum.TryParse(combatOption.Replace(" ", ""), out CombatOptions option);
             StartCoroutine(ApplyStrategy(option));
-
+            // update objectives to show that combat has started
+            GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.CombatStarted, 1);
         }
 
         IEnumerator ApplyStrategy(CombatOptions action)
