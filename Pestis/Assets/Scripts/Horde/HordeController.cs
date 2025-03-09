@@ -5,6 +5,8 @@ using System.Linq;
 using Fusion;
 using JetBrains.Annotations;
 using KaimiraGames;
+using MoreLinq;
+using Objectives;
 using Players;
 using POI;
 using TMPro;
@@ -18,15 +20,15 @@ namespace Horde
 {
     public enum CombatOptions
     {
-        FrontalAssault,
-        ShockAndAwe,
-        Envelopment,
-        Fortify,
-        Hedgehog,
+        FrontalAssault, 
+        ShockAndAwe, 
+        Envelopment, 
+        Fortify, 
+        Hedgehog, 
         AllRound
     }
-
-
+    
+    
     public class HordeController : NetworkBehaviour
 
     {
@@ -47,8 +49,7 @@ namespace Horde
         public Player Player;
 
         public GameObject ratPrefab;
-        public bool isHedgehogged;
-
+        public bool isHedgehogged = false;
         public GameObject moraleAndFearInstance;
 
         // Do not use or edit yourself, used to expose internals to Editor
@@ -103,11 +104,13 @@ namespace Horde
         private Light2D _selectionLightPoi;
 
         private Light2D _selectionLightTerrain;
-
+        
         [CanBeNull] private HordeController _targetHorde;
 
 
         [CanBeNull] private Action OnArriveAtTarget;
+
+        public RatBoids boids { get; private set; }
 
         /// <summary>
         ///     Time in seconds since game start when the horde last finished combat
@@ -122,7 +125,9 @@ namespace Horde
 
         public int AliveRats => (int)Mathf.Max(TotalHealth / _populationController.GetState().HealthPerRat, 1.0f);
 
-        [Networked] internal float TotalHealth { get; set; } = 25.0f;
+        [Networked]
+        [OnChangedRender(nameof(TotalHealthChanged))]
+        internal float TotalHealth { get; set; } = 25.0f;
 
         /// <summary>
         ///     Bounds containing every rat in Horde
@@ -262,7 +267,6 @@ Count: {AliveRats}
                     var septicMult = _populationController.GetState().SepticMult;
                     _populationController.SetSepticMult(septicMult * 1.005f);
                 }
-
                 var enemyHordes =
                     CurrentCombatController!.boids.containedHordes.Where(horde => horde.Player != Player).ToArray();
 
@@ -374,9 +378,56 @@ Count: {AliveRats}
             StationedAt = null;
         }
 
+
+        /// <summary>
+        ///     Update number of visible rats based on current health
+        /// </summary>
+        internal void TotalHealthChanged()
+        {
+            // Update values shown in inspector
+            devToolsTotalRats = AliveRats;
+            devToolsTotalHealth = TotalHealth;
+
+            if (AliveRats < 0)
+                // Initial value is bad
+                return;
+
+            var difference = AliveRats - _spawnedRats.Count;
+            if (difference > 0)
+            {
+                _ratsToSpawn = difference;
+            }
+            else if (difference < 0)
+            {
+                var sortedByDistanceFromEnemy = _spawnedRats
+                    .Select((rat, i) => new KeyValuePair<int, RatController>(i, rat)).OrderBy(kvp =>
+                        -((Vector2)kvp.Value.transform.position - kvp.Value.targetPoint).sqrMagnitude).ToList();
+
+                List<int> indexesToRemove = new();
+                // Kill a Rat
+                for (var i = 0; i > difference; i--)
+                {
+                    // Only leave corpse if in combat
+                    if (InCombat)
+                    {
+                        sortedByDistanceFromEnemy[sortedByDistanceFromEnemy.Count - 1 + i].Value.Kill();
+                        IncreaseFear();
+                    }
+                    else
+                        sortedByDistanceFromEnemy[sortedByDistanceFromEnemy.Count - 1 + i].Value.KillInstant();
+                    indexesToRemove.Add(sortedByDistanceFromEnemy[sortedByDistanceFromEnemy.Count - 1 + i].Key);
+                    
+                }
+
+                indexesToRemove.Sort();
+                indexesToRemove.Reverse();
+                foreach (var index in indexesToRemove) _spawnedRats.RemoveAt(index);
+            }
+        }
+
         private void IncreaseFear()
         {
-            var bars = moraleAndFearInstance.GetComponentsInChildren<CooldownBar>();
+            CooldownBar[] bars = moraleAndFearInstance.GetComponentsInChildren<CooldownBar>();
             if (bars[0].name == "FearBar")
             {
                 if (bars[0].current == 0) return;
@@ -403,14 +454,15 @@ Count: {AliveRats}
                 bar.current = 0 + (int)(elapsedTime / 10 * bar.maximum);
                 yield return null;
             }
-
             GetComponent<AbilityController>().feared = false;
         }
 
         public override void Spawned()
         {
+            _populationController = GetComponent<PopulationController>();
             _evolutionManager = GetComponent<EvolutionManager>();
             Player = GetComponentInParent<Player>();
+            boids = GetComponentInChildren<RatBoids>();
             Player.Hordes.Add(this);
 
             if (HasStateAuthority) // Ensure only the host assigns colors
@@ -456,8 +508,13 @@ Count: {AliveRats}
             }
 
             moraleAndFearInstance = Instantiate(FindFirstObjectByType<UI_Manager>().fearAndMorale);
-            foreach (var bar in moraleAndFearInstance.GetComponentsInChildren<CooldownBar>()) bar.current = bar.maximum;
+            foreach (CooldownBar bar in moraleAndFearInstance.GetComponentsInChildren<CooldownBar>())
+            {
+                bar.current = bar.maximum;
+            }
             moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
+            // Needed to spawn in rats from joined session
+            TotalHealthChanged();
         }
 
 
@@ -605,8 +662,22 @@ Count: {AliveRats}
             TargetPoi = null;
 
             targetLocation.Teleport(target.HordeBounds.center);
-            _targetHorde = target;
-            _combatStrategy = combatOption;
+            if (target.InCombat) // If the target is already in combat, join it
+            {
+                target.CurrentCombatController!.AddHordeRpc(this, true);
+            }
+            else // Otherwise start new combat and add the target to it
+            {
+                CurrentCombatController =
+                    Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
+                CurrentCombatController!.AddHordeRpc(this, true);
+                CurrentCombatController.AddHordeRpc(target, false);
+            }
+
+            Enum.TryParse(combatOption.Replace(" ", ""), out CombatOptions option);
+            StartCoroutine(ApplyStrategy(option));
+            // update objectives to show that combat has started
+            GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.CombatStarted, 1);
         }
 
         private IEnumerator ApplyStrategy(CombatOptions action)

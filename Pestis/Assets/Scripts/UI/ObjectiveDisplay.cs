@@ -8,6 +8,7 @@ namespace UI
     {
         [SerializeField] private TextMeshProUGUI objectiveText;
         private Objective _objective;
+        private static int numberOfObjectives = 0;
         
         public void Init(Objective objective)
         {
@@ -15,7 +16,10 @@ namespace UI
             objectiveText.text = objective.GetStatusText();
             objective.OnValueChange += OnObjectiveValueChange;
             objective.OnComplete += OnObjectiveComplete;
+            numberOfObjectives++;
             objectiveText.enabled = true;
+            objectiveText.rectTransform.position =
+                new Vector2(Screen.width - 20, Screen.height - 50 * (numberOfObjectives + 1));
         }
         
         private void OnObjectiveComplete()
