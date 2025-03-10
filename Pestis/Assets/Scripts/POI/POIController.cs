@@ -3,6 +3,7 @@ using System.Linq;
 using Fusion;
 using Horde;
 using JetBrains.Annotations;
+using Objectives;
 using Players;
 using UnityEditor;
 using UnityEngine;
@@ -67,6 +68,10 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             Debug.Log($"Fixed cheese rate is {_cheesePerTick}");
             ControlledBy.IncrementCheeseIncrementRateRpc(_cheesePerTick);
             StationedHordes.Clear();
+            if (player.IsLocal)
+            {
+                GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.POICaptured, 1);
+            }
         }
 
         public void EmitCaptureEffect()
