@@ -39,18 +39,17 @@ public class CombatFXManager : MonoBehaviour
 
     void UpdateParticleBounds(Bounds bounds)
     {
-
         // Configure the Shape Module
         var shape = combatVFX.shape;
         combatVFX.transform.position = bounds.center;
         shape.scale = bounds.size/2;
         float radius = (bounds.size.x) + 0.5f;
-        combatVFX.emissionRate =  (radius * radius) * 1.2f ;
+        combatVFX.emissionRate =  (radius * radius) * 0.7f ;
     }
 
     void Update()
     {
-        UpdateParticleBounds(HordeController.GetBounds());
+        UpdateParticleBounds(HordeController.CurrentCombatController.bounds);
     }
     private void OnEnable()
     {
