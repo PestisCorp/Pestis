@@ -9,37 +9,7 @@ public class CombatFXManager : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip startCombatSound;
     public AudioClip endCombatSound;
-    public Horde.HordeController HordeController;
-    bool battleSoundMuteX = true; //helps to reduce the same battle start effect being repeatedly played
-    bool startnoise = true;
-    bool endnoise = true;
-    private float currentTime = 0f;   // Current time for the timer
-
-    private IEnumerator PlaySFX(AudioClip sound, float delay)
-    {
-
-        while (!battleSoundMuteX)
-        {
-            yield return null; // Wait for the next frame until battleSoundMuteX is true
-        }
-        battleSoundMuteX = false;  
-
-        // Start playing sound and VFX
-        Debug.Log("playing sfx");
-        audioSource.Stop();
-        audioSource.clip = sound;
-        audioSource.Play();
-
-        // Wait for the specified delay
-        yield return new WaitForSeconds(delay);
-
-        // Allow sound to be played again
-        battleSoundMuteX = true;
-        startnoise = true;
-        endnoise = true;
-    }
-
-
+    public HordeController HordeController;
     Bounds GetIntersection(Bounds a, Bounds b)
     {
         Vector3 min = Vector3.Max(a.min, b.min); // Maximum of the min corners
