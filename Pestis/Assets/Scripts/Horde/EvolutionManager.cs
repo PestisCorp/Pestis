@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using File = System.IO.File;
 using Random = System.Random;
 using KaimiraGames;
+using Objectives;
 using UnityEngine.Tilemaps;
 
 // TODO: Change AcquiredMutations to a HashSet.
@@ -222,6 +223,11 @@ namespace Horde
             if (mutation.IsAbility)
             {
                 _evolutionaryState.AcquiredAbilities.Add((mutation.MutationName, mutation.Tooltip));
+            }
+
+            if (mutation.MutationName.Contains("swim"))
+            {
+                GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.SwimmingUnlocked, 1);
             }
         }
         
