@@ -30,13 +30,13 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1376086926097632983}
+  m_Father: {fileID: 6732788276756403029}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 30, y: 40}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &2466801678275048271
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -494176560733537467, guid: 65d301f60404e486f95ace0907f74108, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -191,7 +191,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6732788276756403029}
-  - {fileID: 2867504960344824529}
   m_Father: {fileID: 3670710804318574543}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -275,8 +274,8 @@ GameObject:
   - component: {fileID: 4419380376764164480}
   - component: {fileID: -7073726608519572895}
   - component: {fileID: 8072967729009948161}
+  - component: {fileID: 2298762105365068013}
   - component: {fileID: 6693759847198177699}
-  - component: {fileID: 7949394547622356909}
   m_Layer: 0
   m_Name: RatHorde
   m_TagString: Untagged
@@ -318,6 +317,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
   ratPrefab: {fileID: 1194567179159515082, guid: 4091d5ba2e9491ad9a22f76d74336264, type: 3}
+  isHedgehogged: 0
+  moraleAndFearInstance: {fileID: 0}
   devToolsTotalRats: 0
   devToolsTotalHealth: 0
   devToolsTargetLocation: {x: 0, y: 0}
@@ -332,6 +333,8 @@ MonoBehaviour:
   hordeIcon: {fileID: 0}
   enemyIcon: {fileID: 0}
   ownIcon: {fileID: 0}
+  _populationController: {fileID: 4419380376764164480}
+  boids: {fileID: 3442052912350168715}
   _StationedAt: {fileID: 0}
   _TargetPoi: {fileID: 0}
   _CurrentCombatController: {fileID: 0}
@@ -347,6 +350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21056fc1ac164f62ab126c09e6e0ed46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPopulation: 5
 --- !u!114 &-7073726608519572895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,10 +383,25 @@ MonoBehaviour:
   - {fileID: 6619829849645989142}
   - {fileID: 4419380376764164480}
   - {fileID: -7073726608519572895}
+  - {fileID: 2298762105365068013}
   - {fileID: 6693759847198177699}
-  - {fileID: 7949394547622356909}
   - {fileID: 6270358088513742782}
   ForceRemoteRenderTimeframe: 0
+--- !u!114 &2298762105365068013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2093969167296477126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e5121fa714640d78cc89c73a8985e8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityHaste: 0
+  feared: 0
+  forceCooldownRefresh: 0
 --- !u!114 &6693759847198177699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -400,20 +419,6 @@ MonoBehaviour:
   SyncParent: 1
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
---- !u!114 &7949394547622356909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2093969167296477126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fc0f394f1d4433faea6b58a882e00ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boids: {fileID: 0}
-  _FightingOver: {fileID: 0}
 --- !u!1 &3577181395217153104
 GameObject:
   m_ObjectHideFlags: 0
@@ -712,7 +717,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6732788276756403029}
-  - component: {fileID: 936417536168821068}
+  - component: {fileID: 5143675902631702394}
   m_Layer: 0
   m_Name: PlayerName
   m_TagString: Untagged
@@ -732,16 +737,17 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2867504960344824529}
   - {fileID: 3232489604842089083}
   - {fileID: 7162712625720371668}
   m_Father: {fileID: 1376086926097632983}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0}
-  m_SizeDelta: {x: 150, y: 20}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &936417536168821068
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 97.7265, y: 80}
+  m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &5143675902631702394
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -759,7 +765,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 0
+  m_Spacing: 3
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
@@ -1037,7 +1043,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 1
+  m_overflowMode: 3
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
@@ -1117,7 +1123,7 @@ MonoBehaviour:
   visualRange: 50
   minDistance: 0.8
   cohesionFactor: 1
-  separationFactor: 10
+  separationFactor: 5
   alignmentFactor: 0.5
   targetFactor: 4
   boidShader: {fileID: 7200000, guid: 9c4516c864c64285a3313ea819bbf605, type: 3}
@@ -1128,7 +1134,6 @@ MonoBehaviour:
   AliveRats: 0
   TargetPos: {x: 0, y: 0}
   paused: 0
-  containedHordes: []
 --- !u!222 &8096480468413857689
 CanvasRenderer:
   m_ObjectHideFlags: 0
