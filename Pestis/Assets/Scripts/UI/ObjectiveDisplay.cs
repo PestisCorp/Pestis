@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace UI
 {
+    // https://www.jonathanyu.xyz/2023/11/29/dynamic-objective-system-tutorial-for-unity/
     public class ObjectiveDisplay : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI objectiveText;

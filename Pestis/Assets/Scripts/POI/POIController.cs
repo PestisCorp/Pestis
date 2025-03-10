@@ -3,6 +3,7 @@ using System.Linq;
 using Fusion;
 using Horde;
 using JetBrains.Annotations;
+using Objectives;
 using Players;
 using UnityEditor;
 using UnityEngine;
@@ -65,6 +66,10 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             // Add Cheese benefits to new controller
             ControlledBy.IncrementCheeseIncrementRateRpc(_cheesePerTick);
             StationedHordes.Clear();
+            if (player.IsLocal)
+            {
+                GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.POICaptured, 1);
+            }
         }
 
         private void StationHorde(HordeController horde)

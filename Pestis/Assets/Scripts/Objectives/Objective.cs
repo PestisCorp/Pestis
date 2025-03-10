@@ -2,6 +2,7 @@
 
 namespace Objectives
 {
+    // https://www.jonathanyu.xyz/2023/11/29/dynamic-objective-system-tutorial-for-unity/
     public class Objective {
         /// Invoked when the objective is completed
         public Action OnComplete;

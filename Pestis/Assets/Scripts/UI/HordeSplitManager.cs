@@ -1,4 +1,5 @@
 using Horde;
+using Objectives;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -55,6 +56,10 @@ namespace UI
             var horde = InputHandler.Instance.LocalPlayer?.selectedHorde;
             horde?.Player.SplitHorde(horde, _splitPercentage);
             gameObject.SetActive(false);
+            if (horde)
+            {
+                GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.HordeSplit, 1);    
+            }
         }
 
         public void SetHordeSplitNumber()
