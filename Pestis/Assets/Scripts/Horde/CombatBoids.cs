@@ -261,10 +261,16 @@ public class CombatBoids : MonoBehaviour
             .ToArray();
 
         foreach (var horde in containedHordes)
+        {
             if (totalDeathsPerHorde.Keys.Contains(horde))
                 totalDeathsPerHorde[horde] += Math.Max(_previousNumBoids[horde] - numBoids[horde], 0);
             else
                 totalDeathsPerHorde[horde] = Math.Max(_previousNumBoids[horde] - numBoids[horde], 0);
+            for (int i = 0; i < _previousNumBoids[horde] - numBoids[horde]; i++)
+            {
+                horde.IncreaseFear();
+            }
+        }
 
         boidsToKill.SetData(boidsToKillData, 0, 0, boidsToKillData.Length);
 

@@ -239,13 +239,7 @@ public class RatBoids : MonoBehaviour
         {
             // Don't exceed dead boids buffer
             deadBoidsCount = Math.Min(deadBoidsCount + numBoids - newNumBoids, deadBoids.count);
-            if (numBoids - newNumBoids > 0)
-            {
-                for (int i = 0; i < numBoids - newNumBoids; i++)
-                {
-                    hordeController.IncreaseFear();
-                }
-            }
+
         }
             
 
