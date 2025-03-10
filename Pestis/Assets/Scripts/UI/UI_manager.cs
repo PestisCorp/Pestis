@@ -593,6 +593,10 @@ public class UI_Manager : MonoBehaviour
                     button.onClick.AddListener(delegate {abilityController.UsePestis(button);});
                     button.GetComponent<Tooltip>().tooltipText = mutation.Item2;
                     break;
+                case "Sewer Dwellers":
+                    button.onClick.AddListener(delegate {abilityController.UseSewerDwellers(button);});
+                    button.GetComponent<Tooltip>().tooltipText = mutation.Item2;
+                    break;
             }
             break;
         }

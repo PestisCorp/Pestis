@@ -472,6 +472,7 @@ Count: {AliveRats}
             hordeIcon = transform.Find("Canvas/PlayerName/HordeIcon").gameObject;
             var icon = hordeIcon.GetComponent<Image>();
             
+            
             speechBubble = transform.Find("Canvas/PlayerName/SpeechBubble").gameObject;
 
             if (Player.IsLocal)
@@ -602,6 +603,12 @@ Count: {AliveRats}
             lastInCombat = Time.time;
         }
 
+        [Rpc(RpcSources.All, RpcTargets.All)]
+        public void TeleportHordeRPC(Vector3 target)
+        {
+            boids.TeleportHorde(target, GetBounds());
+        }
+        
         public void AttackPoi(POIController poi)
         {
             Debug.Log("Attacking POI");
@@ -645,6 +652,7 @@ Count: {AliveRats}
             _combatStrategy = combatOption;
             var icon = Resources.Load<Sprite>("UI_design/Emotes/attack_emote");
             AddSpeechBubble(icon);
+            moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 1;
         }
 
         private IEnumerator ApplyStrategy(CombatOptions action)

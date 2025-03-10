@@ -5,6 +5,7 @@ using ExitGames.Client.Photon.StructWrapping;
 using Fusion;
 using Human;
 using Players;
+using POI;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -80,6 +81,54 @@ namespace Horde
                 affectedEnemy.SetDamageReductionMult(affectedEnemy.GetState().DamageReductionMult / 1.3f);
         }
 
+        public void UseSewerDwellers(Button calledBy)
+        {
+            POIController travelFrom = null;
+            foreach (var poi in _hordeController.Player.ControlledPOIs)
+            {
+                if (!poi.gameObject.name.Contains("City")) continue;
+                if (!poi.Collider.bounds.Contains(_hordeController.GetBounds().center)) continue;
+                travelFrom = poi;
+                break;
+            }
+            
+            if (travelFrom == null)
+            {
+                FindFirstObjectByType<UI_Manager>().AddNotification("You are not near a city that you control!", Color.red);
+                return;
+            }
+            
+            POIController travelTo = null;
+            foreach (var poi in _hordeController.Player.ControlledPOIs)
+            {
+                if (!poi.gameObject.name.Contains("City")) continue;
+                if (poi.GetHashCode() == travelFrom.GetHashCode()) continue;
+                if (travelTo == null)
+                {
+                    travelTo = poi;
+                }
+                else
+                {
+                    var dist = (travelFrom.Collider.bounds.center - travelTo.Collider.bounds.center).sqrMagnitude;
+                    var newDist = (travelFrom.Collider.bounds.center - poi.Collider.bounds.center).sqrMagnitude;
+                    if (newDist < dist)
+                    {
+                        travelTo = poi;
+                    }
+                }
+            }
+
+            if (travelTo == null)
+            {
+                FindFirstObjectByType<UI_Manager>().AddNotification("You do not control any other cities!", Color.red);
+                return;
+            }
+            
+            _hordeController.targetLocation.Teleport(travelTo.Collider.bounds.center);
+            _hordeController.TeleportHordeRPC(travelTo.Collider.bounds.center);
+            
+        }
+        
         IEnumerator Cooldown(int duration, Button calledBy, string abilityName)
         {
             calledBy.onClick.RemoveAllListeners();

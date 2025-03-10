@@ -20,7 +20,7 @@
 		"MutationTag" : "disease",
 		"MutationWeight": 10,
 		"Effects": ["unlock_city_boost", "unlock_sewer_travel"],
-		"Tooltip": "Gain stat boosts in the city. You can use the sewers to instantly travel between cities you control.",
+		"Tooltip": "Gain stat boosts in the city. You can use the sewers to instantly travel to the closest city.",
 		"IsAbility": true
 	},
 	{
