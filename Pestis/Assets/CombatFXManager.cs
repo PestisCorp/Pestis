@@ -62,8 +62,8 @@ public class CombatFXManager : MonoBehaviour
         var shape = combatVFX.shape;
         combatVFX.transform.position = bounds.center;
         shape.scale = bounds.size;
-        float radius = bounds.extents.magnitude + 0.5f;
-        combatVFX.emissionRate =  (radius * radius) * 1.5f ;
+        float radius = bounds.extents.magnitude + 1f;
+        combatVFX.emissionRate =  (radius * radius) * 1.7f ;
     }
 
     Bounds getHordeBounds()
