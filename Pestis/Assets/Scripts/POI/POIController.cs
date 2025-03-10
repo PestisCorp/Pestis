@@ -12,7 +12,8 @@ namespace POI
 {
     public class POIController : NetworkBehaviour
     {
-        private readonly float _cheesePerTick = 0.3f;
+        public ParticleSystem captureEffect;
+        private float _cheesePerTick;
 
         public float CheesePerSecond => _cheesePerTick / Runner.DeltaTime;
         
@@ -69,6 +70,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             
             player.ControlledPOIs.Add(this);
             // Add Cheese benefits to new controller
+            Debug.Log($"Fixed cheese rate is {_cheesePerTick}");
             ControlledBy.IncrementCheeseIncrementRateRpc(_cheesePerTick);
             StationedHordes.Clear();
 
@@ -87,8 +89,17 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             }
         }
 
+        public void EmitCaptureEffect()
+        {
+            Debug.Log("particle effect");
+            if (captureEffect == null) Debug.LogError("captureEffect is not assigned!");
+            captureEffect.Stop();
+            captureEffect.Play();
+        }
+
         private void StationHorde(HordeController horde)
         {
+            EmitCaptureEffect();
             Debug.Log($"Adding horde {horde.Object.Id} to myself (POI): {Object.Id}");
             StationedHordes.Add(horde);
         }
@@ -139,7 +150,8 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
 
         public override void Spawned()
         {
-            Collider = GetComponent<Collider2D>();
+            Collider = GetComponentInChildren<Collider2D>();
+            _cheesePerTick = 0.3f;
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]

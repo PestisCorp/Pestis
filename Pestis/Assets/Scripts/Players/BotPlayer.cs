@@ -106,7 +106,7 @@ namespace Players
                     if (attack)
                     {
                         Debug.Log($"Horde {myHorde.Id} too close to other horde, attacking!");
-                        myHorde.AttackHorde(closestHorde);
+                        myHorde.AttackHorde(closestHorde, "");
                         return;
                     }
 
@@ -191,7 +191,7 @@ namespace Players
                     if (Random.Range(0.0f, 1.0f) < mostDesirable.Value)
                     {
                         Debug.Log("Offensive attack");
-                        myHorde.AttackHorde(mostDesirable.Key);
+                        myHorde.AttackHorde(mostDesirable.Key, "");
                         AggressionUncapped = 0.0f;
                         return;
                     }

@@ -43,6 +43,26 @@ uint gridDimX;
 // One element per horde, element reflects how many boids of that horde to kill
 RWStructuredBuffer<int> boidsToKill;
 
+struct BoidPoi
+{
+    float2 Pos;
+    float RadiusSQ;
+};
+
+StructuredBuffer<BoidPoi> pois;
+StructuredBuffer<uint> poiOffsets;
+uniform float poiGridCellSize;
+uniform uint poiGridDimX;
+uniform uint poiGridDimY;
+
+uint getPOIGridID(Boid boid)
+{
+    int x = floor(boid.pos.x / poiGridCellSize + poiGridDimX / 2);
+    int y = floor(boid.pos.y / poiGridCellSize + poiGridDimY / 2);
+    return (poiGridDimX * y) + x;
+}
+
+
 uint2 getGridLocation(Boid boid)
 {
     int x = floor(boid.pos.x / gridCellSize + gridDimX / 2);
@@ -110,6 +130,32 @@ void MergedBehaviours(inout Boid boid)
         }
     }
 
+    cell = getPOIGridID(boid);
+
+    float2 poiClose;
+    // Loop row above, current row, row below
+    for (uint y = cell - poiGridDimX; y <= cell + poiGridDimX; y += poiGridDimX)
+    {
+        // y-2 because that gives last index of boid in y-2, i.e. first index of POI in y-1
+        uint start = poiOffsets[y - 2];
+        uint end = poiOffsets[y + 1];
+        // Loop POIs in left, center, right grid cells
+        for (uint i = start; i < end; i++)
+        {
+            BoidPoi other = pois[i];
+            float2 diff = boid.pos - other.Pos;
+            float distSq = dot(diff, diff);
+
+            if (distSq > 0 && distSq < visualRangeSq)
+            {
+                if (distSq < other.RadiusSQ)
+                {
+                    poiClose += diff / distSq;
+                }
+            }
+        }
+    }
+
     if (neighbours > 0 && closestEnemyDist == 99999999999999.0)
     {
         center /= neighbours;
@@ -127,6 +173,7 @@ void MergedBehaviours(inout Boid boid)
 
     boid.vel += normalize(targetPos - boid.pos) * (targetFactor * deltaTime * turnSpeed);
     boid.vel += close * (separationFactor * deltaTime * turnSpeed);
+    boid.vel += poiClose * (50 * deltaTime * turnSpeed);
 }
 
 void LimitSpeed(inout Boid boid)
