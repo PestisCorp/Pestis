@@ -146,7 +146,7 @@ POI: {FightingOver}
                 foreach (var hordeID in kvp.Value.Hordes)
                 {
                     Runner.TryFindBehaviour(hordeID, out HordeController horde);
-                    if (horde.TotalHealth > 0)
+                    if (horde.TotalHealth > 5 * horde.GetPopulationState().HealthPerRat)
                         aliveHordes++;
                     else
                         hordesToRemove.Add(horde);
