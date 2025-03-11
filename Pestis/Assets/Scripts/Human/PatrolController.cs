@@ -99,7 +99,34 @@ namespace Human
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void UpdateHumanCountRpc(int newCount)
         {
-            HumanCount = newCount; // Updates across all clients
+            if (newCount < HumanCount)
+            {
+                // The difference is how many we lost
+                int difference = HumanCount - newCount;
+
+                // If newCount is 0, that means we killed everyone.
+                if (newCount == 0)
+                {
+                    // For each human in the list
+                    foreach (var humanGO in _spawnedHumans)
+                    {
+                        if (humanGO.TryGetComponent<HumanController>(out HumanController hc))
+                        {
+                            hc.Die();
+                        }
+                    }
+
+                    // We'll let them remove themselves in 5s
+                    _spawnedHumans.Clear();
+                }
+                else
+                {
+                    // If partial kills, remove some
+                    // ...
+                }
+            }
+
+            HumanCount = newCount;
         }
     }
 }

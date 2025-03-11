@@ -12,6 +12,7 @@ namespace Human
         public Sprite DirectionDownLeft;
         public Sprite DirectionDown;
         public Sprite DirectionDownRight;
+        public Sprite deadSprite;
 
 
         [SerializeField] private float patrolRadius = 2f;
@@ -23,6 +24,7 @@ namespace Human
         private Rigidbody2D rb;
         private SpriteRenderer spriteRenderer;
         private Vector2 targetPosition;
+        private bool isDead;
 
         private void Start()
         {
@@ -35,6 +37,7 @@ namespace Human
 
         private void FixedUpdate()
         {
+            if (isDead) return;
             if (poiCenter == null) return;
 
             // Check if the human has reached the patrol target
@@ -47,6 +50,37 @@ namespace Human
 
             // Update sprite direction
             UpdateSpriteDirection();
+        }
+
+        public void Die()
+        {
+            if (isDead) return;
+            isDead = true;
+
+            // Switch to dead sprite
+            if (deadSprite != null)
+            {
+                spriteRenderer.sprite = deadSprite;
+            }
+
+            // Disable further movement / collisions
+            if (TryGetComponent<Rigidbody2D>(out Rigidbody2D body))
+            {
+                body.linearVelocity = Vector2.zero;
+                body.angularVelocity = 0;
+                body.isKinematic = true;
+                body.simulated = false; // So it no longer interacts with physics
+            }
+
+            // You can either destroy it right away, or after a few seconds
+            // We'll do a short delay so players can see the corpse
+            StartCoroutine(RemoveAfterDelay(5f)); // Wait 5 seconds
+        }
+
+        private System.Collections.IEnumerator RemoveAfterDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            Destroy(gameObject);
         }
 
 
@@ -65,7 +99,7 @@ namespace Human
         {
             return patrolRadius;
         }
-        
+
         public void SetPOI(Transform poi)
         {
             poiCenter = poi;
@@ -123,6 +157,7 @@ namespace Human
 
         private void UpdateSpriteDirection()
         {
+            if (isDead) return;
             var angle = Vector2.SignedAngle(transform.up, Vector2.up);
             if (angle < 0) angle += 360f; // Normalize angle to 0-360 degrees
 
