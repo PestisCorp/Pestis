@@ -500,30 +500,28 @@ public class UI_Manager : MonoBehaviour
         }
         MutationPopUpEnable();
         var mutation = _mutationQueue.Dequeue();
-        Panner panner = FindFirstObjectByType<Panner>();
-        panner.target.x = mutation.Item5.GetBounds().center.x;
-        panner.target.y = mutation.Item5.GetBounds().center.y;
-        panner.target.z = -1;
-        panner.shouldPan = true;
         var buttons = mutationPopUp.GetComponentsInChildren<Button>();
         
-        buttons[0].GetComponentInChildren<TMP_Text>().text = mutation.Item1.MutationName;
-        buttons[0].GetComponent<Tooltip>().tooltipText = mutation.Item1.Tooltip;
         buttons[0].onClick.RemoveAllListeners();
-        buttons[0].onClick.AddListener(delegate {mutation.Item4.ApplyActiveEffects(mutation.Item1);});
-        buttons[0].onClick.AddListener(delegate {Destroy(buttons[0].GetComponent<Tooltip>().tooltipInstance);});
+        buttons[0].onClick.AddListener(delegate {Camera.main.GetComponent<Panner>().PanTo(mutation.Item5);});
         
-        buttons[1].GetComponentInChildren<TMP_Text>().text = mutation.Item2.MutationName;
-        buttons[1].GetComponent<Tooltip>().tooltipText = mutation.Item2.Tooltip;
+        buttons[1].GetComponentInChildren<TMP_Text>().text = mutation.Item1.MutationName;
+        buttons[1].GetComponent<Tooltip>().tooltipText = mutation.Item1.Tooltip;
         buttons[1].onClick.RemoveAllListeners();
-        buttons[1].onClick.AddListener(delegate {mutation.Item4.ApplyActiveEffects(mutation.Item2);});
+        buttons[1].onClick.AddListener(delegate {mutation.Item4.ApplyActiveEffects(mutation.Item1);});
         buttons[1].onClick.AddListener(delegate {Destroy(buttons[1].GetComponent<Tooltip>().tooltipInstance);});
         
-        buttons[2].GetComponentInChildren<TMP_Text>().text = mutation.Item3.MutationName;
-        buttons[2].GetComponent<Tooltip>().tooltipText = mutation.Item3.Tooltip;
+        buttons[2].GetComponentInChildren<TMP_Text>().text = mutation.Item2.MutationName;
+        buttons[2].GetComponent<Tooltip>().tooltipText = mutation.Item2.Tooltip;
         buttons[2].onClick.RemoveAllListeners();
-        buttons[2].onClick.AddListener(delegate {mutation.Item4.ApplyActiveEffects(mutation.Item3);});
+        buttons[2].onClick.AddListener(delegate {mutation.Item4.ApplyActiveEffects(mutation.Item2);});
         buttons[2].onClick.AddListener(delegate {Destroy(buttons[2].GetComponent<Tooltip>().tooltipInstance);});
+        
+        buttons[3].GetComponentInChildren<TMP_Text>().text = mutation.Item3.MutationName;
+        buttons[3].GetComponent<Tooltip>().tooltipText = mutation.Item3.Tooltip;
+        buttons[3].onClick.RemoveAllListeners();
+        buttons[3].onClick.AddListener(delegate {mutation.Item4.ApplyActiveEffects(mutation.Item3);});
+        buttons[3].onClick.AddListener(delegate {Destroy(buttons[3].GetComponent<Tooltip>().tooltipInstance);});
         
     }
     
