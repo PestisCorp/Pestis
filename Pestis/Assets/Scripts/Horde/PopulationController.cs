@@ -294,15 +294,9 @@ namespace Horde
 
 
         //I don't understand how population stuff works well enough to impliment this
-        //meant to be for biome effects, called on fixed update ticks
-        public void dealDamage(float damage)
-        {
-
-        }
-
         public void speedMult(float mult)
         {
-
+            //multiplies speed once, should not repeatedly multiply if called multiple times
         }
     }
 }

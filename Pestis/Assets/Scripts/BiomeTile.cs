@@ -11,8 +11,8 @@ public class BiomeTile : TileBase
     public Sprite tile;
     public Color tilecolor = Color.white;
     public float speeedEffect = 0.5f;
-    public float damageEffect =10;
-    public float resistanceDamage = 12;
+    public float damageEffect =5;
+    public float resistanceDamage = 7;
     public float resistanceSpeed = 1;
     public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
     {
@@ -21,9 +21,9 @@ public class BiomeTile : TileBase
         tileData.flags = TileFlags.LockTransform;
         tileData.colliderType = Tile.ColliderType.None;
     }
-    public virtual void biomeEffect(Horde.PopulationController populationController)
+    public virtual void biomeEffect(Horde.PopulationController populationController, Horde.HordeController horde)
     {
-        Debug.Log(this.GetType());
+        //Debug.Log(this.GetType());
     }
     internal BiomeInstance GetBiomeInstanceAtPosition(Vector3Int position, List<BiomeInstance> biomeInstances)
     {
@@ -37,10 +37,10 @@ public class BiomeTile : TileBase
         return null;
     }
 
-    public virtual void GenericEffect(Horde.PopulationController populationController, float resistance)
+    public virtual void GenericEffect(Horde.PopulationController populationController, Horde.HordeController horde, float resistance )
     {
         float sigResistance = fastSigmoid(resistance);
-        populationController.dealDamage(damageEffect - (sigResistance * resistanceDamage));
+        horde.DealDamageRpc(damageEffect - (sigResistance * resistanceDamage));
         populationController.speedMult(speeedEffect + (resistanceSpeed* sigResistance) );
     
     }

@@ -4,9 +4,9 @@ using UnityEngine;
 public class TundraTile : BiomeTile
 {
 
-    public override void biomeEffect(Horde.PopulationController populationController)
+    public override void biomeEffect(Horde.PopulationController populationController, Horde.HordeController horde)
     {
-        base.biomeEffect(populationController);
-        GenericEffect(populationController, populationController.GetState().TundraResistance);
+        base.biomeEffect(populationController, horde);
+        GenericEffect(populationController, horde, populationController.GetState().TundraResistance);
     }
 }

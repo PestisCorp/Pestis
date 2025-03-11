@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 public class BiomeEffects : MonoBehaviour
 {
     public PopulationController pop;
+    public HordeController horde;
     public Tilemap tilemap;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -29,7 +30,7 @@ public class BiomeEffects : MonoBehaviour
 
         if (tileBelow is BiomeTile biome)
         {
-            biome.biomeEffect(pop);
+            biome.biomeEffect(pop, horde);
         }
     }
     // Update is called once per frame
