@@ -1,8 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Map;
 using Players;
+using POI;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -17,11 +21,30 @@ public class GameManager : MonoBehaviour
     public Tilemap terrainMap;
     public List<Player> Players;
 
+    /// <summary>
+    ///     All POIs in the game, in no particular order
+    /// </summary>
+    public POIController[] pois;
+
     public TMP_Text fpsText;
     public TMP_Text boidText;
 
+    public float poiGridCellSize = 5;
+    public int poiGridDimX;
+    public int poiGridDimY;
+
     private readonly float[] fpsWindow = new float[60];
     private int fpsIndex;
+
+    /// <summary>
+    ///     All POIs in the game, in grid order
+    /// </summary>
+    public ComputeBuffer poiBuffer;
+
+    /// <summary>
+    ///     Each element represents a grid cell, and the index in poiBuffer of the last poi in that grid cell
+    /// </summary>
+    public ComputeBuffer poiOffsetBuffer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -40,6 +63,55 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        pois = FindObjectsByType<POIController>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+
+        terrainMap.CompressBounds();
+        poiGridDimX =
+            (int)Math.Ceiling(terrainMap.transform.localScale.x * terrainMap.localBounds.size.x / poiGridCellSize);
+        poiGridDimY =
+            (int)Math.Ceiling(terrainMap.transform.localScale.y * terrainMap.localBounds.size.y / poiGridCellSize);
+
+        var grid = new List<BoidPoi>[poiGridDimX * poiGridDimY];
+        for (var i = 0; i < poiGridDimX * poiGridDimY; i++) grid[i] = new List<BoidPoi>();
+        foreach (var poi in pois)
+        {
+            var x = Math.Floor(poi.transform.position.x / poiGridCellSize + poiGridDimX / 2);
+            var y = Math.Floor(poi.transform.position.y / poiGridCellSize + poiGridDimY / 2);
+            var gridID = Convert.ToUInt32(poiGridDimX * y + x);
+            var bounds = poi.GetComponentInChildren<Collider2D>().bounds;
+            grid[gridID].Add(new BoidPoi(new float2(bounds.center.x, bounds.center.y), bounds.extents.sqrMagnitude));
+        }
+
+
+        var gridOffsets = new uint[poiGridDimX * poiGridDimY];
+        gridOffsets[0] = (uint)grid[0].Count;
+        for (var i = 1; i < poiGridDimX * poiGridDimY; i++) gridOffsets[i] = (uint)grid[i].Count + gridOffsets[i - 1];
+
+        var orderedPoIs = new BoidPoi[pois.Length];
+
+        var cellPoIs = grid[0].GetEnumerator();
+        for (uint j = 0; j < gridOffsets[0]; j++)
+        {
+            cellPoIs.MoveNext();
+            orderedPoIs[j] = cellPoIs.Current;
+        }
+
+        for (var i = 1; i < poiGridDimX * poiGridDimY; i++)
+        {
+            cellPoIs = grid[i].GetEnumerator();
+            for (var j = gridOffsets[i - 1]; j < gridOffsets[i]; j++)
+            {
+                cellPoIs.MoveNext();
+                orderedPoIs[j] = cellPoIs.Current;
+            }
+        }
+
+        poiBuffer = new ComputeBuffer(orderedPoIs.Length, Marshal.SizeOf(typeof(BoidPoi)));
+        poiBuffer.SetData(orderedPoIs, 0, 0, orderedPoIs.Length);
+
+        poiOffsetBuffer = new ComputeBuffer(poiGridDimX * poiGridDimY, Marshal.SizeOf(typeof(uint)));
+        poiOffsetBuffer.SetData(gridOffsets);
 
         Application.targetFrameRate = 58;
         QualitySettings.vSyncCount = 0;

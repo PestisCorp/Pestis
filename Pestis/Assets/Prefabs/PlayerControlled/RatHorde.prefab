@@ -333,6 +333,8 @@ MonoBehaviour:
   hordeIcon: {fileID: 0}
   enemyIcon: {fileID: 0}
   ownIcon: {fileID: 0}
+  _populationController: {fileID: 4419380376764164480}
+  boids: {fileID: 3442052912350168715}
   _StationedAt: {fileID: 0}
   _TargetPoi: {fileID: 0}
   _CurrentCombatController: {fileID: 0}
@@ -1041,7 +1043,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 1
+  m_overflowMode: 3
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
@@ -1121,7 +1123,7 @@ MonoBehaviour:
   visualRange: 50
   minDistance: 0.8
   cohesionFactor: 1
-  separationFactor: 10
+  separationFactor: 5
   alignmentFactor: 0.5
   targetFactor: 4
   boidShader: {fileID: 7200000, guid: 9c4516c864c64285a3313ea819bbf605, type: 3}
@@ -1132,7 +1134,6 @@ MonoBehaviour:
   AliveRats: 0
   TargetPos: {x: 0, y: 0}
   paused: 0
-  containedHordes: []
 --- !u!222 &8096480468413857689
 CanvasRenderer:
   m_ObjectHideFlags: 0

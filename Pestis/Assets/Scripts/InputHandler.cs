@@ -123,7 +123,7 @@ public class InputHandler : MonoBehaviour
         var worldPoint = _mainCamera.ScreenToWorldPoint(mousePos);
         foreach (var player in GameManager.Instance.Players)
         foreach (var horde in player.Hordes)
-            if (horde.boids.PosInHorde(worldPoint, 2.0f))
+            if (horde.boids.PosInHorde(worldPoint, 2.0f, horde.GetBounds()))
                 return horde;
 
         return null;
