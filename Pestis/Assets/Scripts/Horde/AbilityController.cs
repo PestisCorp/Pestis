@@ -194,7 +194,8 @@ namespace Horde
             {
                 yield return null;
             }
-            apparition.DestroyHordeRpc();
+            if (apparition)
+                apparition.DestroyHordeRpc();
         }
         
         IEnumerator Cooldown(int duration, Button calledBy, string abilityName)

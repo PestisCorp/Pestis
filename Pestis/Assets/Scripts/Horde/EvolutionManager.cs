@@ -254,12 +254,12 @@ namespace Horde
             _evolutionaryState.PassiveEvolutions["attack"] = new []{0.03, _populationController.GetState().Damage, 2.0};
             _evolutionaryState.PassiveEvolutions["health"] = new []{0.03, _populationController.GetState().HealthPerRat, 20.0};
             _evolutionaryState.PassiveEvolutions["defense"] = new []{ 0.03, _populationController.GetState().DamageReduction, 2.5};
-            _evolutionaryState.PassiveEvolutions["evolution rate"] = new []{ 0.01, 2, 0.5};
+            _evolutionaryState.PassiveEvolutions["evolution rate"] = new []{ 0.01, 8, 0.5};
             _evolutionaryState.PassiveEvolutions["evolution strength"] = new []{ 0.01, 1.02, 1.3};
             _evolutionaryState.PassiveEvolutions["birth rate"] = new[]{ 0.01, _populationController.GetState().BirthRate, 0.1};
             //_evolutionaryState.PassiveEvolutions["resource consumption"] = new []{ 0.0005, _hordeController.Player.CheeseIncrementRate };
             // Need to change the default values for rate, and strength of evolutions to referring to values in PC.State (for horde split reasons)
-            _evolutionaryState.PassiveEvolutions["rare mutation rate"] = new []{ 0.01, 30, 20};
+            _evolutionaryState.PassiveEvolutions["rare mutation rate"] = new []{ 0.01, 40, 20};
         }
 
         private void CreateActiveEvolutions()
