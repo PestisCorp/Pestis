@@ -72,8 +72,6 @@ namespace Human
                 body.simulated = false; // So it no longer interacts with physics
             }
 
-            // You can either destroy it right away, or after a few seconds
-            // We'll do a short delay so players can see the corpse
             StartCoroutine(RemoveAfterDelay(5f)); // Wait 5 seconds
         }
 
