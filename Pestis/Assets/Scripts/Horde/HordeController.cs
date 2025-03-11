@@ -869,5 +869,11 @@ Count: {AliveRats}
         {
             boids.SplitBoids(numBoids, numToSplit, other.boids);
         }
+        
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        public void CreateApparitionRPC(HordeController other, int numToClone)
+        {
+            boids.CreateApparition(other.boids, numToClone);
+        }
     }
 }

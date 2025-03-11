@@ -607,6 +607,15 @@ public class RatBoids : MonoBehaviour
         otherBoids.SetBoids(boids);
     }
 
+    public void CreateApparition(RatBoids otherBoids, int boidsToClone)
+    {
+        otherBoids.Start();
+        var boids = new Boid[boidsToClone];
+        boidBuffer.GetData(boids, 0, 0, boidsToClone);
+        otherBoids.SetBoids(boids);
+        
+    }
+    
     public void TeleportHorde(Vector3 newHordeCenter, Bounds hordeBounds)
     {
         var boids = new Boid[numBoids];

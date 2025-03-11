@@ -177,9 +177,12 @@ namespace Horde
                         horde.SetPopulationInit(_hordeController.AliveRats);
                     })
                 .GetComponent<HordeController>();
+            newHorde.isApparition = true;
+            _hordeController.CreateApparitionRPC(newHorde, newHorde.AliveRats);
             newHorde.SetEvolutionaryState(evolutionaryState.DeepCopy());
             newHorde.Move(_hordeController.targetLocation.transform.position - _hordeController.GetBounds().extents);
-            newHorde.isApparition = true;
+            
+            
             StartCoroutine(Cooldown(120, calledBy, "Apparition"));
             StartCoroutine(RemoveApparation(newHorde));
         }
