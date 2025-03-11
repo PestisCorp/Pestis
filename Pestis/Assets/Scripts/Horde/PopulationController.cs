@@ -14,7 +14,10 @@ namespace Horde
         internal double BirthRate;
         internal double DeathRate;
         internal float HealthPerRat;
-
+        internal float SnowResistance;
+        internal float DesertResistance;
+        internal float GrassResistance;
+        internal float StoneResistance;
         /// <summary>
         ///     How much damage the horde does to other hordes per tick in combat
         /// </summary>

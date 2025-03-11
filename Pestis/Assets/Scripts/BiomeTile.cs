@@ -16,7 +16,10 @@ public class BiomeTile : TileBase
         tileData.flags = TileFlags.LockTransform;
         tileData.colliderType = Tile.ColliderType.None;
     }
-
+    public virtual void biomeEffect(Horde.PopulationController populationController)
+    {
+        Debug.Log(this.GetType());
+    }
     internal BiomeInstance GetBiomeInstanceAtPosition(Vector3Int position, List<BiomeInstance> biomeInstances)
     {
         foreach (var biomeInstance in biomeInstances)
