@@ -99,7 +99,7 @@ public class InputHandler : MonoBehaviour
                 Debug.Log("Attacking horde");
                 LocalPlayer?.selectedHorde.AttackHorde(clickedHorde, "");
             }
-            else
+            else if (!(clickedHorde && clickedHorde.Player == LocalPlayer?.selectedHorde.Player))
             {
                 Vector2 position = _mainCamera.ScreenToWorldPoint(mouse.position.value);
                 LocalPlayer?.MoveHorde(position);
