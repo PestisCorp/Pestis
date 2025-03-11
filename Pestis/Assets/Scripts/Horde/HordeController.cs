@@ -73,6 +73,8 @@ namespace Horde
         /// </summary>
         public Vector2[] intraHordeTargets = new Vector2[4];
 
+        public bool isApparition = false;
+        
         /// <summary>
         ///     Seconds until we can start simulating population again after combat.
         /// </summary>
@@ -279,6 +281,12 @@ Count: {AliveRats}
                     if (GetEvolutionState().AcquiredEffects.Contains("unlock_necrosis"))
                         bonusDamage += CurrentCombatController.boids.totalDeathsPerHorde.GetValueOrDefault(this, 0) *
                                        0.1f;
+
+                    if (enemy.GetEvolutionState().AcquiredEffects.Contains("unlock_mentat"))
+                    {
+                        var random = UnityEngine.Random.Range(0f, 1f);
+                        if (random < 0.05) return;
+                    }
                     enemy.DealDamageRpc(AliveRats / 50.0f * ((GetPopulationState().Damage
                                                                  * GetPopulationState().DamageMult
                                                                  * GetPopulationState().SepticMult + bonusDamage)
@@ -379,6 +387,11 @@ Count: {AliveRats}
 
             Enum.TryParse(_combatStrategy!.Replace(" ", ""), out CombatOptions option);
             StartCoroutine(ApplyStrategy(option));
+            if (_targetHorde.GetEvolutionState().AcquiredEffects.Contains("unlock_price_of_war"))
+            {
+                Player.RemoveCheeseRpc(Player.CurrentCheese * 0.1f);
+                _targetHorde.Player.AddCheeseRpc(Player.CurrentCheese * 0.1f);
+            }
             AddBoidsToCombatRpc(CurrentCombatController);
             _combatStrategy = null;
             _targetHorde = null;
@@ -409,7 +422,7 @@ Count: {AliveRats}
             if (fearAndMoraleBars[0].name == "FearBar")
             {
                 if (fearAndMoraleBars[0].current == 0) return;
-                fearAndMoraleBars[0].current -= 5;
+                fearAndMoraleBars[0].current -= 2;
                 if (fearAndMoraleBars[0].current != 0) return;
                 StartCoroutine(FearDebuff(fearAndMoraleBars[0]));
 
@@ -417,7 +430,7 @@ Count: {AliveRats}
             else
             {
                 if (fearAndMoraleBars[1].current == 0) return;
-                fearAndMoraleBars[1].current -= 5;
+                fearAndMoraleBars[1].current -= 2;
                 if (fearAndMoraleBars[1].current != 0) return;
                 StartCoroutine(FearDebuff(fearAndMoraleBars[1]));
             }

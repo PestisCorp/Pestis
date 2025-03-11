@@ -269,7 +269,15 @@ public class CombatBoids : MonoBehaviour
             for (int i = 0; i < _previousNumBoids[horde] - numBoids[horde]; i++)
             {
                 horde.IncreaseFear();
+                if (horde.GetEvolutionState().AcquiredEffects.Contains("unlock_haunt"))
+                {
+                    foreach (var enemy in containedHordes.Where(enemy => enemy.Id != horde.Id))
+                    {
+                        enemy.IncreaseFear();
+                    }
+                }
             }
+            
         }
 
         boidsToKill.SetData(boidsToKillData, 0, 0, boidsToKillData.Length);

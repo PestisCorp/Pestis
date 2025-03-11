@@ -215,6 +215,10 @@ POI: {FightingOver}
                     horde.RemoveBoidsFromCombatRpc(this);
                     if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredEffects
                         .Contains("unlock_septic_bite")) horde.GetComponent<PopulationController>().SetSepticMult(1.0f);
+                    if (horde.GetEvolutionState().AcquiredEffects.Contains("unlock_war_hawk"))
+                    {
+                        horde.GetComponent<AbilityController>().forceCooldownRefresh = true;
+                    }
                     var icon = Resources.Load<Sprite>("UI_design/Emotes/victory_emote");
                     horde.AddSpeechBubble(icon);
                     horde.EventWonCombatRpc(AllParticipants.ToArray());

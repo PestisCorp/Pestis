@@ -206,7 +206,8 @@ namespace Horde
                 }
             }
             
-            if (_evolutionaryState.AcquiredEffects.Contains("unlock_fester") && mutation.MutationTag == "disease")
+            if ((_evolutionaryState.AcquiredEffects.Contains("unlock_fester") && mutation.MutationTag == "disease") || 
+                (_evolutionaryState.AcquiredEffects.Contains("unlock_abraxas") && mutation.MutationTag == "psionic"))
             {
                 
                 PopulationState newState = new PopulationState()
@@ -301,7 +302,7 @@ namespace Horde
         
         public override void FixedUpdateNetwork()
         {
-            if (_hordeController.InCombat) return;
+            if (_hordeController.InCombat  || _hordeController.isApparition) return;
             if (_mutationClock.ElapsedInSeconds > _evolutionaryState.PassiveEvolutions["evolution rate"][1])
             {
                 EvolutionaryEvent();
