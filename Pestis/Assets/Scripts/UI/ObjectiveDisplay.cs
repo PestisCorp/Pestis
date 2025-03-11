@@ -9,7 +9,9 @@ namespace UI
     {
         [SerializeField] private TextMeshProUGUI objectiveText;
         private Objective _objective;
-        private static int numberOfObjectives = 0;
+        private static int _numberOfObjectives = 0;
+        private static readonly int TextSpacingHeight = Screen.height / 10;
+        private static readonly int TextSpacingWidth = Screen.height / 5;
         
         public void Init(Objective objective)
         {
@@ -17,10 +19,10 @@ namespace UI
             objectiveText.text = objective.GetStatusText();
             objective.OnValueChange += OnObjectiveValueChange;
             objective.OnComplete += OnObjectiveComplete;
-            numberOfObjectives++;
+            _numberOfObjectives++;
             objectiveText.enabled = true;
-            objectiveText.rectTransform.position =
-                new Vector2(Screen.width - 20, Screen.height - 50 * (numberOfObjectives + 1));
+            objectiveText.rectTransform.position = new Vector2(Screen.width - TextSpacingWidth,
+                Screen.height - TextSpacingHeight * (_numberOfObjectives + 1));
         }
         
         private void OnObjectiveComplete()

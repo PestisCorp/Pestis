@@ -57,7 +57,7 @@ namespace UI
             gameObject.SetActive(false);
             if (horde)
             {
-                GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.HordeSplit, 1);    
+                GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.HordeSplit, 1);
             }
         }
     }
