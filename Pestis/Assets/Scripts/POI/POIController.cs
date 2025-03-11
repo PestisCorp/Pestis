@@ -23,7 +23,7 @@ namespace POI
 
         public Collider2D Collider { get; private set; }
 
-        [Networked] public Player ControlledBy { get; private set; }
+        [Networked , OnChangedRender(nameof(UpdateFlag))] public Player ControlledBy { get; private set; }
 
         [Networked] [Capacity(4)] public NetworkLinkedList<HordeController> StationedHordes { get; } = default;
 
@@ -73,7 +73,9 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             Debug.Log($"Fixed cheese rate is {_cheesePerTick}");
             ControlledBy.IncrementCheeseIncrementRateRpc(_cheesePerTick);
             StationedHordes.Clear();
-
+        }
+        
+        private void UpdateFlag() {
             Image flag = flagObject.GetComponent<Image>();
             
             if (ControlledBy.IsLocal)
