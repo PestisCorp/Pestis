@@ -83,8 +83,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             }
             else
             {
-                Sprite iconSprite = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_enemy");
-
+                captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_enemy");
                 flag.sprite = captureFlag;
             }
         }
