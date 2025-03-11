@@ -364,8 +364,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12940a5588d5de442a040f7bbd1f1238, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horde: {fileID: 6619829849645989142}
-  population: {fileID: 0}
+  pop: {fileID: 4419380376764164480}
   tilemap: {fileID: 0}
 --- !u!114 &-7073726608519572895
 MonoBehaviour:

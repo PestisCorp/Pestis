@@ -246,6 +246,10 @@ namespace Horde
             _evolutionaryState.PassiveEvolutions["attack"] = new []{0.03, _populationController.GetState().Damage, 2.0};
             _evolutionaryState.PassiveEvolutions["health"] = new []{0.03, _populationController.GetState().HealthPerRat, 20.0};
             _evolutionaryState.PassiveEvolutions["defense"] = new []{ 0.03, _populationController.GetState().DamageReduction, 2.5};
+            _evolutionaryState.PassiveEvolutions["TundraResistance"] = new[] { 0.03, _populationController.GetState().TundraResistance, 2.5 };
+            _evolutionaryState.PassiveEvolutions["StoneResistance"] = new[] { 0.03, _populationController.GetState().StoneResistance, 2.5 };
+            _evolutionaryState.PassiveEvolutions["DesertResistance"] = new[] { 0.03, _populationController.GetState().DesertResistance, 2.5 };
+            _evolutionaryState.PassiveEvolutions["GrassResistance"] = new[] { 0.03, _populationController.GetState().GrassResistance, 2.5 };
             _evolutionaryState.PassiveEvolutions["evolution rate"] = new []{ 0.01, 2, 0.5};
             _evolutionaryState.PassiveEvolutions["evolution strength"] = new []{ 0.01, 1.02, 1.3};
             _evolutionaryState.PassiveEvolutions["birth rate"] = new[]{ 0.01, _populationController.GetState().BirthRate, 0.1};

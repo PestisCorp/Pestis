@@ -4,7 +4,7 @@ using UnityEngine.Tilemaps;
 
 public class BiomeEffects : MonoBehaviour
 {
-    public HordeController horde;
+    public PopulationController pop;
     public Tilemap tilemap;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -21,7 +21,7 @@ public class BiomeEffects : MonoBehaviour
             Debug.LogError("Tilemap not found in the scene!");
         }
     }
-
+    
     void DetectTileBeneath()
     {
         Vector3Int playerCell = tilemap.WorldToCell(transform.position);
@@ -29,11 +29,11 @@ public class BiomeEffects : MonoBehaviour
 
         if (tileBelow is BiomeTile biome)
         {
-            biome.biomeEffect(null);
+            biome.biomeEffect(pop);
         }
     }
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         DetectTileBeneath();
     }

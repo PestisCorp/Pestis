@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,6 +10,10 @@ public class BiomeTile : TileBase
     public int foodLevel, HumanLevel, climate = 0;
     public Sprite tile;
     public Color tilecolor = Color.white;
+    public float speeedEffect = 0.5f;
+    public float damageEffect =10;
+    public float resistanceDamage = 12;
+    public float resistanceSpeed = 1;
     public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
     {
         tileData.sprite = this.tile;
@@ -32,7 +37,20 @@ public class BiomeTile : TileBase
         return null;
     }
 
+    public virtual void GenericEffect(Horde.PopulationController populationController, float resistance)
+    {
+        float sigResistance = fastSigmoid(resistance);
+        populationController.dealDamage(damageEffect - (sigResistance * resistanceDamage));
+        populationController.speedMult(speeedEffect + (resistanceSpeed* sigResistance) );
+    
+    }
 
+    internal float fastSigmoid(float x)
+    {
+        //ranges from 0 to 1
+        return x / (1 + Math.Abs(x));
+        
+    }
     internal List<(TileBase tile, Vector3Int position)> TilesInArea(int x, int y, int size, Tilemap map)
     {
         List<(TileBase tile, Vector3Int position)> tilesWithPositions = new List<(TileBase, Vector3Int)>();
@@ -70,12 +88,12 @@ public class BiomeTile : TileBase
             BiomeInstance commmonBiome = GetBiomeInstanceAtPosition(commonPosition, biomeInstances);
             int commonTileCount =  SurroundingTiles.Count(tile => tile.tile != null && tile.GetType() == mostCommonTile.GetType());
             if (commonTileCount >= 6) { centreBiome.swapTile(map, position, commmonBiome.template.getRandomBiomeTile(), commmonBiome); }
-            else if (Random.value < commmonBiome.template.strength) { centreBiome.swapTile(map, position, commmonBiome.template.getRandomBiomeTile(), commmonBiome); }
+            else if (UnityEngine.Random.value < commmonBiome.template.strength) { centreBiome.swapTile(map, position, commmonBiome.template.getRandomBiomeTile(), commmonBiome); }
             else return;
         }
 
         Vector3Int[] directions = { Vector3Int.up, Vector3Int.down, Vector3Int.left, Vector3Int.right };
-        Vector3Int nextPosition = position + directions[Random.Range(0, 4)];
+        Vector3Int nextPosition = position + directions[UnityEngine.Random.Range(0, 4)];
         
         BiomeTile nextTile = map.GetTile(nextPosition) as BiomeTile;
         if (nextTile != null)

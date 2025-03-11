@@ -14,7 +14,7 @@ namespace Horde
         internal double BirthRate;
         internal double DeathRate;
         internal float HealthPerRat;
-        internal float SnowResistance;
+        internal float TundraResistance;
         internal float DesertResistance;
         internal float GrassResistance;
         internal float StoneResistance;
@@ -22,7 +22,6 @@ namespace Horde
         ///     How much damage the horde does to other hordes per tick in combat
         /// </summary>
         internal float Damage;
-
         internal float DamageReduction;
 
         // Multipliers applied to damage original state
@@ -74,6 +73,7 @@ namespace Horde
             return 1 + 0.5 *
                 (1.0 - Math.Exp(-(_hordeController.Player.CurrentCheese / _hordeController.AliveRats - 1)));
         }
+
 
         // Weight used in probability of population decline
         // W = 1 if R >= P
@@ -183,7 +183,10 @@ namespace Horde
             State.HealthPerRat = 5.0f;
             State.Damage = 0.5f;
             State.DamageReduction = 1.0f;
-
+            State.GrassResistance = 1.0f;
+            State.DesertResistance = 1.0f;
+            State.TundraResistance = 1.0f;
+            State.StoneResistance = 1.0f;
 
             State.DamageMult = 1.0f;
             State.DamageReductionMult = 1.0f;
@@ -287,6 +290,19 @@ namespace Horde
         public void SetState(PopulationState newState)
         {
             State = newState;
+        }
+
+
+        //I don't understand how population stuff works well enough to impliment this
+        //meant to be for biome effects, called on fixed update ticks
+        public void dealDamage(float damage)
+        {
+
+        }
+
+        public void speedMult(float mult)
+        {
+
         }
     }
 }
