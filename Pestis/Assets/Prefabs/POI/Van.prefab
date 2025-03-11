@@ -1186,10 +1186,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolController: {fileID: 9182480813729240789}
-  healthPerHuman: 5
-  damagePerHuman: 0.5
+  healthPerHuman: 10
+  damagePerHuman: 0.05
   _CurrentHumanHealth: 0
-  ratDPS: 0.5
+  ratDPS: 0.05
 --- !u!1 &7965740167955942159
 GameObject:
   m_ObjectHideFlags: 0

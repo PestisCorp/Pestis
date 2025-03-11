@@ -2,6 +2,8 @@ using System.Linq;
 using Fusion;
 using Horde;
 using UnityEngine;
+using System.Collections.Generic;
+using Players;
 
 namespace Human
 {
@@ -62,32 +64,28 @@ namespace Human
             // If no humans left, nothing to do
             if (CurrentHumanHealth <= 0 || patrolController.HumanCount <= 0) return;
 
-            // Check for nearby rat hordes
-            var rats = FindObjectsOfType<HordeController>()
-                .Where(horde =>
+            List<HordeController> rats = new();
+            foreach (Player player in GameManager.Instance.Players)
+            {
+                foreach (HordeController horde in player.Hordes)
                 {
-                    // e.g. distance to your POI/humans
-                    float dist = Vector2.Distance(
-                        horde.GetBounds().center,
-                        patrolController.transform.position
-                    );
-                    return dist < 10f; // or whatever "in combat" range you want
-                })
-                .ToArray();
-
-            if (rats.Length == 0) return; // No rats in range => no combat
+                    float dist = Vector2.Distance(horde.GetBounds().center, patrolController.transform.position);
+                    if (dist < 3)
+                    {
+                        rats.Add(horde);
+                    }
+                }
+            }
 
             // Humans fight each rat horde in range:
-            float dt = Runner.DeltaTime; // Photon Fusion time step
+
             float humansDPS = damagePerHuman * patrolController.HumanCount; // total DPS from humans
 
             foreach (var ratHorde in rats)
             {
-                // Subtract HP from the rats
-                ratHorde.DealDamageRpc(humansDPS * dt);
+                ratHorde.DealDamageRpc(humansDPS * 1.0f);
 
-                // Subtract HP from the human
-                CurrentHumanHealth -= ratDPS * dt;
+                CurrentHumanHealth -= ratDPS;
 
                 // If humans die
                 if (CurrentHumanHealth <= 0)

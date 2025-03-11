@@ -5215,7 +5215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolController: {fileID: 319081389892100198}
-  healthPerHuman: 5
-  damagePerHuman: 0.5
+  healthPerHuman: 10
+  damagePerHuman: 0.05
   _CurrentHumanHealth: 0
-  ratDPS: 0.5
+  ratDPS: 0.05
