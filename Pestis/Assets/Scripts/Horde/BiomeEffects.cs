@@ -8,10 +8,8 @@ public class BiomeEffects : MonoBehaviour
     public HordeController horde;
     public Tilemap tilemap;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // Find the tilemap dynamically in the scene
         GameObject tilemapObject = GameObject.FindGameObjectWithTag("tilemap");
         if (tilemapObject != null)
         {
