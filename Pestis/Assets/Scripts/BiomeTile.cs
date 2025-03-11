@@ -12,7 +12,7 @@ public class BiomeTile : TileBase
     public Color tilecolor = Color.white;
     public float speeedEffect = 0.5f;
     public float damageEffect =100;
-    public float resistanceDamage = 300;
+    public float resistanceDamage = 180;
     public float resistanceSpeed = 1;
     public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
     {
