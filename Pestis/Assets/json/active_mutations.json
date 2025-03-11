@@ -50,6 +50,7 @@
 	{
 		"MutationName": "Haunt",
 		"MutationTag": "psionic",
+		"MutationWeight": 10,
 		"Effects": ["unlock_haunt"],
 		"Tooltip": "When a rat you control dies, traumatise your enemies.",
 		"IsAbility": false
@@ -57,6 +58,7 @@
 	{
 		"MutationName": "Apparition",
 		"MutationTag": "psionic",
+		"MutationWeight": 10,
 		"Effects": ["unlock_apparition"],
 		"Tooltip": "Create an apparition of your horde that you cannot control. It lasts for 20 seconds.",
 		"IsAbility": true
@@ -64,6 +66,7 @@
 	{
 		"MutationName": "Mentat",
 		"MutationTag": "psionic",
+		"MutationWeight": 10,
 		"Effects": ["unlock_mentat"],
 		"Tooltip": "There is a chance you can predict an attack and dodge it.",
 		"IsAbility": false
@@ -71,6 +74,7 @@
 	{
 		"MutationName": "Abraxas",
 		"MutationTag": "psionic",
+		"MutationWeight": 10,
 		"Effects": ["unlock_abraxas"],
 		"Tooltip": "Stats improve by 10%, future psionic mutations grant the same buff.",
 		"IsAbility": false

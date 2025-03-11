@@ -236,12 +236,12 @@ namespace Horde
         {
             for (int i = 0; i < _evolutionaryState.ActiveMutations.Count; i++)
             {
-                int count = 0;
+                int count = 1;
                 if (_evolutionaryState.TagCounts.TryGetValue(_evolutionaryState.ActiveMutations[i].MutationTag, out var tagCount))
                 {
                     count = tagCount + 1;
                 }
-                _evolutionaryState.ActiveMutations.SetWeight(_evolutionaryState.ActiveMutations[i], count);
+                _evolutionaryState.ActiveMutations.SetWeight(_evolutionaryState.ActiveMutations[i], count * _evolutionaryState.ActiveMutations[i].MutationWeight);
                 //GameManager.Instance.terrainMap.GetTile(_hordeController.GetBounds().center);
                 //var biome = BiomeClass.GetBiomeAtPosition(tilemap.WorldToCell(_hordeController.GetBounds().center)).template.name;
             }
