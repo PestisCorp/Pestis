@@ -11,8 +11,9 @@ public class GrassBiome : BiomeClass
         foreach (Vector3Int pos in bounds.allPositionsWithin)
         {
             TileBase tile = map.GetTile(pos);
-            if (this.CompatableBiomeTiles.Contains(tile))
+            if (this.CompatableTerrainTypes.Contains(tile))
             {
+                Debug.Log(tile.GetType()+ " "+ pos);
                 biomeInstance.setTile(map, pos, getRandomBiomeTile());
             }
         }

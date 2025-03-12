@@ -11,7 +11,7 @@ public class OceanBiome : BiomeClass
         foreach (Vector3Int pos in bounds.allPositionsWithin)
         {
             TileBase tile = map.GetTile(pos);
-            if (this.CompatableBiomeTiles.Contains(tile))
+            if (this.CompatableTerrainTypes .Contains(tile))
             {
                 biomeInstance.setTile(map, pos, getRandomBiomeTile());
             }
