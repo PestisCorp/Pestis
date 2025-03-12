@@ -1394,7 +1394,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.8584906, g: 0.8184007, b: 0.45759168, a: 1}
+        key0: {r: 1, g: 0.9634665, b: 0.6273585, a: 0.7921569}
         key1: {r: 0.854902, g: 0.81568635, b: 0.46274513, a: 0.12647057}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
@@ -6223,7 +6223,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.8584906, g: 0.8184007, b: 0.45759168, a: 1}
+        key0: {r: 1, g: 0.9634665, b: 0.6273585, a: 0.7921569}
         key1: {r: 0.854902, g: 0.81568635, b: 0.46274513, a: 0.12647057}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
@@ -11057,7 +11057,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.8584906, g: 0.8184007, b: 0.45759168, a: 1}
+        key0: {r: 1, g: 0.9634665, b: 0.6273585, a: 0.7921569}
         key1: {r: 0.854902, g: 0.81568635, b: 0.46274513, a: 0.12647057}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
@@ -14529,7 +14529,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14671,7 +14671,7 @@ Light:
   m_BounceIntensity: 100
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 5.56e-43, y: 4.97e-43, z: 0, w: -5.2467458e+32}
+  m_BoundingSphereOverride: {x: 3.7329e-41, y: 2.524355e-29, z: 0, w: 3.9415303e+12}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -14746,7 +14746,7 @@ Light:
   m_Enabled: 0
   serializedVersion: 11
   m_Type: 2
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9919511, g: 1, b: 0.504717, a: 1}
   m_Intensity: 100
   m_Range: 100
   m_SpotAngle: 30
@@ -14913,7 +14913,7 @@ Light:
   m_BounceIntensity: 100
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 5.56e-43, y: 4.97e-43, z: 0, w: -5.2467458e+32}
+  m_BoundingSphereOverride: {x: 0, y: 1e-45, z: 2.77e-43, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
