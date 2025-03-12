@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
+using ExitGames.Client.Photon.StructWrapping;
 using Horde;
 using MoreLinq.Extensions;
 using Unity.Mathematics;
@@ -108,6 +109,8 @@ public class RatBoids : MonoBehaviour
 
     private float visualRangeSq => visualRange * visualRange;
     private float minDistanceSq => minDistance * minDistance;
+    
+    private HordeController hordeController;
 
     private void Awake()
     {
@@ -118,6 +121,7 @@ public class RatBoids : MonoBehaviour
     public void Start()
     {
         if (_started) return;
+        hordeController = GetComponentInParent<HordeController>();
         _started = true;
         xBound = 256;
         yBound = 256;
@@ -233,8 +237,12 @@ public class RatBoids : MonoBehaviour
 
         // Some boids have died
         if (newNumBoids < numBoids && combat)
+        {
             // Don't exceed dead boids buffer
             deadBoidsCount = Math.Min(deadBoidsCount + numBoids - newNumBoids, deadBoids.count);
+
+        }
+            
 
         if (boidBuffer.count < newNumBoids) ResizeBuffers(newNumBoids * 2);
 
@@ -597,5 +605,35 @@ public class RatBoids : MonoBehaviour
         numBoids = numBoidsFromAuthority - boidsToMove;
         previousNumBoids = numBoidsFromAuthority - boidsToMove;
         otherBoids.SetBoids(boids);
+    }
+
+    public void CreateApparition(RatBoids otherBoids, int boidsToClone)
+    {
+        otherBoids.Start();
+        var boids = new Boid[boidsToClone];
+        boidBuffer.GetData(boids, 0, 0, boidsToClone);
+        otherBoids.SetBoids(boids);
+        
+    }
+    
+    public void TeleportHorde(Vector3 newHordeCenter, Bounds hordeBounds)
+    {
+        var boids = new Boid[numBoids];
+        boidBuffer.GetData(boids, 0, 0, numBoids);
+        for (int i = 0; i < numBoids; i++)
+        {
+            var offset = (Vector2)newHordeCenter - (Vector2)hordeBounds.center;
+            boids[i].pos.x += offset.x;
+            boids[i].pos.y += offset.y;
+        }
+
+        boidBuffer.SetData(boids, 0, 0, numBoids);
+        boidBufferOut.SetData(boids, 0, 0, numBoids);
+        
+        Panner panner = FindFirstObjectByType<Panner>();
+        panner.target.x = newHordeCenter.x;
+        panner.target.y = newHordeCenter.y;
+        panner.target.z = -1;
+        panner.shouldPan = true;
     }
 }
