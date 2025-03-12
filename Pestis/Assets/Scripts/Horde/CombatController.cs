@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -13,11 +14,9 @@ namespace Horde
     /// <summary>
     ///     https://doc.photonengine.com/fusion/current/manual/fusion-types/network-collections#usage-in-inetworkstructs
     /// </summary>
+    [Serializable]
     public struct CombatParticipant : INetworkStruct
     {
-        public Player Player;
-
-
         [Networked] [Capacity(5)] public NetworkLinkedList<NetworkBehaviourId> Hordes => default;
 
 
@@ -26,36 +25,35 @@ namespace Horde
         /// </summary>
         [Networked]
         [Capacity(5)]
-        public NetworkDictionary<NetworkBehaviourId, bool> Voluntary => default;
+        public NetworkArray<bool> Voluntary => default;
 
         /// <summary>
         ///     The health each horde had when it joined the battle. It will retreat if below 20%.
         /// </summary>
         [Networked]
         [Capacity(5)]
-        public NetworkDictionary<NetworkBehaviourId, float> HordeStartingHealth => default;
+        public NetworkArray<float> HordeStartingHealth => default;
 
 
-        public CombatParticipant(Player player, HordeController hordeController, bool voluntary)
+        public CombatParticipant(HordeController hordeController, bool voluntary)
         {
-            Player = player;
-            Hordes.Add(hordeController);
-            Voluntary.Add(hordeController, voluntary);
-            HordeStartingHealth.Add(hordeController, hordeController.TotalHealth);
+            Hordes.Add(hordeController.Id);
+            var index = Hordes.IndexOf(hordeController.Id);
+            Voluntary.Set(index, voluntary);
+            HordeStartingHealth.Set(index, hordeController.TotalHealth);
         }
 
         public void AddHorde(HordeController horde, bool voluntary)
         {
-            Hordes.Add(horde);
-            Voluntary.Add(horde, voluntary);
-            HordeStartingHealth.Add(horde, horde.TotalHealth);
+            Hordes.Add(horde.Id);
+            var index = Hordes.IndexOf(horde.Id);
+            Voluntary.Set(index, voluntary);
+            HordeStartingHealth.Set(index, horde.TotalHealth);
         }
 
         public void RemoveHorde(HordeController horde)
         {
-            Hordes.Remove(horde);
-            Voluntary.Remove(horde);
-            HordeStartingHealth.Remove(horde);
+            Hordes.Remove(horde.Id);
         }
     }
 
@@ -90,7 +88,7 @@ namespace Horde
         /// </summary>
         [Networked]
         [Capacity(MAX_PARTICIPANTS)]
-        private NetworkDictionary<Player, CombatParticipant> Participators { get; }
+        private NetworkDictionary<Player, CombatParticipant> Participators => default;
 
         /// <summary>
         ///     The POI the fight is over (winner gains control).
@@ -142,13 +140,13 @@ POI: {FightingOver}
             List<HordeController> hordesToRemove = new();
             List<Player> playersToRemove = new();
             _participatorsLock.WaitOne(-1);
-            foreach (var kvp in Participators)
+            foreach (var kvp in Participators.AsEnumerable())
             {
                 var aliveHordes = 0;
                 foreach (var hordeID in kvp.Value.Hordes)
                 {
                     Runner.TryFindBehaviour(hordeID, out HordeController horde);
-                    if (horde.TotalHealth > 0)
+                    if (horde.TotalHealth > 5 * horde.GetPopulationState().HealthPerRat)
                         aliveHordes++;
                     else
                         hordesToRemove.Add(horde);
@@ -159,6 +157,7 @@ POI: {FightingOver}
 
             foreach (var horde in hordesToRemove)
             {
+                Debug.Log($"COMBAT: Removing horde {horde.Object.Id} from particpator");
                 var copy = Participators.Get(horde.Player);
                 copy.RemoveHorde(horde);
                 Participators.Set(horde.Player, copy);
@@ -268,6 +267,7 @@ POI: {FightingOver}
             // It's safe to call the RPCs now
             foreach (var horde in hordesToRemove)
             {
+                Debug.Log("COMBAT: Retreating/killing horde after combat has been over");
                 horde.RemoveBoidsFromCombatRpc(this);
                 // If last horde of that player
                 if (horde.Player.Hordes.Count == 1)
@@ -285,15 +285,16 @@ POI: {FightingOver}
             }
 
 
-            void Despawn()
-            {
-                Debug.Log("COMBAT CONTROLLER: Despawning now");
-                Runner.Despawn(Object);
-            }
-
             Debug.Log("COMBAT CONTROLLER: Despawning in 10 secs");
             Invoke(nameof(Despawn), 10);
         }
+
+        private void Despawn()
+        {
+            Debug.Log("COMBAT CONTROLLER: Despawning now");
+            Runner.Despawn(Object);
+        }
+
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void AddHordeRpc(HordeController horde, bool voluntary)
@@ -304,7 +305,7 @@ POI: {FightingOver}
             if (!Participators.TryGet(horde.Player, out var participant))
             {
                 Debug.Log("COMBAT: Adding player");
-                Participators.Add(horde.Player, new CombatParticipant(horde.Player, horde, voluntary));
+                Participators.Add(horde.Player, new CombatParticipant(horde, voluntary));
                 AllParticipants.Add(horde.Id);
             }
             else
@@ -372,7 +373,7 @@ POI: {FightingOver}
         public bool HordeIsVoluntary(HordeController horde)
         {
             var participant = Participators.Get(horde.Player);
-            return participant.Voluntary.Get(horde);
+            return participant.Voluntary.Get(participant.Hordes.IndexOf(horde.Id));
         }
 
         public bool HordeInCombat(HordeController horde)
@@ -396,14 +397,22 @@ POI: {FightingOver}
         public void EventRetreatRpc(HordeController horde)
         {
             Debug.Log($"Horde retreating from combat: {horde.Object.Id}");
+            horde.RemoveBoidsFromCombatRpc(this);
+
             _participatorsLock.WaitOne();
             var copy = Participators.Get(horde.Player);
             copy.RemoveHorde(horde);
             Participators.Set(horde.Player, copy);
 
             // Remove player from participators if that was the only horde it had in combat
-            if (!copy.Hordes.Any()) Participators.Remove(horde.Player);
+            if (!copy.Hordes.Any())
+            {
+                Debug.Log("COMBAT: Last horde for player retreated");
+                Participators.Remove(horde.Player);
+            }
+
             _participatorsLock.ReleaseMutex();
+            Debug.Log("Finished retreat");
         }
 
         public override void Spawned()
@@ -414,7 +423,7 @@ POI: {FightingOver}
         public List<HordeController> GetHordes()
         {
             List<HordeController> list = new();
-            foreach (var participant in Participators)
+            foreach (var participant in Participators.AsEnumerable())
             foreach (var hordeID in participant.Value.Hordes)
             {
                 Runner.TryFindBehaviour(hordeID, out HordeController horde);

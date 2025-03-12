@@ -649,8 +649,12 @@ Count: {AliveRats}
             if (CurrentCombatController && CurrentCombatController.HordeInCombat(target)) return;
 
             if (CurrentCombatController)
+            {
+                Debug.Log($"HORDE {Object.Id}: Retreating from combat in order to start new one!");
                 // Leave current combat
                 CurrentCombatController.EventRetreatRpc(this);
+            }
+
 
             if (StationedAt)
             {
@@ -831,7 +835,7 @@ Count: {AliveRats}
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void AddBoidsToCombatRpc(CombatController combat)
         {
-            Debug.Log($"HORDE of {Player.Username}: Joining boids to combat");
+            Debug.Log($"HORDE {Object.Id} of {Player.Username}: Joining boids to combat");
             boids.JoinCombat(combat.boids, this);
             _combatText.SetActive(true);
         }

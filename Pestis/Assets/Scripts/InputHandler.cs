@@ -101,7 +101,7 @@ public class InputHandler : MonoBehaviour
                 clickedHorde.Highlight();
                 UIManager.AttackPanelEnable();
             }
-            else
+            else if (!(clickedHorde && clickedHorde.Player == LocalPlayer?.selectedHorde.Player))
             {
                 Vector2 position = _mainCamera.ScreenToWorldPoint(mouse.position.value);
                 LocalPlayer?.MoveHorde(position);
