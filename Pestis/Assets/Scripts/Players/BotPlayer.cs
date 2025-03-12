@@ -28,7 +28,7 @@ namespace Players
         /// <summary>
         ///     Multiplier to current `aggressionUncapped`, makes a horde more likely to take offensive action at all times
         /// </summary>
-        public float BaseAggression { get; private set; } = 1.0f;
+        public float BaseAggression { get; private set; } = 5.0f;
 
         /// <summary>
         ///     Arbitrary float, starts at 0.0, and increases over time - increasing desire to take offensive action. Reset to zero
@@ -37,7 +37,7 @@ namespace Players
         /// </summary>
         public float AggressionUncapped { get; private set; }
 
-        public float AggressionRange => 400.0f * AggressionUncapped * BaseAggression;
+        public float AggressionRange => 10000.0f * AggressionUncapped * BaseAggression;
 
         /// <summary>
         ///     True if this instance is the one that should handle the bot

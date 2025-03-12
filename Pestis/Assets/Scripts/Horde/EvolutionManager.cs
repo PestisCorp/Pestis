@@ -271,8 +271,8 @@ namespace Horde
         private void CreateActiveEvolutions()
         {
             _rareMutationClock.Start();
-            string json = File.ReadAllText("Assets/json/active_mutations.json");
-            var activeMutations = JsonConvert.DeserializeObject<List<ActiveMutation>>(json);
+            var json = Resources.Load<TextAsset>("active_mutations");
+            var activeMutations = JsonConvert.DeserializeObject<List<ActiveMutation>>(json.text);
             foreach (var mut in activeMutations)
             {
                 _evolutionaryState.ActiveMutations.Add(mut, mut.MutationWeight);
