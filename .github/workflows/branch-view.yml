@@ -49,6 +49,7 @@ jobs:
             chownFilesTo: ec2-user
 
     build-linux:
+      needs: test
       permissions:
         contents: write
         checks: write
@@ -94,6 +95,7 @@ jobs:
           run: mkdir -p /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/ && zip -urD /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/linux.zip build/StandaloneLinux64 
 
     build-windows:
+      needs: test
       permissions:
         contents: write
         checks: write
