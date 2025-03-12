@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Map;
+using Objectives;
 using Players;
 using POI;
 using TMPro;
@@ -39,6 +40,8 @@ public class GameManager : MonoBehaviour
     private readonly float[] fpsWindow = new float[60];
     private int fpsIndex;
 
+    public ObjectiveManager ObjectiveManager;
+
     /// <summary>
     ///     All POIs in the game, in grid order
     /// </summary>
@@ -50,7 +53,7 @@ public class GameManager : MonoBehaviour
     public ComputeBuffer poiOffsetBuffer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start()
+    private void Awake()
     {
 #if UNITY_EDITOR
         fpsText.gameObject.SetActive(true);
@@ -118,6 +121,20 @@ public class GameManager : MonoBehaviour
 
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 0;
+
+        ObjectiveManager = new ObjectiveManager();
+        var fightHorde = new Objective(ObjectiveTrigger.CombatStarted, "Fight a horde", 1);
+        var capturePOI = new Objective(ObjectiveTrigger.POICaptured, "Capture a POI", 1);
+        var splitHorde = new Objective(ObjectiveTrigger.HordeSplit, "Split your horde", 1);
+        var defeatHumanPatrol = new Objective(ObjectiveTrigger.HumanPatrolDefeated, "Defeat a human patrol", 1);
+        var learnToSwim = new Objective(ObjectiveTrigger.SwimmingUnlocked, "Learn to swim", 1);
+        var winBattles = new Objective(ObjectiveTrigger.BattleWon, "Win {0}/{1} battles", 10);
+        ObjectiveManager.AddObjective(fightHorde);
+        ObjectiveManager.AddObjective(capturePOI);
+        ObjectiveManager.AddObjective(splitHorde);
+        ObjectiveManager.AddObjective(defeatHumanPatrol);
+        ObjectiveManager.AddObjective(learnToSwim);
+        ObjectiveManager.AddObjective(winBattles);
     }
 
     private void Update()

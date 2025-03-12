@@ -5,6 +5,8 @@ using System.Linq;
 using Fusion;
 using JetBrains.Annotations;
 using KaimiraGames;
+using MoreLinq;
+using Objectives;
 using Players;
 using POI;
 using TMPro;
@@ -19,15 +21,15 @@ namespace Horde
 {
     public enum CombatOptions
     {
-        FrontalAssault,
-        ShockAndAwe,
-        Envelopment,
-        Fortify,
-        Hedgehog,
+        FrontalAssault, 
+        ShockAndAwe, 
+        Envelopment, 
+        Fortify, 
+        Hedgehog, 
         AllRound
     }
-
-
+    
+    
     public class HordeController : NetworkBehaviour
 
     {
@@ -48,8 +50,7 @@ namespace Horde
         public Player Player;
 
         public GameObject ratPrefab;
-        public bool isHedgehogged;
-
+        public bool isHedgehogged = false;
         public GameObject moraleAndFearInstance;
 
         // Do not use or edit yourself, used to expose internals to Editor
@@ -88,9 +89,6 @@ namespace Horde
 
         [SerializeField] private PopulationController _populationController;
 
-        public RatBoids boids;
-
-
         private readonly List<RatController> _spawnedRats = new();
         private Camera _camera;
 
@@ -108,7 +106,7 @@ namespace Horde
         private Light2D _selectionLightPoi;
 
         private Light2D _selectionLightTerrain;
-
+        
         [CanBeNull] private HordeController _targetHorde;
 
 
@@ -117,6 +115,8 @@ namespace Horde
         private readonly Queue<Sprite> _speechBubbles = new();
         private bool _speechBubbleActive;
         
+        public RatBoids boids { get; private set; }
+
         /// <summary>
         ///     Time in seconds since game start when the horde last finished combat
         /// </summary>
@@ -130,7 +130,8 @@ namespace Horde
 
         public int AliveRats => (int)Mathf.Max(TotalHealth / _populationController.GetState().HealthPerRat, 1.0f);
 
-        [Networked] internal float TotalHealth { get; set; } = 25.0f;
+        [Networked]
+        internal float TotalHealth { get; set; } = 25.0f;
 
         /// <summary>
         ///     Bounds containing every rat in Horde
@@ -270,7 +271,6 @@ Count: {AliveRats}
                     var septicMult = _populationController.GetState().SepticMult;
                     _populationController.SetSepticMult(septicMult * 1.005f);
                 }
-
                 var enemyHordes =
                     CurrentCombatController!.boids.containedHordes.Where(horde => horde.Player != Player).ToArray();
 
@@ -450,14 +450,15 @@ Count: {AliveRats}
                 bar.current = 0 + (int)(elapsedTime / 10 * bar.maximum);
                 yield return null;
             }
-
             GetComponent<AbilityController>().feared = false;
         }
 
         public override void Spawned()
         {
+            _populationController = GetComponent<PopulationController>();
             _evolutionManager = GetComponent<EvolutionManager>();
             Player = GetComponentInParent<Player>();
+            boids = GetComponentInChildren<RatBoids>();
             Player.Hordes.Add(this);
 
             if (HasStateAuthority) // Ensure only the host assigns colors
@@ -504,12 +505,12 @@ Count: {AliveRats}
             }
 
             moraleAndFearInstance = Instantiate(FindFirstObjectByType<UI_Manager>().fearAndMorale);
-            fearAndMoraleBars = moraleAndFearInstance.GetComponentsInChildren<CooldownBar>();
-            foreach (CooldownBar bar in fearAndMoraleBars)
+            foreach (CooldownBar bar in moraleAndFearInstance.GetComponentsInChildren<CooldownBar>())
             {
                 bar.current = bar.maximum;
             }
             moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
+            // Needed to spawn in rats from joined session
         }
 
 
@@ -672,6 +673,7 @@ Count: {AliveRats}
             var icon = Resources.Load<Sprite>("UI_design/Emotes/attack_emote");
             AddSpeechBubble(icon);
             moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 1;
+            GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.CombatStarted, 1);
         }
 
         private IEnumerator ApplyStrategy(CombatOptions action)
