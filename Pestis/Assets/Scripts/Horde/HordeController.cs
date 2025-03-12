@@ -84,9 +84,6 @@ namespace Horde
 
         [SerializeField] private PopulationController _populationController;
 
-        public RatBoids boids;
-
-
         private readonly List<RatController> _spawnedRats = new();
         private Camera _camera;
 
@@ -126,7 +123,6 @@ namespace Horde
         public int AliveRats => (int)Mathf.Max(TotalHealth / _populationController.GetState().HealthPerRat, 1.0f);
 
         [Networked]
-        [OnChangedRender(nameof(TotalHealthChanged))]
         internal float TotalHealth { get; set; } = 25.0f;
 
         /// <summary>
@@ -378,53 +374,6 @@ Count: {AliveRats}
             StationedAt = null;
         }
 
-
-        /// <summary>
-        ///     Update number of visible rats based on current health
-        /// </summary>
-        internal void TotalHealthChanged()
-        {
-            // Update values shown in inspector
-            devToolsTotalRats = AliveRats;
-            devToolsTotalHealth = TotalHealth;
-
-            if (AliveRats < 0)
-                // Initial value is bad
-                return;
-
-            var difference = AliveRats - _spawnedRats.Count;
-            if (difference > 0)
-            {
-                _ratsToSpawn = difference;
-            }
-            else if (difference < 0)
-            {
-                var sortedByDistanceFromEnemy = _spawnedRats
-                    .Select((rat, i) => new KeyValuePair<int, RatController>(i, rat)).OrderBy(kvp =>
-                        -((Vector2)kvp.Value.transform.position - kvp.Value.targetPoint).sqrMagnitude).ToList();
-
-                List<int> indexesToRemove = new();
-                // Kill a Rat
-                for (var i = 0; i > difference; i--)
-                {
-                    // Only leave corpse if in combat
-                    if (InCombat)
-                    {
-                        sortedByDistanceFromEnemy[sortedByDistanceFromEnemy.Count - 1 + i].Value.Kill();
-                        IncreaseFear();
-                    }
-                    else
-                        sortedByDistanceFromEnemy[sortedByDistanceFromEnemy.Count - 1 + i].Value.KillInstant();
-                    indexesToRemove.Add(sortedByDistanceFromEnemy[sortedByDistanceFromEnemy.Count - 1 + i].Key);
-                    
-                }
-
-                indexesToRemove.Sort();
-                indexesToRemove.Reverse();
-                foreach (var index in indexesToRemove) _spawnedRats.RemoveAt(index);
-            }
-        }
-
         private void IncreaseFear()
         {
             CooldownBar[] bars = moraleAndFearInstance.GetComponentsInChildren<CooldownBar>();
@@ -514,7 +463,6 @@ Count: {AliveRats}
             }
             moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
             // Needed to spawn in rats from joined session
-            TotalHealthChanged();
         }
 
 
