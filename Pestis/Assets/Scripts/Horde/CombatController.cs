@@ -184,8 +184,13 @@ POI: {FightingOver}
                     if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredEffects
                         .Contains("unlock_septic_bite")) horde.GetComponent<PopulationController>().SetSepticMult(1.0f);
                     if (horde.Player.Hordes.Count == 1)
+                    {
                         // Tell horde to run away to nearest friendly POI
+                        var icon = Resources.Load<Sprite>("UI_design/Emotes/combat_loss_emote");
+                        horde.AddSpeechBubble(icon);
+                        horde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
                         horde.RetreatRpc();
+                    }
                     else
                         horde.DestroyHordeRpc();
                 }
@@ -209,7 +214,14 @@ POI: {FightingOver}
                     horde.RemoveBoidsFromCombatRpc(this);
                     if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredEffects
                         .Contains("unlock_septic_bite")) horde.GetComponent<PopulationController>().SetSepticMult(1.0f);
+                    if (horde.GetEvolutionState().AcquiredEffects.Contains("unlock_war_hawk"))
+                    {
+                        horde.GetComponent<AbilityController>().forceCooldownRefresh = true;
+                    }
+                    var icon = Resources.Load<Sprite>("UI_design/Emotes/victory_emote");
+                    horde.AddSpeechBubble(icon);
                     horde.EventWonCombatRpc(AllParticipants.ToArray());
+                    horde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
                 }
 
                 if (FightingOver)
@@ -224,11 +236,14 @@ POI: {FightingOver}
                 {
                     Debug.Log($"Transferring POI Ownership to {winner.Object.StateAuthority}");
                     FightingOver.ChangeController(winner);
+                    
                     foreach (var hordeID in winnerParticipant.Hordes)
                     {
                         Runner.TryFindBehaviour(hordeID, out HordeController horde);
                         horde.targetLocation.Teleport(FightingOver.transform.position);
                         horde.StationAtRpc(FightingOver);
+                        var icon = Resources.Load<Sprite>("UI_design/Emotes/defend_emote");
+                        horde.AddSpeechBubble(icon);
                     }
                 }
                 else if (FightingOver && winner == FightingOver.ControlledBy)
@@ -258,6 +273,8 @@ POI: {FightingOver}
                 if (horde.Player.Hordes.Count == 1)
                 {
                     // Tell horde to run away to nearest friendly POI
+                    var icon = Resources.Load<Sprite>("UI_design/Emotes/combat_loss_emote");
+                    horde.AddSpeechBubble(icon);
                     horde.RetreatRpc();
                 }
                 else
