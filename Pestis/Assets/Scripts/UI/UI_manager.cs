@@ -233,7 +233,7 @@ public class UI_Manager : MonoBehaviour
                 case "Frontal Assault":
                     optionInfo.optionText = "Consistently high damage per second, lower armor.";
                     break;
-                case "Shock and Awe":
+                case "Shock And Awe":
                     optionInfo.optionText = "Massively buff damage. Large decrease in armor. Return to normal stats after 10 seconds. Lower ability cooldown.";
                     break;
                 case "Envelopment":
