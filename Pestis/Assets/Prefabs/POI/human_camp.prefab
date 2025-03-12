@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 60773639785416763}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.8, y: 0.9, z: 0}
+  m_LocalPosition: {x: -1.72, y: 1.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5006,7 +5006,7 @@ Light:
   m_BounceIntensity: 100
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 5.339e-42, y: 0, z: 0, w: 1e-45}
+  m_BoundingSphereOverride: {x: NaN, y: NaN, z: 0, w: 1e-45}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -5051,6 +5051,8 @@ GameObject:
   - component: {fileID: -7888167734247629273}
   - component: {fileID: 5401282242629592559}
   - component: {fileID: 7802397073592086314}
+  - component: {fileID: 8940901211010643535}
+  - component: {fileID: -5430666168722633234}
   m_Layer: 6
   m_Name: human_camp
   m_TagString: Player
@@ -5126,6 +5128,8 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: -7888167734247629273}
+  - {fileID: 8940901211010643535}
+  - {fileID: -5430666168722633234}
   ForceRemoteRenderTimeframe: 0
 --- !u!212 &7802397073592086314
 SpriteRenderer:
@@ -5182,3 +5186,36 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8940901211010643535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7727599578141111434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6b3477ab84b4ee9a5f2e8853119955c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  humanPrefab: {fileID: 6463158892316126659, guid: 4264f97e4dd0548a499c2bc2f37b319a, type: 3}
+  poi: {fileID: 7727599578141111434}
+  _HumanCount: 6
+  _PatrolRadius: 5
+--- !u!114 &-5430666168722633234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7727599578141111434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f66c5359dd5447f1aded2c1c7490f983, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  patrolController: {fileID: 8940901211010643535}
+  healthPerHuman: 5
+  damagePerHuman: 0.05
+  _CurrentHumanHealth: 0
+  ratDPS: 0.5
