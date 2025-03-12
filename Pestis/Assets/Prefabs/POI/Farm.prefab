@@ -151,7 +151,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a2b2d45d5384d9db834f00036e8fcf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  captureEffect: {fileID: 8458799562195879785}
+  captureEffect:
+  - {fileID: 8458799562195879785}
   _ControlledBy: {fileID: 0}
   _StationedHordes: []
   _Combat: {fileID: 0}

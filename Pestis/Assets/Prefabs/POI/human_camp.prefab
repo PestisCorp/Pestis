@@ -5106,7 +5106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a2b2d45d5384d9db834f00036e8fcf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  captureEffect: {fileID: 3065136002907309646}
+  captureEffect:
+  - {fileID: 3065136002907309646}
   _ControlledBy: {fileID: 0}
   _StationedHordes: []
   _Combat: {fileID: 0}
