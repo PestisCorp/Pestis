@@ -11,8 +11,9 @@ public class BiomeTile : TileBase
     public Sprite tile;
     public Color tilecolor = Color.white;
     public float speeedEffect = 0.5f;
-    public float damageEffect =100;
-    public float resistanceDamage = 180;
+    public float damageEffect =0;
+    public float resistanceDamage = 0;
+    public float bonusCheeseRatio = 0.0167f;
     public float resistanceSpeed = 1;
     public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
     {
@@ -42,6 +43,7 @@ public class BiomeTile : TileBase
         float sigResistance = fastLogistic(resistance);
         //Debug.Log("default " +resistance+"sig " + sigResistance +"name " +horde.Player.Username + "effect "+ (damageEffect - (sigResistance * resistanceDamage)));
         horde.DealDamageRpc(damageEffect - (sigResistance * resistanceDamage));
+        horde.Player.AddCheeseRpc(bonusCheeseRatio * resistance);
         populationController.speedMult(speeedEffect + (resistanceSpeed* sigResistance) );
     
     }
