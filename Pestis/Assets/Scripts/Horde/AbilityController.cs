@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using ExitGames.Client.Photon.StructWrapping;
 using Fusion;
 using Human;
 using Players;
+using POI;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,8 +35,8 @@ namespace Horde
             {
                 foreach (var horde in player.Hordes)
                 {
-                    if (horde.GetHashCode() == _hordeController.GetHashCode()) continue;
-                    var dist = ((Vector2)horde.GetBounds().center - (Vector2)_hordeController.GetBounds().center).sqrMagnitude;
+                    if (_hordeController.Player.Hordes.Contains(horde)) continue;
+                    var dist =Vector2.Distance(horde.GetBounds().center, _hordeController.GetBounds().center);
                     if (dist < 20f)
                     {
                         affectedHordes.Add(horde);
@@ -80,6 +82,122 @@ namespace Horde
                 affectedEnemy.SetDamageReductionMult(affectedEnemy.GetState().DamageReductionMult / 1.3f);
         }
 
+        public void UseSewerDwellers(Button calledBy)
+        {
+            if (feared)
+            {
+                FindFirstObjectByType<UI_Manager>().AddNotification("You are feared and cannot use any abilities!", Color.red);
+                return;
+            }
+            
+            POIController travelFrom = null;
+            foreach (var poi in _hordeController.Player.ControlledPOIs)
+            {
+                if (!poi.gameObject.name.Contains("City")) continue;
+                if (!poi.Collider.bounds.Contains(_hordeController.GetBounds().center)) continue;
+                travelFrom = poi;
+                break;
+            }
+            
+            if (travelFrom == null)
+            {
+                FindFirstObjectByType<UI_Manager>().AddNotification("You are not near a city that you control!", Color.red);
+                return;
+            }
+            
+            POIController travelTo = null;
+            foreach (var poi in _hordeController.Player.ControlledPOIs)
+            {
+                if (!poi.gameObject.name.Contains("City")) continue;
+                if (poi.GetHashCode() == travelFrom.GetHashCode()) continue;
+                if (travelTo == null)
+                {
+                    travelTo = poi;
+                }
+                else
+                {
+                    var dist = (travelFrom.Collider.bounds.center - travelTo.Collider.bounds.center).sqrMagnitude;
+                    var newDist = (travelFrom.Collider.bounds.center - poi.Collider.bounds.center).sqrMagnitude;
+                    if (newDist < dist)
+                    {
+                        travelTo = poi;
+                    }
+                }
+            }
+
+            if (travelTo == null)
+            {
+                FindFirstObjectByType<UI_Manager>().AddNotification("You do not control any other cities!", Color.red);
+                return;
+            }
+            
+            _hordeController.targetLocation.Teleport(travelTo.Collider.bounds.center);
+            _hordeController.TeleportHordeRPC(travelTo.Collider.bounds.center);
+            StartCoroutine(Cooldown(60, calledBy, "Sewer Dwellers"));
+
+        }
+
+        public void UsePoltergeist(Button calledBy)
+        {
+            if (feared)
+            {
+                FindFirstObjectByType<UI_Manager>().AddNotification("You are feared and cannot use any abilities!", Color.red);
+                return;
+            }
+            _populationController.SetDamageReductionMult(_populationController.GetState().DamageMult * 0.001f);
+            StartCoroutine(Cooldown(90, calledBy, "Poltergeist"));
+            StartCoroutine(RemovePoltergeist());
+        }
+
+        IEnumerator RemovePoltergeist()
+        {
+            yield return new WaitForSeconds(5f);
+            _populationController.SetDamageReductionMult(_populationController.GetState().DamageMult / 0.001f);
+        }
+
+        public void UseApparition(Button calledBy)
+        {
+            if (feared)
+            {
+                FindFirstObjectByType<UI_Manager>().AddNotification("You are feared and cannot use any abilities!", Color.red);
+                return;
+            }
+            var populationState = _hordeController.GetPopulationState();
+            var evolutionaryState = _hordeController.GetEvolutionState();
+            var newHorde = Runner.Spawn(_hordeController.Player.hordePrefab, Vector3.zero,
+                    Quaternion.identity,
+                    null, (runner, NO) =>
+                    {
+                        NO.transform.parent = _hordeController.Player.transform;
+                        // Ensure new horde spawns in at current location
+                        NO.transform.position = _hordeController.GetBounds().center;
+                        var horde = NO.GetComponent<HordeController>();
+                        horde.TotalHealth = _hordeController.TotalHealth;
+                        horde.SetPopulationState(populationState);
+                        horde.SetPopulationInit(_hordeController.AliveRats);
+                    })
+                .GetComponent<HordeController>();
+            newHorde.isApparition = true;
+            _hordeController.CreateApparitionRPC(newHorde, newHorde.AliveRats);
+            newHorde.SetEvolutionaryState(evolutionaryState.DeepCopy());
+            newHorde.Move(_hordeController.targetLocation.transform.position - _hordeController.GetBounds().extents);
+            
+            
+            StartCoroutine(Cooldown(120, calledBy, "Apparition"));
+            StartCoroutine(RemoveApparation(newHorde));
+        }
+
+        IEnumerator RemoveApparation(HordeController apparition)
+        {
+            yield return new WaitForSeconds(20f);
+            while (apparition.InCombat)
+            {
+                yield return null;
+            }
+            if (apparition)
+                apparition.DestroyHordeRpc();
+        }
+        
         IEnumerator Cooldown(int duration, Button calledBy, string abilityName)
         {
             calledBy.onClick.RemoveAllListeners();
@@ -91,6 +209,12 @@ namespace Horde
             {
                 elapsedTime += Time.deltaTime;
                 cooldownBar.current = 100 - (int)(elapsedTime / duration * 100);
+                if (forceCooldownRefresh)
+                {
+                    cooldownBar.current = 0;
+                    forceCooldownRefresh = false;
+                    break;
+                }
                 yield return null;
             }
             calledBy.onClick.RemoveAllListeners();
@@ -98,6 +222,15 @@ namespace Horde
             {
                 case "Pestis":
                     calledBy.onClick.AddListener(delegate {UsePestis(calledBy);});
+                    break;
+                case "Sewer Dwellers":
+                    calledBy.onClick.AddListener(delegate {UseSewerDwellers(calledBy);});
+                    break;
+                case "Poltergeist":
+                    calledBy.onClick.AddListener(delegate {UsePoltergeist(calledBy);});
+                    break;
+                case "Apparition":
+                    calledBy.onClick.AddListener(delegate {UseApparition(calledBy);});
                     break;
             }
         }

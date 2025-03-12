@@ -243,7 +243,7 @@ namespace Horde
         {
             // Suspend population simulation during combat or retreat to avoid interference
             if (!_hordeController.InCombat && _hordeController.PopulationCooldown == 0 &&
-                _populationClock.ElapsedInMilliseconds > 50) PopulationEvent();
+                _populationClock.ElapsedInMilliseconds > 50 && !_hordeController.isApparition) PopulationEvent();
             _highestHealth = Mathf.Max(_hordeController.TotalHealth, _highestHealth);
         }
 
