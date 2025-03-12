@@ -49,6 +49,9 @@
 					Median
 					FPS: {data.fps.toFixed(0)}
 				</h2>
+				<div class="mt-50">
+					<a href="https://pestis.murraygrov.es/download/latest" class="underline">Download game</a>
+				</div>
 			</div>
 		</div>
 

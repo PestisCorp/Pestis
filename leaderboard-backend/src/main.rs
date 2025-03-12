@@ -48,7 +48,7 @@ struct LeaderboardManager {
 impl LeaderboardManager {
     fn new() -> Self {
         let filename = chrono::Utc::now().format("%Y-%m-%d");
-        let filename = format!("{}-leaderboard.json", filename);
+        let filename = format!("/data/{}-leaderboard.json", filename);
         let history = if let Ok(mut file) = std::fs::File::open(&filename) {
             let mut contents = String::new();
             file.read_to_string(&mut contents).unwrap();
@@ -148,7 +148,8 @@ impl LeaderboardManager {
     async fn save_to_file(&self) {
         let current_date = chrono::Utc::now().format("%Y-%m-%d");
         let history = self.history.read().await;
-        let mut file = std::fs::File::create(format!("{}-leaderboard.json", current_date)).unwrap();
+        let mut file =
+            std::fs::File::create(format!("/data/{}-leaderboard.json", current_date)).unwrap();
         let data = serde_json::to_string(&*history).unwrap();
         file.write_all(data.as_bytes()).unwrap();
     }
