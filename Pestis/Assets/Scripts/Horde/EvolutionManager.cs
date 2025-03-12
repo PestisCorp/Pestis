@@ -122,12 +122,16 @@ namespace Horde
             switch (mutation)
             {
                 case "attack":
+                    var icon = Resources.Load<Sprite>("UI_design/Emotes/damage_buff_emote");
+                    _hordeController.AddSpeechBubble(icon);
                     _populationController.SetDamage((float)mutEffect);
                     break;
                 case "health":
                     _populationController.SetHealthPerRat((float)mutEffect);
                     break;
                 case "defense":
+                    icon = Resources.Load<Sprite>("UI_design/Emotes/damage_reduction_buff_emote");
+                    _hordeController.AddSpeechBubble(icon);
                     _populationController.SetDamageReduction((float)mutEffect);
                     break;
                 case "birth rate":
@@ -184,6 +188,8 @@ namespace Horde
             }
             
             FindFirstObjectByType<UI_Manager>().RareMutationPopup((firstMut, secondMut, thirdMut), this, _hordeController);
+            var icon = Resources.Load<Sprite>("UI_design/Emotes/evolution_emote");
+            _hordeController.AddSpeechBubble(icon);
             _rareMutationClock.Start();
         }
 
@@ -201,7 +207,8 @@ namespace Horde
                 }
             }
             
-            if (_evolutionaryState.AcquiredEffects.Contains("unlock_fester") && mutation.MutationTag == "disease")
+            if ((_evolutionaryState.AcquiredEffects.Contains("unlock_fester") && mutation.MutationTag == "disease") || 
+                (_evolutionaryState.AcquiredEffects.Contains("unlock_abraxas") && mutation.MutationTag == "psionic"))
             {
                 
                 PopulationState newState = new PopulationState()
@@ -235,12 +242,13 @@ namespace Horde
         {
             for (int i = 0; i < _evolutionaryState.ActiveMutations.Count; i++)
             {
-                int count = 0;
+                int count = 1;
                 if (_evolutionaryState.TagCounts.TryGetValue(_evolutionaryState.ActiveMutations[i].MutationTag, out var tagCount))
                 {
                     count = tagCount + 1;
                 }
-                _evolutionaryState.ActiveMutations.SetWeight(_evolutionaryState.ActiveMutations[i], count);
+                _evolutionaryState.ActiveMutations.SetWeight(_evolutionaryState.ActiveMutations[i], count * _evolutionaryState.ActiveMutations[i].MutationWeight);
+                //GameManager.Instance.terrainMap.GetTile(_hordeController.GetBounds().center);
                 //var biome = BiomeClass.GetBiomeAtPosition(tilemap.WorldToCell(_hordeController.GetBounds().center)).template.name;
             }
         }
@@ -252,12 +260,12 @@ namespace Horde
             _evolutionaryState.PassiveEvolutions["attack"] = new []{0.03, _populationController.GetState().Damage, 2.0};
             _evolutionaryState.PassiveEvolutions["health"] = new []{0.03, _populationController.GetState().HealthPerRat, 20.0};
             _evolutionaryState.PassiveEvolutions["defense"] = new []{ 0.03, _populationController.GetState().DamageReduction, 2.5};
-            _evolutionaryState.PassiveEvolutions["evolution rate"] = new []{ 0.01, 2, 0.5};
+            _evolutionaryState.PassiveEvolutions["evolution rate"] = new []{ 0.01, 4, 0.5};
             _evolutionaryState.PassiveEvolutions["evolution strength"] = new []{ 0.01, 1.02, 1.3};
             _evolutionaryState.PassiveEvolutions["birth rate"] = new[]{ 0.01, _populationController.GetState().BirthRate, 0.1};
             //_evolutionaryState.PassiveEvolutions["resource consumption"] = new []{ 0.0005, _hordeController.Player.CheeseIncrementRate };
             // Need to change the default values for rate, and strength of evolutions to referring to values in PC.State (for horde split reasons)
-            _evolutionaryState.PassiveEvolutions["rare mutation rate"] = new []{ 0.01, 30, 20};
+            _evolutionaryState.PassiveEvolutions["rare mutation rate"] = new []{ 0.01, 40, 20};
         }
 
         private void CreateActiveEvolutions()
@@ -300,7 +308,7 @@ namespace Horde
         
         public override void FixedUpdateNetwork()
         {
-            if (_hordeController.InCombat) return;
+            if (_hordeController.InCombat  || _hordeController.isApparition) return;
             if (_mutationClock.ElapsedInSeconds > _evolutionaryState.PassiveEvolutions["evolution rate"][1])
             {
                 EvolutionaryEvent();

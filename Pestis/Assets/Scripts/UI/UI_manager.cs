@@ -53,6 +53,8 @@ public class UI_Manager : MonoBehaviour
     private TMP_Text _notificationText;
     
     private readonly Queue<(ActiveMutation, ActiveMutation, ActiveMutation, EvolutionManager, HordeController)> _mutationQueue = new();
+
+    
     
     private bool displayResourceInfo;
 
@@ -185,10 +187,14 @@ public class UI_Manager : MonoBehaviour
     public void AttackPanelEnable()
     {
         ResetUI();
+        if (attackPanel != null) attackPanel.SetActive(true);
+        
+    }
+
+    public void AttackPanelRefresh()
+    {
         var fightButton = attackPanel.GetComponentInChildren<Button>();
         fightButton.onClick.RemoveAllListeners();
-        if (attackPanel != null) attackPanel.SetActive(true);
-
         // Find all GameObjects with the tag "UI_stats_text"
         var uiStatsTextObjects = GameObject.FindGameObjectsWithTag("UI_stats_text");
 
@@ -228,7 +234,7 @@ public class UI_Manager : MonoBehaviour
                 case "Frontal Assault":
                     optionInfo.optionText = "Consistently high damage per second, lower armor.";
                     break;
-                case "Shock and Awe":
+                case "Shock And Awe":
                     optionInfo.optionText = "Massively buff damage. Large decrease in armor. Return to normal stats after 10 seconds. Lower ability cooldown.";
                     break;
                 case "Envelopment":
@@ -245,13 +251,13 @@ public class UI_Manager : MonoBehaviour
                     break;
             }
         }
-        if (combatOption != "") fightButton.onClick.AddListener(delegate {friendlyHorde.AttackHorde(enemyHorde, combatOption);});
-        
-    }
 
-    public void AttackPanelRefresh()
-    {
-        AttackPanelDisable();
+        if (combatOption != "")
+        {
+            fightButton.onClick.AddListener(delegate {friendlyHorde.AttackHorde(enemyHorde, combatOption);});
+            fightButton.onClick.AddListener(AttackPanelDisable);
+        }
+        
         AttackPanelEnable();
     }
 
@@ -507,30 +513,28 @@ public class UI_Manager : MonoBehaviour
         }
         MutationPopUpEnable();
         var mutation = _mutationQueue.Dequeue();
-        Panner panner = FindFirstObjectByType<Panner>();
-        panner.target.x = mutation.Item5.GetBounds().center.x;
-        panner.target.y = mutation.Item5.GetBounds().center.y;
-        panner.target.z = -1;
-        panner.shouldPan = true;
         var buttons = mutationPopUp.GetComponentsInChildren<Button>();
         
-        buttons[0].GetComponentInChildren<TMP_Text>().text = mutation.Item1.MutationName;
-        buttons[0].GetComponent<Tooltip>().tooltipText = mutation.Item1.Tooltip;
         buttons[0].onClick.RemoveAllListeners();
-        buttons[0].onClick.AddListener(delegate {mutation.Item4.ApplyActiveEffects(mutation.Item1);});
-        buttons[0].onClick.AddListener(delegate {Destroy(buttons[0].GetComponent<Tooltip>().tooltipInstance);});
+        buttons[0].onClick.AddListener(delegate {Camera.main.GetComponent<Panner>().PanTo(mutation.Item5);});
         
-        buttons[1].GetComponentInChildren<TMP_Text>().text = mutation.Item2.MutationName;
-        buttons[1].GetComponent<Tooltip>().tooltipText = mutation.Item2.Tooltip;
+        buttons[1].GetComponentInChildren<TMP_Text>().text = mutation.Item1.MutationName;
+        buttons[1].GetComponent<Tooltip>().tooltipText = mutation.Item1.Tooltip;
         buttons[1].onClick.RemoveAllListeners();
-        buttons[1].onClick.AddListener(delegate {mutation.Item4.ApplyActiveEffects(mutation.Item2);});
+        buttons[1].onClick.AddListener(delegate {mutation.Item4.ApplyActiveEffects(mutation.Item1);});
         buttons[1].onClick.AddListener(delegate {Destroy(buttons[1].GetComponent<Tooltip>().tooltipInstance);});
         
-        buttons[2].GetComponentInChildren<TMP_Text>().text = mutation.Item3.MutationName;
-        buttons[2].GetComponent<Tooltip>().tooltipText = mutation.Item3.Tooltip;
+        buttons[2].GetComponentInChildren<TMP_Text>().text = mutation.Item2.MutationName;
+        buttons[2].GetComponent<Tooltip>().tooltipText = mutation.Item2.Tooltip;
         buttons[2].onClick.RemoveAllListeners();
-        buttons[2].onClick.AddListener(delegate {mutation.Item4.ApplyActiveEffects(mutation.Item3);});
+        buttons[2].onClick.AddListener(delegate {mutation.Item4.ApplyActiveEffects(mutation.Item2);});
         buttons[2].onClick.AddListener(delegate {Destroy(buttons[2].GetComponent<Tooltip>().tooltipInstance);});
+        
+        buttons[3].GetComponentInChildren<TMP_Text>().text = mutation.Item3.MutationName;
+        buttons[3].GetComponent<Tooltip>().tooltipText = mutation.Item3.Tooltip;
+        buttons[3].onClick.RemoveAllListeners();
+        buttons[3].onClick.AddListener(delegate {mutation.Item4.ApplyActiveEffects(mutation.Item3);});
+        buttons[3].onClick.AddListener(delegate {Destroy(buttons[3].GetComponent<Tooltip>().tooltipInstance);});
         
     }
     
@@ -598,13 +602,24 @@ public class UI_Manager : MonoBehaviour
             {
                 case "Pestis":
                     button.onClick.AddListener(delegate {abilityController.UsePestis(button);});
-                    button.GetComponent<Tooltip>().tooltipText = mutation.Item2;
+                    break;
+                case "Sewer Dwellers":
+                    button.onClick.AddListener(delegate {abilityController.UseSewerDwellers(button);});
+                    break;
+                case "Poltergeist":
+                    button.onClick.AddListener(delegate {abilityController.UsePoltergeist(button);});
+                    break;
+                case "Apparition":
+                    button.onClick.AddListener(delegate {abilityController.UseApparition(button);});
                     break;
             }
+            button.GetComponent<Tooltip>().tooltipText = mutation.Item2;
             break;
         }
 
     }
+
+    
     
     public void AddNotification(string message, Color hordeColor)
     {

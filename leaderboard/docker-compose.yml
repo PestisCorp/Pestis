@@ -1,0 +1,12 @@
+services:
+  frontend:
+    ports:
+      - "5173:5173"
+    build: .
+
+  backend:
+    ports:
+      - "8081:8081"
+    build: ../leaderboard-backend
+    volumes:
+      - ../leaderboard-storage:/data

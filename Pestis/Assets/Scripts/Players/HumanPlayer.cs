@@ -40,6 +40,7 @@ namespace Players
             
             if (horde.Player.IsLocal)
             {
+                if (horde.isApparition) return;
                 UI_manager.AbilityToolbarDisable();
                 if (selectedHorde && selectedHorde != horde)
                 {

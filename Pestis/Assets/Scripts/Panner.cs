@@ -1,4 +1,5 @@
 using Fusion;
+using Horde;
 using UnityEngine;
 
 public class Panner : MonoBehaviour
@@ -8,7 +9,14 @@ public class Panner : MonoBehaviour
     private const float TimeToMove = 1f;
     public Vector3 target;
 
-
+    public void PanTo(HordeController horde)
+    {
+        shouldPan = true;
+        target.x = horde.GetBounds().center.x;
+        target.y = horde.GetBounds().center.y;
+        target.z = -1;
+    }
+    
     // Update is called once per frame
     private void Update()
     {

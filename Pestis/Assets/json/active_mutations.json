@@ -4,7 +4,7 @@
 		"MutationTag" : "disease",
 		"MutationWeight": 10,
 		"Effects": ["unlock_septic_bite"],
-		"Tooltip": "Your rats live in squalor and never brush their teeth. Now their bites shut down your enemies' organs. Deal ramping damage that ignores armor.",
+		"Tooltip": "Deal ramping damage that ignores armor.",
 		"IsAbility": false
 	},
 	{
@@ -12,7 +12,7 @@
 		"MutationTag": "disease",
 		"MutationWeight": 10,
 		"Effects": ["unlock_pestis", "unlock_disease_resistance", "unlock_human_aggression"],
-		"Tooltip": "Unleash the plague onto all nearby hordes or human controlled locations by sacrificing 30% of your population. If you spread it to a horde, they suffer from reduced armor and increased resource needs for one minute. Pest exterminators extend their patrol radius. Gain immunity to disease.",
+		"Tooltip": "Unleash the plague by sacrificing 30% of your population. Enemy rats have reduced armor. Enemy humans extend their patrol radius. Gain immunity to disease.",
 		"IsAbility": true
 	},
 	{
@@ -20,7 +20,7 @@
 		"MutationTag" : "disease",
 		"MutationWeight": 10,
 		"Effects": ["unlock_city_boost", "unlock_sewer_travel"],
-		"Tooltip": "Your rats thrive in the city sewers, gaining a boost to all basal stats in the city. You can use the sewers to instantly travel between cities you control.",
+		"Tooltip": "Gain stat boosts in the city. You can use the sewers to instantly travel to the closest city.",
 		"IsAbility": true
 	},
 	{
@@ -28,7 +28,7 @@
 		"MutationTag": "disease",
 		"MutationWeight": 10,
 		"Effects": ["unlock_fester"],
-		"Tooltip": "What do your rats hate more than humans? The advent of modern medicine. Gain an instant 10% boost to all stats, and every subsequent disease type mutation grants the same buff. Additionally, any disease abilities you have that do combat damage are 10% more effective.",
+		"Tooltip": "Stats improve by 10%, future disease mutations grant the same buff.",
 		"IsAbility": false
 	},
 	{
@@ -36,15 +36,71 @@
 		"MutationTag": "disease",
 		"MutationWeight": 10,
 		"Effects": ["unlock_necrosis"],
-		"Tooltip": "Your rats are having trouble keeping their flesh on their bones. You armor is reduced by 20% but the corpses of your fallen souls deal damage to your enemies with their noxious gases.",
+		"Tooltip": "Your armor is reduced by 20% but your rat corpses deal damage to enemies.",
+		"IsAbility": false
+	},
+	{
+		"MutationName": "Poltergeist",
+		"MutationTag": "psionic",
+		"MutationWeight": 10,
+		"Effects": ["unlock_poltergeist"],
+		"Tooltip": "Become impervious to damage from enemies for 5 seconds.",
+		"IsAbility": true
+	},
+	{
+		"MutationName": "Haunt",
+		"MutationTag": "psionic",
+		"MutationWeight": 10,
+		"Effects": ["unlock_haunt"],
+		"Tooltip": "When a rat you control dies, traumatise your enemies.",
+		"IsAbility": false
+	},
+	{
+		"MutationName": "Apparition",
+		"MutationTag": "psionic",
+		"MutationWeight": 10,
+		"Effects": ["unlock_apparition"],
+		"Tooltip": "Create an apparition of your horde that you cannot control. It lasts for 20 seconds.",
+		"IsAbility": true
+	},
+	{
+		"MutationName": "Mentat",
+		"MutationTag": "psionic",
+		"MutationWeight": 10,
+		"Effects": ["unlock_mentat"],
+		"Tooltip": "There is a chance you can predict an attack and dodge it.",
+		"IsAbility": false
+	},
+	{
+		"MutationName": "Abraxas",
+		"MutationTag": "psionic",
+		"MutationWeight": 10,
+		"Effects": ["unlock_abraxas"],
+		"Tooltip": "Stats improve by 10%, future psionic mutations grant the same buff.",
 		"IsAbility": false
 	},
 	{
 		"MutationName": "Agriculturalist",
-		"MutationTag": "grassland",
+		"MutationTag": "diplomacy",
 		"MutationWeight": 10,
-		"Effects": [""],
-		"Tooltip": "Your time in grassy lands has given your rats the chance to rediscover the wonders of irrigation. All resource output in grassy lands is increased by 20%. Additionally, gain the ability to convert other POIs into farms.",
+		"Effects": ["Farmer"],
+		"Tooltip": "Resource output on grass tiles increases by 20%.",
 		"IsAbility": true
+	},
+	{
+		"MutationName": "Price of War",
+		"MutationTag": "diplomacy",
+		"MutationWeight": 10,
+		"Effects": ["unlock_price_of_war"],
+		"Tooltip": "Enemy rats have to donate cheese in order to start combat with you.",
+		"IsAbility": false
+	},
+	{
+		"MutationName": "War Hawk",
+		"MutationTag": "diplomacy",
+		"MutationWeight": 10,
+		"Effects": ["unlock_war_hawk"],
+		"Tooltip": "Your ability cooldowns refresh on combat victory.",
+		"IsAbility": false
 	}
 ]
