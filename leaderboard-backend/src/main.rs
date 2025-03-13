@@ -133,7 +133,7 @@ impl LeaderboardManager {
             let latest_update = history.get(&player).and_then(|updates| updates.last());
             if let Some(update) = latest_update {
                 // If the player hasn't updated in 2 minutes, remove them
-                if current_timestamp - update.timestamp > 600 {
+                if current_timestamp - update.timestamp > 120 {
                     to_remove.push(player.clone());
                 }
             } else {
