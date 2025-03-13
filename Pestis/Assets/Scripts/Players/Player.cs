@@ -29,6 +29,8 @@ namespace Players
 
         public GameObject hordePrefab;
 
+        public int score;
+
         [SerializeField] private float cheeseConsumptionRate = 0.001f; // k value
 
         [DoNotSerialize] public double TotalDamageDealt;
