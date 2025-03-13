@@ -12,11 +12,18 @@ public class TimerToScoreLock : MonoBehaviour
     public Player player;
     void Start()
     {
-        
+        StartCoroutine(TimerTilScoreLock(600));
     }
 
     public IEnumerator TimerTilScoreLock(int timeRemaining)
     {
+        //waits for player to be assigned, assuming game loads after player is assigned
+        while (player == null)
+        {
+            Debug.Log("Waiting for timerText to be assigned...");
+            yield return null; // Wait until the next frame
+        }
+
         while (timeRemaining > 0)
         {
             UpdateTimer(timeRemaining);
@@ -28,6 +35,8 @@ public class TimerToScoreLock : MonoBehaviour
         yield return null;
     }
 
+
+
     private void FixedUpdate()
     {
         while (ScoreLocked == false)
@@ -37,6 +46,7 @@ public class TimerToScoreLock : MonoBehaviour
     }
     private void UpdateTimer(int timeToDisplay)
     {
+        
         int minutes = Mathf.FloorToInt(timeToDisplay / 60);
         int seconds = Mathf.FloorToInt(timeToDisplay % 60);
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);

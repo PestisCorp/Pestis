@@ -26,6 +26,7 @@ public class UI_Manager : MonoBehaviour
     public GameObject abilityToolbar;
     public GameObject fearAndMorale;
     public GameObject objectives;
+    public TimerToScoreLock timer;
 
     // References to the resource text fields
     public TextMeshProUGUI cheeseTotalText;
@@ -86,11 +87,19 @@ public class UI_Manager : MonoBehaviour
                 child.GetComponent<Image>().enabled = false;
             }
         }
-        
-        
-        
-    }
 
+
+        StartCoroutine(assignPlayerOnceNotNull());
+    }
+    private IEnumerator assignPlayerOnceNotNull()
+    {
+        while (localPlayer == null)
+        {
+            
+        }
+        timer.player = localPlayer.player;
+        yield return null;
+    }
     private void FixedUpdate()
     {
         //Only display resources if they player hasn't opted to show info
