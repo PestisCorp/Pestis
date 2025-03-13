@@ -12,18 +12,18 @@
 		setTimeout(() => {
 			location.reload();
 		}, 30000);
-	})
+	});
 
 </script>
 
-<div class="bg-slate-800 min-h-screen min-w-screen text-gray-300">
+<div class="bg-slate-800 min-h-screen min-w-screen max-w-screen text-gray-300 flex-wrap">
 	<Marquee direction="right" class="pt-3">
 		{#each Array(100).keys() as _ (_)}
 			<img src="/rat_right.png" alt="rat" class="ml-2" />
 		{/each}
 	</Marquee>
 	<div class="flex">
-		<div class="flex-1 p-5 block">
+		<div class="flex-2 pl-5 block min-w-0 pr-0">
 			<h1 class="text-3xl pt-3 underline mx-auto text-center mb-5">Current</h1>
 			<Leaderboard leaderboard={data.leaderboard} />
 		</div>
@@ -32,7 +32,7 @@
 				<img src="/pestis.png" alt="Pestis" class="w-64 aspect-square mx-auto" />
 			</div>
 			<div class="flex-1 text-center">
-				<h1 class="text-4xl">Rat-based Domination!</h1>
+				<h1 class="text-4xl px-0">Rat-based Domination!</h1>
 				<h2 class="mt-5 text-2xl">
 					Current
 					Rats: {data.leaderboard.length === 0 ? 0 : (data.leaderboard.map(player => player.hordes.length === 0 ? 0 : player.hordes.map(horde => horde.rats).reduce((sum, rats) => sum + rats)).reduce((sum, rats) => sum + rats))}
@@ -55,7 +55,7 @@
 			</div>
 		</div>
 
-		<div class="flex-1 p-5 text-center">
+		<div class="flex-2 pr-5 text-center min-w-0 pl-0">
 			<h1 class="text-3xl pt-3 underline mx-auto text-center mb-5">Best of Today</h1>
 			<Leaderboard leaderboard={data.allTime} />
 		</div>

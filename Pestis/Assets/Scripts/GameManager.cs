@@ -139,7 +139,6 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-#if UNITY_EDITOR
         fpsWindow[fpsIndex] = Time.unscaledDeltaTime;
         if (fpsIndex == 59)
             fpsIndex = 0;
@@ -147,6 +146,7 @@ public class GameManager : MonoBehaviour
             fpsIndex++;
 
         currentFps = 60.0f / fpsWindow.Sum();
+#if UNITY_EDITOR
         fpsText.text = $"FPS: {currentFps}";
         boidText.text = $"Boids: {Players.Sum(player => player.Hordes.Sum(horde => horde.AliveRats))}";
 #endif

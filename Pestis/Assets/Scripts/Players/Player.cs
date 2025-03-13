@@ -44,7 +44,7 @@ namespace Players
         [Networked] [Capacity(32)] public NetworkLinkedList<HordeController> Hordes { get; } = default;
 
         [Networked] [Capacity(64)] public NetworkLinkedList<POIController> ControlledPOIs { get; } = default;
-        
+
         [Networked] public string Username { get; private set; }
 
 
@@ -159,7 +159,7 @@ namespace Players
             {
                 tick = (ulong)Runner.Tick.Raw,
                 fps = GameManager.Instance.currentFps,
-                timestamp = DateTime.UtcNow.Second,
+                timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                 player = new PlayerUpdate
                 {
                     id = Object.Id.Raw,
@@ -323,7 +323,7 @@ namespace Players
         private struct StatsUpdate
         {
             public ulong tick;
-            public int timestamp;
+            public long timestamp;
             public float fps;
             public PlayerUpdate player;
         }
