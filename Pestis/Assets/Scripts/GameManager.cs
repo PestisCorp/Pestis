@@ -84,6 +84,7 @@ public class GameManager : MonoBehaviour
         {
             var x = Math.Floor(poi.transform.position.x / poiGridCellSize + poiGridDimX / 2);
             var y = Math.Floor(poi.transform.position.y / poiGridCellSize + poiGridDimY / 2);
+            if (y >= poiGridDimY) continue;
             var gridID = Convert.ToUInt32(poiGridDimX * y + x);
             var bounds = poi.GetComponentInChildren<Collider2D>().bounds;
             grid[gridID].Add(new BoidPoi(new float2(bounds.center.x, bounds.center.y), bounds.extents.sqrMagnitude));
