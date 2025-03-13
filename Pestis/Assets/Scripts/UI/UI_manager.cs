@@ -71,6 +71,12 @@ public class UI_Manager : MonoBehaviour
         if (toolbar != null) toolbar.SetActive(false);
         if (abilityToolbar != null) abilityToolbar.SetActive(false);
         if (resourceStats != null) resourceStats.SetActive(false);
+        if (objectives != null) objectives.SetActive(false);
+        if (darkScreen != null)
+        {
+            darkScreen.GetComponent<Canvas>().enabled = false;
+            darkScreen.SetActive(false);
+        }
         displayResourceInfo = false;
         moveFunctionality = false;
 
@@ -87,8 +93,6 @@ public class UI_Manager : MonoBehaviour
                 child.GetComponent<Image>().enabled = false;
             }
         }
-        
-        HighlightUiElement(resourceStats);
     }
 
     private void FixedUpdate()
@@ -137,17 +141,6 @@ public class UI_Manager : MonoBehaviour
         if (splitPanel != null)
         {
             splitPanel.SetActive(false);
-        }
-
-        if (objectives != null)
-        {
-            objectives.SetActive(false);
-        }
-
-        if (darkScreen != null)
-        {
-            darkScreen.GetComponent<Canvas>().enabled = false;
-            darkScreen.SetActive(false);
         }
         
         // Ignoring the state of the tool bar, ensuring the default buttons are visible
@@ -686,5 +679,32 @@ public class UI_Manager : MonoBehaviour
         uiToHighlight.GetComponent<Canvas>().sortingOrder = 2;
         darkScreen.SetActive(true);
         darkScreen.GetComponent<Canvas>().enabled = true;
+    }
+    
+    private void UnhighlightUiElement(GameObject uiToUnhighlight)
+    {
+        darkScreen.GetComponent<Canvas>().enabled = false;
+        darkScreen.SetActive(false);
+        uiToUnhighlight.GetComponent<Canvas>().sortingOrder = 0;
+    }
+
+    public void TestHighlight()
+    {
+        HighlightUiElement(resourceStats);
+    }
+    
+    public void TestUnhighlight()
+    {
+        UnhighlightUiElement(resourceStats);
+    }
+    
+    public void TestHighlight2()
+    {
+        HighlightUiElement(objectives);
+    }
+    
+    public void TestUnhighlight2()
+    {
+        UnhighlightUiElement(objectives);
     }
 }
