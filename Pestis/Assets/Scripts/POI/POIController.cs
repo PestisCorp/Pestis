@@ -87,7 +87,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             {
                 captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_owned");
                 flag.sprite = captureFlag;
-                EmitCaptureEffect()
+                EmitCaptureEffect();
             }
             else
             {
