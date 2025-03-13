@@ -614,6 +614,7 @@ MonoBehaviour:
   ownIcon: {fileID: 0}
   speechBubble: {fileID: 0}
   _populationController: {fileID: 4419380376764164480}
+  _TotalHealth: 25
   _StationedAt: {fileID: 0}
   _TargetPoi: {fileID: 0}
   _CurrentCombatController: {fileID: 0}
@@ -6004,8 +6005,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 751327572659389577}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6133,7 +6134,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6170,7 +6171,7 @@ RectTransform:
   m_Father: {fileID: 5762214108448570512}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -11162,6 +11163,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d7dd69933cfe8b4285413e84c002364, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  horde: {fileID: 6619829849645989142}
+  HPSlider: {fileID: 3193708246372141392}
 --- !u!1 &7657861953064911125
 GameObject:
   m_ObjectHideFlags: 0

@@ -131,7 +131,7 @@ namespace Horde
         public int AliveRats => (int)Mathf.Max(TotalHealth / _populationController.GetState().HealthPerRat, 1.0f);
 
         [Networked]
-        internal float TotalHealth { get; set; } = 25.0f;
+        public float TotalHealth { get; internal set; } = 25.0f;
 
         /// <summary>
         ///     Bounds containing every rat in Horde
