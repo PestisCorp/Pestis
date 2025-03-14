@@ -143,7 +143,7 @@ jobs:
 
         # Output
         - name: Zip Windows build to hosting folder
-          run: zip -urD /home/ec2-user/actions-runner/builds/${{needs.test.outputs.version}}/windows.zip build/StandaloneWindows64 
+          run: mkdir -p /home/ec2-user/actions-runner/builds/${{ needs.test.outputs.version  }}/ && zip -urD /home/ec2-user/actions-runner/builds/${{needs.test.outputs.version}}/windows.zip build/StandaloneWindows64 
 
         - name: Symlink to latest
           run: ln -sfn /home/ec2-user/actions-runner/builds/${{needs.test.outputs.version}} /home/ec2-user/actions-runner/builds/latest
