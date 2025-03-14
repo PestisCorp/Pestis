@@ -53,10 +53,6 @@ public class UI_Manager : MonoBehaviour
     private Image _notificationBackground;
     private TMP_Text _notificationText;
     
-    private readonly Queue<(ActiveMutation, ActiveMutation, ActiveMutation, EvolutionManager, HordeController)> _mutationQueue = new();
-
-    
-    
     private bool displayResourceInfo;
 
     // Called by EvolutionManager every time a new mutation is acquired
@@ -141,6 +137,11 @@ public class UI_Manager : MonoBehaviour
         if (splitPanel != null)
         {
             splitPanel.SetActive(false);
+        }
+
+        if (mutationPopUp != null)
+        {
+            mutationPopUp.SetActive(false);
         }
         
         // Ignoring the state of the tool bar, ensuring the default buttons are visible
@@ -311,17 +312,6 @@ public class UI_Manager : MonoBehaviour
             SplitPanelEnable();
     }
 
-    // Function to enable mutation pop-up
-    public void MutationPopUpEnable()
-    {
-        if (mutationPopUp != null) mutationPopUp.SetActive(true);
-    }
-
-    // Function to disable mutation pop-up
-    public void MutationPopUpDisable()
-    {
-        if (mutationPopUp != null) mutationPopUp.SetActive(false);
-    }
 
     // Function to enable toolbar
     public void ToolbarEnable()
@@ -510,46 +500,45 @@ public class UI_Manager : MonoBehaviour
                 new Color(colour.r * 0.75f, colour.g * 0.75f, colour.b * 0.75f, 1);
         }
     }
-
-    public void RareMutationPopup((ActiveMutation, ActiveMutation, ActiveMutation) mutations, EvolutionManager evolutionManager, HordeController horde) 
+    
+    
+    // Function to enable mutation pop-up
+    public void MutationPopUpEnable()
     {
-        _mutationQueue.Enqueue((mutations.Item1, mutations.Item2, mutations.Item3, evolutionManager, horde));
-        if (_mutationQueue.Count != 0) StartCoroutine(ShowMutationPopUp());
-    }
-
-    private IEnumerator ShowMutationPopUp()
-    {
-        if (_mutationQueue.Count == 0) yield break;
-        while (mutationPopUp.activeSelf)
+        var horde = GetSelectedHorde();
+        var evolutionManager = horde.GetComponent<EvolutionManager>();
+        if (evolutionManager.PointsAvailable > 0 && mutationPopUp.activeSelf == false)
         {
-            yield return null;
+            if (mutationPopUp != null) mutationPopUp.SetActive(true);
+            GameObject.FindGameObjectWithTag("mutation_points").GetComponent<TextMeshProUGUI>().text = evolutionManager.PointsAvailable.ToString() + "pts";
+            var mutations = GetSelectedHorde().GetComponent<EvolutionManager>().RareEvolutionaryEvent();
+            var buttons = mutationPopUp.GetComponentsInChildren<Button>();
+            buttons[0].GetComponentInChildren<TMP_Text>().text = mutations.Item1.MutationName;
+            buttons[0].GetComponent<Tooltip>().tooltipText = mutations.Item1.Tooltip;
+            buttons[0].onClick.RemoveAllListeners();
+            buttons[0].onClick.AddListener(delegate {evolutionManager.ApplyActiveEffects(mutations.Item1);});
+            buttons[0].onClick.AddListener(delegate {Destroy(buttons[0].GetComponent<Tooltip>().tooltipInstance);});
+        
+            buttons[1].GetComponentInChildren<TMP_Text>().text = mutations.Item2.MutationName;
+            buttons[1].GetComponent<Tooltip>().tooltipText = mutations.Item2.Tooltip;
+            buttons[1].onClick.RemoveAllListeners();
+            buttons[1].onClick.AddListener(delegate {evolutionManager.ApplyActiveEffects(mutations.Item2);});
+            buttons[1].onClick.AddListener(delegate {Destroy(buttons[1].GetComponent<Tooltip>().tooltipInstance);});
+        
+            buttons[2].GetComponentInChildren<TMP_Text>().text = mutations.Item3.MutationName;
+            buttons[2].GetComponent<Tooltip>().tooltipText = mutations.Item3.Tooltip;
+            buttons[2].onClick.RemoveAllListeners();
+            buttons[2].onClick.AddListener(delegate {evolutionManager.ApplyActiveEffects(mutations.Item3);});
+            buttons[2].onClick.AddListener(delegate {Destroy(buttons[2].GetComponent<Tooltip>().tooltipInstance);});
         }
-        MutationPopUpEnable();
-        var mutation = _mutationQueue.Dequeue();
-        var buttons = mutationPopUp.GetComponentsInChildren<Button>();
-        
-        buttons[0].onClick.RemoveAllListeners();
-        buttons[0].onClick.AddListener(delegate {Camera.main.GetComponent<Panner>().PanTo(mutation.Item5);});
-        
-        buttons[1].GetComponentInChildren<TMP_Text>().text = mutation.Item1.MutationName;
-        buttons[1].GetComponent<Tooltip>().tooltipText = mutation.Item1.Tooltip;
-        buttons[1].onClick.RemoveAllListeners();
-        buttons[1].onClick.AddListener(delegate {mutation.Item4.ApplyActiveEffects(mutation.Item1);});
-        buttons[1].onClick.AddListener(delegate {Destroy(buttons[1].GetComponent<Tooltip>().tooltipInstance);});
-        
-        buttons[2].GetComponentInChildren<TMP_Text>().text = mutation.Item2.MutationName;
-        buttons[2].GetComponent<Tooltip>().tooltipText = mutation.Item2.Tooltip;
-        buttons[2].onClick.RemoveAllListeners();
-        buttons[2].onClick.AddListener(delegate {mutation.Item4.ApplyActiveEffects(mutation.Item2);});
-        buttons[2].onClick.AddListener(delegate {Destroy(buttons[2].GetComponent<Tooltip>().tooltipInstance);});
-        
-        buttons[3].GetComponentInChildren<TMP_Text>().text = mutation.Item3.MutationName;
-        buttons[3].GetComponent<Tooltip>().tooltipText = mutation.Item3.Tooltip;
-        buttons[3].onClick.RemoveAllListeners();
-        buttons[3].onClick.AddListener(delegate {mutation.Item4.ApplyActiveEffects(mutation.Item3);});
-        buttons[3].onClick.AddListener(delegate {Destroy(buttons[3].GetComponent<Tooltip>().tooltipInstance);});
-        
     }
+
+    // Function to disable mutation pop-up
+    public void MutationPopUpDisable()
+    {
+        if (mutationPopUp != null) mutationPopUp.SetActive(false);
+    }
+    
     
     public void AbilityToolbarEnable()
     {

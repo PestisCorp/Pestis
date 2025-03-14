@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     public MapScriptableObject map;
     public Tilemap terrainMap;
     public List<Player> Players;
-
+    public UI_Manager UIManager;
     /// <summary>
     ///     All POIs in the game, in no particular order
     /// </summary>

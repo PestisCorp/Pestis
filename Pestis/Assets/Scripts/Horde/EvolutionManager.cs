@@ -105,6 +105,8 @@ namespace Horde
         private readonly Random _random = new();
         private Timer _mutationClock;
         private Timer _rareMutationClock;
+        public readonly Queue<(ActiveMutation, ActiveMutation, ActiveMutation, EvolutionManager, HordeController)> _mutationQueue = new();
+        public int PointsAvailable = 0;
         
         
         // Set the rat stats in the Population Controller
@@ -117,7 +119,7 @@ namespace Horde
                                          (Math.Round(_evolutionaryState.PassiveEvolutions["evolution strength"][1] * 100 - 100, 2)).ToString(CultureInfo.CurrentCulture) + "%.");
             if (_hordeController.Player.Type == 0)
             {
-                FindFirstObjectByType<UI_Manager>().AddNotification(text, _hordeColor);
+                GameManager.Instance.UIManager.AddNotification(text, _hordeColor);
             }
             switch (mutation)
             {
@@ -169,14 +171,9 @@ namespace Horde
             }
         }
 
-        private void RareEvolutionaryEvent()
+        public (ActiveMutation, ActiveMutation, ActiveMutation) RareEvolutionaryEvent()
         {
-            _rareMutationClock.Reset();
-            if (_evolutionaryState.ActiveMutations.Count < 3) 
-            {
-                FindFirstObjectByType<UI_Manager>().AddNotification("This horde has acquired the maximum number of mutations." , _hordeColor);
-                return;
-            }
+            CalculateActiveWeights();
             var firstMut = _evolutionaryState.ActiveMutations.Next();
             var secondMut = _evolutionaryState.ActiveMutations.Next();
             var thirdMut = _evolutionaryState.ActiveMutations.Next();
@@ -186,16 +183,13 @@ namespace Horde
                 secondMut = _evolutionaryState.ActiveMutations.Next();
                 thirdMut = _evolutionaryState.ActiveMutations.Next();
             }
-            
-            FindFirstObjectByType<UI_Manager>().RareMutationPopup((firstMut, secondMut, thirdMut), this, _hordeController);
-            var icon = Resources.Load<Sprite>("UI_design/Emotes/evolution_emote");
-            _hordeController.AddSpeechBubble(icon);
-            _rareMutationClock.Start();
+
+            return (firstMut, secondMut, thirdMut);
+
         }
 
         public void ApplyActiveEffects(ActiveMutation mutation)
         {
-            FindFirstObjectByType<UI_Manager>().MutationPopUpDisable();
             _evolutionaryState.ActiveMutations.Remove(mutation);
             _evolutionaryState.AcquiredMutations.Add(mutation);
             foreach (var effect in mutation.Effects)
@@ -236,6 +230,16 @@ namespace Horde
             {
                 GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.SwimmingUnlocked, 1);
             }
+            
+            if (_evolutionaryState.ActiveMutations.Count < 3) 
+            {
+                GameManager.Instance.UIManager.AddNotification("This horde has acquired the maximum number of mutations." , _hordeColor);
+                _rareMutationClock.Stop();
+            }
+
+            PointsAvailable--;
+            GameManager.Instance.UIManager.MutationPopUpDisable();
+            GameManager.Instance.UIManager.MutationPopUpEnable();
         }
         
         private void CalculateActiveWeights()
@@ -319,8 +323,10 @@ namespace Horde
                  _evolutionaryState.PassiveEvolutions["rare mutation rate"][1]) &&
                 (_hordeController.Player.Type == 0))
             {
-                CalculateActiveWeights();
-                RareEvolutionaryEvent();
+                PointsAvailable++;
+                var icon = Resources.Load<Sprite>("UI_design/Emotes/evolution_emote");
+                _hordeController.AddSpeechBubble(icon);
+                _rareMutationClock.Restart();
             }
         }
     }
