@@ -22,7 +22,7 @@ namespace UI
 
         private void OnObjectiveComplete()
         {
-            _objectiveText.text = $"- <s>{objective.GetStatusText()}</s>";
+            _objectiveText.text = $"<s>{objective.GetStatusText()}</s>";
         }
 
         private void OnObjectiveValueChange()
