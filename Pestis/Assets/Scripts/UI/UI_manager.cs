@@ -22,6 +22,8 @@ public class UI_Manager : MonoBehaviour
     public GameObject infoPanel;
     public GameObject attackPanel;
     public GameObject mutationPopUp;
+    public GameObject mutationViewer;
+    public Transform contentParent;
     public GameObject toolbar;
     public GameObject resourceStats;
     public GameObject splitPanel;
@@ -29,6 +31,7 @@ public class UI_Manager : MonoBehaviour
     public GameObject fearAndMorale;
     public GameObject objectives;
     public GameObject darkScreen;
+    public GameObject textPrefab;
     
     // References to the resource text fields
     public TextMeshProUGUI cheeseTotalText;
@@ -142,6 +145,7 @@ public class UI_Manager : MonoBehaviour
         if (mutationPopUp != null)
         {
             mutationPopUp.SetActive(false);
+            mutationViewer.SetActive(false);
         }
         
         // Ignoring the state of the tool bar, ensuring the default buttons are visible
@@ -505,8 +509,22 @@ public class UI_Manager : MonoBehaviour
     // Function to enable mutation pop-up
     public void MutationPopUpEnable()
     {
+        MutationPopUpDisable();
         var horde = GetSelectedHorde();
         var evolutionManager = horde.GetComponent<EvolutionManager>();
+        if (evolutionManager.PointsAvailable == 0 && mutationViewer.activeSelf == false)
+        {
+            mutationViewer.SetActive(true);
+            foreach (Transform child in contentParent)
+            {
+                Destroy(child.gameObject);
+            }
+            foreach (var mutation in evolutionManager.GetEvolutionaryState().AcquiredMutations)
+            {
+                GameObject textBox = Instantiate(textPrefab, contentParent);
+                textBox.GetComponentInChildren<TMP_Text>().text = mutation.MutationName;
+            }
+        }
         if (evolutionManager.PointsAvailable > 0 && mutationPopUp.activeSelf == false)
         {
             if (mutationPopUp != null) mutationPopUp.SetActive(true);
@@ -537,6 +555,7 @@ public class UI_Manager : MonoBehaviour
     public void MutationPopUpDisable()
     {
         if (mutationPopUp != null) mutationPopUp.SetActive(false);
+        if (mutationViewer != null) mutationViewer.SetActive(false);
     }
     
     

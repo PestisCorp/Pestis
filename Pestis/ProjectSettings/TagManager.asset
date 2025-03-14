@@ -15,6 +15,7 @@ TagManager:
   - combat_info
   - DebugInfo
   - mutation_points
+  - mutation_content
   layers:
   - Default
   - TransparentFX
