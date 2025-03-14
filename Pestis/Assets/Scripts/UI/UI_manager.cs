@@ -687,24 +687,4 @@ public class UI_Manager : MonoBehaviour
         darkScreen.SetActive(false);
         uiToUnhighlight.GetComponent<Canvas>().sortingOrder = 0;
     }
-
-    public void TestHighlight()
-    {
-        HighlightUiElement(resourceStats);
-    }
-    
-    public void TestUnhighlight()
-    {
-        UnhighlightUiElement(resourceStats);
-    }
-    
-    public void TestHighlight2()
-    {
-        HighlightUiElement(objectives);
-    }
-    
-    public void TestUnhighlight2()
-    {
-        UnhighlightUiElement(objectives);
-    }
 }
