@@ -32,6 +32,8 @@ namespace Players
 
                 //Enable resource stats upon loading in
                 UI_manager.ResourceStatsEnable();
+                // Enable objective checklist upon loading in
+                UI_manager.ObjectiveChecklistEnable();
             }
         }
 
