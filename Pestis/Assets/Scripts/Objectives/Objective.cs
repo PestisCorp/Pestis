@@ -52,7 +52,7 @@ namespace Objectives
 
         public string GetStatusText()
         {
-            return string.Format(_statusText, CurrentValue, MaxValue);
+            return "- " + string.Format(_statusText, CurrentValue, MaxValue);
         }
     }
 }
