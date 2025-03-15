@@ -29,7 +29,6 @@ public class UI_Manager : MonoBehaviour
     public GameObject fearAndMorale;
     public GameObject objectives;
     public GameObject darkScreen;
-    
     // References to the resource text fields
     public TextMeshProUGUI cheeseTotalText;
     public TextMeshProUGUI cheeseRateText;
