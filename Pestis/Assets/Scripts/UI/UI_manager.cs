@@ -95,7 +95,6 @@ public class UI_Manager : MonoBehaviour
         }
 
 
-        StartCoroutine(assignPlayerOnceNotNull());
     }
 
     private void FixedUpdate()

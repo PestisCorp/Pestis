@@ -6,10 +6,8 @@ using UnityEngine.UI;
 public class TimerToScoreLock : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    bool ScoreLocked = false;
     public TMPro.TMP_Text timerText;
     public TMPro.TMP_Text scoreText;
-    public Player player;
     public void UpdateScore(ulong ScoreToDisplay)
     {
 
