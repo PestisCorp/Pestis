@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Horde;
 using Map;
+using MathNet.Numerics.Statistics;
 using Objectives;
 using Players;
 using POI;
@@ -37,6 +39,11 @@ public class GameManager : MonoBehaviour
 
     public string localUsername;
 
+    /// <summary>
+    ///     The median health of all the hordes in game, calculated each fixed update
+    /// </summary>
+    public float medianHordeHealth;
+
     private readonly float[] fpsWindow = new float[60];
     private int fpsIndex;
 
@@ -51,6 +58,8 @@ public class GameManager : MonoBehaviour
     ///     Each element represents a grid cell, and the index in poiBuffer of the last poi in that grid cell
     /// </summary>
     public ComputeBuffer poiOffsetBuffer;
+
+    public IEnumerable<HordeController> AllHordes => Players.SelectMany(player => player.Hordes);
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
@@ -137,5 +146,10 @@ public class GameManager : MonoBehaviour
         fpsText.text = $"FPS: {currentFps}";
         boidText.text = $"Boids: {Players.Sum(player => player.Hordes.Sum(horde => horde.AliveRats))}";
 #endif
+    }
+
+    private void FixedUpdate()
+    {
+        medianHordeHealth = AllHordes.Select(horde => horde.TotalHealth).Median();
     }
 }

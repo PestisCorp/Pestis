@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
 {
-    private const int numBots = 5;
+    private const int numBots = 99;
     private const int spawnSeed = 312;
     private static readonly Vector2 spawnCenter = new(0, 0);
 
@@ -34,6 +34,11 @@ public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
                 // Center.
                 x += spawnCenter.x;
                 y += spawnCenter.y;
+
+                x %= GameManager.Instance.terrainMap.localBounds.extents.x *
+                     GameManager.Instance.terrainMap.transform.localScale.x;
+                y %= GameManager.Instance.terrainMap.localBounds.extents.y *
+                     GameManager.Instance.terrainMap.transform.localScale.y;
 
                 var point = new Vector2(x, y);
 
