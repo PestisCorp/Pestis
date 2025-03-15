@@ -509,6 +509,17 @@ public class UI_Manager : MonoBehaviour
     // Function to enable mutation pop-up
     public void MutationPopUpEnable()
     {
+        if (mutationPopUp.activeSelf)
+        {
+            mutationPopUp.SetActive(false);
+            return;
+        }
+
+        if (mutationViewer.activeSelf)
+        {
+            mutationViewer.SetActive(false);
+            return;
+        }
         MutationPopUpDisable();
         var horde = GetSelectedHorde();
         var evolutionManager = horde.GetComponent<EvolutionManager>();
@@ -522,6 +533,9 @@ public class UI_Manager : MonoBehaviour
             foreach (var mutation in evolutionManager.GetEvolutionaryState().AcquiredMutations)
             {
                 GameObject textBox = Instantiate(textPrefab, contentParent);
+                textBox.GetComponent<Tooltip>().tooltipText = mutation.Tooltip;
+                var mutationType = GetComponentInChildrenWithTag<Image, GameObject>(textBox, "mutation_type")[0];
+                mutationType.sprite = Resources.Load<Sprite>(mutation.IsAbility ? "UI_design/Mutations/active_mutation" : "UI_design/Mutations/passive_mutation");
                 textBox.GetComponentInChildren<TMP_Text>().text = mutation.MutationName;
             }
         }
@@ -533,18 +547,30 @@ public class UI_Manager : MonoBehaviour
             var buttons = mutationPopUp.GetComponentsInChildren<Button>();
             buttons[0].GetComponentInChildren<TMP_Text>().text = mutations.Item1.MutationName;
             buttons[0].GetComponent<Tooltip>().tooltipText = mutations.Item1.Tooltip;
+            GetComponentInChildrenWithTag<Image, Button>(buttons[0], "mutation_type")[0].sprite =
+                mutations.Item1.IsAbility
+                    ? Resources.Load<Sprite>("UI_design/Mutations/active_mutation")
+                    : Resources.Load<Sprite>("UI_design/Mutations/passive_mutation");
             buttons[0].onClick.RemoveAllListeners();
             buttons[0].onClick.AddListener(delegate {evolutionManager.ApplyActiveEffects(mutations.Item1);});
             buttons[0].onClick.AddListener(delegate {Destroy(buttons[0].GetComponent<Tooltip>().tooltipInstance);});
         
             buttons[1].GetComponentInChildren<TMP_Text>().text = mutations.Item2.MutationName;
             buttons[1].GetComponent<Tooltip>().tooltipText = mutations.Item2.Tooltip;
+            GetComponentInChildrenWithTag<Image, Button>(buttons[1], "mutation_type")[0].sprite =
+                mutations.Item2.IsAbility
+                    ? Resources.Load<Sprite>("UI_design/Mutations/active_mutation")
+                    : Resources.Load<Sprite>("UI_design/Mutations/passive_mutation");
             buttons[1].onClick.RemoveAllListeners();
             buttons[1].onClick.AddListener(delegate {evolutionManager.ApplyActiveEffects(mutations.Item2);});
             buttons[1].onClick.AddListener(delegate {Destroy(buttons[1].GetComponent<Tooltip>().tooltipInstance);});
         
             buttons[2].GetComponentInChildren<TMP_Text>().text = mutations.Item3.MutationName;
             buttons[2].GetComponent<Tooltip>().tooltipText = mutations.Item3.Tooltip;
+            GetComponentInChildrenWithTag<Image, Button>(buttons[2], "mutation_type")[0].sprite =
+                mutations.Item3.IsAbility
+                    ? Resources.Load<Sprite>("UI_design/Mutations/active_mutation")
+                    : Resources.Load<Sprite>("UI_design/Mutations/passive_mutation");
             buttons[2].onClick.RemoveAllListeners();
             buttons[2].onClick.AddListener(delegate {evolutionManager.ApplyActiveEffects(mutations.Item3);});
             buttons[2].onClick.AddListener(delegate {Destroy(buttons[2].GetComponent<Tooltip>().tooltipInstance);});
@@ -583,7 +609,7 @@ public class UI_Manager : MonoBehaviour
             }
             
             var tooltip = button.GetComponent<Tooltip>();
-            if (tooltip != null)
+            if (tooltip)
             {
                 tooltip.tooltipText = "";
                 tooltip.enabled = false;
@@ -592,7 +618,7 @@ public class UI_Manager : MonoBehaviour
         if (abilityToolbar != null) abilityToolbar.SetActive(false);
     }
 
-    public T[] GetComponentInChildrenWithTag<T, TP>(TP parent, string tagToFind) where T : Component where TP : Component
+    public T[] GetComponentInChildrenWithTag<T, TP>(TP parent, string tagToFind) where T : Component where TP : Object
     {
         List<T> componentsInChildren = new List<T>();
         foreach (T obj in parent.GetComponentsInChildren<T>()) 
@@ -634,7 +660,12 @@ public class UI_Manager : MonoBehaviour
                     button.onClick.AddListener(delegate {abilityController.UseApparition(button);});
                     break;
             }
-            button.GetComponent<Tooltip>().tooltipText = mutation.Item2;
+            var tooltip = button.GetComponent<Tooltip>();
+            if (tooltip)
+            {
+                tooltip.enabled = true;
+            }
+            tooltip.tooltipText = mutation.Item2;
             break;
         }
 
