@@ -7,46 +7,18 @@ public class TimerToScoreLock : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     bool ScoreLocked = false;
-    public Text timerText;
-    public Text scoreText;
+    public TMPro.TMP_Text timerText;
+    public TMPro.TMP_Text scoreText;
     public Player player;
-    void Start()
+    public void UpdateScore(ulong ScoreToDisplay)
     {
-        StartCoroutine(TimerTilScoreLock(600));
+
+        scoreText.text = ScoreToDisplay.ToString();
     }
 
-    public IEnumerator TimerTilScoreLock(int timeRemaining)
+    public void UpdateTimer(int timeToDisplay)
     {
-        //waits for player to be assigned, assuming game loads after player is assigned
-        while (player == null)
-        {
-            Debug.Log("Waiting for timerText to be assigned...");
-            yield return null; // Wait until the next frame
-        }
 
-        while (timeRemaining > 0)
-        {
-            UpdateTimer(timeRemaining);
-            yield return new WaitForSeconds(1f);
-            timeRemaining--;
-        }
-
-        ScoreLocked = true;
-        yield return null;
-    }
-
-
-
-    private void FixedUpdate()
-    {
-        while (ScoreLocked == false)
-        {
-            scoreText.text = player.CalculateScore().ToString();
-        }
-    }
-    private void UpdateTimer(int timeToDisplay)
-    {
-        
         int minutes = Mathf.FloorToInt(timeToDisplay / 60);
         int seconds = Mathf.FloorToInt(timeToDisplay % 60);
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);

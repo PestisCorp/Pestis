@@ -124,6 +124,16 @@ public class UI_Manager : MonoBehaviour
             // Update total horde text field
             if (hordeTotalText != null)
                 hordeTotalText.text = "0";
+
+            if(localPlayer.player.Score != null)
+            {
+                timer.UpdateScore(localPlayer.player.Score);
+            }
+
+            if (localPlayer.player.Timer != null)
+            {
+                timer.UpdateTimer(localPlayer.player.Timer);
+            }
         }
         if (attackPanel.activeSelf) AttackPanelRefresh();
     }
