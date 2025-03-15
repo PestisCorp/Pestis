@@ -73,12 +73,14 @@ namespace Players
                 var hordesByDistance = allHordes.Select(horde =>
                         new Tuple<HordeController, float>(horde,
                             (horde.GetBounds().center - myHorde.GetBounds().center).sqrMagnitude))
-                    .OrderBy(horde => horde.Item2);
+                    .OrderBy(horde => horde.Item2).GetEnumerator();
 
+                hordesByDistance.MoveNext();
+                hordesByDistance.MoveNext();
 
                 // First closest horde is us, so get second
-                var closestHorde = hordesByDistance.ElementAt(1).Item1;
-                var closestHordeDistance = hordesByDistance.ElementAt(1).Item2;
+                var closestHorde = hordesByDistance.Current.Item1;
+                var closestHordeDistance = hordesByDistance.Current.Item2;
 
                 var distFromHordeEdgeToClosestHorde = closestHordeDistance -
                                                       closestHorde.GetBounds()
