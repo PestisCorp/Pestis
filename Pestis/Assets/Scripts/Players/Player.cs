@@ -146,6 +146,7 @@ namespace Players
                 Timer = timeRemaining;
             }
             TimeUp = true;
+            Debug.Log("Times Up, final score " + Score.ToString());
             yield return null;
         }
         private IEnumerator JoinStats()
@@ -280,7 +281,7 @@ namespace Players
 
         public ulong CalculateScore()
         {
-            if (TimeUp == true) return this.Score;
+            if (TimeUp == true) { Debug.Log("final score " + Score.ToString()); return this.Score; }
 
             ulong score = 0;
 
@@ -307,7 +308,7 @@ namespace Players
             Debug.Log($"Total Damage Dealt is {TotalDamageDealt}");
             score += Convert.ToUInt64(TotalDamageDealt / 5.0);
 
-            Score += score;
+            this.Score += score;
             return score;
         }
 
