@@ -55,6 +55,7 @@ MonoBehaviour:
   DirectionDownLeft: {fileID: 5905342107496090946, guid: 16ac2ce10c131408c92542d7bf48a678, type: 3}
   DirectionDown: {fileID: 4528050091651495707, guid: d953275c9718c4246bb17510069433ab, type: 3}
   DirectionDownRight: {fileID: 2582433425464949377, guid: 6de9038b6e2fe4e85b934101fe7ce60e, type: 3}
+  deadSprite: {fileID: 147553317887416961, guid: 35ccc3dc3c0254e55a09d9e61e0c749b, type: 3}
   patrolRadius: 2
   patrolSpeed: 0.4
   rotationSpeed: 360
