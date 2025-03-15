@@ -84,6 +84,7 @@ public class GameManager : MonoBehaviour
         {
             var x = Math.Floor(poi.transform.position.x / poiGridCellSize + poiGridDimX / 2);
             var y = Math.Floor(poi.transform.position.y / poiGridCellSize + poiGridDimY / 2);
+            if (y >= poiGridDimY) continue;
             var gridID = Convert.ToUInt32(poiGridDimX * y + x);
             var bounds = poi.GetComponentInChildren<Collider2D>().bounds;
             grid[gridID].Add(new BoidPoi(new float2(bounds.center.x, bounds.center.y), bounds.extents.sqrMagnitude));
@@ -121,20 +122,6 @@ public class GameManager : MonoBehaviour
 
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 0;
-
-        ObjectiveManager = new ObjectiveManager();
-        var fightHorde = new Objective(ObjectiveTrigger.CombatStarted, "Fight a horde", 1);
-        var capturePOI = new Objective(ObjectiveTrigger.POICaptured, "Capture a POI", 1);
-        var splitHorde = new Objective(ObjectiveTrigger.HordeSplit, "Split your horde", 1);
-        var defeatHumanPatrol = new Objective(ObjectiveTrigger.HumanPatrolDefeated, "Defeat a human patrol", 1);
-        var learnToSwim = new Objective(ObjectiveTrigger.SwimmingUnlocked, "Learn to swim", 1);
-        var winBattles = new Objective(ObjectiveTrigger.BattleWon, "Win {0}/{1} battles", 10);
-        ObjectiveManager.AddObjective(fightHorde);
-        ObjectiveManager.AddObjective(capturePOI);
-        ObjectiveManager.AddObjective(splitHorde);
-        ObjectiveManager.AddObjective(defeatHumanPatrol);
-        ObjectiveManager.AddObjective(learnToSwim);
-        ObjectiveManager.AddObjective(winBattles);
     }
 
     private void Update()

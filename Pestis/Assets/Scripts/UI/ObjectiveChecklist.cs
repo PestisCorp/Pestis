@@ -7,16 +7,27 @@ namespace UI
 {
     public class ObjectiveChecklist : MonoBehaviour
     {
-        [SerializeField] private ObjectiveDisplay objectiveDisplayPrefab;
-        [SerializeField] private Transform objectiveDisplayParent;
+        public GameObject objectiveDisplayPrefab;
         private readonly List<ObjectiveDisplay> _listDisplay = new();
+
+        private static List<Objective> allObjectives = new()
+        {
+            new Objective(ObjectiveTrigger.CombatStarted, "Fight a horde", 1),
+            new Objective(ObjectiveTrigger.POICaptured, "Capture a POI", 1),
+            new Objective(ObjectiveTrigger.HordeSplit, "Split your horde", 1),
+            new Objective(ObjectiveTrigger.HumanPatrolDefeated, "Defeat a human patrol", 1),
+            new Objective(ObjectiveTrigger.SwimmingUnlocked, "Learn to swim", 1),
+            new Objective(ObjectiveTrigger.BattleWon, "Win {0}/{1} battles", 10)
+        };
         
         public void Start()
         {
             // Assumes you have a GameManager Singleton with the ObjectiveManager
-            foreach (var objective in GameManager.Instance.ObjectiveManager.Objectives)
+            GameManager.Instance.ObjectiveManager = new ObjectiveManager(); 
+            foreach (var objective in allObjectives)
             {
                 AddObjective(objective);
+                GameManager.Instance.ObjectiveManager.AddObjective(objective);
             }
             GameManager.Instance.ObjectiveManager.OnObjectiveAdded += AddObjective;
         }
@@ -30,10 +41,10 @@ namespace UI
             _listDisplay.Clear();
         }
         
-        private void AddObjective(Objective obj)
+        private void AddObjective(Objective objective)
         {
-            var display = Instantiate(objectiveDisplayPrefab, objectiveDisplayParent);
-            display.Init(obj);
+            var display = Instantiate(objectiveDisplayPrefab, transform).GetComponent<ObjectiveDisplay>();
+            display.Init(objective);
             _listDisplay.Add(display);
         }
     }

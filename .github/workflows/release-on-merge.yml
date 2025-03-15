@@ -13,6 +13,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       runs-on: self-hosted
+      outputs:
+        version: ${{ steps.release.outputs.version }}
       steps:
         # Checkout
         - name: Checkout repository
@@ -42,6 +44,12 @@ jobs:
             projectPath: Pestis
             runAsHostUser: true
             chownFilesTo: ec2-user
+    
+        - uses: rymndhng/release-on-push-action@master
+          id: release
+          with:
+            bump_version_scheme: minor
+  
 
     build-linux:
       needs: test
@@ -54,10 +62,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       runs-on: self-hosted
       steps:
-        - uses: rymndhng/release-on-push-action@master
-          id: release
-          with:
-            bump_version_scheme: minor
 
         # Checkout
         - name: Checkout repository
@@ -85,14 +89,14 @@ jobs:
           with:
             targetPlatform: StandaloneLinux64
             versioning: Custom
-            version: ${{steps.release.outputs.version  }}
+            version: ${{needs.test.outputs.version  }}
             projectPath: Pestis
             runAsHostUser: true
             chownFilesTo: ec2-user
 
         # Output
         - name: Zip Linux build to hosting folder
-          run:  mkdir -p /home/ec2-user/actions-runner/builds/${{ steps.release.outputs.version   }}/ && zip -urD /home/ec2-user/actions-runner/builds/${{ steps.release.outputs.version  }}/linux.zip build/StandaloneLinux64 
+          run:  mkdir -p /home/ec2-user/actions-runner/builds/${{ needs.test.outputs.version  }}/ && zip -urD /home/ec2-user/actions-runner/builds/${{ needs.test.outputs.version  }}/linux.zip build/StandaloneLinux64 
 
     build-windows:
       needs: test
@@ -131,7 +135,7 @@ jobs:
           with:
             targetPlatform: StandaloneWindows64
             versioning: Custom
-            version: ${{steps.release.outputs.version  }}
+            version: ${{needs.test.outputs.version}}
             projectPath: Pestis
             runAsHostUser: true
             chownFilesTo: ec2-user
@@ -139,7 +143,7 @@ jobs:
 
         # Output
         - name: Zip Windows build to hosting folder
-          run: zip -urD /home/ec2-user/actions-runner/builds/${{ steps.release.outputs.version  }}/windows.zip build/StandaloneWindows64 
+          run: mkdir -p /home/ec2-user/actions-runner/builds/${{ needs.test.outputs.version  }}/ && zip -urD /home/ec2-user/actions-runner/builds/${{needs.test.outputs.version}}/windows.zip build/StandaloneWindows64 
 
         - name: Symlink to latest
-          run: ln -sfn /home/ec2-user/actions-runner/builds/${{ steps.release.outputs.version }} /home/ec2-user/actions-runner/builds/latest
+          run: ln -sfn /home/ec2-user/actions-runner/builds/${{needs.test.outputs.version}} /home/ec2-user/actions-runner/builds/latest
