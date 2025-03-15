@@ -11,9 +11,9 @@ namespace Human
     {
         public float2 pos;
         public float2 vel;
-        public int player;
+        public int poi;
 
-        public int horde;
+        public int boidPoi;
 
         /// <summary>
         ///     0 for alive, 1 for dead
@@ -25,11 +25,13 @@ namespace Human
     {
         public float2 Pos;
         public float RadiusSq;
+        public uint NumBoids;
 
-        public BoidPoi(float2 pos, float radiusSq)
+        public BoidPoi(float2 pos, float radiusSq, uint numBoids)
         {
             Pos = pos;
             RadiusSq = radiusSq;
+            NumBoids = numBoids;
         }
     }
 
@@ -94,6 +96,8 @@ namespace Human
         private float minSpeed;
 
         private uint[] offsetsTempArr;
+
+        private ComputeBuffer poiBuffer;
         private int previousNumBoids;
         private RenderParams rp;
         private RenderParams rpDead;
@@ -154,6 +158,7 @@ namespace Human
             boidBuffer = new ComputeBuffer(GameManager.Instance.pois.Length * 5, Marshal.SizeOf(typeof(Boid)));
             boidBufferOut = new ComputeBuffer(GameManager.Instance.pois.Length * 5, Marshal.SizeOf(typeof(Boid)));
             deadBoids = new ComputeBuffer(GameManager.Instance.pois.Length * 5, Marshal.SizeOf(typeof(Boid)));
+            poiBuffer = new ComputeBuffer(GameManager.Instance.pois.Length, Marshal.SizeOf(typeof(BoidPoi)));
 
             deadBoidsCountBuffer = new ComputeBuffer(1, sizeof(uint));
             var counter = new uint[1];
@@ -161,7 +166,7 @@ namespace Human
             deadBoidsCountBuffer.SetData(counter, 0, 0, 1);
             gridShader.SetBuffer(updateGridKernel, "deadBoidsCount", deadBoidsCountBuffer);
 
-            boidShader.SetInt("numBoids", numBoids);
+            boidShader.SetInt("numBoids", GameManager.Instance.pois.Length * 5);
             boidShader.SetBool("combatRats", combat);
             boidShader.SetFloat("maxSpeed", maxSpeed);
             boidShader.SetFloat("minSpeed", minSpeed);
@@ -176,7 +181,18 @@ namespace Human
             boidShader.SetFloat("alignmentFactor", alignmentFactor);
             boidShader.SetFloat("targetFactor", targetFactor);
 
-            boidShader.SetBuffer(updateBoidsKernel, "pois", GameManager.Instance.poiBuffer);
+            var initBoidsKernel = boidShader.FindKernel("InitBoids");
+            boidShader.SetBuffer(initBoidsKernel, "pois", poiBuffer);
+            boidShader.SetBuffer(initBoidsKernel, "boidsOut", boidBufferOut);
+            poiBuffer.SetData(GameManager.Instance.BoidPois, 0, 0, GameManager.Instance.BoidPois.Length);
+
+            boidShader.Dispatch(initBoidsKernel, Mathf.CeilToInt(GameManager.Instance.pois.Length * 5 / blockSize), 1,
+                1);
+            boidShader.SetBuffer(initBoidsKernel, "boidsOut", boidBuffer);
+            boidShader.Dispatch(initBoidsKernel, Mathf.CeilToInt(GameManager.Instance.pois.Length * 5 / blockSize), 1,
+                1);
+            boidShader.SetBuffer(updateBoidsKernel, "pois", poiBuffer);
+
             boidShader.SetBuffer(updateBoidsKernel, "poiOffsets", GameManager.Instance.poiOffsetBuffer);
             boidShader.SetFloat("poiGridCellSize", GameManager.Instance.poiGridCellSize);
             boidShader.SetInt("poiGridDimX", GameManager.Instance.poiGridDimX);
@@ -210,7 +226,6 @@ namespace Human
             gridShader.SetInt("numBoids", numBoids);
             gridShader.SetInt("numBoidsPrevious", 0);
 
-
             gridShader.SetFloat("gridCellSize", gridCellSize);
             gridShader.SetInt("gridDimY", gridDimY);
             gridShader.SetInt("gridDimX", gridDimX);
@@ -242,10 +257,15 @@ namespace Human
         // Update is called once per frame
         private void Update()
         {
-            if (AliveRats == 0 || paused) return;
+            if (!_started) return;
 
             previousNumBoids = numBoids;
-            var newNumBoids = AliveRats;
+            var newNumBoids = GameManager.Instance.pois.Length * 5;
+
+            boidBuffer.GetData(tempBoidsArr, 0, 0, newNumBoids);
+
+            var tempPois = new BoidPoi[GameManager.Instance.pois.Length];
+            poiBuffer.GetData(tempPois, 0, 0, GameManager.Instance.pois.Length);
 
             // Some boids have died
             if (newNumBoids < numBoids && combat)
@@ -259,10 +279,6 @@ namespace Human
             boidShader.SetFloat("separationFactor", separationFactor);
 
             boidShader.SetFloat("deltaTime", Time.deltaTime);
-            // If I don't add something to it, the first time the shader accesses it in the shader it is NaN !?
-            boidShader.SetFloats("targetPos", TargetPos.x, TargetPos.y);
-            boidShader.SetFloat("targetPosX", TargetPos.x + 0.01f);
-            boidShader.SetFloat("targetPosY", TargetPos.y + 0.01f);
 
             boidShader.SetInt("numBoids", newNumBoids);
             numBoids = newNumBoids;
@@ -300,6 +316,8 @@ namespace Human
             // 0,0 case is overriden in the shader to use an approximate center
             boidShader.SetFloats("spawnPoint", TargetPos.x, TargetPos.y);
 
+            boidShader.SetBuffer(updateBoidsKernel, "pois", poiBuffer);
+
             // Compute boid behaviours
             boidShader.Dispatch(updateBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
 
@@ -311,6 +329,13 @@ namespace Human
             // Actually draw the boids
             Graphics.RenderPrimitives(rp, MeshTopology.Quads, numBoids * 4);
             Graphics.RenderPrimitives(rpDead, MeshTopology.Quads, deadBoidsCount * 4);
+        }
+
+        private void FixedUpdate()
+        {
+            if (!_started) return;
+
+            poiBuffer.SetData(GameManager.Instance.BoidPois, 0, 0, GameManager.Instance.BoidPois.Length);
         }
 
         private void OnDestroy()

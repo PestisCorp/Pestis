@@ -1,3 +1,4 @@
+using System;
 using Fusion;
 using Horde;
 using POI;
@@ -20,8 +21,6 @@ namespace Human
 
         public int startingHumanCount;
 
-        [SerializeField] private HumanBoids boids;
-
         private Transform _poiCenter;
 
         private HordeController enemyHorde;
@@ -38,14 +37,12 @@ namespace Human
             else
                 return;
 
-            boids.TargetPos = _poiCenter.position;
-            //boids.PoiRadiusSq = poi.Collider.bounds.extents.sqrMagnitude;
             if (HasStateAuthority) CurrentHumanHealth = startingHumanCount * healthPerHuman;
         }
 
         private void AdjustHumanCount()
         {
-            boids.AliveRats = HumanCount;
+            GameManager.Instance.BoidPois[poi.boidPoisIndex].NumBoids = Convert.ToUInt32(HumanCount);
         }
 
         // Can be used when dynamically changing human count is needed (e.g., UI buttons)

@@ -45,6 +45,9 @@ public class GameManager : MonoBehaviour
     public float medianHordeHealth;
 
     private readonly float[] fpsWindow = new float[60];
+
+    public Human.BoidPoi[] BoidPois;
+
     private int fpsIndex;
 
     public ObjectiveManager ObjectiveManager;
@@ -87,8 +90,16 @@ public class GameManager : MonoBehaviour
         poiGridDimY =
             (int)Math.Ceiling(terrainMap.transform.localScale.y * terrainMap.localBounds.size.y / poiGridCellSize);
 
+        var poiGrid = new List<POIController>[poiGridDimY * poiGridDimX];
         var grid = new List<BoidPoi>[poiGridDimX * poiGridDimY];
-        for (var i = 0; i < poiGridDimX * poiGridDimY; i++) grid[i] = new List<BoidPoi>();
+        for (var i = 0; i < poiGridDimX * poiGridDimY; i++)
+        {
+            grid[i] = new List<BoidPoi>();
+            poiGrid[i] = new List<POIController>();
+        }
+
+        BoidPois = new Human.BoidPoi[pois.Length];
+
         foreach (var poi in pois)
         {
             var x = Math.Floor(poi.transform.position.x / poiGridCellSize + poiGridDimX / 2);
@@ -97,29 +108,41 @@ public class GameManager : MonoBehaviour
             var gridID = Convert.ToUInt32(poiGridDimX * y + x);
             var bounds = poi.GetComponentInChildren<Collider2D>().bounds;
             grid[gridID].Add(new BoidPoi(new float2(bounds.center.x, bounds.center.y), bounds.extents.sqrMagnitude));
+            poiGrid[gridID].Add(poi);
         }
 
 
+        var poigridOffsets = new uint[poiGridDimX * poiGridDimY];
         var gridOffsets = new uint[poiGridDimX * poiGridDimY];
         gridOffsets[0] = (uint)grid[0].Count;
+        poigridOffsets[0] = (uint)grid[0].Count;
         for (var i = 1; i < poiGridDimX * poiGridDimY; i++) gridOffsets[i] = (uint)grid[i].Count + gridOffsets[i - 1];
+        for (var i = 1; i < poiGridDimX * poiGridDimY; i++)
+            poigridOffsets[i] = (uint)grid[i].Count + gridOffsets[i - 1];
 
         var orderedPoIs = new BoidPoi[pois.Length];
 
         var cellPoIs = grid[0].GetEnumerator();
+        var poiCellPois = poiGrid[0].GetEnumerator();
         for (uint j = 0; j < gridOffsets[0]; j++)
         {
             cellPoIs.MoveNext();
+            poiCellPois.MoveNext();
             orderedPoIs[j] = cellPoIs.Current;
+            poiCellPois.Current.boidPoisIndex = j;
         }
 
         for (var i = 1; i < poiGridDimX * poiGridDimY; i++)
         {
             cellPoIs = grid[i].GetEnumerator();
+            poiCellPois = poiGrid[i].GetEnumerator();
             for (var j = gridOffsets[i - 1]; j < gridOffsets[i]; j++)
             {
                 cellPoIs.MoveNext();
+                poiCellPois.MoveNext();
                 orderedPoIs[j] = cellPoIs.Current;
+                BoidPois[j] = new Human.BoidPoi(cellPoIs.Current.Pos, cellPoIs.Current.RadiusSq, 5);
+                poiCellPois.Current.boidPoisIndex = j;
             }
         }
 

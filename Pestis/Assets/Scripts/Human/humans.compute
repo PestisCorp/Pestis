@@ -4,8 +4,8 @@ struct Boid
 {
     float2 pos;
     float2 vel;
-    int player;
-    int horde;
+    uint poi;
+    uint poiBoid;
     bool dead;
 };
 
@@ -52,10 +52,12 @@ struct BoidPoi
 {
     float2 Pos;
     float RadiusSQ;
+    uint numBoids;
 };
 
 StructuredBuffer<BoidPoi> pois;
-StructuredBuffer<uint> poiOffsets;
+StructuredBuffer<uint> poiNumBoids;
+
 uniform float poiGridCellSize;
 uniform uint poiGridDimX;
 uniform uint poiGridDimY;
@@ -80,7 +82,19 @@ uint getGridID(uint2 pos)
     return (gridDimX * pos.y) + pos.x;
 }
 
-void MergedBehaviours(inout Boid boid)
+uint boidsPerPOI = 5;
+
+BoidPoi GetPOI(uint boidID)
+{
+    return pois[boidID / boidsPerPOI];
+}
+
+uint GetPOIBoidIndex(uint boidID)
+{
+    return boidID % boidsPerPOI;
+}
+
+void MergedBehaviours(inout Boid boid, uint3 id)
 {
     float2 center = 0;
     float2 close = 0;
@@ -121,29 +135,23 @@ void MergedBehaviours(inout Boid boid)
         }
     }
 
-    cell = getPOIGridID(boid);
+    BoidPoi poi = pois[boid.poi];
 
-    float2 poiClose;
-    // Loop row above, current row, row below
-    for (uint y = cell - poiGridDimX; y <= cell + poiGridDimX; y += poiGridDimX)
+    if (boid.poiBoid >= poi.numBoids)
     {
-        // y-2 because that gives last index of boid in y-2, i.e. first index of POI in y-1
-        uint start = poiOffsets[y - 2];
-        uint end = poiOffsets[y + 1];
-        // Loop POIs in left, center, right grid cells
-        for (uint i = start; i < end; i++)
-        {
-            BoidPoi other = pois[i];
-            float2 diff = boid.pos - other.Pos;
-            float distSq = dot(diff, diff);
+        boid.dead = true;
+        return;
+    }
 
-            if (distSq > 0 && distSq < visualRangeSq)
-            {
-                if (distSq < other.RadiusSQ)
-                {
-                    poiClose += diff / distSq;
-                }
-            }
+    float2 poiClose = float2(0, 0);
+    float2 diff = boid.pos - poi.Pos;
+    float distSq = dot(diff, diff);
+
+    if (distSq > 0 && distSq < visualRangeSq)
+    {
+        if (distSq < poi.RadiusSQ)
+        {
+            poiClose = diff / distSq;
         }
     }
 
@@ -156,8 +164,11 @@ void MergedBehaviours(inout Boid boid)
         boid.vel += (avgVel - boid.vel) * (alignmentFactor * deltaTime * turnSpeed);
     }
 
-
-    boid.vel += normalize(targetPos - boid.pos) * (targetFactor * deltaTime * turnSpeed);
+    float2 poiDiff = poi.Pos - boid.pos;
+    if (poiDiff.x != 0 && poiDiff.y != 0)
+    {
+        boid.vel += normalize(poiDiff) * (targetFactor * deltaTime * turnSpeed);
+    }
     boid.vel += close * (separationFactor * deltaTime * turnSpeed);
     boid.vel += poiClose * (50 * deltaTime * turnSpeed);
 }
@@ -181,52 +192,40 @@ void KeepInBounds(inout Boid boid)
     }
 }
 
+#pragma kernel InitBoids // ID 1
+[numthreads(blockSize, 1, 1)]
+void InitBoids(uint3 id: SV_DispatchThreadID)
+{
+    if (id.x >= numBoids)
+    {
+        return;
+    }
+
+    Boid boid;
+
+    boid.dead = false;
+    boid.poi = id.x / 5;
+    boid.poiBoid = id.x % 5;
+
+    BoidPoi poi = pois[boid.poi];
+    boid.pos = float2(poi.Pos.x + (boid.poiBoid + 1.0f) / 1000.0f, poi.Pos.y + (boid.poiBoid + 1.0f) / 1000);
+    boid.vel = float2((boid.poiBoid + 1.0f) / 1000.0f, (boid.poiBoid + 1.0f) / 1000);
+
+    boidsOut[id.x] = boid;
+}
+
 #pragma kernel UpdateBoids // ID 0
 [numthreads(blockSize, 1, 1)]
 void UpdateBoids(uint3 id : SV_DispatchThreadID)
 {
-    if (id.x >= numBoids)
+    if (id.x >= numBoids || boidsIn[id.x].dead)
     {
-        // Freshly died
-        if (id.x < numBoidsPrevious && combatRats)
-        {
-            Boid boid = boidsIn[id.x];
-            boid.dead = true;
-            boidsOut[id.x] = boid;
-        }
-
         return;
     }
 
-
     Boid boid = boidsIn[id.x];
 
-    // Initialise new boid
-    if (id.x >= numBoidsPrevious)
-    {
-        boid.player = player;
-        boid.horde = horde;
-        boid.dead = false;
-        if (numBoidsPrevious == 0)
-        {
-            boid.pos = float2(targetPosX, targetPosY);
-            boid.vel = float2(id.x / 1000.0f, id.x / 1000.0f);
-        }
-        else
-        {
-            if (spawnPoint.x == 0 && spawnPoint.y == 0)
-            {
-                boid.pos = boidsIn[floor(numBoidsPrevious / 2.0f)].pos;
-            }
-            else
-            {
-                boid.pos = spawnPoint;
-            }
-            boid.vel = float2(id.x / 1000.0f, id.x / 1000.0f);
-        }
-    }
-
-    MergedBehaviours(boid);
+    MergedBehaviours(boid, id);
     LimitSpeed(boid);
     KeepInBounds(boid);
 

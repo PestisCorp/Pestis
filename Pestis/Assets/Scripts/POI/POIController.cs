@@ -17,6 +17,8 @@ namespace POI
         public ParticleSystem[] captureEffect;
 
         public PatrolController patrolController;
+
+        public uint boidPoisIndex;
         private float _cheesePerTick;
         private Camera camera;
 
@@ -33,7 +35,6 @@ namespace POI
         [Networked] [Capacity(4)] public NetworkLinkedList<HordeController> StationedHordes { get; } = default;
 
         [Networked] [CanBeNull] public CombatController Combat { get; private set; }
-
 
         public void Awake()
         {
