@@ -144,10 +144,10 @@ namespace Players
                 yield return new WaitForSeconds(1f);
                 timeRemaining--;
                 Timer = timeRemaining;
+                CalculateScore();
             }
             TimeUp = true;
             Debug.Log("Times Up, final score " + Score.ToString());
-            StartCoroutine(UpdateStats());
             yield return null;
         }
         private IEnumerator JoinStats()
