@@ -35,6 +35,11 @@ public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
                 x += spawnCenter.x;
                 y += spawnCenter.y;
 
+                x %= GameManager.Instance.terrainMap.localBounds.extents.x *
+                     GameManager.Instance.terrainMap.transform.localScale.x;
+                y %= GameManager.Instance.terrainMap.localBounds.extents.y *
+                     GameManager.Instance.terrainMap.transform.localScale.y;
+
                 var point = new Vector2(x, y);
 
                 var tilePos = GameManager.Instance.terrainMap.WorldToCell(point);
