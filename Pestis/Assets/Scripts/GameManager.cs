@@ -141,7 +141,8 @@ public class GameManager : MonoBehaviour
                 cellPoIs.MoveNext();
                 poiCellPois.MoveNext();
                 orderedPoIs[j] = cellPoIs.Current;
-                BoidPois[j] = new Human.BoidPoi(cellPoIs.Current.Pos, cellPoIs.Current.RadiusSq, 5);
+                BoidPois[j] = new Human.BoidPoi(cellPoIs.Current.Pos, cellPoIs.Current.RadiusSq,
+                    Convert.ToUInt32(poiCellPois.Current.patrolController.startingHumanCount));
                 poiCellPois.Current.boidPoisIndex = j;
             }
         }

@@ -53,7 +53,7 @@ MonoBehaviour:
   alignmentFactor: 0.1
   targetFactor: 0.1
   boidShader: {fileID: 7200000, guid: f222c751208544ab82af986102b1ce0d, type: 3}
-  gridShader: {fileID: 7200000, guid: 09b3d2d9369c4b7dab8d97a7e83f5eaf, type: 3}
+  gridShader: {fileID: 7200000, guid: 5dcb9e3e35f9424b89989553dad39c42, type: 3}
   boidMat: {fileID: 2100000, guid: ad80326166bf40a1699443d0dd3052bf, type: 2}
   deadBoidMat: {fileID: 2100000, guid: a862318cdd8f9a88cb6909c62bdad909, type: 2}
   combat: 0

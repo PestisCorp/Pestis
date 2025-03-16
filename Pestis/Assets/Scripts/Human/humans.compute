@@ -220,6 +220,10 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
 {
     if (id.x >= numBoids || boidsIn[id.x].dead)
     {
+        if (boidsIn[id.x].dead)
+        {
+            boidsOut[id.x] = boidsIn[id.x];
+        }
         return;
     }
 
