@@ -43,13 +43,10 @@ namespace Players
             if (horde.Player.IsLocal)
             {
                 if (horde.isApparition) return;
-                UI_manager.AbilityToolbarDisable();
                 if (selectedHorde && selectedHorde != horde)
                 {
                     selectedHorde.UnHighlight();
                     selectedHorde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
-                    
-                    UI_manager.ToolbarDisable();
                     
                 }
                 if (selectedHorde != horde)
@@ -64,7 +61,7 @@ namespace Players
                         }
 
                         if (selectedHorde.InCombat) selectedHorde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 1;
-                        UI_manager.ToolbarEnable();
+                        UI_manager.InfoPanelToggle();
                         UI_manager.AbilityToolbarEnable();
                     }
                      
@@ -92,7 +89,7 @@ namespace Players
             if (selectedHorde) selectedHorde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
             selectedHorde = null;
             selectedEnemyHorde = null;
-            UI_manager.ToolbarDisable();
+            UI_manager.InfoPanelToggle();
             UI_manager.AbilityToolbarDisable();
         }
 

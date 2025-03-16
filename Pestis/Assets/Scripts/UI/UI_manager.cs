@@ -163,7 +163,8 @@ public class UI_Manager : MonoBehaviour
     public void InfoPanelEnable()
     {
         ResetUI();
-        if (infoPanel != null) infoPanel.SetActive(true);
+        if (infoPanel != null) 
+            infoPanel.SetActive(true);
 
         // Find all GameObjects with the tag "UI_stats_text"
         var taggedObjects = GameObject.FindGameObjectsWithTag("UI_stats_text");
@@ -596,7 +597,6 @@ public class UI_Manager : MonoBehaviour
     
     public void AbilityToolbarEnable()
     {
-        ResetUI();
         if (abilityToolbar != null) abilityToolbar.SetActive(true);
     }
     
