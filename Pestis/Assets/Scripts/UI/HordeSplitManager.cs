@@ -12,7 +12,6 @@ namespace UI
         public TMP_Text maxAmountText;
         public Slider slider;
         public Button button;
-        public GameObject SplitRecommendedButton;
         public int spitRecommendedInt = 50;
         private int initialPopulation;
         private int maxPop;
@@ -33,8 +32,6 @@ namespace UI
                 button.interactable = false;
                 return;
             }
-            SplitRecommendedButton.SetActive(maxPop > spitRecommendedInt);
-            
             button.interactable = true;
 
             splitAmount = (int)slider.value;
@@ -55,19 +52,7 @@ namespace UI
         public void SplitHorde()
         {
             var horde = InputHandler.Instance.LocalPlayer?.selectedHorde;
-            horde?.Player.SplitHorde(horde,
-                (float)splitAmount / InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats);
-            gameObject.SetActive(false);
-            if (horde)
-            {
-                GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.HordeSplit, 1);
-            }
-        }
-
-        public void SplitHordeHalf()
-        {
-            var horde = InputHandler.Instance.LocalPlayer?.selectedHorde;
-            horde?.Player.SplitHorde(horde, 0.5f);
+            horde?.Player.SplitHorde(horde,(float)splitAmount / InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats);
             gameObject.SetActive(false);
             if (horde)
             {
