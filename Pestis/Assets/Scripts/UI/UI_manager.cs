@@ -86,7 +86,7 @@ public class UI_Manager : MonoBehaviour
         {
             button.enabled = false;
             button.GetComponent<Image>().enabled = false;
-            var childrenWithTag = GetComponentInChildrenWithTag<Image, Button>(button, "UI_cooldown_bar");
+            var childrenWithTag = GetComponentsInChildrenWithTag<Image, Button>(button, "UI_cooldown_bar");
             foreach (var child in childrenWithTag)
             {
                 child.GetComponent<Image>().enabled = false;
@@ -534,9 +534,9 @@ public class UI_Manager : MonoBehaviour
             {
                 GameObject textBox = Instantiate(textPrefab, contentParent);
                 textBox.GetComponent<Tooltip>().tooltipText = mutation.Tooltip;
-                var mutationType = GetComponentInChildrenWithTag<Image, GameObject>(textBox, "mutation_type")[0];
+                var mutationType = GetComponentsInChildrenWithTag<Image, GameObject>(textBox, "mutation_type")[0];
                 mutationType.sprite = Resources.Load<Sprite>(mutation.IsAbility ? "UI_design/Mutations/active_mutation" : "UI_design/Mutations/passive_mutation");
-                var mutationUse = GetComponentInChildrenWithTag<Image, GameObject>(textBox, "mutation_use")[0];
+                var mutationUse = GetComponentsInChildrenWithTag<Image, GameObject>(textBox, "mutation_use")[0];
                 var path = "UI_design/Mutations/" + mutation.MutationUse + "_mutation";
                 mutationUse.sprite = Resources.Load<Sprite>(path);
                 textBox.GetComponentInChildren<TMP_Text>().text = mutation.MutationName;
@@ -547,14 +547,14 @@ public class UI_Manager : MonoBehaviour
             if (mutationPopUp != null) mutationPopUp.SetActive(true);
             GameObject.FindGameObjectWithTag("mutation_points").GetComponent<TextMeshProUGUI>().text = evolutionManager.PointsAvailable.ToString() + "pts";
             var mutations = GetSelectedHorde().GetComponent<EvolutionManager>().RareEvolutionaryEvent();
-            var buttons = mutationPopUp.GetComponentsInChildren<Button>();
+            var buttons = GetComponentsInChildrenWithTag<Button, GameObject>(mutationPopUp, "mutation_option");
             buttons[0].GetComponentInChildren<TMP_Text>().text = mutations.Item1.MutationName;
             buttons[0].GetComponent<Tooltip>().tooltipText = mutations.Item1.Tooltip;
-            GetComponentInChildrenWithTag<Image, Button>(buttons[0], "mutation_type")[0].sprite =
+            GetComponentsInChildrenWithTag<Image, Button>(buttons[0], "mutation_type")[0].sprite =
                 mutations.Item1.IsAbility
                     ? Resources.Load<Sprite>("UI_design/Mutations/active_mutation")
                     : Resources.Load<Sprite>("UI_design/Mutations/passive_mutation");
-            GetComponentInChildrenWithTag<Image, Button>(buttons[0], "mutation_use")[0].sprite = 
+            GetComponentsInChildrenWithTag<Image, Button>(buttons[0], "mutation_use")[0].sprite = 
                 Resources.Load<Sprite>("UI_design/Mutations/" + mutations.Item1.MutationUse + "_mutation");
             buttons[0].onClick.RemoveAllListeners();
             buttons[0].onClick.AddListener(delegate {evolutionManager.ApplyActiveEffects(mutations.Item1);});
@@ -562,11 +562,11 @@ public class UI_Manager : MonoBehaviour
         
             buttons[1].GetComponentInChildren<TMP_Text>().text = mutations.Item2.MutationName;
             buttons[1].GetComponent<Tooltip>().tooltipText = mutations.Item2.Tooltip;
-            GetComponentInChildrenWithTag<Image, Button>(buttons[1], "mutation_type")[0].sprite =
+            GetComponentsInChildrenWithTag<Image, Button>(buttons[1], "mutation_type")[0].sprite =
                 mutations.Item2.IsAbility
                     ? Resources.Load<Sprite>("UI_design/Mutations/active_mutation")
                     : Resources.Load<Sprite>("UI_design/Mutations/passive_mutation");
-            GetComponentInChildrenWithTag<Image, Button>(buttons[1], "mutation_use")[0].sprite = 
+            GetComponentsInChildrenWithTag<Image, Button>(buttons[1], "mutation_use")[0].sprite = 
                 Resources.Load<Sprite>("UI_design/Mutations/" + mutations.Item2.MutationUse + "_mutation");
             buttons[1].onClick.RemoveAllListeners();
             buttons[1].onClick.AddListener(delegate {evolutionManager.ApplyActiveEffects(mutations.Item2);});
@@ -574,11 +574,11 @@ public class UI_Manager : MonoBehaviour
         
             buttons[2].GetComponentInChildren<TMP_Text>().text = mutations.Item3.MutationName;
             buttons[2].GetComponent<Tooltip>().tooltipText = mutations.Item3.Tooltip;
-            GetComponentInChildrenWithTag<Image, Button>(buttons[2], "mutation_type")[0].sprite =
+            GetComponentsInChildrenWithTag<Image, Button>(buttons[2], "mutation_type")[0].sprite =
                 mutations.Item3.IsAbility
                     ? Resources.Load<Sprite>("UI_design/Mutations/active_mutation")
                     : Resources.Load<Sprite>("UI_design/Mutations/passive_mutation");
-            GetComponentInChildrenWithTag<Image, Button>(buttons[2], "mutation_use")[0].sprite = 
+            GetComponentsInChildrenWithTag<Image, Button>(buttons[2], "mutation_use")[0].sprite = 
                 Resources.Load<Sprite>("UI_design/Mutations/" + mutations.Item3.MutationUse + "_mutation");
             buttons[2].onClick.RemoveAllListeners();
             buttons[2].onClick.AddListener(delegate {evolutionManager.ApplyActiveEffects(mutations.Item3);});
@@ -611,7 +611,7 @@ public class UI_Manager : MonoBehaviour
             button.GetComponentInChildren<TextMeshProUGUI>().text = ""; 
 
             
-            var childrenWithTag = GetComponentInChildrenWithTag<Image, Button>(button, "UI_cooldown_bar");
+            var childrenWithTag = GetComponentsInChildrenWithTag<Image, Button>(button, "UI_cooldown_bar");
             foreach (var child in childrenWithTag)
             {
                 child.GetComponent<Image>().enabled = false; 
@@ -627,7 +627,7 @@ public class UI_Manager : MonoBehaviour
         if (abilityToolbar != null) abilityToolbar.SetActive(false);
     }
 
-    public T[] GetComponentInChildrenWithTag<T, TP>(TP parent, string tagToFind) where T : Component where TP : Object
+    public T[] GetComponentsInChildrenWithTag<T, TP>(TP parent, string tagToFind) where T : Component where TP : Object
     {
         List<T> componentsInChildren = new List<T>();
         foreach (T obj in parent.GetComponentsInChildren<T>()) 
@@ -649,7 +649,7 @@ public class UI_Manager : MonoBehaviour
             button.onClick.RemoveAllListeners();
             button.GetComponent<Image>().enabled = true;
             button.GetComponentInChildren<TextMeshProUGUI>().text = mutation.Item1;
-            var childrenWithTag = GetComponentInChildrenWithTag<Image, Button>(button, "UI_cooldown_bar");
+            var childrenWithTag = GetComponentsInChildrenWithTag<Image, Button>(button, "UI_cooldown_bar");
             foreach (var child in childrenWithTag)
             {
                 child.GetComponent<Image>().enabled = true;
