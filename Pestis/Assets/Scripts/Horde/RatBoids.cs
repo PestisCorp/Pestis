@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
-using ExitGames.Client.Photon.StructWrapping;
 using Horde;
 using MoreLinq.Extensions;
 using Unity.Mathematics;
@@ -52,6 +51,7 @@ public class RatBoids : MonoBehaviour
     [SerializeField] private Material boidMat;
     [SerializeField] private Material deadBoidMat;
 
+
     public bool combat;
 
     /// <summary>
@@ -88,10 +88,20 @@ public class RatBoids : MonoBehaviour
     private ComputeBuffer gridSumsBuffer;
     private ComputeBuffer gridSumsBuffer2;
 
+    private HordeController hordeController;
+
     private float minSpeed;
+
+    private uint[] offsetsTempArr;
     private int previousNumBoids;
     private RenderParams rp;
     private RenderParams rpDead;
+
+    /// <summary>
+    ///     Used for storing boids when receiving boids from GPU without allocating memory
+    /// </summary>
+    private Boid[] tempBoidsArr;
+
     private GraphicsBuffer trianglePositions;
     private Vector2[] triangleVerts;
     private float turnSpeed;
@@ -109,8 +119,6 @@ public class RatBoids : MonoBehaviour
 
     private float visualRangeSq => visualRange * visualRange;
     private float minDistanceSq => minDistance * minDistance;
-    
-    private HordeController hordeController;
 
     private void Awake()
     {
@@ -142,9 +150,9 @@ public class RatBoids : MonoBehaviour
         rearrangeBoidsKernel = gridShader.FindKernel("RearrangeBoids");
 
         // Setup compute buffer
-        boidBuffer = new ComputeBuffer(128, Marshal.SizeOf(typeof(Boid)));
-        boidBufferOut = new ComputeBuffer(128, Marshal.SizeOf(typeof(Boid)));
-        deadBoids = new ComputeBuffer(128, Marshal.SizeOf(typeof(Boid)));
+        boidBuffer = new ComputeBuffer(2048, Marshal.SizeOf(typeof(Boid)));
+        boidBufferOut = new ComputeBuffer(2048, Marshal.SizeOf(typeof(Boid)));
+        deadBoids = new ComputeBuffer(2048, Marshal.SizeOf(typeof(Boid)));
 
         deadBoidsCountBuffer = new ComputeBuffer(1, sizeof(uint));
         var counter = new uint[1];
@@ -224,6 +232,9 @@ public class RatBoids : MonoBehaviour
             boidShader.SetInt("horde", -1);
         }
 
+        tempBoidsArr = new Boid[2048];
+        offsetsTempArr = new uint[gridDimX * gridDimY];
+
         AttachBuffers();
     }
 
@@ -237,12 +248,9 @@ public class RatBoids : MonoBehaviour
 
         // Some boids have died
         if (newNumBoids < numBoids && combat)
-        {
             // Don't exceed dead boids buffer
             deadBoidsCount = Math.Min(deadBoidsCount + numBoids - newNumBoids, deadBoids.count);
 
-        }
-            
 
         if (boidBuffer.count < newNumBoids) ResizeBuffers(newNumBoids * 2);
 
@@ -353,22 +361,24 @@ public class RatBoids : MonoBehaviour
     {
         if (newSize < boidBuffer.count) throw new Exception("Tried to shrink buffers!");
         Debug.Log($"Resizing boid buffers to {newSize}");
+
+        tempBoidsArr = new Boid[newSize];
+
         var newBuffer = new ComputeBuffer(newSize, Marshal.SizeOf(typeof(Boid)));
-        var boids = new Boid[numBoids];
-        boidBuffer.GetData(boids, 0, 0, numBoids);
-        newBuffer.SetData(boids);
+        boidBuffer.GetData(tempBoidsArr, 0, 0, numBoids);
+        newBuffer.SetData(tempBoidsArr);
         boidBuffer.Release();
         boidBuffer = newBuffer;
 
         newBuffer = new ComputeBuffer(newSize, Marshal.SizeOf(typeof(Boid)));
-        boidBufferOut.GetData(boids, 0, 0, numBoids);
-        newBuffer.SetData(boids);
+        boidBufferOut.GetData(tempBoidsArr, 0, 0, numBoids);
+        newBuffer.SetData(tempBoidsArr);
         boidBufferOut.Release();
         boidBufferOut = newBuffer;
 
         newBuffer = new ComputeBuffer(newSize, Marshal.SizeOf(typeof(Boid)), ComputeBufferType.Append);
-        deadBoids.GetData(boids, 0, 0, deadBoidsCount);
-        newBuffer.SetData(boids);
+        deadBoids.GetData(tempBoidsArr, 0, 0, deadBoidsCount);
+        newBuffer.SetData(tempBoidsArr);
         deadBoids.Release();
         deadBoids = newBuffer;
 
@@ -458,24 +468,23 @@ public class RatBoids : MonoBehaviour
     {
         if (numBoids == 0) return new Bounds(TargetPos, Vector3.zero);
 
-        var offsets = new uint[gridDimX * gridDimY];
-        gridOffsetBuffer.GetData(offsets, 0, 0, gridDimX * gridDimY);
+        gridOffsetBuffer.GetData(offsetsTempArr, 0, 0, gridDimX * gridDimY);
 
         var bottomLeft = Vector2.positiveInfinity;
 
         // Find first non-empty row from bottom
         for (var y = 0; y < gridDimY; y++)
         {
-            var rowBoids = offsets[(y + 1) * gridDimX - 1] - offsets[y * gridDimX];
+            var rowBoids = offsetsTempArr[(y + 1) * gridDimX - 1] - offsetsTempArr[y * gridDimX];
             if (rowBoids == 0) continue;
 
             // Setting boids (when we split a horde) messes up the offsets for one iteration
             if (rowBoids > 4244857296) return new Bounds(TargetPos, Vector3.zero);
 
-            var boids = new Boid[rowBoids];
-            boidBufferOut.GetData(boids, 0, Convert.ToInt32(offsets[y * gridDimX]), Convert.ToInt32(rowBoids));
+            boidBufferOut.GetData(tempBoidsArr, 0, Convert.ToInt32(offsetsTempArr[y * gridDimX]),
+                Convert.ToInt32(rowBoids));
 
-            bottomLeft.y = boids.Minima(boid => boid.pos.y).First().pos.y;
+            bottomLeft.y = tempBoidsArr.Slice(0, Convert.ToInt32(rowBoids)).Minima(boid => boid.pos.y).First().pos.y;
             break;
         }
 
@@ -486,16 +495,17 @@ public class RatBoids : MonoBehaviour
 
             for (var y = 0; y < gridDimY; y++)
             {
-                var cellBoids = offsets[y * gridDimX + x] - (y == 0 ? 0 : offsets[y * gridDimX + x - 1]);
+                var cellBoids = offsetsTempArr[y * gridDimX + x] - (y == 0 ? 0 : offsetsTempArr[y * gridDimX + x - 1]);
                 if (cellBoids == 0) continue;
 
                 empty = false;
 
-                var boids = new Boid[cellBoids];
-                boidBufferOut.GetData(boids, 0, Convert.ToInt32(y == 0 ? 0 : offsets[y * gridDimX + x - 1]),
+                boidBufferOut.GetData(tempBoidsArr, 0,
+                    Convert.ToInt32(y == 0 ? 0 : offsetsTempArr[y * gridDimX + x - 1]),
                     Convert.ToInt32(cellBoids));
 
-                bottomLeft.x = Mathf.Min(bottomLeft.x, boids.Minima(boid => boid.pos.x).First().pos.x);
+                bottomLeft.x = Mathf.Min(bottomLeft.x,
+                    tempBoidsArr.Slice(0, Convert.ToInt32(cellBoids)).Minima(boid => boid.pos.x).First().pos.x);
             }
 
             // Break once we've processed the first non-empty row
@@ -507,13 +517,13 @@ public class RatBoids : MonoBehaviour
         // Find first non-empty row from top
         for (var y = gridDimY - 1; y >= 0; y--)
         {
-            var rowBoids = offsets[(y + 1) * gridDimX - 1] - offsets[y * gridDimX];
+            var rowBoids = offsetsTempArr[(y + 1) * gridDimX - 1] - offsetsTempArr[y * gridDimX];
             if (rowBoids == 0) continue;
 
-            var boids = new Boid[rowBoids];
-            boidBufferOut.GetData(boids, 0, Convert.ToInt32(offsets[y * gridDimX]), Convert.ToInt32(rowBoids));
+            boidBufferOut.GetData(tempBoidsArr, 0, Convert.ToInt32(offsetsTempArr[y * gridDimX]),
+                Convert.ToInt32(rowBoids));
 
-            topRight.y = boids.Maxima(boid => boid.pos.y).First().pos.y;
+            topRight.y = tempBoidsArr.Slice(0, Convert.ToInt32(rowBoids)).Maxima(boid => boid.pos.y).First().pos.y;
             break;
         }
 
@@ -524,16 +534,17 @@ public class RatBoids : MonoBehaviour
 
             for (var y = 0; y < gridDimY; y++)
             {
-                var cellBoids = offsets[y * gridDimX + x] - (y == 0 ? 0 : offsets[y * gridDimX + x - 1]);
+                var cellBoids = offsetsTempArr[y * gridDimX + x] - (y == 0 ? 0 : offsetsTempArr[y * gridDimX + x - 1]);
                 if (cellBoids == 0) continue;
 
                 empty = false;
 
-                var boids = new Boid[cellBoids];
-                boidBufferOut.GetData(boids, 0, Convert.ToInt32(y == 0 ? 0 : offsets[y * gridDimX + x - 1]),
+                boidBufferOut.GetData(tempBoidsArr, 0,
+                    Convert.ToInt32(y == 0 ? 0 : offsetsTempArr[y * gridDimX + x - 1]),
                     Convert.ToInt32(cellBoids));
 
-                topRight.x = Mathf.Max(topRight.x, boids.Maxima(boid => boid.pos.x).First().pos.x);
+                topRight.x = Mathf.Max(topRight.x,
+                    tempBoidsArr.Slice(0, Convert.ToInt32(cellBoids)).Maxima(boid => boid.pos.x).First().pos.x);
             }
 
             // Break once we've processed the first non-empty row
@@ -613,24 +624,22 @@ public class RatBoids : MonoBehaviour
         var boids = new Boid[boidsToClone];
         boidBuffer.GetData(boids, 0, 0, boidsToClone);
         otherBoids.SetBoids(boids);
-        
     }
-    
+
     public void TeleportHorde(Vector3 newHordeCenter, Bounds hordeBounds)
     {
-        var boids = new Boid[numBoids];
-        boidBuffer.GetData(boids, 0, 0, numBoids);
-        for (int i = 0; i < numBoids; i++)
+        boidBuffer.GetData(tempBoidsArr, 0, 0, numBoids);
+        for (var i = 0; i < numBoids; i++)
         {
             var offset = (Vector2)newHordeCenter - (Vector2)hordeBounds.center;
-            boids[i].pos.x += offset.x;
-            boids[i].pos.y += offset.y;
+            tempBoidsArr[i].pos.x += offset.x;
+            tempBoidsArr[i].pos.y += offset.y;
         }
 
-        boidBuffer.SetData(boids, 0, 0, numBoids);
-        boidBufferOut.SetData(boids, 0, 0, numBoids);
-        
-        Panner panner = FindFirstObjectByType<Panner>();
+        boidBuffer.SetData(tempBoidsArr, 0, 0, numBoids);
+        boidBufferOut.SetData(tempBoidsArr, 0, 0, numBoids);
+
+        var panner = FindFirstObjectByType<Panner>();
         panner.target.x = newHordeCenter.x;
         panner.target.y = newHordeCenter.y;
         panner.target.z = -1;

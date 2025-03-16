@@ -981,10 +981,7 @@ GameObject:
   - component: {fileID: 6961251568612682153}
   - component: {fileID: 4668771228012965489}
   - component: {fileID: -7118694052808421423}
-  - component: {fileID: -8052047275079063060}
-  - component: {fileID: -3920070636787022238}
   - component: {fileID: 9182480813729240789}
-  - component: {fileID: -3669862406392348714}
   m_Layer: 6
   m_Name: Van
   m_TagString: Untagged
@@ -1099,6 +1096,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   captureEffect:
   - {fileID: 4026888961485790380}
+  patrolController: {fileID: 9182480813729240789}
+  boidPoisIndex: 0
   _ControlledBy: {fileID: 0}
   _StationedHordes: []
   _Combat: {fileID: 0}
@@ -1118,46 +1117,9 @@ MonoBehaviour:
   ObjectInterest: 1
   Flags: 131073
   NestedObjects: []
-  NetworkedBehaviours: []
-  ForceRemoteRenderTimeframe: 0
---- !u!114 &-8052047275079063060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7727599578141111434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a2b2d45d5384d9db834f00036e8fcf1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  captureEffect:
-  - {fileID: 0}
-  _ControlledBy: {fileID: 0}
-  _StationedHordes: []
-  _Combat: {fileID: 0}
---- !u!114 &-3920070636787022238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7727599578141111434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 137881239
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 4668771228012965489}
-  - {fileID: -8052047275079063060}
   - {fileID: 9182480813729240789}
-  - {fileID: -3669862406392348714}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &9182480813729240789
 MonoBehaviour:
@@ -1171,27 +1133,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b3477ab84b4ee9a5f2e8853119955c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  humanPrefab: {fileID: 6463158892316126659, guid: 4264f97e4dd0548a499c2bc2f37b319a, type: 3}
-  poi: {fileID: 7727599578141111434}
-  _HumanCount: 6
-  _PatrolRadius: 5
---- !u!114 &-3669862406392348714
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7727599578141111434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f66c5359dd5447f1aded2c1c7490f983, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  patrolController: {fileID: 9182480813729240789}
+  poi: {fileID: 4668771228012965489}
   healthPerHuman: 5
-  damagePerHuman: 0.05
-  _CurrentHumanHealth: 0
+  damagePerHuman: 0.5
   ratDPS: 0.5
+  startingHumanCount: 3
+  boids: {fileID: 0}
+  _CurrentHumanHealth: 0
 --- !u!1 &7965740167955942159
 GameObject:
   m_ObjectHideFlags: 0
