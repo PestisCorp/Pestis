@@ -28,7 +28,9 @@ namespace Human
         public int HumanCount => (int)(CurrentHumanHealth / healthPerHuman); // Networked human count
 
         // We store total health as a Networked field so that all players see the same value
-        [Networked] public float CurrentHumanHealth { get; set; }
+        [Networked]
+        [OnChangedRender(nameof(AdjustHumanCount))]
+        public float CurrentHumanHealth { get; set; }
 
         public override void Spawned()
         {
@@ -66,8 +68,6 @@ namespace Human
 
         public override void FixedUpdateNetwork()
         {
-            AdjustHumanCount();
-
             if (enemyHorde)
             {
                 if (enemyHorde.AliveRats < 5)
