@@ -5,6 +5,7 @@ using Horde;
 using MoreLinq.Extensions;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 internal struct Boid
 {
@@ -66,12 +67,12 @@ public class RatBoids : MonoBehaviour
     public int numBoids;
 
     private bool _started;
+
+    private bool _waitingForBounds;
     private int blocks;
 
     private ComputeBuffer boidBuffer;
     private ComputeBuffer boidBufferOut;
-
-    private Bounds bounds;
 
     private int corpseKernel;
     private ComputeBuffer deadBoids;
@@ -116,6 +117,8 @@ public class RatBoids : MonoBehaviour
         rearrangeBoidsKernel;
 
     private float xBound, yBound;
+
+    public Bounds Bounds { private set; get; }
 
     private float visualRangeSq => visualRange * visualRange;
     private float minDistanceSq => minDistance * minDistance;
@@ -297,10 +300,10 @@ public class RatBoids : MonoBehaviour
         boidShader.SetInt("numBoidsPrevious", previousNumBoids);
 
         // 0,0 case is overriden in the shader to use an approximate center
-        if (bounds.size.sqrMagnitude == 0 || float.IsNaN(bounds.center.x) || float.IsNaN(bounds.center.y))
+        if (Bounds.size.sqrMagnitude == 0 || float.IsNaN(Bounds.center.x) || float.IsNaN(Bounds.center.y))
             boidShader.SetFloats("spawnPoint", 0, 0);
         else
-            boidShader.SetFloats("spawnPoint", bounds.center.x + 0.01f, bounds.center.y + 0.01f);
+            boidShader.SetFloats("spawnPoint", Bounds.center.x + 0.01f, Bounds.center.y + 0.01f);
 
         // Compute boid behaviours
         boidShader.Dispatch(updateBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
@@ -313,6 +316,133 @@ public class RatBoids : MonoBehaviour
         // Actually draw the boids
         Graphics.RenderPrimitives(rp, MeshTopology.Quads, numBoids * 4);
         Graphics.RenderPrimitives(rpDead, MeshTopology.Quads, deadBoidsCount * 4);
+    }
+
+    private async void FixedUpdate()
+    {
+        // Don't run again while waiting for previous iteration
+        if (_waitingForBounds) return;
+
+        if (previousNumBoids == 0)
+        {
+            Bounds = new Bounds(TargetPos, Vector3.zero);
+            return;
+        }
+
+        return;
+
+        _waitingForBounds = true;
+
+        var request =
+            await AsyncGPUReadback.RequestAsync(gridOffsetBuffer, gridDimX * gridDimY * Marshal.SizeOf(typeof(uint)),
+                0);
+
+        if (request.hasError) Debug.LogError("Bounds error");
+
+        var offsets = request.GetData<uint>();
+
+        offsets.CopyTo(offsetsTempArr);
+
+        var bottomLeft = Vector2.positiveInfinity;
+
+        // Find first non-empty row from bottom
+        for (var y = 0; y < gridDimY; y++)
+        {
+            var rowBoids = Convert.ToInt32(offsetsTempArr[(y + 1) * gridDimX - 1] - offsetsTempArr[y * gridDimX]);
+            if (rowBoids == 0) continue;
+
+            // Setting boids (when we split a horde) messes up the offsets for one iteration
+            if (rowBoids < 0)
+            {
+                _waitingForBounds = false;
+                return;
+            }
+
+            request = await AsyncGPUReadback.RequestAsync(boidBufferOut, rowBoids * Marshal.SizeOf(typeof(Boid)),
+                Convert.ToInt32(offsetsTempArr[y * gridDimX]));
+
+            var boids = request.GetData<Boid>();
+
+            bottomLeft.y = boids.Slice(0, Convert.ToInt32(rowBoids)).Minima(boid => boid.pos.y).First().pos.y;
+            break;
+        }
+
+        // Find first non-empty column from left
+        for (var x = 0; x < gridDimX; x++)
+        {
+            var empty = true;
+
+            for (var y = 0; y < gridDimY; y++)
+            {
+                var cellBoids =
+                    Convert.ToInt32(offsetsTempArr[y * gridDimX + x] -
+                                    (y == 0 ? 0 : offsetsTempArr[y * gridDimX + x - 1]));
+                if (cellBoids == 0) continue;
+
+                empty = false;
+
+                request = await AsyncGPUReadback.RequestAsync(boidBufferOut, cellBoids * Marshal.SizeOf(typeof(Boid)),
+                    Convert.ToInt32(y == 0 ? 0 : offsetsTempArr[y * gridDimX + x - 1]));
+
+                var boids = request.GetData<Boid>();
+
+                bottomLeft.x = Mathf.Min(bottomLeft.x,
+                    boids.Slice(0, cellBoids).Minima(boid => boid.pos.x).First().pos.x);
+            }
+
+            // Break once we've processed the first non-empty row
+            if (!empty) break;
+        }
+
+        var topRight = Vector2.negativeInfinity;
+
+        // Find first non-empty row from top
+        for (var y = gridDimY - 1; y >= 0; y--)
+        {
+            var rowBoids = Convert.ToInt32(offsetsTempArr[(y + 1) * gridDimX - 1] - offsetsTempArr[y * gridDimX]);
+            if (rowBoids == 0) continue;
+
+            request = await AsyncGPUReadback.RequestAsync(boidBufferOut, rowBoids * Marshal.SizeOf(typeof(Boid)),
+                Convert.ToInt32(offsetsTempArr[y * gridDimX]));
+            var boids = request.GetData<Boid>();
+
+            topRight.y = boids.Slice(0, rowBoids).Maxima(boid => boid.pos.y).First().pos.y;
+            break;
+        }
+
+        // Find first non-empty column from right
+        for (var x = gridDimX - 1; x >= 0; x--)
+        {
+            var empty = true;
+
+            for (var y = 0; y < gridDimY; y++)
+            {
+                var cellBoids =
+                    Convert.ToInt32(offsetsTempArr[y * gridDimX + x] -
+                                    (y == 0 ? 0 : offsetsTempArr[y * gridDimX + x - 1]));
+                if (cellBoids == 0) continue;
+
+                empty = false;
+
+                request = await AsyncGPUReadback.RequestAsync(boidBufferOut, cellBoids * Marshal.SizeOf(typeof(Boid)),
+                    Convert.ToInt32(y == 0 ? 0 : offsetsTempArr[y * gridDimX + x - 1]));
+
+                var boids = request.GetData<Boid>();
+
+                topRight.x = Mathf.Max(topRight.x,
+                    boids.Slice(0, cellBoids).Maxima(boid => boid.pos.x).First().pos.x);
+            }
+
+            // Break once we've processed the first non-empty row
+            if (!empty) break;
+        }
+
+        var center = bottomLeft + (topRight - bottomLeft) / 2.0f;
+        var size = topRight - bottomLeft;
+
+        Bounds = new Bounds(center, size);
+
+        _waitingForBounds = false;
     }
 
     private void OnDestroy()
@@ -421,7 +551,6 @@ public class RatBoids : MonoBehaviour
     {
         return gridDimX * pos.y + pos.x;
     }
-
 
     /// <summary>
     ///     Check whether a given position is within the horde.
@@ -554,8 +683,8 @@ public class RatBoids : MonoBehaviour
         var center = bottomLeft + (topRight - bottomLeft) / 2.0f;
         var size = topRight - bottomLeft;
 
-        bounds = new Bounds(center, size);
-        return bounds;
+        Bounds = new Bounds(center, size);
+        return Bounds;
     }
 
     /// <summary>
