@@ -5052,7 +5052,6 @@ GameObject:
   - component: {fileID: 5401282242629592559}
   - component: {fileID: 7802397073592086314}
   - component: {fileID: 8940901211010643535}
-  - component: {fileID: -5430666168722633234}
   m_Layer: 6
   m_Name: human_camp
   m_TagString: Player
@@ -5108,6 +5107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   captureEffect:
   - {fileID: 3065136002907309646}
+  patrolController: {fileID: 8940901211010643535}
   _ControlledBy: {fileID: 0}
   _StationedHordes: []
   _Combat: {fileID: 0}
@@ -5130,7 +5130,6 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: -7888167734247629273}
   - {fileID: 8940901211010643535}
-  - {fileID: -5430666168722633234}
   ForceRemoteRenderTimeframe: 0
 --- !u!212 &7802397073592086314
 SpriteRenderer:
@@ -5200,23 +5199,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   humanPrefab: {fileID: 6463158892316126659, guid: 4264f97e4dd0548a499c2bc2f37b319a, type: 3}
-  poi: {fileID: 7727599578141111434}
-  _HumanCount: 6
-  _PatrolRadius: 5
---- !u!114 &-5430666168722633234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7727599578141111434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f66c5359dd5447f1aded2c1c7490f983, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  patrolController: {fileID: 8940901211010643535}
+  poi: {fileID: -7888167734247629273}
   healthPerHuman: 5
-  damagePerHuman: 0.05
-  _CurrentHumanHealth: 0
+  damagePerHuman: 0.5
   ratDPS: 0.5
+  startingHumanCount: 8
+  _PatrolRadius: 5
+  _CurrentHumanHealth: 0
