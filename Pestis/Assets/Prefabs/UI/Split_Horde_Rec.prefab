@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 4.189, y: 0}
-  m_SizeDelta: {x: -8.3779, y: 0}
+  m_AnchoredPosition: {x: 0.000030517578, y: 3}
+  m_SizeDelta: {x: 0.00005054474, y: -24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8460751567650634556
 CanvasRenderer:
@@ -255,7 +255,7 @@ MonoBehaviour:
   splitHordeButton: {fileID: 5508557810078729186}
   image: {fileID: 9090377991204822064}
   buttonTMPText: {fileID: 5044415593923852171}
-  splitRecommended: 20
+  splitRecommended: 500
 --- !u!1 &2622112672948414461
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,8 +314,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 0.3726415, b: 0.3726415, a: 1}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -397,9 +397,9 @@ RectTransform:
   - {fileID: 1936303099431703903}
   m_Father: {fileID: 3894665684272752622}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -102.32898}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 180, y: 80}
   m_SizeDelta: {x: 150, y: 50}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &210714556216937118
@@ -476,8 +476,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 72.62244, y: -25.36258}
-  m_SizeDelta: {x: 287.6376, y: 94.2878}
+  m_AnchoredPosition: {x: 75, y: -25}
+  m_SizeDelta: {x: 241.62, y: 55.76}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3473317615825986572
 CanvasRenderer:

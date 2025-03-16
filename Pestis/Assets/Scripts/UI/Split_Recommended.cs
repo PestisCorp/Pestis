@@ -8,7 +8,7 @@ public class Split_Recommended : MonoBehaviour
     public Button splitHordeButton;
     public Image image;
     public TMPro.TMP_Text buttonTMPText;
-    public int splitRecommended = 100;
+    public int splitRecommended = 500;
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -30,7 +30,7 @@ public class Split_Recommended : MonoBehaviour
     {
         buttonTMPText.text = "Split Possible";
         buttonTMPText.color =Color.black;
-        image.color = Color.yellow;
+        image.color = Color.white;
 
     }
     private void splitRecommendedText()
@@ -39,8 +39,13 @@ public class Split_Recommended : MonoBehaviour
         if (ColorUtility.TryParseHtmlString("#0A2046", out Color newColor))
         {
             buttonTMPText.color = newColor; // Apply hex color to TextMeshPro text
+
         }
-        image.color = Color.red;
+
+        if (ColorUtility.TryParseHtmlString("#FF5F5F", out Color newColor2))
+        {
+            image.color = newColor2; // Apply hex color to TextMeshPro text
+        }
     }
     private void Start()
     {
