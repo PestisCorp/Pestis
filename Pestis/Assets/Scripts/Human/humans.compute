@@ -1,0 +1,239 @@
+#define blockSize 512
+
+struct Boid
+{
+    float2 pos;
+    float2 vel;
+    uint poi;
+    uint poiBoid;
+    bool dead;
+};
+
+StructuredBuffer<Boid> boidsIn;
+RWStructuredBuffer<Boid> boidsOut;
+
+uniform uint numBoids;
+/// Number of boids in the previous frame
+uniform uint numBoidsPrevious;
+uniform float deltaTime;
+uniform float maxSpeed;
+uniform float minSpeed;
+uniform float edgeMargin;
+uniform float visualRangeSq;
+uniform float cohesionFactor;
+uniform float separationFactor;
+uniform float alignmentFactor;
+uniform float minDistanceSq;
+uniform float turnSpeed;
+uniform float xBound;
+uniform float yBound;
+/// Target position for boids to move towards
+float2 targetPos = float2(0, 0);
+uniform float targetFactor;
+// Player ID these boids belong to
+uniform int player;
+// Horde ID these boids belong to
+uniform int horde;
+
+uniform bool combatRats;
+
+float2 spawnPoint;
+
+float targetPosX;
+float targetPosY;
+/// Cumulative boid count for each grid cell
+/// I.e. count for block N is the sum of counts for blocks 0 to N
+StructuredBuffer<uint> gridOffsetBuffer;
+float gridCellSize;
+uint gridDimY;
+uint gridDimX;
+
+struct BoidPoi
+{
+    float2 Pos;
+    float RadiusSQ;
+    uint numBoids;
+};
+
+StructuredBuffer<BoidPoi> pois;
+StructuredBuffer<uint> poiNumBoids;
+
+uniform float poiGridCellSize;
+uniform uint poiGridDimX;
+uniform uint poiGridDimY;
+
+uint getPOIGridID(Boid boid)
+{
+    int x = floor(boid.pos.x / poiGridCellSize + poiGridDimX / 2);
+    int y = floor(boid.pos.y / poiGridCellSize + poiGridDimY / 2);
+    return (poiGridDimX * y) + x;
+}
+
+uint2 getGridLocation(Boid boid)
+{
+    int x = floor(boid.pos.x / gridCellSize + gridDimX / 2);
+    int y = floor(boid.pos.y / gridCellSize + gridDimY / 2);
+    return uint2(x, y);
+}
+
+/// Get Grid Index from 2D grid coordinate
+uint getGridID(uint2 pos)
+{
+    return (gridDimX * pos.y) + pos.x;
+}
+
+uint boidsPerPOI = 5;
+
+BoidPoi GetPOI(uint boidID)
+{
+    return pois[boidID / boidsPerPOI];
+}
+
+uint GetPOIBoidIndex(uint boidID)
+{
+    return boidID % boidsPerPOI;
+}
+
+void MergedBehaviours(inout Boid boid, uint3 id)
+{
+    float2 center = 0;
+    float2 close = 0;
+    float2 avgVel = 0;
+    uint neighbours = 0;
+
+    uint2 gridXY = getGridLocation(boid);
+    uint cell = getGridID(gridXY);
+
+    // Loop row above, current row, row below
+    for (uint y = cell - gridDimX; y <= cell + gridDimX; y += gridDimX)
+    {
+        // y-2 because that gives last index of boid in y-2, i.e. first index of boid in y-1
+        uint start = gridOffsetBuffer[y - 2];
+        uint end = gridOffsetBuffer[y + 1];
+        // Loop boids in left, center, right grid cells
+        for (uint i = start; i < end; i++)
+        {
+            Boid other = boidsIn[i];
+            if (other.dead) // Don't change behaviour because of corpses
+            {
+                continue;
+            }
+            float2 diff = boid.pos - other.pos;
+            float distSq = dot(diff, diff);
+
+            if (distSq > 0 && distSq < visualRangeSq)
+            {
+                if (distSq < minDistanceSq)
+                {
+                    close += diff / distSq;
+
+                    center += other.pos;
+                    avgVel += other.vel;
+                    neighbours++;
+                }
+            }
+        }
+    }
+
+    BoidPoi poi = pois[boid.poi];
+
+    if (boid.poiBoid >= poi.numBoids)
+    {
+        boid.dead = true;
+        return;
+    }
+
+    float2 poiClose = float2(0, 0);
+    float2 diff = boid.pos - poi.Pos;
+    float distSq = dot(diff, diff);
+
+    if (distSq > 0 && distSq < visualRangeSq)
+    {
+        if (distSq < poi.RadiusSQ)
+        {
+            poiClose = diff / distSq;
+        }
+    }
+
+    if (neighbours > 0)
+    {
+        center /= neighbours;
+        avgVel /= neighbours;
+
+        boid.vel += (center - boid.pos) * (cohesionFactor * deltaTime * turnSpeed);
+        boid.vel += (avgVel - boid.vel) * (alignmentFactor * deltaTime * turnSpeed);
+    }
+
+    float2 poiDiff = poi.Pos - boid.pos;
+    if (poiDiff.x != 0 && poiDiff.y != 0)
+    {
+        boid.vel += normalize(poiDiff) * (targetFactor * deltaTime * turnSpeed);
+    }
+    boid.vel += close * (separationFactor * deltaTime * turnSpeed);
+    boid.vel += poiClose * (50 * deltaTime * turnSpeed);
+}
+
+void LimitSpeed(inout Boid boid)
+{
+    float speed = length(boid.vel);
+    float clampedSpeed = clamp(speed, minSpeed, maxSpeed);
+    boid.vel *= clampedSpeed / speed;
+}
+
+void KeepInBounds(inout Boid boid)
+{
+    if (abs(boid.pos.x) > xBound)
+    {
+        boid.vel.x -= sign(boid.pos.x) * deltaTime * turnSpeed;
+    }
+    if (abs(boid.pos.y) > yBound)
+    {
+        boid.vel.y -= sign(boid.pos.y) * deltaTime * turnSpeed;
+    }
+}
+
+#pragma kernel InitBoids // ID 1
+[numthreads(blockSize, 1, 1)]
+void InitBoids(uint3 id: SV_DispatchThreadID)
+{
+    if (id.x >= numBoids)
+    {
+        return;
+    }
+
+    Boid boid;
+
+    boid.dead = false;
+    boid.poi = id.x / 5;
+    boid.poiBoid = id.x % 5;
+
+    BoidPoi poi = pois[boid.poi];
+    boid.pos = float2(poi.Pos.x + (boid.poiBoid + 1.0f) / 1000.0f, poi.Pos.y + (boid.poiBoid + 1.0f) / 1000);
+    boid.vel = float2((boid.poiBoid + 1.0f) / 1000.0f, (boid.poiBoid + 1.0f) / 1000);
+
+    boidsOut[id.x] = boid;
+}
+
+#pragma kernel UpdateBoids // ID 0
+[numthreads(blockSize, 1, 1)]
+void UpdateBoids(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= numBoids || boidsIn[id.x].dead)
+    {
+        if (boidsIn[id.x].dead)
+        {
+            boidsOut[id.x] = boidsIn[id.x];
+        }
+        return;
+    }
+
+    Boid boid = boidsIn[id.x];
+
+    MergedBehaviours(boid, id);
+    LimitSpeed(boid);
+    KeepInBounds(boid);
+
+    // Update positions
+    boid.pos += boid.vel * deltaTime;
+    boidsOut[id.x] = boid;
+}

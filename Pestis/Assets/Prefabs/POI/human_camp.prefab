@@ -5108,6 +5108,7 @@ MonoBehaviour:
   captureEffect:
   - {fileID: 3065136002907309646}
   patrolController: {fileID: 8940901211010643535}
+  boidPoisIndex: 0
   _ControlledBy: {fileID: 0}
   _StationedHordes: []
   _Combat: {fileID: 0}
@@ -5198,11 +5199,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b3477ab84b4ee9a5f2e8853119955c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  humanPrefab: {fileID: 6463158892316126659, guid: 4264f97e4dd0548a499c2bc2f37b319a, type: 3}
   poi: {fileID: -7888167734247629273}
   healthPerHuman: 5
   damagePerHuman: 0.5
   ratDPS: 0.5
   startingHumanCount: 8
-  _PatrolRadius: 5
+  boids: {fileID: 0}
   _CurrentHumanHealth: 0

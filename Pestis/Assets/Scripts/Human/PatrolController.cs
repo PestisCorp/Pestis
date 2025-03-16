@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System;
 using Fusion;
 using Horde;
 using POI;
@@ -8,7 +8,6 @@ namespace Human
 {
     public class PatrolController : NetworkBehaviour
     {
-        [SerializeField] private GameObject humanPrefab;
         [SerializeField] private POIController poi; // POI reference (van)
 
         // Each human's base health
@@ -21,7 +20,6 @@ namespace Human
         [SerializeField] private float ratDPS = 0.5f;
 
         public int startingHumanCount;
-        private readonly List<GameObject> _spawnedHumans = new();
 
         private Transform _poiCenter;
 
@@ -29,12 +27,10 @@ namespace Human
 
         public int HumanCount => (int)(CurrentHumanHealth / healthPerHuman); // Networked human count
 
-        [Networked]
-        [OnChangedRender(nameof(OnPatrolRadiusChanged))]
-        public float PatrolRadius { get; set; } = 5.0f; // Networked patrol radius
-
         // We store total health as a Networked field so that all players see the same value
-        [Networked] public float CurrentHumanHealth { get; set; }
+        [Networked]
+        [OnChangedRender(nameof(AdjustHumanCount))]
+        public float CurrentHumanHealth { get; set; }
 
         public override void Spawned()
         {
@@ -46,49 +42,9 @@ namespace Human
             if (HasStateAuthority) CurrentHumanHealth = startingHumanCount * healthPerHuman;
         }
 
-
-        private void OnPatrolRadiusChanged()
-        {
-            AdjustPatrolRadius();
-        }
-
-        private void AdjustPatrolRadius()
-        {
-            // Update the patrol radius for all humans
-            foreach (var human in _spawnedHumans)
-                if (human.TryGetComponent(out HumanController humanScript))
-                    humanScript.UpdatePatrolRadius(PatrolRadius);
-        }
-
         private void AdjustHumanCount()
         {
-            var difference = HumanCount - _spawnedHumans.Count;
-
-            if (difference > 0)
-                // Spawn more humans
-                for (var i = 0; i < difference; i++)
-                {
-                    var spawnPosition = _poiCenter.position + (Vector3)Random.insideUnitCircle * PatrolRadius;
-                    spawnPosition.z = 0;
-                    var human = Instantiate(humanPrefab, spawnPosition, Quaternion.identity);
-                    _spawnedHumans.Add(human);
-
-                    // Assign POI to HumanController
-                    if (human.TryGetComponent(out HumanController humanScript))
-                    {
-                        humanScript.SetPOI(_poiCenter);
-                        humanScript.UpdatePatrolRadius(PatrolRadius);
-                    }
-                }
-            else if (difference < 0)
-                // Remove excess humans
-                for (var i = 0; i < -difference; i++)
-                    if (_spawnedHumans.Count > 0)
-                    {
-                        var toRemove = _spawnedHumans[_spawnedHumans.Count - 1];
-                        _spawnedHumans.RemoveAt(_spawnedHumans.Count - 1);
-                        Destroy(toRemove);
-                    }
+            GameManager.Instance.BoidPois[poi.boidPoisIndex].NumBoids = Convert.ToUInt32(HumanCount);
         }
 
         // Can be used when dynamically changing human count is needed (e.g., UI buttons)
@@ -112,8 +68,6 @@ namespace Human
 
         public override void FixedUpdateNetwork()
         {
-            AdjustHumanCount();
-
             if (enemyHorde)
             {
                 if (enemyHorde.AliveRats < 5)
