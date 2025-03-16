@@ -28,8 +28,8 @@ public class UI_Manager : MonoBehaviour
     public GameObject abilityToolbar;
     public GameObject fearAndMorale;
     public GameObject objectives;
+    public TimerToScoreLock timer;
     public GameObject darkScreen;
-    
     // References to the resource text fields
     public TextMeshProUGUI cheeseTotalText;
     public TextMeshProUGUI cheeseRateText;
@@ -93,6 +93,8 @@ public class UI_Manager : MonoBehaviour
                 child.GetComponent<Image>().enabled = false;
             }
         }
+
+
     }
 
     private void FixedUpdate()
@@ -119,6 +121,16 @@ public class UI_Manager : MonoBehaviour
             // Update total horde text field
             if (hordeTotalText != null)
                 hordeTotalText.text = "0";
+
+            if(localPlayer.player.Score != null)
+            {
+                timer.UpdateScore(localPlayer.player.Score);
+            }
+
+            if (localPlayer.player.Timer != null)
+            {
+                timer.UpdateTimer(localPlayer.player.Timer);
+            }
         }
         if (attackPanel.activeSelf) AttackPanelRefresh();
     }
