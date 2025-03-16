@@ -16,6 +16,8 @@ TagManager:
   - DebugInfo
   - mutation_points
   - mutation_content
+  - mutation_type
+  - mutation_use
   layers:
   - Default
   - TransparentFX

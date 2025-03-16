@@ -536,6 +536,9 @@ public class UI_Manager : MonoBehaviour
                 textBox.GetComponent<Tooltip>().tooltipText = mutation.Tooltip;
                 var mutationType = GetComponentInChildrenWithTag<Image, GameObject>(textBox, "mutation_type")[0];
                 mutationType.sprite = Resources.Load<Sprite>(mutation.IsAbility ? "UI_design/Mutations/active_mutation" : "UI_design/Mutations/passive_mutation");
+                var mutationUse = GetComponentInChildrenWithTag<Image, GameObject>(textBox, "mutation_use")[0];
+                var path = "UI_design/Mutations/" + mutation.MutationUse + "_mutation";
+                mutationUse.sprite = Resources.Load<Sprite>(path);
                 textBox.GetComponentInChildren<TMP_Text>().text = mutation.MutationName;
             }
         }
@@ -551,6 +554,8 @@ public class UI_Manager : MonoBehaviour
                 mutations.Item1.IsAbility
                     ? Resources.Load<Sprite>("UI_design/Mutations/active_mutation")
                     : Resources.Load<Sprite>("UI_design/Mutations/passive_mutation");
+            GetComponentInChildrenWithTag<Image, Button>(buttons[0], "mutation_use")[0].sprite = 
+                Resources.Load<Sprite>("UI_design/Mutations/" + mutations.Item1.MutationUse + "_mutation");
             buttons[0].onClick.RemoveAllListeners();
             buttons[0].onClick.AddListener(delegate {evolutionManager.ApplyActiveEffects(mutations.Item1);});
             buttons[0].onClick.AddListener(delegate {Destroy(buttons[0].GetComponent<Tooltip>().tooltipInstance);});
@@ -561,6 +566,8 @@ public class UI_Manager : MonoBehaviour
                 mutations.Item2.IsAbility
                     ? Resources.Load<Sprite>("UI_design/Mutations/active_mutation")
                     : Resources.Load<Sprite>("UI_design/Mutations/passive_mutation");
+            GetComponentInChildrenWithTag<Image, Button>(buttons[1], "mutation_use")[0].sprite = 
+                Resources.Load<Sprite>("UI_design/Mutations/" + mutations.Item2.MutationUse + "_mutation");
             buttons[1].onClick.RemoveAllListeners();
             buttons[1].onClick.AddListener(delegate {evolutionManager.ApplyActiveEffects(mutations.Item2);});
             buttons[1].onClick.AddListener(delegate {Destroy(buttons[1].GetComponent<Tooltip>().tooltipInstance);});
@@ -571,6 +578,8 @@ public class UI_Manager : MonoBehaviour
                 mutations.Item3.IsAbility
                     ? Resources.Load<Sprite>("UI_design/Mutations/active_mutation")
                     : Resources.Load<Sprite>("UI_design/Mutations/passive_mutation");
+            GetComponentInChildrenWithTag<Image, Button>(buttons[2], "mutation_use")[0].sprite = 
+                Resources.Load<Sprite>("UI_design/Mutations/" + mutations.Item3.MutationUse + "_mutation");
             buttons[2].onClick.RemoveAllListeners();
             buttons[2].onClick.AddListener(delegate {evolutionManager.ApplyActiveEffects(mutations.Item3);});
             buttons[2].onClick.AddListener(delegate {Destroy(buttons[2].GetComponent<Tooltip>().tooltipInstance);});

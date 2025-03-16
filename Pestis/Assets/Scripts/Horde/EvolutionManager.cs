@@ -26,11 +26,12 @@ namespace Horde
         public int MutationWeight { get; set; }
         public string[] Effects { get; set; }
         public bool IsAbility { get; set; }
+        public string MutationUse {get; set;}
         public string Tooltip { get; set; }
 
         public bool Equals(ActiveMutation other)
         {
-            return MutationName == other.MutationName && MutationTag == other.MutationTag && MutationWeight == other.MutationWeight && Equals(Effects, other.Effects) && IsAbility == other.IsAbility && Tooltip == other.Tooltip;
+            return MutationName == other.MutationName && MutationTag == other.MutationTag && MutationWeight == other.MutationWeight && Equals(Effects, other.Effects) && IsAbility == other.IsAbility && Tooltip == other.Tooltip && other.MutationUse == MutationUse;
         }
 
         public override bool Equals(object obj)
@@ -40,7 +41,7 @@ namespace Horde
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(MutationName, MutationTag, MutationWeight, Effects, IsAbility, Tooltip);
+            return HashCode.Combine(MutationName, MutationTag, MutationWeight, Effects, IsAbility, MutationUse, Tooltip);
         }
         
         
