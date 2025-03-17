@@ -124,6 +124,16 @@ public class UI_Manager : MonoBehaviour
                     UpdateStats(obj, horde);
                 }
         }
+
+        if (actionPanel.activeSelf)
+        {
+            var toggles = attackPanel.GetComponentsInChildren<Toggle>();
+            foreach (var toggle in toggles)
+            {
+                var toggleText = toggle.GetComponentInChildren<TextMeshProUGUI>().text.Trim('\n');
+                if (toggle.isOn) GetSelectedHorde().SetCombatStrategy(toggleText);
+            }
+        }
     }
 
     // Function to reset all referenced canvases to their default states to prevent UI clutter
