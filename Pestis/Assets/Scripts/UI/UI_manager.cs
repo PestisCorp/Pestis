@@ -20,6 +20,7 @@ public class UI_Manager : MonoBehaviour
     [CanBeNull] public HumanPlayer localPlayer;
 
     public NetworkRunner NetworkRunner;
+    public GameObject runner;
     // References to the canvas elements
     public GameObject infoPanel;
     public GameObject attackPanel;
@@ -67,7 +68,7 @@ public class UI_Manager : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        if (timer.resetButton != null) { timer.resetButton.onClick.AddListener(() => TimerToScoreLock.reset(NetworkRunner, InputHandler.Instance.LocalPlayer.player.Username)); }
+        if (timer.resetButton != null) { timer.resetButton.onClick.AddListener(() => TimerToScoreLock.reset(NetworkRunner, runner, InputHandler.Instance.LocalPlayer.player.Username)); }
         // Ensure appropriate canvases are set to default at the start of the game
         ResetUI();
         StartCoroutine(showReset());

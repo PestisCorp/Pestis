@@ -25,11 +25,10 @@ public class TimerToScoreLock : MonoBehaviour
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
-    public static void reset(NetworkRunner runner, string username)
+    public static void reset(NetworkRunner netRunner, GameObject runner, string username)
     {
-        GameObject parent = runner.transform.parent.gameObject;
-        runner.Shutdown();
-        NetworkRunner newRunner = parent.AddComponent<NetworkRunner>();
+        netRunner.Shutdown();
+        NetworkRunner newRunner = runner.AddComponent<NetworkRunner>();
         GameManager.Instance.localUsername = username;
         var args = new StartGameArgs();
         args.GameMode = GameMode.Shared;
