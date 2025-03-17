@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Horde;
-using MathNet.Numerics.Statistics;
 using MoreLinq.Extensions;
 using POI;
 using UnityEditor;
@@ -28,7 +27,7 @@ namespace Players
         /// <summary>
         ///     Multiplier to current `aggressionUncapped`, makes a horde more likely to take offensive action at all times
         /// </summary>
-        public float BaseAggression { get; private set; } = 1.0f;
+        public float BaseAggression { get; private set; } = 5.0f;
 
         /// <summary>
         ///     Arbitrary float, starts at 0.0, and increases over time - increasing desire to take offensive action. Reset to zero
@@ -37,7 +36,7 @@ namespace Players
         /// </summary>
         public float AggressionUncapped { get; private set; }
 
-        public float AggressionRange => 400.0f * AggressionUncapped * BaseAggression;
+        public float AggressionRange => 10000.0f * AggressionUncapped * BaseAggression;
 
         /// <summary>
         ///     True if this instance is the one that should handle the bot
@@ -60,13 +59,10 @@ namespace Players
             if (_timeSinceLastUpdate < 1.0f) return;
             _timeSinceLastUpdate = 0.0f;
 
-            var allHordes =
-                FindObjectsByType<HordeController>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).ToList();
+            var allHordes = GameManager.Instance.AllHordes;
 
-            var allPoi =
-                FindObjectsByType<POIController>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).ToList();
+            var allPoi = GameManager.Instance.pois;
 
-            var medianHordeSize = allHordes.Select(horde => horde.TotalHealth).Median();
 
             // Check possible actions for each horde, exiting when a horde takes an action
             foreach (var myHorde in player.Hordes)
@@ -77,13 +73,14 @@ namespace Players
                 var hordesByDistance = allHordes.Select(horde =>
                         new Tuple<HordeController, float>(horde,
                             (horde.GetBounds().center - myHorde.GetBounds().center).sqrMagnitude))
-                    .OrderBy(horde => horde.Item2).ToList();
+                    .OrderBy(horde => horde.Item2).GetEnumerator();
 
-                // Remove the closest horde as it's ourselves!
-                hordesByDistance.RemoveAt(0);
+                hordesByDistance.MoveNext();
+                hordesByDistance.MoveNext();
 
-                var closestHorde = hordesByDistance.First().Item1;
-                var closestHordeDistance = hordesByDistance.First().Item2;
+                // First closest horde is us, so get second
+                var closestHorde = hordesByDistance.Current.Item1;
+                var closestHordeDistance = hordesByDistance.Current.Item2;
 
                 var distFromHordeEdgeToClosestHorde = closestHordeDistance -
                                                       closestHorde.GetBounds()
@@ -122,7 +119,7 @@ namespace Players
 
                 // MANAGEMENT ACTIONS
 
-                if (myHorde.TotalHealth > 3 * medianHordeSize &&
+                if (myHorde.TotalHealth > 3 * GameManager.Instance.medianHordeHealth &&
                     myHorde.TotalHealth / myHorde.GetPopulationState().HealthPerRat > 10)
                 {
                     player.SplitHorde(myHorde, 0.5f);

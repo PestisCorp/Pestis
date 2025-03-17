@@ -3,17 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Fusion;
+using Human;
 using JetBrains.Annotations;
 using KaimiraGames;
+using Objectives;
 using Players;
 using POI;
 using TMPro;
 using UI;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace Horde
 {
@@ -49,7 +51,6 @@ namespace Horde
 
         public GameObject ratPrefab;
         public bool isHedgehogged;
-
         public GameObject moraleAndFearInstance;
 
         // Do not use or edit yourself, used to expose internals to Editor
@@ -62,7 +63,6 @@ namespace Horde
         /// </summary>
         public NetworkTransform targetLocation;
 
-        private CooldownBar[] fearAndMoraleBars;
         /// <summary>
         ///     Distance a rat must get to its current intra-horde target to move onto the next one
         /// </summary>
@@ -73,8 +73,8 @@ namespace Horde
         /// </summary>
         public Vector2[] intraHordeTargets = new Vector2[4];
 
-        public bool isApparition = false;
-        
+        public bool isApparition;
+
         /// <summary>
         ///     Seconds until we can start simulating population again after combat.
         /// </summary>
@@ -88,10 +88,11 @@ namespace Horde
 
         [SerializeField] private PopulationController _populationController;
 
-        public RatBoids boids;
-
-
         private readonly List<RatController> _spawnedRats = new();
+
+        private readonly Queue<Sprite> _speechBubbles = new();
+
+        [CanBeNull] private PatrolController _attackingPatrol;
         private Camera _camera;
 
         [CanBeNull] private string _combatStrategy;
@@ -108,15 +109,17 @@ namespace Horde
         private Light2D _selectionLightPoi;
 
         private Light2D _selectionLightTerrain;
+        private bool _speechBubbleActive;
 
         [CanBeNull] private HordeController _targetHorde;
+
+        private CooldownBar[] fearAndMoraleBars;
 
 
         [CanBeNull] private Action OnArriveAtTarget;
 
-        private readonly Queue<Sprite> _speechBubbles = new();
-        private bool _speechBubbleActive;
-        
+        public RatBoids boids { get; private set; }
+
         /// <summary>
         ///     Time in seconds since game start when the horde last finished combat
         /// </summary>
@@ -263,6 +266,14 @@ Count: {AliveRats}
             CheckArrivedAtPoi();
             CheckArrivedAtCombat();
 
+            if (_attackingPatrol)
+            {
+                var damageToDeal = AliveRats / 50.0f * (GetPopulationState().Damage
+                                                        * GetPopulationState().DamageMult
+                                                        * GetPopulationState().SepticMult);
+                _attackingPatrol.DealDamageRpc(damageToDeal);
+            }
+
             if (InCombat && CurrentCombatController!.boids.containedHordes.Contains(this))
             {
                 if (_evolutionManager.GetEvolutionaryState().AcquiredEffects.Contains("unlock_septic_bite"))
@@ -284,18 +295,21 @@ Count: {AliveRats}
 
                     if (enemy.GetEvolutionState().AcquiredEffects.Contains("unlock_mentat"))
                     {
-                        var random = UnityEngine.Random.Range(0f, 1f);
+                        var random = Random.Range(0f, 1f);
                         if (random < 0.05) return;
                     }
-                    enemy.DealDamageRpc(AliveRats / 50.0f * ((GetPopulationState().Damage
-                                                                 * GetPopulationState().DamageMult
-                                                                 * GetPopulationState().SepticMult + bonusDamage)
-                                                             / enemyHordes.Length));
+
+                    var damageToDeal = AliveRats / 50.0f * ((GetPopulationState().Damage
+                                                                * GetPopulationState().DamageMult
+                                                                * GetPopulationState().SepticMult + bonusDamage)
+                                                            / enemyHordes.Length);
+                    enemy.DealDamageRpc(damageToDeal);
+                    Player.TotalDamageDealt += damageToDeal;
                     if (enemy.isHedgehogged) DealDamageRpc(0.001f);
                 }
             }
         }
-        
+
         public void AddSpeechBubble(Sprite bubble)
         {
             _speechBubbles.Enqueue(bubble);
@@ -340,12 +354,20 @@ Count: {AliveRats}
             }
 
             // If the POI isn't being defended, we can just take over without combat.
-            if (TargetPoi.StationedHordes.Count == 0)
+            if (TargetPoi.StationedHordes.Count == 0 && TargetPoi.patrolController.HumanCount == 0)
             {
                 var icon = Resources.Load<Sprite>("UI_design/Emotes/defend_emote");
                 AddSpeechBubble(icon);
                 TargetPoi.ChangeController(Player);
                 StationAtRpc(TargetPoi);
+                return;
+            }
+
+            if (TargetPoi.patrolController.HumanCount != 0)
+            {
+                _attackingPatrol = TargetPoi.patrolController;
+                TargetPoi.patrolController.AttackRpc(this);
+                TargetPoi = null;
                 return;
             }
 
@@ -392,6 +414,7 @@ Count: {AliveRats}
                 Player.RemoveCheeseRpc(Player.CurrentCheese * 0.1f);
                 _targetHorde.Player.AddCheeseRpc(Player.CurrentCheese * 0.1f);
             }
+
             AddBoidsToCombatRpc(CurrentCombatController);
             _combatStrategy = null;
             _targetHorde = null;
@@ -401,6 +424,7 @@ Count: {AliveRats}
         public void StationAtRpc(POIController poi)
         {
             Debug.Log($"Adding myself (horde {Object.Id}) to POI: {poi.Object.Id}");
+            _attackingPatrol = null;
             poi.AttackRpc(this);
             Move(poi.transform.position);
             StationedAt = poi;
@@ -416,7 +440,7 @@ Count: {AliveRats}
             StationedAt = null;
         }
 
-        
+
         public void IncreaseFear()
         {
             if (fearAndMoraleBars[0].name == "FearBar")
@@ -425,7 +449,6 @@ Count: {AliveRats}
                 fearAndMoraleBars[0].current -= 2;
                 if (fearAndMoraleBars[0].current != 0) return;
                 StartCoroutine(FearDebuff(fearAndMoraleBars[0]));
-
             }
             else
             {
@@ -454,8 +477,10 @@ Count: {AliveRats}
 
         public override void Spawned()
         {
+            _populationController = GetComponent<PopulationController>();
             _evolutionManager = GetComponent<EvolutionManager>();
             Player = GetComponentInParent<Player>();
+            boids = GetComponentInChildren<RatBoids>();
             Player.Hordes.Add(this);
 
             if (HasStateAuthority) // Ensure only the host assigns colors
@@ -484,8 +509,8 @@ Count: {AliveRats}
             text.text = Player.Username;
             hordeIcon = transform.Find("Canvas/PlayerName/HordeIcon").gameObject;
             var icon = hordeIcon.GetComponent<Image>();
-            
-            
+
+
             speechBubble = transform.Find("Canvas/PlayerName/SpeechBubble").gameObject;
 
             if (Player.IsLocal)
@@ -502,12 +527,9 @@ Count: {AliveRats}
             }
 
             moraleAndFearInstance = Instantiate(FindFirstObjectByType<UI_Manager>().fearAndMorale);
-            fearAndMoraleBars = moraleAndFearInstance.GetComponentsInChildren<CooldownBar>();
-            foreach (CooldownBar bar in fearAndMoraleBars)
-            {
-                bar.current = bar.maximum;
-            }
+            foreach (var bar in moraleAndFearInstance.GetComponentsInChildren<CooldownBar>()) bar.current = bar.maximum;
             moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
+            // Needed to spawn in rats from joined session
         }
 
 
@@ -585,6 +607,7 @@ Count: {AliveRats}
             Debug.Log("Retreating!");
 
             CurrentCombatController = null;
+            _attackingPatrol = null;
 
             var baseCamp = transform.parent.position;
             if (Player.ControlledPOIs.Count != 0)
@@ -621,7 +644,7 @@ Count: {AliveRats}
         {
             boids.TeleportHorde(target, GetBounds());
         }
-        
+
         public void AttackPoi(POIController poi)
         {
             Debug.Log("Attacking POI");
@@ -670,6 +693,7 @@ Count: {AliveRats}
             var icon = Resources.Load<Sprite>("UI_design/Emotes/attack_emote");
             AddSpeechBubble(icon);
             moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 1;
+            GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.CombatStarted, 1);
         }
 
         private IEnumerator ApplyStrategy(CombatOptions action)
@@ -873,7 +897,7 @@ Count: {AliveRats}
         {
             boids.SplitBoids(numBoids, numToSplit, other.boids);
         }
-        
+
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         public void CreateApparitionRPC(HordeController other, int numToClone)
         {

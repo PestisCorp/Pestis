@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Horde;
 using JetBrains.Annotations;
 using Players;
@@ -7,6 +8,7 @@ using TMPro;
 using UI;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 using Color = UnityEngine.Color;
 
@@ -25,7 +27,9 @@ public class UI_Manager : MonoBehaviour
     public GameObject splitPanel;
     public GameObject abilityToolbar;
     public GameObject fearAndMorale;
-
+    public GameObject objectives;
+    public TimerToScoreLock timer;
+    public GameObject darkScreen;
     // References to the resource text fields
     public TextMeshProUGUI cheeseTotalText;
     public TextMeshProUGUI cheeseRateText;
@@ -37,8 +41,6 @@ public class UI_Manager : MonoBehaviour
     // Button type wouldn't show in inspector so using GameObject instead
     public GameObject moveButton;
     public GameObject moveButtonInfo;
-    
-    
     
     public bool moveFunctionality;
 
@@ -69,6 +71,12 @@ public class UI_Manager : MonoBehaviour
         if (toolbar != null) toolbar.SetActive(false);
         if (abilityToolbar != null) abilityToolbar.SetActive(false);
         if (resourceStats != null) resourceStats.SetActive(false);
+        if (objectives != null) objectives.SetActive(false);
+        if (darkScreen != null)
+        {
+            darkScreen.GetComponent<Canvas>().enabled = false;
+            darkScreen.SetActive(false);
+        }
         displayResourceInfo = false;
         moveFunctionality = false;
 
@@ -85,9 +93,8 @@ public class UI_Manager : MonoBehaviour
                 child.GetComponent<Image>().enabled = false;
             }
         }
-        
-        
-        
+
+
     }
 
     private void FixedUpdate()
@@ -114,6 +121,16 @@ public class UI_Manager : MonoBehaviour
             // Update total horde text field
             if (hordeTotalText != null)
                 hordeTotalText.text = "0";
+
+            if(localPlayer.player.Score != null)
+            {
+                timer.UpdateScore(localPlayer.player.Score);
+            }
+
+            if (localPlayer.player.Timer != null)
+            {
+                timer.UpdateTimer(localPlayer.player.Timer);
+            }
         }
         if (attackPanel.activeSelf) AttackPanelRefresh();
     }
@@ -123,10 +140,21 @@ public class UI_Manager : MonoBehaviour
     // Not including toolbar as this is controlled by the player selecting a horde
     public void ResetUI()
     {
-        if (infoPanel != null) infoPanel.SetActive(false);
-        if (attackPanel != null) attackPanel.SetActive(false);
-        if (splitPanel != null) splitPanel.SetActive(false);
+        if (infoPanel != null)
+        {
+            infoPanel.SetActive(false);
+        }
 
+        if (attackPanel != null)
+        {
+            attackPanel.SetActive(false);
+        }
+
+        if (splitPanel != null)
+        {
+            splitPanel.SetActive(false);
+        }
+        
         // Ignoring the state of the tool bar, ensuring the default buttons are visible
         var toolbarButtons = GameObject.FindGameObjectsWithTag("UI_button_action");
         foreach (var obj in toolbarButtons) obj.GetComponent<Image>().enabled = true;
@@ -233,7 +261,7 @@ public class UI_Manager : MonoBehaviour
                 case "Frontal Assault":
                     optionInfo.optionText = "Consistently high damage per second, lower armor.";
                     break;
-                case "Shock and Awe":
+                case "Shock And Awe":
                     optionInfo.optionText = "Massively buff damage. Large decrease in armor. Return to normal stats after 10 seconds. Lower ability cooldown.";
                     break;
                 case "Envelopment":
@@ -333,6 +361,16 @@ public class UI_Manager : MonoBehaviour
         if (resourceStats != null) resourceStats.SetActive(false);
     }
 
+    public void ObjectiveChecklistEnable()
+    {
+        if (objectives != null) objectives.SetActive(true);
+    }
+
+    public void ObjectiveChecklistDisable()
+    {
+        if (objectives != null) objectives.SetActive(false);
+    }
+    
     //To display the correct UI the LocalPlayer will be monitored and when they select a horde the toolbar will be displayed
     //The selected horde game object will also be acquired so the horde statistics can be retrieved and displayed
 
@@ -646,5 +684,19 @@ public class UI_Manager : MonoBehaviour
             StartCoroutine(ShowNextMessage());
         else
             _messageActive = false;
+    }
+
+    private void HighlightUiElement(GameObject uiToHighlight)
+    {
+        uiToHighlight.GetComponent<Canvas>().sortingOrder = 2;
+        darkScreen.SetActive(true);
+        darkScreen.GetComponent<Canvas>().enabled = true;
+    }
+    
+    private void UnhighlightUiElement(GameObject uiToUnhighlight)
+    {
+        darkScreen.GetComponent<Canvas>().enabled = false;
+        darkScreen.SetActive(false);
+        uiToUnhighlight.GetComponent<Canvas>().sortingOrder = 0;
     }
 }

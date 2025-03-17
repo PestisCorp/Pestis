@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using File = System.IO.File;
 using Random = System.Random;
 using KaimiraGames;
+using Objectives;
 using UnityEngine.Tilemaps;
 
 // TODO: Change AcquiredMutations to a HashSet.
@@ -230,6 +231,11 @@ namespace Horde
             {
                 _evolutionaryState.AcquiredAbilities.Add((mutation.MutationName, mutation.Tooltip));
             }
+
+            if (mutation.MutationName.Contains("swim"))
+            {
+                GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.SwimmingUnlocked, 1);
+            }
         }
         
         private void CalculateActiveWeights()
@@ -258,8 +264,9 @@ namespace Horde
             _evolutionaryState.PassiveEvolutions["StoneResistance"] = new[] { 0.03, _populationController.GetState().StoneResistance, 2.5 };
             _evolutionaryState.PassiveEvolutions["DesertResistance"] = new[] { 0.03, _populationController.GetState().DesertResistance, 2.5 };
             _evolutionaryState.PassiveEvolutions["GrassResistance"] = new[] { 0.03, _populationController.GetState().GrassResistance, 2.5 };
-            _evolutionaryState.PassiveEvolutions["evolution rate"] = new []{ 0.01, 8, 0.5};
-            _evolutionaryState.PassiveEvolutions["evolution strength"] = new []{ 0.01, 1.02, 1.3};
+
+            _evolutionaryState.PassiveEvolutions["evolution rate"] = new []{ 0.01, 4, 0.5};
+
             _evolutionaryState.PassiveEvolutions["birth rate"] = new[]{ 0.01, _populationController.GetState().BirthRate, 0.1};
             //_evolutionaryState.PassiveEvolutions["resource consumption"] = new []{ 0.0005, _hordeController.Player.CheeseIncrementRate };
             // Need to change the default values for rate, and strength of evolutions to referring to values in PC.State (for horde split reasons)
@@ -269,8 +276,8 @@ namespace Horde
         private void CreateActiveEvolutions()
         {
             _rareMutationClock.Start();
-            string json = File.ReadAllText("Assets/json/active_mutations.json");
-            var activeMutations = JsonConvert.DeserializeObject<List<ActiveMutation>>(json);
+            var json = Resources.Load<TextAsset>("active_mutations");
+            var activeMutations = JsonConvert.DeserializeObject<List<ActiveMutation>>(json.text);
             foreach (var mut in activeMutations)
             {
                 _evolutionaryState.ActiveMutations.Add(mut, mut.MutationWeight);

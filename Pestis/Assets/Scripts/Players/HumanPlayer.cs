@@ -14,7 +14,7 @@ namespace Players
         public bool IsLocal;
 
         public Player player;
-
+        
         private UI_Manager UI_manager;
 
         private void Awake()
@@ -32,6 +32,8 @@ namespace Players
 
                 //Enable resource stats upon loading in
                 UI_manager.ResourceStatsEnable();
+                // Enable objective checklist upon loading in
+                UI_manager.ObjectiveChecklistEnable();
             }
         }
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using Fusion;
 using JetBrains.Annotations;
+using Objectives;
 using Players;
 using POI;
 using UnityEditor;
@@ -205,7 +206,11 @@ POI: {FightingOver}
                 var winner = Participators.First().Key;
                 Debug.Log($"Combat is over! Winner is {winner.Object.StateAuthority}");
                 var winnerParticipant = Participators.First().Value;
-
+                if (winner.IsLocal)
+                {
+                    GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.BattleWon, 1);
+                }
+                
                 // Tell each winning horde that they won.
                 foreach (var hordeID in winnerParticipant.Hordes)
                 {

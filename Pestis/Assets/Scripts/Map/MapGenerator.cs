@@ -14,8 +14,8 @@ namespace Map
         private FastNoise _noiseGenerator;
         public List<BiomeInstance> BiomeList = new(); //every instance of each biome
         public MapBehaviour Map;
-        public int RandomWalkSteps = 300000;
-        public int Smoothing = 2;
+        public int RandomWalkSteps = 700000;
+        public int Smoothing = 8;
         public float VoronoiFrequency = 0.00f;
         public static List<Vector3> cityPositions = new List<Vector3>();
         public void GenerateMap()
@@ -64,6 +64,8 @@ namespace Map
             //automata(); automata(); automata();
             foreach (var biome in BiomeList)
             {
+                biome.template.FeatureGeneration(Map.tilemap, biome, Map.poi);
+                biome.template.FeatureGeneration(Map.tilemap, biome, Map.poi);
                 biome.template.FeatureGeneration(Map.tilemap, biome, Map.poi);
             }
         }

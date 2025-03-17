@@ -290,7 +290,7 @@ MonoBehaviour:
   m_AnchorPositionOffset: {x: 0, y: 0, z: 0}
   m_Yaw: 0
   m_Pitch: -4.759999
-  m_Roll: 149
+  m_Roll: 148.99998
 --- !u!1 &3012503183074921634
 GameObject:
   m_ObjectHideFlags: 0
@@ -745,7 +745,7 @@ Light:
   m_BounceIntensity: 100
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 2.2492e-41, y: 0, z: 0, w: 1e-45}
+  m_BoundingSphereOverride: {x: 5.56e-43, y: 2.964e-42, z: 0, w: -5.2467458e+32}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -981,10 +981,7 @@ GameObject:
   - component: {fileID: 6961251568612682153}
   - component: {fileID: 4668771228012965489}
   - component: {fileID: -7118694052808421423}
-  - component: {fileID: -8052047275079063060}
-  - component: {fileID: -3920070636787022238}
   - component: {fileID: 9182480813729240789}
-  - component: {fileID: -3669862406392348714}
   m_Layer: 6
   m_Name: Van
   m_TagString: Untagged
@@ -1005,7 +1002,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8025545934159684797}
   - {fileID: 2896802335499096407}
   - {fileID: 5529443703215605352}
   - {fileID: 6714983942184648776}
@@ -1015,6 +1011,7 @@ Transform:
   - {fileID: 78548756937403997}
   - {fileID: 3736164885664395960}
   - {fileID: 178331905412369752}
+  - {fileID: 8025545934159684797}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!60 &8837734282123601821
@@ -1097,7 +1094,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a2b2d45d5384d9db834f00036e8fcf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  captureEffect: {fileID: 4026888961485790380}
+  captureEffect:
+  - {fileID: 4026888961485790380}
+  patrolController: {fileID: 9182480813729240789}
+  boidPoisIndex: 0
   _ControlledBy: {fileID: 0}
   _StationedHordes: []
   _Combat: {fileID: 0}
@@ -1115,47 +1115,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 3859473980
   ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours: []
-  ForceRemoteRenderTimeframe: 0
---- !u!114 &-8052047275079063060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7727599578141111434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a2b2d45d5384d9db834f00036e8fcf1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  captureEffect: {fileID: 0}
-  _ControlledBy: {fileID: 0}
-  _StationedHordes: []
-  _Combat: {fileID: 0}
---- !u!114 &-3920070636787022238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7727599578141111434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 137881239
-  ObjectInterest: 1
-  Flags: 262145
+  Flags: 131073
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 4668771228012965489}
-  - {fileID: -8052047275079063060}
   - {fileID: 9182480813729240789}
-  - {fileID: -3669862406392348714}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &9182480813729240789
 MonoBehaviour:
@@ -1169,27 +1133,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b3477ab84b4ee9a5f2e8853119955c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  humanPrefab: {fileID: 6463158892316126659, guid: 4264f97e4dd0548a499c2bc2f37b319a, type: 3}
-  poi: {fileID: 7727599578141111434}
-  _HumanCount: 6
-  _PatrolRadius: 5
---- !u!114 &-3669862406392348714
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7727599578141111434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f66c5359dd5447f1aded2c1c7490f983, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  patrolController: {fileID: 9182480813729240789}
+  poi: {fileID: 4668771228012965489}
   healthPerHuman: 5
-  damagePerHuman: 0.05
-  _CurrentHumanHealth: 0
+  damagePerHuman: 0.5
   ratDPS: 0.5
+  startingHumanCount: 3
+  boids: {fileID: 0}
+  _CurrentHumanHealth: 0
 --- !u!1 &7965740167955942159
 GameObject:
   m_ObjectHideFlags: 0
@@ -1217,8 +1167,8 @@ Transform:
   m_GameObject: {fileID: 7965740167955942159}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.83, y: 0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.83, y: 0, z: 0}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3309625838257214266}
@@ -1307,7 +1257,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.8
+      scalar: 1.5
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -2499,7 +2449,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.8584906, g: 0.8184007, b: 0.45759168, a: 1}
+        key0: {r: 1, g: 0.9634665, b: 0.6273585, a: 0.7921569}
         key1: {r: 0.854902, g: 0.81568635, b: 0.46274513, a: 0.12647057}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}

@@ -1,0 +1,106 @@
+[
+	{
+		"MutationName": "Septic bite",
+		"MutationTag" : "disease",
+		"MutationWeight": 10,
+		"Effects": ["unlock_septic_bite"],
+		"Tooltip": "Deal ramping damage that ignores armor.",
+		"IsAbility": false
+	},
+	{
+		"MutationName": "Pestis",
+		"MutationTag": "disease",
+		"MutationWeight": 10,
+		"Effects": ["unlock_pestis", "unlock_disease_resistance", "unlock_human_aggression"],
+		"Tooltip": "Unleash the plague by sacrificing 30% of your population. Enemy rats have reduced armor. Enemy humans extend their patrol radius. Gain immunity to disease.",
+		"IsAbility": true
+	},
+	{
+		"MutationName": "Sewer Dwellers",
+		"MutationTag" : "disease",
+		"MutationWeight": 10,
+		"Effects": ["unlock_city_boost", "unlock_sewer_travel"],
+		"Tooltip": "Gain stat boosts in the city. You can use the sewers to instantly travel to the closest city.",
+		"IsAbility": true
+	},
+	{
+		"MutationName": "Fester",
+		"MutationTag": "disease",
+		"MutationWeight": 10,
+		"Effects": ["unlock_fester"],
+		"Tooltip": "Stats improve by 10%, future disease mutations grant the same buff.",
+		"IsAbility": false
+	},
+	{
+		"MutationName": "Necrosis",
+		"MutationTag": "disease",
+		"MutationWeight": 10,
+		"Effects": ["unlock_necrosis"],
+		"Tooltip": "Your armor is reduced by 20% but your rat corpses deal damage to enemies.",
+		"IsAbility": false
+	},
+	{
+		"MutationName": "Poltergeist",
+		"MutationTag": "psionic",
+		"MutationWeight": 10,
+		"Effects": ["unlock_poltergeist"],
+		"Tooltip": "Become impervious to damage from enemies for 5 seconds.",
+		"IsAbility": true
+	},
+	{
+		"MutationName": "Haunt",
+		"MutationTag": "psionic",
+		"MutationWeight": 10,
+		"Effects": ["unlock_haunt"],
+		"Tooltip": "When a rat you control dies, traumatise your enemies.",
+		"IsAbility": false
+	},
+	{
+		"MutationName": "Apparition",
+		"MutationTag": "psionic",
+		"MutationWeight": 10,
+		"Effects": ["unlock_apparition"],
+		"Tooltip": "Create an apparition of your horde that you cannot control. It lasts for 20 seconds.",
+		"IsAbility": true
+	},
+	{
+		"MutationName": "Mentat",
+		"MutationTag": "psionic",
+		"MutationWeight": 10,
+		"Effects": ["unlock_mentat"],
+		"Tooltip": "There is a chance you can predict an attack and dodge it.",
+		"IsAbility": false
+	},
+	{
+		"MutationName": "Abraxas",
+		"MutationTag": "psionic",
+		"MutationWeight": 10,
+		"Effects": ["unlock_abraxas"],
+		"Tooltip": "Stats improve by 10%, future psionic mutations grant the same buff.",
+		"IsAbility": false
+	},
+	{
+		"MutationName": "Agriculturalist",
+		"MutationTag": "diplomacy",
+		"MutationWeight": 10,
+		"Effects": ["Farmer"],
+		"Tooltip": "Resource output on grass tiles increases by 20%.",
+		"IsAbility": true
+	},
+	{
+		"MutationName": "Price of War",
+		"MutationTag": "diplomacy",
+		"MutationWeight": 10,
+		"Effects": ["unlock_price_of_war"],
+		"Tooltip": "Enemy rats have to donate cheese in order to start combat with you.",
+		"IsAbility": false
+	},
+	{
+		"MutationName": "War Hawk",
+		"MutationTag": "diplomacy",
+		"MutationWeight": 10,
+		"Effects": ["unlock_war_hawk"],
+		"Tooltip": "Your ability cooldowns refresh on combat victory.",
+		"IsAbility": false
+	}
+]

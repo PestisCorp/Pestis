@@ -4,34 +4,33 @@ on:
         - main
 
 jobs:
-    build:
+    test:
       permissions:
         contents: write
         checks: write
         statuses: write
-      name: Build release
+      name: Run Tests
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       runs-on: self-hosted
+      outputs:
+        version: ${{ steps.release.outputs.version }}
       steps:
-        - uses: rymndhng/release-on-push-action@master
-          id: release
-          with:
-            bump_version_scheme: minor
-
         # Checkout
         - name: Checkout repository
           uses: actions/checkout@v4
           with:
-            lfs: true
+            lfs: false
 
         # Cache
         - uses: actions/cache@v3
           with:
             path: Pestis/Library
-            key: Pestis/Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+            key: Pestis/Library
             restore-keys: |
               Pestis/Library-
+              Library-Pestis
+              Library-
 
         # Test
         - name: Run tests
@@ -45,7 +44,40 @@ jobs:
             projectPath: Pestis
             runAsHostUser: true
             chownFilesTo: ec2-user
+    
+        - uses: rymndhng/release-on-push-action@master
+          id: release
+          with:
+            bump_version_scheme: minor
+  
 
+    build-linux:
+      needs: test
+      permissions:
+        contents: write
+        checks: write
+        statuses: write
+      name: Build Linux
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      runs-on: self-hosted
+      steps:
+
+        # Checkout
+        - name: Checkout repository
+          uses: actions/checkout@v4
+          with:
+            lfs: false
+
+        # Cache
+        - uses: actions/cache@v3
+          with:
+            path: Pestis/Library
+            key: Pestis/Library-Linux
+            restore-keys: |
+              Pestis/Library-
+              Library-Pestis
+              Library-
 
         # Build
         - name: Build Linux
@@ -57,14 +89,41 @@ jobs:
           with:
             targetPlatform: StandaloneLinux64
             versioning: Custom
-            version: ${{steps.release.outputs.version  }}
+            version: ${{needs.test.outputs.version  }}
             projectPath: Pestis
             runAsHostUser: true
             chownFilesTo: ec2-user
 
         # Output
         - name: Zip Linux build to hosting folder
-          run:  mkdir -p /home/ec2-user/actions-runner/builds/${{ steps.release.outputs.version   }}/ && zip -urD /home/ec2-user/actions-runner/builds/${{ steps.release.outputs.version  }}/linux.zip build/StandaloneLinux64 
+          run:  mkdir -p /home/ec2-user/actions-runner/builds/${{ needs.test.outputs.version  }}/ && zip -urD /home/ec2-user/actions-runner/builds/${{ needs.test.outputs.version  }}/linux.zip build/StandaloneLinux64 
+
+    build-windows:
+      needs: test
+      permissions:
+        contents: write
+        checks: write
+        statuses: write
+      name: Build Windows
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      runs-on: self-hosted
+      steps:
+        # Checkout
+        - name: Checkout repository
+          uses: actions/checkout@v4
+          with:
+            lfs: false
+
+        # Cache
+        - uses: actions/cache@v3
+          with:
+            path: Pestis/Library
+            key: Pestis/Library-Windows
+            restore-keys: |
+              Pestis/Library-
+              Library-Pestis
+              Library-
 
         # Build
         - name: Build Windows
@@ -76,7 +135,7 @@ jobs:
           with:
             targetPlatform: StandaloneWindows64
             versioning: Custom
-            version: ${{steps.release.outputs.version  }}
+            version: ${{needs.test.outputs.version}}
             projectPath: Pestis
             runAsHostUser: true
             chownFilesTo: ec2-user
@@ -84,9 +143,7 @@ jobs:
 
         # Output
         - name: Zip Windows build to hosting folder
-          run: zip -urD /home/ec2-user/actions-runner/builds/${{ steps.release.outputs.version  }}/windows.zip build/StandaloneWindows64 
-     
-
+          run: mkdir -p /home/ec2-user/actions-runner/builds/${{ needs.test.outputs.version  }}/ && zip -urD /home/ec2-user/actions-runner/builds/${{needs.test.outputs.version}}/windows.zip build/StandaloneWindows64 
 
         - name: Symlink to latest
-          run: ln -sfn /home/ec2-user/actions-runner/builds/${{ steps.release.outputs.version }} /home/ec2-user/actions-runner/builds/latest
+          run: ln -sfn /home/ec2-user/actions-runner/builds/${{needs.test.outputs.version}} /home/ec2-user/actions-runner/builds/latest

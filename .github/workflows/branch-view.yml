@@ -9,12 +9,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-    build:
+    test:
       permissions:
         contents: write
         checks: write
         statuses: write
-      name: Build release
+      name: Run Tests
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       runs-on: self-hosted
@@ -23,13 +23,13 @@ jobs:
         - name: Checkout repository
           uses: actions/checkout@v4
           with:
-            lfs: true
+            lfs: false
 
         # Cache
         - uses: actions/cache@v3
           with:
             path: Pestis/Library
-            key: Pestis/Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+            key: Pestis/Library
             restore-keys: |
               Pestis/Library-
               Library-Pestis
@@ -48,6 +48,32 @@ jobs:
             runAsHostUser: true
             chownFilesTo: ec2-user
 
+    build-linux:
+      needs: test
+      permissions:
+        contents: write
+        checks: write
+        statuses: write
+      name: Build Linux
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      runs-on: self-hosted
+      steps:
+        # Checkout
+        - name: Checkout repository
+          uses: actions/checkout@v4
+          with:
+            lfs: false
+
+        # Cache
+        - uses: actions/cache@v3
+          with:
+            path: Pestis/Library
+            key: Pestis/Library-Linux
+            restore-keys: |
+              Pestis/Library-
+              Library-Pestis
+              Library-
 
         # Build
         - name: Build Linux
@@ -68,6 +94,32 @@ jobs:
         - name: Zip Linux build to hosting folder
           run: mkdir -p /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/ && zip -urD /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/linux.zip build/StandaloneLinux64 
 
+    build-windows:
+      needs: test
+      permissions:
+        contents: write
+        checks: write
+        statuses: write
+      name: Build Windows
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      runs-on: self-hosted
+      steps:
+        # Checkout
+        - name: Checkout repository
+          uses: actions/checkout@v4
+          with:
+            lfs: false
+
+        # Cache
+        - uses: actions/cache@v3
+          with:
+            path: Pestis/Library
+            key: Pestis/Library-Windows
+            restore-keys: |
+              Pestis/Library-
+              Library-Pestis
+              Library-
         # Build
         - name: Build Windows
           uses: game-ci/unity-builder@v4
@@ -85,5 +137,5 @@ jobs:
 
         # Output
         - name: Zip Windows build to hosting folder
-          run: zip -urD /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/windows.zip build/StandaloneWindows64 
-     
+          run: mkdir -p /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/ && zip -urD /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/windows.zip build/StandaloneWindows64 
+      

@@ -201,13 +201,6 @@ public class CombatBoids : MonoBehaviour
 
         _previousNumBoids = numBoids;
 
-        // Add breakpoint in here if you need to inspect boid values
-        if (Debug.isDebugBuild)
-        {
-            var boids = new Boid[numBoids.Values.Sum()];
-            boidBuffer.GetData(boids, 0, 0, numBoids.Values.Sum());
-        }
-
         var newNumBoids = containedHordes.ToDictionary(x => x, x => x.AliveRats);
 
         // Some boids have died
@@ -266,18 +259,13 @@ public class CombatBoids : MonoBehaviour
                 totalDeathsPerHorde[horde] += Math.Max(_previousNumBoids[horde] - numBoids[horde], 0);
             else
                 totalDeathsPerHorde[horde] = Math.Max(_previousNumBoids[horde] - numBoids[horde], 0);
-            for (int i = 0; i < _previousNumBoids[horde] - numBoids[horde]; i++)
+            for (var i = 0; i < _previousNumBoids[horde] - numBoids[horde]; i++)
             {
                 horde.IncreaseFear();
                 if (horde.GetEvolutionState().AcquiredEffects.Contains("unlock_haunt"))
-                {
                     foreach (var enemy in containedHordes.Where(enemy => enemy.Id != horde.Id))
-                    {
                         enemy.IncreaseFear();
-                    }
-                }
             }
-            
         }
 
         boidsToKill.SetData(boidsToKillData, 0, 0, boidsToKillData.Length);
