@@ -4,50 +4,47 @@ using UnityEngine.Serialization;
 public class TutorialManager : MonoBehaviour
 {
     public GameObject welcomeCanvas;
-    private GameObject next;
-    
+    public GameObject fightCanvas;
+    public GameObject conquerCanvas;
+    public GameObject evolveCanvas;
+    public GameObject dominateCanvas;
+    private GameObject current;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Display_welcome_slide();
+        OpenWelcome();
+    }
+
+    void OpenWelcome()
+    {
+        current = welcomeCanvas;
+        welcomeCanvas.SetActive(true);
+        UI_Manager.Instance.HighlightUiElement(welcomeCanvas);
+    }
+
+    public void NextWelcome()
+    {
+        welcomeCanvas.SetActive(false);
+        UI_Manager.Instance.UnhighlightUiElement(welcomeCanvas);
+        OpenFight();
+    }
+
+    void OpenFight()
+    {
+        current = fightCanvas;
+        fightCanvas.SetActive(true);
+        UI_Manager.Instance.HighlightUiElement(fightCanvas);
+    }
+
+    public void NextFight()
+    {
+        CloseTutorial();
     }
 
     public void CloseTutorial()
     {
-        welcomeCanvas.SetActive(false);
-        UI_Manager.Instance.UnhighlightUiElement(welcomeCanvas);
+        current.SetActive(false);
+        UI_Manager.Instance.UnhighlightUiElement(current);
     }
-
-    public void nextSlide()
-    {
-        if (!next)
-        {
-            CloseTutorial();
-        }
-    }
-    
-    // Display slides
-    
-    // Display welcome slide
-    void Display_welcome_slide()
-    {
-        welcomeCanvas.SetActive(true);
-        UI_Manager.Instance.HighlightUiElement(welcomeCanvas);
-    }
-    
-    
-    // Display fight slide
-    void Display_fight_slide()
-    {
-        //turn on relevant canvas
-        //display relevant UI in the tutorial positions
-        // move UI after (diff function)
-    }
-    // Display conquer slide
-    
-    // Display evolve slide
-    
-    // Display dominate slide
-    
-    // Display basic controls
 }

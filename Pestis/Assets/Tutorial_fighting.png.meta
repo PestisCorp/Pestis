@@ -1,0 +1,3458 @@
+fileFormatVersion: 2
+guid: fe4529f7377134fc98458d4ad8f2d2c9
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3265806170874757557
+    second: Tutorial_fighting_0
+  - first:
+      213: 4819570836862457935
+    second: Tutorial_fighting_1
+  - first:
+      213: -8324593779732120828
+    second: Tutorial_fighting_2
+  - first:
+      213: 4844278170187038496
+    second: Tutorial_fighting_3
+  - first:
+      213: 4017317265676140615
+    second: Tutorial_fighting_4
+  - first:
+      213: -688165380250286613
+    second: Tutorial_fighting_5
+  - first:
+      213: -1139925026098015105
+    second: Tutorial_fighting_6
+  - first:
+      213: 6701274157450799243
+    second: Tutorial_fighting_7
+  - first:
+      213: -1762250375041984209
+    second: Tutorial_fighting_8
+  - first:
+      213: 6728064018021076217
+    second: Tutorial_fighting_9
+  - first:
+      213: -7799488618713180446
+    second: Tutorial_fighting_10
+  - first:
+      213: -5355776893245482221
+    second: Tutorial_fighting_11
+  - first:
+      213: 1711871260069181639
+    second: Tutorial_fighting_12
+  - first:
+      213: -7263332774032420730
+    second: Tutorial_fighting_13
+  - first:
+      213: 7023491201135046730
+    second: Tutorial_fighting_14
+  - first:
+      213: 4562677792819490343
+    second: Tutorial_fighting_15
+  - first:
+      213: 1085913245594601186
+    second: Tutorial_fighting_16
+  - first:
+      213: 5050902709219194265
+    second: Tutorial_fighting_17
+  - first:
+      213: 5977610769780081802
+    second: Tutorial_fighting_18
+  - first:
+      213: -7052890494695971931
+    second: Tutorial_fighting_19
+  - first:
+      213: -7919995617636540859
+    second: Tutorial_fighting_20
+  - first:
+      213: 4136919651014196904
+    second: Tutorial_fighting_21
+  - first:
+      213: 485808177689643965
+    second: Tutorial_fighting_22
+  - first:
+      213: 7943136574101560238
+    second: Tutorial_fighting_23
+  - first:
+      213: 368380178796277112
+    second: Tutorial_fighting_24
+  - first:
+      213: 6903159954701429146
+    second: Tutorial_fighting_25
+  - first:
+      213: 2155282221758464745
+    second: Tutorial_fighting_26
+  - first:
+      213: -9079256068977847042
+    second: Tutorial_fighting_27
+  - first:
+      213: 3273629461726367108
+    second: Tutorial_fighting_28
+  - first:
+      213: -1637532555410656887
+    second: Tutorial_fighting_29
+  - first:
+      213: -1437968311218752136
+    second: Tutorial_fighting_30
+  - first:
+      213: -1581337834298940546
+    second: Tutorial_fighting_31
+  - first:
+      213: 4155557263685464305
+    second: Tutorial_fighting_32
+  - first:
+      213: 3276453443705945987
+    second: Tutorial_fighting_33
+  - first:
+      213: 1815669208279376166
+    second: Tutorial_fighting_34
+  - first:
+      213: -7696944925217162284
+    second: Tutorial_fighting_35
+  - first:
+      213: 3999156247642795944
+    second: Tutorial_fighting_36
+  - first:
+      213: -33816805353365931
+    second: Tutorial_fighting_37
+  - first:
+      213: 874597674261816155
+    second: Tutorial_fighting_38
+  - first:
+      213: 2946425108701050975
+    second: Tutorial_fighting_39
+  - first:
+      213: 5559824281151360773
+    second: Tutorial_fighting_40
+  - first:
+      213: -2191189457469388451
+    second: Tutorial_fighting_41
+  - first:
+      213: -7291594626682757982
+    second: Tutorial_fighting_42
+  - first:
+      213: -9074707570144404151
+    second: Tutorial_fighting_43
+  - first:
+      213: -2190820222540062884
+    second: Tutorial_fighting_44
+  - first:
+      213: -8244363687434410723
+    second: Tutorial_fighting_45
+  - first:
+      213: -4172854166088537294
+    second: Tutorial_fighting_46
+  - first:
+      213: -8630177238452721139
+    second: Tutorial_fighting_47
+  - first:
+      213: -7141181732939468773
+    second: Tutorial_fighting_48
+  - first:
+      213: -6264027174677302092
+    second: Tutorial_fighting_49
+  - first:
+      213: 4061638292547236062
+    second: Tutorial_fighting_50
+  - first:
+      213: -5555995120432927457
+    second: Tutorial_fighting_51
+  - first:
+      213: -5551597490274370019
+    second: Tutorial_fighting_52
+  - first:
+      213: -5538340683133952618
+    second: Tutorial_fighting_53
+  - first:
+      213: 6464257431415766797
+    second: Tutorial_fighting_54
+  - first:
+      213: -1737060458479454624
+    second: Tutorial_fighting_55
+  - first:
+      213: 2232751040189264634
+    second: Tutorial_fighting_56
+  - first:
+      213: -1645507616875081327
+    second: Tutorial_fighting_57
+  - first:
+      213: -932397789521442656
+    second: Tutorial_fighting_58
+  - first:
+      213: 8586278963741690053
+    second: Tutorial_fighting_59
+  - first:
+      213: -7048128980294685642
+    second: Tutorial_fighting_60
+  - first:
+      213: -8377693136746589992
+    second: Tutorial_fighting_61
+  - first:
+      213: -5168462500201153368
+    second: Tutorial_fighting_62
+  - first:
+      213: -4569140641198511662
+    second: Tutorial_fighting_63
+  - first:
+      213: 369151866696766330
+    second: Tutorial_fighting_64
+  - first:
+      213: -4946338522282324788
+    second: Tutorial_fighting_65
+  - first:
+      213: -3650019642616120739
+    second: Tutorial_fighting_66
+  - first:
+      213: -1281107073627126663
+    second: Tutorial_fighting_67
+  - first:
+      213: 6263876341880109246
+    second: Tutorial_fighting_68
+  - first:
+      213: -2415766128739016539
+    second: Tutorial_fighting_69
+  - first:
+      213: 6677399365423102931
+    second: Tutorial_fighting_70
+  - first:
+      213: 6882713475992515053
+    second: Tutorial_fighting_71
+  - first:
+      213: -831275826195825421
+    second: Tutorial_fighting_72
+  - first:
+      213: 142599491267467026
+    second: Tutorial_fighting_73
+  - first:
+      213: 7506493009595200923
+    second: Tutorial_fighting_74
+  - first:
+      213: 8869302126275433195
+    second: Tutorial_fighting_75
+  - first:
+      213: 8140593446462040354
+    second: Tutorial_fighting_76
+  - first:
+      213: -6155396131789001885
+    second: Tutorial_fighting_77
+  - first:
+      213: 3895203913408261489
+    second: Tutorial_fighting_78
+  - first:
+      213: -1807151276468755882
+    second: Tutorial_fighting_79
+  - first:
+      213: 2761788236467968333
+    second: Tutorial_fighting_80
+  - first:
+      213: 794594859810083611
+    second: Tutorial_fighting_81
+  - first:
+      213: -5330424503170978131
+    second: Tutorial_fighting_82
+  - first:
+      213: -9169347063882945243
+    second: Tutorial_fighting_83
+  - first:
+      213: -2455081950036588522
+    second: Tutorial_fighting_84
+  - first:
+      213: -1057793743384984609
+    second: Tutorial_fighting_85
+  - first:
+      213: 81859008182457076
+    second: Tutorial_fighting_86
+  - first:
+      213: 2384676401235427015
+    second: Tutorial_fighting_87
+  - first:
+      213: 903832956259697644
+    second: Tutorial_fighting_88
+  - first:
+      213: -7379279099553111039
+    second: Tutorial_fighting_89
+  - first:
+      213: -7521043447488548663
+    second: Tutorial_fighting_90
+  - first:
+      213: 2179846856420180405
+    second: Tutorial_fighting_91
+  - first:
+      213: 7146572409322814112
+    second: Tutorial_fighting_92
+  - first:
+      213: -1007703413453279378
+    second: Tutorial_fighting_93
+  - first:
+      213: 2674765732902350919
+    second: Tutorial_fighting_94
+  - first:
+      213: -6083554705895923258
+    second: Tutorial_fighting_95
+  - first:
+      213: -7665597127984932379
+    second: Tutorial_fighting_96
+  - first:
+      213: -253497415926831715
+    second: Tutorial_fighting_97
+  - first:
+      213: 7532201270769095359
+    second: Tutorial_fighting_98
+  - first:
+      213: 6943221563690855109
+    second: Tutorial_fighting_99
+  - first:
+      213: -4932781945678109249
+    second: Tutorial_fighting_100
+  - first:
+      213: 4622542343871843871
+    second: Tutorial_fighting_101
+  - first:
+      213: -3167315529073110585
+    second: Tutorial_fighting_102
+  - first:
+      213: 6181765959639587096
+    second: Tutorial_fighting_103
+  - first:
+      213: -4208979141485771475
+    second: Tutorial_fighting_104
+  - first:
+      213: -2526626282828085028
+    second: Tutorial_fighting_105
+  - first:
+      213: -3758908497994796352
+    second: Tutorial_fighting_106
+  - first:
+      213: -7065257350793441032
+    second: Tutorial_fighting_107
+  - first:
+      213: 6408645803559157362
+    second: Tutorial_fighting_108
+  - first:
+      213: -8349272429829335717
+    second: Tutorial_fighting_109
+  - first:
+      213: 4578831648848578648
+    second: Tutorial_fighting_110
+  - first:
+      213: 6731328503747869849
+    second: Tutorial_fighting_111
+  - first:
+      213: 6848514816538553196
+    second: Tutorial_fighting_112
+  - first:
+      213: -9174141469439879929
+    second: Tutorial_fighting_113
+  - first:
+      213: -6891591815574509531
+    second: Tutorial_fighting_114
+  - first:
+      213: -7207784252886322748
+    second: Tutorial_fighting_115
+  - first:
+      213: -8779609730422794531
+    second: Tutorial_fighting_116
+  - first:
+      213: 5155785263485375810
+    second: Tutorial_fighting_117
+  - first:
+      213: -8595387903450074724
+    second: Tutorial_fighting_118
+  - first:
+      213: 8117214219331264685
+    second: Tutorial_fighting_119
+  - first:
+      213: 7488717457034419258
+    second: Tutorial_fighting_120
+  - first:
+      213: -6739211318647098942
+    second: Tutorial_fighting_121
+  - first:
+      213: 6730519031061274548
+    second: Tutorial_fighting_122
+  - first:
+      213: -2895558930096252066
+    second: Tutorial_fighting_123
+  - first:
+      213: -4576191252136302835
+    second: Tutorial_fighting_124
+  - first:
+      213: -5140946061677239669
+    second: Tutorial_fighting_125
+  - first:
+      213: 3572943443635609280
+    second: Tutorial_fighting_126
+  - first:
+      213: 8080445176140945237
+    second: Tutorial_fighting_127
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Tutorial_fighting_0
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 2232
+        width: 113
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b1c440d869725d20800000000000000
+      internalID: 3265806170874757557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_1
+      rect:
+        serializedVersion: 2
+        x: 1084
+        y: 2232
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f48d405142e82e240800000000000000
+      internalID: 4819570836862457935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_2
+      rect:
+        serializedVersion: 2
+        x: 1217
+        y: 2232
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40bf3ab101a197c80800000000000000
+      internalID: -8324593779732120828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_3
+      rect:
+        serializedVersion: 2
+        x: 1494
+        y: 2232
+        width: 91
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02f7d2764555a3340800000000000000
+      internalID: 4844278170187038496
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_4
+      rect:
+        serializedVersion: 2
+        x: 1616
+        y: 2232
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7408baab4c060c730800000000000000
+      internalID: 4017317265676140615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_5
+      rect:
+        serializedVersion: 2
+        x: 1882
+        y: 2210
+        width: 113
+        height: 135
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be5c5739b352376f0800000000000000
+      internalID: -688165380250286613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_6
+      rect:
+        serializedVersion: 2
+        x: 2026
+        y: 2232
+        width: 90
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7499d47a3c2e20f0800000000000000
+      internalID: -1139925026098015105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_7
+      rect:
+        serializedVersion: 2
+        x: 2148
+        y: 2232
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b882c516755bffc50800000000000000
+      internalID: 6701274157450799243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_8
+      rect:
+        serializedVersion: 2
+        x: 2281
+        y: 2210
+        width: 113
+        height: 135
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f29d256ee9a3b87e0800000000000000
+      internalID: -1762250375041984209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_9
+      rect:
+        serializedVersion: 2
+        x: 2458
+        y: 2320
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9fccb3cd392ee5d50800000000000000
+      internalID: 6728064018021076217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_10
+      rect:
+        serializedVersion: 2
+        x: 2458
+        y: 2232
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e616ebbc66a2c390800000000000000
+      internalID: -7799488618713180446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_11
+      rect:
+        serializedVersion: 2
+        x: 1429
+        y: 2040
+        width: 69
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31b9bddaa457ca5b0800000000000000
+      internalID: -5355776893245482221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_12
+      rect:
+        serializedVersion: 2
+        x: 1529
+        y: 2120
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c8bf9557d9c1c710800000000000000
+      internalID: 1711871260069181639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_13
+      rect:
+        serializedVersion: 2
+        x: 1669
+        y: 2040
+        width: 69
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68058562355733b90800000000000000
+      internalID: -7263332774032420730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_14
+      rect:
+        serializedVersion: 2
+        x: 1756
+        y: 2040
+        width: 55
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a407cbe0904787160800000000000000
+      internalID: 7023491201135046730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_15
+      rect:
+        serializedVersion: 2
+        x: 1849
+        y: 2120
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72ea1994743e15f30800000000000000
+      internalID: 4562677792819490343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_16
+      rect:
+        serializedVersion: 2
+        x: 1515
+        y: 2040
+        width: 56
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e6ce8ce750f11f00800000000000000
+      internalID: 1085913245594601186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_17
+      rect:
+        serializedVersion: 2
+        x: 1589
+        y: 2027
+        width: 69
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9957112d049681640800000000000000
+      internalID: 5050902709219194265
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_18
+      rect:
+        serializedVersion: 2
+        x: 1835
+        y: 2040
+        width: 56
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a848a4a035db4f250800000000000000
+      internalID: 5977610769780081802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_19
+      rect:
+        serializedVersion: 2
+        x: 1909
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a3eaef76791f1e90800000000000000
+      internalID: -7052890494695971931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_20
+      rect:
+        serializedVersion: 2
+        x: 1989
+        y: 2027
+        width: 69
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54e9f1c92f5861290800000000000000
+      internalID: -7919995617636540859
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_21
+      rect:
+        serializedVersion: 2
+        x: 402
+        y: 1751
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8aeb807118a496930800000000000000
+      internalID: 4136919651014196904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_22
+      rect:
+        serializedVersion: 2
+        x: 582
+        y: 1751
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbbcb24b6ffedb600800000000000000
+      internalID: 485808177689643965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_23
+      rect:
+        serializedVersion: 2
+        x: 1441
+        y: 1759
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eab9cbd21a0bb3e60800000000000000
+      internalID: 7943136574101560238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_24
+      rect:
+        serializedVersion: 2
+        x: 1506
+        y: 1759
+        width: 42
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87d627322dfbc1500800000000000000
+      internalID: 368380178796277112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_25
+      rect:
+        serializedVersion: 2
+        x: 1686
+        y: 1759
+        width: 42
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a992eaf7763fccf50800000000000000
+      internalID: 6903159954701429146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_26
+      rect:
+        serializedVersion: 2
+        x: 1876
+        y: 1819
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e2c0a2f2c919ed10800000000000000
+      internalID: 2155282221758464745
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_27
+      rect:
+        serializedVersion: 2
+        x: 2678
+        y: 1766
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef414cf85b0000280800000000000000
+      internalID: -9079256068977847042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_28
+      rect:
+        serializedVersion: 2
+        x: 2863
+        y: 1766
+        width: 42
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48d0478a6a44e6d20800000000000000
+      internalID: 3273629461726367108
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_29
+      rect:
+        serializedVersion: 2
+        x: 3043
+        y: 1766
+        width: 42
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9813c9e11d05649e0800000000000000
+      internalID: -1637532555410656887
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_30
+      rect:
+        serializedVersion: 2
+        x: 462
+        y: 1751
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 875b98b807f4b0ce0800000000000000
+      internalID: -1437968311218752136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_31
+      rect:
+        serializedVersion: 2
+        x: 522
+        y: 1751
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e73e9b43e95fd0ae0800000000000000
+      internalID: -1581337834298940546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_32
+      rect:
+        serializedVersion: 2
+        x: 642
+        y: 1751
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f034c170518ba930800000000000000
+      internalID: 4155557263685464305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_33
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 1751
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 38fb2333c0d487d20800000000000000
+      internalID: 3276453443705945987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_34
+      rect:
+        serializedVersion: 2
+        x: 1561
+        y: 1759
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6216b1d668d823910800000000000000
+      internalID: 1815669208279376166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_35
+      rect:
+        serializedVersion: 2
+        x: 1621
+        y: 1759
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4db7fa4ee55fe2590800000000000000
+      internalID: -7696944925217162284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_36
+      rect:
+        serializedVersion: 2
+        x: 1741
+        y: 1759
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8af68063b6bdf7730800000000000000
+      internalID: 3999156247642795944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_37
+      rect:
+        serializedVersion: 2
+        x: 1801
+        y: 1749
+        width: 52
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55e59717bcbd78ff0800000000000000
+      internalID: -33816805353365931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_38
+      rect:
+        serializedVersion: 2
+        x: 1866
+        y: 1759
+        width: 42
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5322cf63f1332c00800000000000000
+      internalID: 874597674261816155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_39
+      rect:
+        serializedVersion: 2
+        x: 1921
+        y: 1759
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f58fa69860ec3e820800000000000000
+      internalID: 2946425108701050975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_40
+      rect:
+        serializedVersion: 2
+        x: 1981
+        y: 1759
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50f4e9bf9b6782d40800000000000000
+      internalID: 5559824281151360773
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_41
+      rect:
+        serializedVersion: 2
+        x: 2738
+        y: 1766
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d59c4ff3cc45791e0800000000000000
+      internalID: -2191189457469388451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_42
+      rect:
+        serializedVersion: 2
+        x: 2798
+        y: 1766
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ac5d6ec15d0fca90800000000000000
+      internalID: -7291594626682757982
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_43
+      rect:
+        serializedVersion: 2
+        x: 2918
+        y: 1766
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94d9ef87b89201280800000000000000
+      internalID: -9074707570144404151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_44
+      rect:
+        serializedVersion: 2
+        x: 2978
+        y: 1766
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5fd1c47d94a891e0800000000000000
+      internalID: -2190820222540062884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_45
+      rect:
+        serializedVersion: 2
+        x: 3098
+        y: 1766
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d15a75328e2269d80800000000000000
+      internalID: -8244363687434410723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_46
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 1038
+        width: 537
+        height: 670
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23ba8c2ae3b0716c0800000000000000
+      internalID: -4172854166088537294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_47
+      rect:
+        serializedVersion: 2
+        x: 615
+        y: 1054
+        width: 520
+        height: 521
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0a2d59b6837b3880800000000000000
+      internalID: -8630177238452721139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_48
+      rect:
+        serializedVersion: 2
+        x: 2481
+        y: 839
+        width: 878
+        height: 878
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b1072abac0d65ec90800000000000000
+      internalID: -7141181732939468773
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_49
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 881
+        width: 471
+        height: 137
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b437fd0974b119a0800000000000000
+      internalID: -6264027174677302092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_50
+      rect:
+        serializedVersion: 2
+        x: 639
+        y: 884
+        width: 471
+        height: 137
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed0f661f186dd5830800000000000000
+      internalID: 4061638292547236062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_51
+      rect:
+        serializedVersion: 2
+        x: 1231
+        y: 767
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1daac8ffd325e2b0800000000000000
+      internalID: -5555995120432927457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_52
+      rect:
+        serializedVersion: 2
+        x: 1290
+        y: 815
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1efe380f73c4f2b0800000000000000
+      internalID: -5551597490274370019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_53
+      rect:
+        serializedVersion: 2
+        x: 1372
+        y: 767
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69dd4b8fd7cd323b0800000000000000
+      internalID: -5538340683133952618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_54
+      rect:
+        serializedVersion: 2
+        x: 1423
+        y: 767
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0f373082e7a5b950800000000000000
+      internalID: 6464257431415766797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_55
+      rect:
+        serializedVersion: 2
+        x: 1611
+        y: 767
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06674f267b8b4e7e0800000000000000
+      internalID: -1737060458479454624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_56
+      rect:
+        serializedVersion: 2
+        x: 1752
+        y: 767
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af27d5ecd335cfe10800000000000000
+      internalID: 2232751040189264634
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_57
+      rect:
+        serializedVersion: 2
+        x: 1901
+        y: 815
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19116fc6a8bf929e0800000000000000
+      internalID: -1645507616875081327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_58
+      rect:
+        serializedVersion: 2
+        x: 1940
+        y: 767
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a8073686257f03f0800000000000000
+      internalID: -932397789521442656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_59
+      rect:
+        serializedVersion: 2
+        x: 1983
+        y: 767
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c88b38b937982770800000000000000
+      internalID: 8586278963741690053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_60
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 743
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63c2666f804003e90800000000000000
+      internalID: -7048128980294685642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_61
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 791
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d0ddf2aa747cbb80800000000000000
+      internalID: -8377693136746589992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_62
+      rect:
+        serializedVersion: 2
+        x: 1282
+        y: 767
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ac35906dbee548b0800000000000000
+      internalID: -5168462500201153368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_63
+      rect:
+        serializedVersion: 2
+        x: 1325
+        y: 759
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d9ef809bc62790c0800000000000000
+      internalID: -4569140641198511662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_64
+      rect:
+        serializedVersion: 2
+        x: 1466
+        y: 767
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7312aabaad7f1500800000000000000
+      internalID: 369151866696766330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_65
+      rect:
+        serializedVersion: 2
+        x: 1560
+        y: 767
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ccc088022531b5bb0800000000000000
+      internalID: -4946338522282324788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_66
+      rect:
+        serializedVersion: 2
+        x: 1654
+        y: 767
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5afaa24976885dc0800000000000000
+      internalID: -3650019642616120739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_67
+      rect:
+        serializedVersion: 2
+        x: 1701
+        y: 767
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 974073577e7983ee0800000000000000
+      internalID: -1281107073627126663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_68
+      rect:
+        serializedVersion: 2
+        x: 1842
+        y: 767
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb8bcb27852cde650800000000000000
+      internalID: 6263876341880109246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_69
+      rect:
+        serializedVersion: 2
+        x: 1893
+        y: 767
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a027145189797ed0800000000000000
+      internalID: -2415766128739016539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_70
+      rect:
+        serializedVersion: 2
+        x: 230
+        y: 743
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3db767f2853eaac50800000000000000
+      internalID: 6677399365423102931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_71
+      rect:
+        serializedVersion: 2
+        x: 277
+        y: 743
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de1f353b07f448f50800000000000000
+      internalID: 6882713475992515053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_72
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 743
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3fc7a355a07b674f0800000000000000
+      internalID: -831275826195825421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_73
+      rect:
+        serializedVersion: 2
+        x: 418
+        y: 743
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21716265b7d9af100800000000000000
+      internalID: 142599491267467026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_74
+      rect:
+        serializedVersion: 2
+        x: 465
+        y: 743
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b95ffd10f9b6c2860800000000000000
+      internalID: 7506493009595200923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_75
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 743
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be29342da47161b70800000000000000
+      internalID: 8869302126275433195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_76
+      rect:
+        serializedVersion: 2
+        x: 606
+        y: 743
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2292e3ddb9239f070800000000000000
+      internalID: 8140593446462040354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_77
+      rect:
+        serializedVersion: 2
+        x: 653
+        y: 743
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36b27e0b4d3a39aa0800000000000000
+      internalID: -6155396131789001885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_78
+      rect:
+        serializedVersion: 2
+        x: 747
+        y: 743
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17d2962525b8e0630800000000000000
+      internalID: 3895203913408261489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_79
+      rect:
+        serializedVersion: 2
+        x: 794
+        y: 743
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 652afae1d75bbe6e0800000000000000
+      internalID: -1807151276468755882
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_80
+      rect:
+        serializedVersion: 2
+        x: 841
+        y: 743
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d49968bb4c7d35620800000000000000
+      internalID: 2761788236467968333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_81
+      rect:
+        serializedVersion: 2
+        x: 888
+        y: 743
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b13d457a0d7f60b00800000000000000
+      internalID: 794594859810083611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_82
+      rect:
+        serializedVersion: 2
+        x: 935
+        y: 735
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: daea47af7278606b0800000000000000
+      internalID: -5330424503170978131
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_83
+      rect:
+        serializedVersion: 2
+        x: 2423
+        y: 731
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52d6cfa3d6fefb080800000000000000
+      internalID: -9169347063882945243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_84
+      rect:
+        serializedVersion: 2
+        x: 2482
+        y: 779
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 618889959fbcdedd0800000000000000
+      internalID: -2455081950036588522
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_85
+      rect:
+        serializedVersion: 2
+        x: 2564
+        y: 731
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd348efd136f151f0800000000000000
+      internalID: -1057793743384984609
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_86
+      rect:
+        serializedVersion: 2
+        x: 2615
+        y: 731
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f291609552d22100800000000000000
+      internalID: 81859008182457076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_87
+      rect:
+        serializedVersion: 2
+        x: 2756
+        y: 731
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7cef4e76d82181120800000000000000
+      internalID: 2384676401235427015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_88
+      rect:
+        serializedVersion: 2
+        x: 2811
+        y: 779
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce38626f84f0b8c00800000000000000
+      internalID: 903832956259697644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_89
+      rect:
+        serializedVersion: 2
+        x: 2897
+        y: 731
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1042cac81c8879990800000000000000
+      internalID: -7379279099553111039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_90
+      rect:
+        serializedVersion: 2
+        x: 3187
+        y: 779
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c07a2c25d2ef9790800000000000000
+      internalID: -7521043447488548663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_91
+      rect:
+        serializedVersion: 2
+        x: 3367
+        y: 731
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b14da5aa2f504e10800000000000000
+      internalID: 2179846856420180405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_92
+      rect:
+        serializedVersion: 2
+        x: 2474
+        y: 731
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0aa3b4bfdb9bd2360800000000000000
+      internalID: 7146572409322814112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_93
+      rect:
+        serializedVersion: 2
+        x: 2517
+        y: 723
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6f2b22a51be302f0800000000000000
+      internalID: -1007703413453279378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_94
+      rect:
+        serializedVersion: 2
+        x: 2658
+        y: 755
+        width: 41
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7403807334dae1520800000000000000
+      internalID: 2674765732902350919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_95
+      rect:
+        serializedVersion: 2
+        x: 2705
+        y: 731
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c1ea6f1a3fd29ba0800000000000000
+      internalID: -6083554705895923258
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_96
+      rect:
+        serializedVersion: 2
+        x: 2803
+        y: 731
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e91433b6045e9590800000000000000
+      internalID: -7665597127984932379
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_97
+      rect:
+        serializedVersion: 2
+        x: 2846
+        y: 731
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d95a33c71756b7cf0800000000000000
+      internalID: -253497415926831715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_98
+      rect:
+        serializedVersion: 2
+        x: 2987
+        y: 731
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb210f00621c78860800000000000000
+      internalID: 7532201270769095359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_99
+      rect:
+        serializedVersion: 2
+        x: 3034
+        y: 731
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ca20a4b9374b5060800000000000000
+      internalID: 6943221563690855109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_100
+      rect:
+        serializedVersion: 2
+        x: 3081
+        y: 731
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb5656594fc3b8bb0800000000000000
+      internalID: -4932781945678109249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_101
+      rect:
+        serializedVersion: 2
+        x: 3128
+        y: 731
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1ecead35c1962040800000000000000
+      internalID: 4622542343871843871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_102
+      rect:
+        serializedVersion: 2
+        x: 3179
+        y: 731
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c1d406be4f6b04d0800000000000000
+      internalID: -3167315529073110585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_103
+      rect:
+        serializedVersion: 2
+        x: 3222
+        y: 731
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8195bec436b0ac550800000000000000
+      internalID: 6181765959639587096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_104
+      rect:
+        serializedVersion: 2
+        x: 3269
+        y: 731
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2546bc55c3b695c0800000000000000
+      internalID: -4208979141485771475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_105
+      rect:
+        serializedVersion: 2
+        x: 3410
+        y: 731
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd8cddb48ce9fecd0800000000000000
+      internalID: -2526626282828085028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_106
+      rect:
+        serializedVersion: 2
+        x: 1231
+        y: 695
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c2b2d9f2aca5dbc0800000000000000
+      internalID: -3758908497994796352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_107
+      rect:
+        serializedVersion: 2
+        x: 1278
+        y: 695
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f05d3f6fd923fd90800000000000000
+      internalID: -7065257350793441032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_108
+      rect:
+        serializedVersion: 2
+        x: 1329
+        y: 695
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27ef074676510f850800000000000000
+      internalID: 6408645803559157362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_109
+      rect:
+        serializedVersion: 2
+        x: 1372
+        y: 695
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b555f0f16fc612c80800000000000000
+      internalID: -8349272429829335717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_110
+      rect:
+        serializedVersion: 2
+        x: 1419
+        y: 695
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8588febff174b8f30800000000000000
+      internalID: 4578831648848578648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_111
+      rect:
+        serializedVersion: 2
+        x: 1470
+        y: 695
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99c7a5c2c9b7a6d50800000000000000
+      internalID: 6731328503747869849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_112
+      rect:
+        serializedVersion: 2
+        x: 1513
+        y: 695
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6ba7cec0ffca0f50800000000000000
+      internalID: 6848514816538553196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_113
+      rect:
+        serializedVersion: 2
+        x: 1560
+        y: 695
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7051bd2b0f6eea080800000000000000
+      internalID: -9174141469439879929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_114
+      rect:
+        serializedVersion: 2
+        x: 1654
+        y: 695
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52821b7c1c52c50a0800000000000000
+      internalID: -6891591815574509531
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_115
+      rect:
+        serializedVersion: 2
+        x: 1705
+        y: 695
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c17e05196ec8fb90800000000000000
+      internalID: -7207784252886322748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_116
+      rect:
+        serializedVersion: 2
+        x: 1748
+        y: 695
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd6169f677f882680800000000000000
+      internalID: -8779609730422794531
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_117
+      rect:
+        serializedVersion: 2
+        x: 1795
+        y: 695
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2455d3071670d8740800000000000000
+      internalID: 5155785263485375810
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_118
+      rect:
+        serializedVersion: 2
+        x: 1846
+        y: 695
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c913b2cfd3c07b880800000000000000
+      internalID: -8595387903450074724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_119
+      rect:
+        serializedVersion: 2
+        x: 1889
+        y: 695
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da06dfc535326a070800000000000000
+      internalID: 8117214219331264685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_120
+      rect:
+        serializedVersion: 2
+        x: 1936
+        y: 687
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3c9dc9a9d44de760800000000000000
+      internalID: 7488717457034419258
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_121
+      rect:
+        serializedVersion: 2
+        x: 1983
+        y: 687
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c17fb5f2038972a0800000000000000
+      internalID: -6739211318647098942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_122
+      rect:
+        serializedVersion: 2
+        x: 2423
+        y: 659
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bfd960266b976d50800000000000000
+      internalID: 6730519031061274548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_123
+      rect:
+        serializedVersion: 2
+        x: 2474
+        y: 659
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5b17619e78e0d7d0800000000000000
+      internalID: -2895558930096252066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_124
+      rect:
+        serializedVersion: 2
+        x: 2521
+        y: 659
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d076a284d4a1e70c0800000000000000
+      internalID: -4576191252136302835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_125
+      rect:
+        serializedVersion: 2
+        x: 2564
+        y: 659
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b82e8487bc0b7a8b0800000000000000
+      internalID: -5140946061677239669
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_126
+      rect:
+        serializedVersion: 2
+        x: 2611
+        y: 659
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ce1678b125a59130800000000000000
+      internalID: 3572943443635609280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_fighting_127
+      rect:
+        serializedVersion: 2
+        x: 2662
+        y: 659
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55756ee5312832070800000000000000
+      internalID: 8080445176140945237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Tutorial_fighting_0: 3265806170874757557
+      Tutorial_fighting_1: 4819570836862457935
+      Tutorial_fighting_10: -7799488618713180446
+      Tutorial_fighting_100: -4932781945678109249
+      Tutorial_fighting_101: 4622542343871843871
+      Tutorial_fighting_102: -3167315529073110585
+      Tutorial_fighting_103: 6181765959639587096
+      Tutorial_fighting_104: -4208979141485771475
+      Tutorial_fighting_105: -2526626282828085028
+      Tutorial_fighting_106: -3758908497994796352
+      Tutorial_fighting_107: -7065257350793441032
+      Tutorial_fighting_108: 6408645803559157362
+      Tutorial_fighting_109: -8349272429829335717
+      Tutorial_fighting_11: -5355776893245482221
+      Tutorial_fighting_110: 4578831648848578648
+      Tutorial_fighting_111: 6731328503747869849
+      Tutorial_fighting_112: 6848514816538553196
+      Tutorial_fighting_113: -9174141469439879929
+      Tutorial_fighting_114: -6891591815574509531
+      Tutorial_fighting_115: -7207784252886322748
+      Tutorial_fighting_116: -8779609730422794531
+      Tutorial_fighting_117: 5155785263485375810
+      Tutorial_fighting_118: -8595387903450074724
+      Tutorial_fighting_119: 8117214219331264685
+      Tutorial_fighting_12: 1711871260069181639
+      Tutorial_fighting_120: 7488717457034419258
+      Tutorial_fighting_121: -6739211318647098942
+      Tutorial_fighting_122: 6730519031061274548
+      Tutorial_fighting_123: -2895558930096252066
+      Tutorial_fighting_124: -4576191252136302835
+      Tutorial_fighting_125: -5140946061677239669
+      Tutorial_fighting_126: 3572943443635609280
+      Tutorial_fighting_127: 8080445176140945237
+      Tutorial_fighting_13: -7263332774032420730
+      Tutorial_fighting_14: 7023491201135046730
+      Tutorial_fighting_15: 4562677792819490343
+      Tutorial_fighting_16: 1085913245594601186
+      Tutorial_fighting_17: 5050902709219194265
+      Tutorial_fighting_18: 5977610769780081802
+      Tutorial_fighting_19: -7052890494695971931
+      Tutorial_fighting_2: -8324593779732120828
+      Tutorial_fighting_20: -7919995617636540859
+      Tutorial_fighting_21: 4136919651014196904
+      Tutorial_fighting_22: 485808177689643965
+      Tutorial_fighting_23: 7943136574101560238
+      Tutorial_fighting_24: 368380178796277112
+      Tutorial_fighting_25: 6903159954701429146
+      Tutorial_fighting_26: 2155282221758464745
+      Tutorial_fighting_27: -9079256068977847042
+      Tutorial_fighting_28: 3273629461726367108
+      Tutorial_fighting_29: -1637532555410656887
+      Tutorial_fighting_3: 4844278170187038496
+      Tutorial_fighting_30: -1437968311218752136
+      Tutorial_fighting_31: -1581337834298940546
+      Tutorial_fighting_32: 4155557263685464305
+      Tutorial_fighting_33: 3276453443705945987
+      Tutorial_fighting_34: 1815669208279376166
+      Tutorial_fighting_35: -7696944925217162284
+      Tutorial_fighting_36: 3999156247642795944
+      Tutorial_fighting_37: -33816805353365931
+      Tutorial_fighting_38: 874597674261816155
+      Tutorial_fighting_39: 2946425108701050975
+      Tutorial_fighting_4: 4017317265676140615
+      Tutorial_fighting_40: 5559824281151360773
+      Tutorial_fighting_41: -2191189457469388451
+      Tutorial_fighting_42: -7291594626682757982
+      Tutorial_fighting_43: -9074707570144404151
+      Tutorial_fighting_44: -2190820222540062884
+      Tutorial_fighting_45: -8244363687434410723
+      Tutorial_fighting_46: -4172854166088537294
+      Tutorial_fighting_47: -8630177238452721139
+      Tutorial_fighting_48: -7141181732939468773
+      Tutorial_fighting_49: -6264027174677302092
+      Tutorial_fighting_5: -688165380250286613
+      Tutorial_fighting_50: 4061638292547236062
+      Tutorial_fighting_51: -5555995120432927457
+      Tutorial_fighting_52: -5551597490274370019
+      Tutorial_fighting_53: -5538340683133952618
+      Tutorial_fighting_54: 6464257431415766797
+      Tutorial_fighting_55: -1737060458479454624
+      Tutorial_fighting_56: 2232751040189264634
+      Tutorial_fighting_57: -1645507616875081327
+      Tutorial_fighting_58: -932397789521442656
+      Tutorial_fighting_59: 8586278963741690053
+      Tutorial_fighting_6: -1139925026098015105
+      Tutorial_fighting_60: -7048128980294685642
+      Tutorial_fighting_61: -8377693136746589992
+      Tutorial_fighting_62: -5168462500201153368
+      Tutorial_fighting_63: -4569140641198511662
+      Tutorial_fighting_64: 369151866696766330
+      Tutorial_fighting_65: -4946338522282324788
+      Tutorial_fighting_66: -3650019642616120739
+      Tutorial_fighting_67: -1281107073627126663
+      Tutorial_fighting_68: 6263876341880109246
+      Tutorial_fighting_69: -2415766128739016539
+      Tutorial_fighting_7: 6701274157450799243
+      Tutorial_fighting_70: 6677399365423102931
+      Tutorial_fighting_71: 6882713475992515053
+      Tutorial_fighting_72: -831275826195825421
+      Tutorial_fighting_73: 142599491267467026
+      Tutorial_fighting_74: 7506493009595200923
+      Tutorial_fighting_75: 8869302126275433195
+      Tutorial_fighting_76: 8140593446462040354
+      Tutorial_fighting_77: -6155396131789001885
+      Tutorial_fighting_78: 3895203913408261489
+      Tutorial_fighting_79: -1807151276468755882
+      Tutorial_fighting_8: -1762250375041984209
+      Tutorial_fighting_80: 2761788236467968333
+      Tutorial_fighting_81: 794594859810083611
+      Tutorial_fighting_82: -5330424503170978131
+      Tutorial_fighting_83: -9169347063882945243
+      Tutorial_fighting_84: -2455081950036588522
+      Tutorial_fighting_85: -1057793743384984609
+      Tutorial_fighting_86: 81859008182457076
+      Tutorial_fighting_87: 2384676401235427015
+      Tutorial_fighting_88: 903832956259697644
+      Tutorial_fighting_89: -7379279099553111039
+      Tutorial_fighting_9: 6728064018021076217
+      Tutorial_fighting_90: -7521043447488548663
+      Tutorial_fighting_91: 2179846856420180405
+      Tutorial_fighting_92: 7146572409322814112
+      Tutorial_fighting_93: -1007703413453279378
+      Tutorial_fighting_94: 2674765732902350919
+      Tutorial_fighting_95: -6083554705895923258
+      Tutorial_fighting_96: -7665597127984932379
+      Tutorial_fighting_97: -253497415926831715
+      Tutorial_fighting_98: 7532201270769095359
+      Tutorial_fighting_99: 6943221563690855109
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
