@@ -11622,9 +11622,9 @@ MonoBehaviour:
   visualRange: 50
   minDistance: 0.8
   cohesionFactor: 1
-  separationFactor: 5
+  separationFactor: 2
   alignmentFactor: 0.5
-  targetFactor: 4
+  targetFactor: 2
   boidShader: {fileID: 7200000, guid: 9c4516c864c64285a3313ea819bbf605, type: 3}
   gridShader: {fileID: 7200000, guid: 09b3d2d9369c4b7dab8d97a7e83f5eaf, type: 3}
   boidMat: {fileID: 2100000, guid: 14e523a1206d6077695982ee0599c60b, type: 2}
