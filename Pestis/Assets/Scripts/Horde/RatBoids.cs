@@ -3,12 +3,11 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Horde;
 using MoreLinq.Extensions;
-using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Rendering;
+using UnityEngine.Assertions;
 
-internal struct Boid
+public struct Boid
 {
     public float2 pos;
     public float2 vel;
@@ -53,7 +52,6 @@ public class RatBoids : MonoBehaviour
     [SerializeField] private Material boidMat;
     [SerializeField] private Material deadBoidMat;
 
-
     public bool combat;
 
     /// <summary>
@@ -67,6 +65,9 @@ public class RatBoids : MonoBehaviour
 
     public int numBoids;
 
+    private float[] _boundsArr;
+    private ComputeBuffer _boundsBuffer;
+
     private bool _started;
 
     private bool _waitingForBounds;
@@ -74,7 +75,6 @@ public class RatBoids : MonoBehaviour
 
     private ComputeBuffer boidBuffer;
     private ComputeBuffer boidBufferOut;
-    private NativeArray<Boid> boidsNative;
 
     private int corpseKernel;
     private ComputeBuffer deadBoids;
@@ -95,8 +95,6 @@ public class RatBoids : MonoBehaviour
 
     private float minSpeed;
 
-    private NativeArray<uint> offsetsNative;
-
     private uint[] offsetsTempArr;
     private int previousNumBoids;
     private RenderParams rp;
@@ -111,7 +109,7 @@ public class RatBoids : MonoBehaviour
     private Vector2[] triangleVerts;
     private float turnSpeed;
 
-    private int updateBoidsKernel, generateBoidsKernel;
+    private int updateBoidsKernel, generateBoidsKernel, updateBoundsKernel;
 
     private int updateGridKernel,
         clearGridKernel,
@@ -149,6 +147,7 @@ public class RatBoids : MonoBehaviour
 
         // Get kernel IDs
         updateBoidsKernel = boidShader.FindKernel("UpdateBoids");
+        updateBoundsKernel = boidShader.FindKernel("UpdateBounds");
         updateGridKernel = gridShader.FindKernel("UpdateGrid");
         clearGridKernel = gridShader.FindKernel("ClearGrid");
         prefixSumKernel = gridShader.FindKernel("PrefixSum");
@@ -161,6 +160,19 @@ public class RatBoids : MonoBehaviour
         boidBufferOut = new ComputeBuffer(2048, Marshal.SizeOf(typeof(Boid)));
         deadBoids = new ComputeBuffer(2048, Marshal.SizeOf(typeof(Boid)));
 
+        Assert.AreEqual(Marshal.SizeOf(typeof(float)), Marshal.SizeOf(typeof(uint)),
+            "uint and float have different byte sizes, bounds calc WILL break");
+        _boundsBuffer = new ComputeBuffer(4, Marshal.SizeOf(typeof(float)));
+        _boundsArr = new float[4];
+
+        _boundsArr[0] = 1024.0f;
+        _boundsArr[1] = -1024.0f;
+        _boundsArr[2] = -1024.0f;
+        _boundsArr[3] = 1024.0f;
+        _boundsBuffer.SetData(_boundsArr, 0, 0, 4);
+
+        boidShader.SetBuffer(updateBoundsKernel, "bounds", _boundsBuffer);
+        boidShader.SetBuffer(updateBoundsKernel, "boidsIn", boidBuffer);
 
         deadBoidsCountBuffer = new ComputeBuffer(1, sizeof(uint));
         var counter = new uint[1];
@@ -206,10 +218,6 @@ public class RatBoids : MonoBehaviour
         gridDimX = Mathf.FloorToInt(xBound * 2 / gridCellSize) + 30;
         gridDimY = Mathf.FloorToInt(yBound * 2 / gridCellSize) + 30;
         gridTotalCells = gridDimX * gridDimY;
-
-
-        offsetsNative = new NativeArray<uint>(gridDimX * gridDimY, Allocator.Persistent);
-        boidsNative = new NativeArray<Boid>(2048, Allocator.Persistent);
 
         gridBuffer = new ComputeBuffer(128, 8);
         gridOffsetBuffer = new ComputeBuffer(gridTotalCells, 4);
@@ -326,126 +334,28 @@ public class RatBoids : MonoBehaviour
         Graphics.RenderPrimitives(rpDead, MeshTopology.Quads, deadBoidsCount * 4);
     }
 
-    private async void FixedUpdate()
+    private void FixedUpdate()
     {
-        // Don't run again while waiting for previous iteration
-        if (_waitingForBounds || !_started) return;
-
-        if (previousNumBoids == 0)
+        if (numBoids == 0 || paused || !_started)
         {
-            Bounds = new Bounds(TargetPos, Vector3.zero);
+            _boundsArr[0] = 1024.0f;
+            _boundsArr[1] = -1024.0f;
+            _boundsArr[2] = -1024.0f;
+            _boundsArr[3] = 1024.0f;
+            _boundsBuffer.SetData(_boundsArr, 0, 0, 4);
             return;
         }
 
-        _waitingForBounds = true;
-
-        var request =
-            await AsyncGPUReadback.RequestIntoNativeArrayAsync(ref offsetsNative, gridOffsetBuffer,
-                gridDimX * gridDimY * Marshal.SizeOf(typeof(uint)),
-                0);
-
-        if (request.hasError) Debug.LogError("Bounds error");
-
-        var bottomLeft = Vector2.positiveInfinity;
-
-        // Find first non-empty row from bottom
-        for (var y = 0; y < gridDimY; y++)
-        {
-            var rowBoids = Convert.ToInt32(offsetsNative[(y + 1) * gridDimX - 1] - offsetsNative[y * gridDimX]);
-            if (rowBoids == 0) continue;
-
-            // Setting boids (when we split a horde) messes up the offsets for one iteration
-            if (rowBoids < 0)
-            {
-                _waitingForBounds = false;
-                return;
-            }
-
-            request = await AsyncGPUReadback.RequestIntoNativeArrayAsync(ref boidsNative, boidBufferOut,
-                rowBoids * Marshal.SizeOf(typeof(Boid)),
-                Convert.ToInt32(offsetsNative[y * gridDimX]));
-
-            bottomLeft.y = SliceExtension.Slice(boidsNative, 0, Convert.ToInt32(rowBoids)).Minima(boid => boid.pos.y)
-                .First()
-                .pos.y;
-            break;
-        }
-
-        // Find first non-empty column from left
-        for (var x = 0; x < gridDimX; x++)
-        {
-            var empty = true;
-
-            for (var y = 0; y < gridDimY; y++)
-            {
-                var cellBoids =
-                    Convert.ToInt32(offsetsNative[y * gridDimX + x] -
-                                    (y == 0 ? 0 : offsetsNative[y * gridDimX + x - 1]));
-                if (cellBoids == 0) continue;
-
-                empty = false;
-
-                request = await AsyncGPUReadback.RequestIntoNativeArrayAsync(ref boidsNative, boidBufferOut,
-                    cellBoids * Marshal.SizeOf(typeof(Boid)),
-                    Convert.ToInt32(y == 0 ? 0 : offsetsNative[y * gridDimX + x - 1]));
-
-                bottomLeft.x = Mathf.Min(bottomLeft.x,
-                    SliceExtension.Slice(boidsNative, 0, cellBoids).Minima(boid => boid.pos.x).First().pos.x);
-            }
-
-            // Break once we've processed the first non-empty row
-            if (!empty) break;
-        }
-
-        var topRight = Vector2.negativeInfinity;
-
-        // Find first non-empty row from top
-        for (var y = gridDimY - 1; y >= 0; y--)
-        {
-            var rowBoids = Convert.ToInt32(offsetsNative[(y + 1) * gridDimX - 1] - offsetsNative[y * gridDimX]);
-            if (rowBoids == 0) continue;
-
-            request = await AsyncGPUReadback.RequestIntoNativeArrayAsync(ref boidsNative, boidBufferOut,
-                rowBoids * Marshal.SizeOf(typeof(Boid)),
-                Convert.ToInt32(offsetsNative[y * gridDimX]));
-
-            topRight.y = SliceExtension.Slice(boidsNative, 0, rowBoids).Maxima(boid => boid.pos.y).First().pos.y;
-            break;
-        }
-
-        // Find first non-empty column from right
-        for (var x = gridDimX - 1; x >= 0; x--)
-        {
-            var empty = true;
-
-            for (var y = 0; y < gridDimY; y++)
-            {
-                var cellBoids =
-                    Convert.ToInt32(offsetsNative[y * gridDimX + x] -
-                                    (y == 0 ? 0 : offsetsNative[y * gridDimX + x - 1]));
-                if (cellBoids == 0) continue;
-
-                empty = false;
-
-                request = await AsyncGPUReadback.RequestIntoNativeArrayAsync(ref boidsNative, boidBufferOut,
-                    cellBoids * Marshal.SizeOf(typeof(Boid)),
-                    Convert.ToInt32(y == 0 ? 0 : offsetsNative[y * gridDimX + x - 1]));
-
-
-                topRight.x = Mathf.Max(topRight.x,
-                    SliceExtension.Slice(boidsNative, 0, cellBoids).Maxima(boid => boid.pos.x).First().pos.x);
-            }
-
-            // Break once we've processed the first non-empty row
-            if (!empty) break;
-        }
-
-        var center = bottomLeft + (topRight - bottomLeft) / 2.0f;
-        var size = topRight - bottomLeft;
-
-        Bounds = new Bounds(center, size);
-
-        _waitingForBounds = false;
+        _boundsBuffer.GetData(_boundsArr, 0, 0, 4);
+        var extents = new Vector2((_boundsArr[2] - _boundsArr[0]) / 2.0f, (_boundsArr[3] - _boundsArr[1]) / 2.0f);
+        var center = new Vector2(extents.x + _boundsArr[0], extents.y + _boundsArr[1]);
+        Bounds = new Bounds(center, extents);
+        _boundsArr[0] = 1024.0f;
+        _boundsArr[1] = -1024.0f;
+        _boundsArr[2] = -1024.0f;
+        _boundsArr[3] = 1024.0f;
+        _boundsBuffer.SetData(_boundsArr, 0, 0, 4);
+        boidShader.Dispatch(updateBoundsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
     }
 
     private void OnDestroy()
@@ -496,8 +406,6 @@ public class RatBoids : MonoBehaviour
         Debug.Log($"Resizing boid buffers to {newSize}");
 
         tempBoidsArr = new Boid[newSize];
-        boidsNative.Dispose();
-        boidsNative = new NativeArray<Boid>(newSize, Allocator.Persistent);
 
         var newBuffer = new ComputeBuffer(newSize, Marshal.SizeOf(typeof(Boid)));
         boidBuffer.GetData(tempBoidsArr, 0, 0, numBoids);
