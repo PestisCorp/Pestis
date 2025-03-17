@@ -8,6 +8,7 @@ public class TimerToScoreLock : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public TMPro.TMP_Text timerText;
     public TMPro.TMP_Text scoreText;
+    public Button resetButton;
     public void UpdateScore(ulong ScoreToDisplay)
     {
 
