@@ -4,14 +4,26 @@ using UnityEngine.Serialization;
 public class TutorialManager : MonoBehaviour
 {
     public GameObject welcomeCanvas;
-
-    public static TutorialManager Instance;
+    private GameObject next;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Instance = this;
         Display_welcome_slide();
+    }
+
+    public void CloseTutorial()
+    {
+        welcomeCanvas.SetActive(false);
+        UI_Manager.Instance.UnhighlightUiElement(welcomeCanvas);
+    }
+
+    public void nextSlide()
+    {
+        if (!next)
+        {
+            CloseTutorial();
+        }
     }
     
     // Display slides
@@ -22,6 +34,8 @@ public class TutorialManager : MonoBehaviour
         welcomeCanvas.SetActive(true);
         UI_Manager.Instance.HighlightUiElement(welcomeCanvas);
     }
+    
+    
     // Display fight slide
     void Display_fight_slide()
     {
