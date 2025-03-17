@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,11 @@ using Color = UnityEngine.Color;
 
 public class UI_Manager : MonoBehaviour
 {
+    public static UI_Manager Instance;
+    
     // References to the game managers and objects to view in UI
     public GameObject inputHandler;
     [CanBeNull] public HumanPlayer localPlayer;
-
-    public static UI_Manager Instance;
 
     // References to the canvas elements
     public GameObject infoPanel;
@@ -32,6 +33,8 @@ public class UI_Manager : MonoBehaviour
     public GameObject objectives;
     public TimerToScoreLock timer;
     public GameObject darkScreen;
+    public GameObject tutorial;
+    
     // References to the resource text fields
     public TextMeshProUGUI cheeseTotalText;
     public TextMeshProUGUI cheeseRateText;
@@ -64,11 +67,14 @@ public class UI_Manager : MonoBehaviour
     // Called by EvolutionManager every time a new mutation is acquired
 
 
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     // Start is called before the first frame update
     private void Start()
     {
-        Instance = this;
-        
         // Ensure appropriate canvases are set to default at the start of the game
         ResetUI();
         if (mutationPopUp != null) mutationPopUp.SetActive(false);
@@ -76,11 +82,13 @@ public class UI_Manager : MonoBehaviour
         if (abilityToolbar != null) abilityToolbar.SetActive(false);
         if (resourceStats != null) resourceStats.SetActive(false);
         if (objectives != null) objectives.SetActive(false);
+        /*
         if (darkScreen != null)
         {
             darkScreen.GetComponent<Canvas>().enabled = false;
             darkScreen.SetActive(false);
         }
+        */
         displayResourceInfo = false;
         moveFunctionality = false;
 
