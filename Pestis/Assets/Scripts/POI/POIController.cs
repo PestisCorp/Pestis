@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Fusion;
 using Horde;
+using Human;
 using JetBrains.Annotations;
 using Objectives;
 using Players;
@@ -13,22 +14,57 @@ namespace POI
 {
     public class POIController : NetworkBehaviour
     {
-        public ParticleSystem captureEffect;
-        private float _cheesePerTick;
+        public ParticleSystem[] captureEffect;
 
-        public float CheesePerSecond => _cheesePerTick / Runner.DeltaTime;
-        
+        public PatrolController patrolController;
+
+        public uint boidPoisIndex;
+        private float _cheesePerTick;
+        private Camera camera;
+
         private Sprite captureFlag;
         private GameObject flagObject;
-        private Camera camera;
+        public float CheesePerSecond => _cheesePerTick / Runner.DeltaTime;
 
         public Collider2D Collider { get; private set; }
 
-        [Networked , OnChangedRender(nameof(UpdateFlag))] public Player ControlledBy { get; private set; }
+        [Networked]
+        [OnChangedRender(nameof(UpdateFlag))]
+        public Player ControlledBy { get; private set; }
 
         [Networked] [Capacity(4)] public NetworkLinkedList<HordeController> StationedHordes { get; } = default;
 
         [Networked] [CanBeNull] public CombatController Combat { get; private set; }
+
+        public void Awake()
+        {
+            // Create a new GameObject for the icon
+            if (!flagObject)
+            {
+                // create canvas to display icon
+                var canvasGO = new GameObject("Canvas");
+                canvasGO.transform.SetParent(transform);
+                canvasGO.transform.localPosition = new Vector3(0, 2f, 0);
+
+                var canvas = canvasGO.AddComponent<Canvas>();
+                canvas.renderMode = RenderMode.WorldSpace;
+                canvas.sortingLayerName = "UI&Icons";
+
+                var canvasScaler = canvasGO.AddComponent<CanvasScaler>();
+
+                flagObject = new GameObject("CaptureFlagIcon");
+                flagObject.transform.SetParent(canvasGO.transform); // Attach to canvas
+
+                var rectTransform = flagObject.AddComponent<RectTransform>();
+                rectTransform.localPosition = Vector3.zero;
+                rectTransform.sizeDelta = new Vector2(2, 2);
+
+                // Find the uncaptured flag resource and display it
+                var flag = flagObject.AddComponent<Image>();
+                captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_uncaptured");
+                flag.sprite = captureFlag;
+            }
+        }
 
 #if UNITY_EDITOR
         [DrawGizmo(GizmoType.Selected ^ GizmoType.NonSelected)]
@@ -68,23 +104,22 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
 
             // Give control to new controller
             ControlledBy = player;
-            
+
             player.ControlledPOIs.Add(this);
             // Add Cheese benefits to new controller
             Debug.Log($"Fixed cheese rate is {_cheesePerTick}");
             ControlledBy.IncrementCheeseIncrementRateRpc(_cheesePerTick);
             StationedHordes.Clear();
-            if (player.IsLocal)
-            {
-                GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.POICaptured, 1);
-            }
+            if (player.IsLocal) GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.POICaptured, 1);
         }
-        
-        private void UpdateFlag() {
-            Image flag = flagObject.GetComponent<Image>();
-            
+
+        private void UpdateFlag()
+        {
+            var flag = flagObject.GetComponent<Image>();
+
             if (ControlledBy.IsLocal)
             {
+                EmitCaptureEffect();
                 captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_owned");
                 flag.sprite = captureFlag;
             }
@@ -99,13 +134,15 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         {
             Debug.Log("particle effect");
             if (captureEffect == null) Debug.LogError("captureEffect is not assigned!");
-            captureEffect.Stop();
-            captureEffect.Play();
+            foreach (var effect in captureEffect)
+            {
+                effect.Stop();
+                effect.Play();
+            }
         }
 
         private void StationHorde(HordeController horde)
         {
-            EmitCaptureEffect();
             Debug.Log($"Adding horde {horde.Object.Id} to myself (POI): {Object.Id}");
             StationedHordes.Add(horde);
         }
@@ -120,38 +157,6 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         public void UnStationHordeRpc(HordeController horde, RpcInfo rpcInfo = default)
         {
             StationedHordes.Remove(horde);
-        }
-
-        
-        public void Awake()
-        {
-            // Create a new GameObject for the icon
-            if (!flagObject)
-            {
-                // create canvas to display icon
-                GameObject canvasGO = new GameObject("Canvas");
-                canvasGO.transform.SetParent(transform);
-                canvasGO.transform.localPosition = new Vector3(0, 2f, 0);
-                
-                Canvas canvas = canvasGO.AddComponent<Canvas>();
-                canvas.renderMode = RenderMode.WorldSpace;
-                canvas.sortingLayerName = "UI&Icons";
-                
-                CanvasScaler canvasScaler = canvasGO.AddComponent<CanvasScaler>();
-                
-                flagObject = new GameObject("CaptureFlagIcon");
-                flagObject.transform.SetParent(canvasGO.transform); // Attach to canvas
-                
-                RectTransform rectTransform = flagObject.AddComponent<RectTransform>();
-                rectTransform.localPosition = Vector3.zero;
-                rectTransform.sizeDelta = new Vector2(2, 2);
-
-                // Find the uncaptured flag resource and display it
-                Image flag = flagObject.AddComponent<Image>();
-                captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_uncaptured");
-                flag.sprite = captureFlag;
-                
-            }
         }
 
         public override void Spawned()

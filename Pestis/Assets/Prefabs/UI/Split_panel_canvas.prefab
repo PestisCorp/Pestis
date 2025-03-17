@@ -459,10 +459,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 425afbbe2991488a8c2df899ce13d0a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedAmountText: {fileID: 0}
-  maxAmountText: {fileID: 0}
-  slider: {fileID: 0}
-  button: {fileID: 0}
+  selectedAmountText: {fileID: 8889827779706052854}
+  maxAmountText: {fileID: 8427232560369527916}
+  slider: {fileID: 7394198868158373161}
+  button: {fileID: 6922277767379577974}
+  SplitRecommendedButton: {fileID: 0}
+  spitRecommendedInt: 0
 --- !u!1 &3658694976644000242
 GameObject:
   m_ObjectHideFlags: 0

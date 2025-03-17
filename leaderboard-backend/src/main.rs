@@ -1,4 +1,4 @@
-use log::{debug, info};
+use log::{debug, info, trace};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::io::{Read, Write};
@@ -41,14 +41,15 @@ struct PlayerID(u64);
 
 #[derive(Clone)]
 struct LeaderboardManager {
-    players: Arc<RwLock<HashMap<PlayerID, Player>>>,
-    history: Arc<RwLock<HashMap<PlayerID, Vec<Update>>>>,
+    players: Arc<RwLock<HashMap<String, Player>>>,
+    history: Arc<RwLock<HashMap<String, Vec<Update>>>>,
 }
 
 impl LeaderboardManager {
     fn new() -> Self {
         let filename = chrono::Utc::now().format("%Y-%m-%d");
-        let filename = format!("/data/{}-leaderboard.json", filename);
+        let data_path = std::env::var("DATA_PATH").unwrap_or(".".to_string());
+        let filename = format!("{data_path}/{filename}-leaderboard.json");
         let history = if let Ok(mut file) = std::fs::File::open(&filename) {
             let mut contents = String::new();
             file.read_to_string(&mut contents).unwrap();
@@ -104,7 +105,7 @@ impl LeaderboardManager {
     async fn add_player(&self, id: u64, username: String) {
         let mut players = self.players.write().await;
         players.insert(
-            PlayerID(id),
+            username.clone(),
             Player {
                 id: PlayerID(id),
                 username,
@@ -118,7 +119,7 @@ impl LeaderboardManager {
 
     async fn remove_idle_players(&self) {
         let players_lock = self.players.read().await;
-        let players = players_lock.keys().cloned().collect::<Vec<PlayerID>>();
+        let players = players_lock.keys().cloned().collect::<Vec<String>>();
         drop(players_lock);
         let mut to_remove = Vec::new();
         let history = self.history.read().await;
@@ -142,14 +143,15 @@ impl LeaderboardManager {
 
         drop(history);
         let mut players = self.players.write().await;
-        players.retain(|_, player| !to_remove.contains(&player.id));
+        players.retain(|_, player| !to_remove.contains(&player.username));
     }
 
     async fn save_to_file(&self) {
         let current_date = chrono::Utc::now().format("%Y-%m-%d");
         let history = self.history.read().await;
-        let mut file =
-            std::fs::File::create(format!("/data/{}-leaderboard.json", current_date)).unwrap();
+        let data_path = std::env::var("DATA_PATH").unwrap_or(".".to_string());
+        let filename = format!("{data_path}/{current_date}-leaderboard.json");
+        let mut file = std::fs::File::create(filename).unwrap();
         let data = serde_json::to_string(&*history).unwrap();
         file.write_all(data.as_bytes()).unwrap();
     }
@@ -191,11 +193,15 @@ async fn update_player(
     update: Update,
     manager: LeaderboardManager,
 ) -> Result<impl warp::Reply, warp::Rejection> {
+    trace!("Received Update: {update:?}");
+
     let mut players = manager.players.write().await;
-    players.insert(update.player.id, update.player.clone());
+    players.insert(update.player.username.clone(), update.player.clone());
     drop(players);
     let mut history = manager.history.write().await;
-    let player_history = history.entry(update.player.id).or_insert(vec![]);
+    let player_history = history
+        .entry(update.player.username.clone())
+        .or_insert(vec![]);
 
     // Only add the update if the player has changed
     if player_history.is_empty() || player_history.last().unwrap().player != update.player {

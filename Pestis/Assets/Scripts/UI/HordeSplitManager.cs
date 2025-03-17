@@ -12,6 +12,7 @@ namespace UI
         public TMP_Text maxAmountText;
         public Slider slider;
         public Button button;
+        public int spitRecommendedInt = 50;
         private int initialPopulation;
         private int maxPop;
 
@@ -31,7 +32,6 @@ namespace UI
                 button.interactable = false;
                 return;
             }
-
             button.interactable = true;
 
             splitAmount = (int)slider.value;
@@ -52,8 +52,7 @@ namespace UI
         public void SplitHorde()
         {
             var horde = InputHandler.Instance.LocalPlayer?.selectedHorde;
-            horde?.Player.SplitHorde(horde,
-                (float)splitAmount / InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats);
+            horde?.Player.SplitHorde(horde,(float)splitAmount / InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats);
             gameObject.SetActive(false);
             if (horde)
             {

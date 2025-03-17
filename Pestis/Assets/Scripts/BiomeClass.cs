@@ -15,11 +15,9 @@ public class BiomeClass : ScriptableObject
     public GameObject[] FeatureList; //set of features that spawn in this biome
 
     public GameObject cityPrefab; // The City POI
-
-
     public TileBase[] CompatableTerrainTypes; //can be altered to just be some preexisting tile
     public BiomeTile[] CompatableBiomeTiles; //can be altered to just be some preexisting tile
-    public int distanceFromNearestSeed = 3;
+    public int distanceFromNearestSeed = 20;
     //generation stuff
     public int seedCount;
     public int walkLength;
@@ -27,13 +25,6 @@ public class BiomeClass : ScriptableObject
     public float strength;
 
     //in game stuff
-
-
-
-
-
-
-
 
     private void Shuffle<T>(T[] array)
     {
@@ -82,7 +73,7 @@ public class BiomeClass : ScriptableObject
         {
             Vector3 cityWorldPos = Vector3.zero;
             bool placedCity = false;
-            float minCityDistance = 65.0f; // required distance from any other city (global check)
+            float minCityDistance = 15.0f; // required distance from any other city (global check)
 
             foreach (var tilePos in shuffledTiles)
             {
@@ -127,11 +118,12 @@ public class BiomeClass : ScriptableObject
     }
 
 
+
     /// <summary>
     /// Spawns a number of POIs around a city, with random offsets in angle & radius,
     /// giving a more natural placement.
     /// </summary>
-    private void PlacePoisInCircle(
+    internal void PlacePoisInCircle(
         Vector3 cityPos,
         int numberPois,
         float averageRadius, // The typical distance from the city
