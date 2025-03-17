@@ -1,24 +1,26 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class TutorialManager : MonoBehaviour
 {
+    public GameObject welcomeCanvas;
+
+    public static TutorialManager Instance;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        Instance = this;
+        Display_welcome_slide();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
     // Display slides
     
     // Display welcome slide
     void Display_welcome_slide()
     {
-        //turn on relevant canvas
+        welcomeCanvas.SetActive(true);
+        UI_Manager.Instance.HighlightUiElement(welcomeCanvas);
     }
     // Display fight slide
     void Display_fight_slide()
