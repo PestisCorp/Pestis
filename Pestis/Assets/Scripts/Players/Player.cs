@@ -69,31 +69,31 @@ namespace Players
 
         public override void Spawned()
         {
+            GameManager.Instance.Players.Add(this);
+
+            if (!HasStateAuthority) return;
+
             if (Type == PlayerType.Human)
             {
                 _humanPlayer = this.AddComponent<HumanPlayer>();
                 _humanPlayer!.player = this;
 
-                if (HasStateAuthority)
-                {
-                    FindAnyObjectByType<Grid>().GetComponent<InputHandler>().LocalPlayer = _humanPlayer;
-                    if (GameManager.Instance.localUsername.Length != 0)
-                        Username = GameManager.Instance.localUsername;
-                    else
-                        Username = $"Player {Object.StateAuthority}";
-                }
+                FindAnyObjectByType<Grid>().GetComponent<InputHandler>().LocalPlayer = _humanPlayer;
+                if (GameManager.Instance.localUsername.Length != 0)
+                    Username = GameManager.Instance.localUsername;
+                else
+                    Username = $"Player {Object.StateAuthority}";
             }
             else
             {
                 _botPlayer = this.AddComponent<BotPlayer>();
                 _botPlayer!.player = this;
 
+
                 Username = $"Bot {Object.Id.Raw}";
             }
 
-            GameManager.Instance.Players.Add(this);
-
-            if (HasStateAuthority) StartCoroutine(JoinStats());
+            StartCoroutine(JoinStats());
         }
 
         // Manage Cheese
@@ -281,8 +281,6 @@ namespace Players
             score += (ulong)(300 * allMutations.Count);
             score += (ulong)(500 * mutationTags.Count);
 
-            Debug.Log($"Score before total damage is {score}");
-            Debug.Log($"Total Damage Dealt is {TotalDamageDealt}");
             score += Convert.ToUInt64(TotalDamageDealt / 5.0);
 
             return score;
