@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Fusion;
 using Horde;
 using JetBrains.Annotations;
 using Players;
@@ -18,6 +19,7 @@ public class UI_Manager : MonoBehaviour
     public GameObject inputHandler;
     [CanBeNull] public HumanPlayer localPlayer;
 
+    public NetworkRunner NetworkRunner;
     // References to the canvas elements
     public GameObject infoPanel;
     public GameObject attackPanel;
@@ -65,6 +67,7 @@ public class UI_Manager : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        if (timer.resetButton != null) { timer.resetButton.onClick.AddListener(() => TimerToScoreLock.reset(NetworkRunner, InputHandler.Instance.LocalPlayer.player.Username)); }
         // Ensure appropriate canvases are set to default at the start of the game
         ResetUI();
         StartCoroutine(showReset());
