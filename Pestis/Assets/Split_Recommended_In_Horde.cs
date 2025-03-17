@@ -15,9 +15,12 @@ public class Split_Recommended_In_Horde : MonoBehaviour
     public int splitRecommended = 500;
     private void Start()
     {
+        splitHordeUI.SetActive(false);
         splitHordeButton.onClick.AddListener(Split_Recommended.SplitHordeHalf);
-
-        StartCoroutine(WaitTilPopulationGreaterThanRecommended());
+        if (horde.Player.IsLocal)
+        {
+            StartCoroutine(WaitTilPopulationGreaterThanRecommended());
+        }
     }
 
 
@@ -34,7 +37,7 @@ public class Split_Recommended_In_Horde : MonoBehaviour
             splitHordeUI.SetActive(true);
             for (int i = 0; i < 10;)
             {
-                if (horde.AliveRats < splitRecommended) { break; }
+                if (horde.AliveRats < splitRecommended) { splitHordeUI.SetActive(false); break; }
                 if (ColorUtility.TryParseHtmlString("#0A2046", out Color newColor))
                 {
                     buttonTMPText.color = newColor; // Apply hex color to TextMeshPro text
@@ -54,6 +57,7 @@ public class Split_Recommended_In_Horde : MonoBehaviour
             splitHordeUI.SetActive(false);
 
             // Wait until the horde population drops below the recommended amount
+            yield return new WaitForSeconds(10f);
             yield return new WaitUntil(() => horde.AliveRats <= splitRecommended);
         }
     }

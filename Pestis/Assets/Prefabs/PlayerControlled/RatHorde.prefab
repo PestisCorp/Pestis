@@ -482,6 +482,7 @@ GameObject:
   - component: {fileID: 8072967729009948161}
   - component: {fileID: 2298762105365068013}
   - component: {fileID: 6693759847198177699}
+  - component: {fileID: 7873285946953598513}
   m_Layer: 0
   m_Name: RatHorde
   m_TagString: Untagged
@@ -626,6 +627,24 @@ MonoBehaviour:
   SyncParent: 1
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
+--- !u!114 &7873285946953598513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2093969167296477126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f9941dbe2adf87408a3adaba8f15ae8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  splitHordeUI: {fileID: 8536390015671998532}
+  horde: {fileID: 6619829849645989142}
+  splitHordeButton: {fileID: 6914062588992735523}
+  image: {fileID: 1105003806134767001}
+  buttonTMPText: {fileID: 7442807682479085006}
+  splitRecommended: 500
 --- !u!1 &2386700459452885359
 GameObject:
   m_ObjectHideFlags: 0
@@ -5546,7 +5565,6 @@ GameObject:
   - component: {fileID: 2863357429520744341}
   - component: {fileID: 3241670650118675427}
   - component: {fileID: 4134237484672757823}
-  - component: {fileID: 6581940775708824048}
   m_Layer: 0
   m_Name: SplitHorde
   m_TagString: Untagged
@@ -5637,24 +5655,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &6581940775708824048
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3474830031659066455}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f9941dbe2adf87408a3adaba8f15ae8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  splitHordeUI: {fileID: 8536390015671998532}
-  horde: {fileID: 0}
-  splitHordeButton: {fileID: 6914062588992735523}
-  image: {fileID: 1105003806134767001}
-  buttonTMPText: {fileID: 7442807682479085006}
-  splitRecommended: 10
 --- !u!1 &3577181395217153104
 GameObject:
   m_ObjectHideFlags: 0
