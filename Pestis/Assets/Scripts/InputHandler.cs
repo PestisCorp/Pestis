@@ -5,6 +5,7 @@ using POI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Tilemaps;
 
 public class InputHandler : MonoBehaviour
 {
@@ -103,8 +104,14 @@ public class InputHandler : MonoBehaviour
             }
             else if (!(clickedHorde && clickedHorde.Player == LocalPlayer?.selectedHorde.Player))
             {
-                Vector2 position = _mainCamera.ScreenToWorldPoint(mouse.position.value);
-                LocalPlayer?.MoveHorde(position);
+                Vector3 position = _mainCamera.ScreenToWorldPoint(mouse.position.value);
+                Tilemap tilemap = GameManager.Instance.terrainMap;
+                Vector3Int possibleCellPosition = tilemap.WorldToCell(position);
+                possibleCellPosition.z = 0; // since tilemap is 2D
+
+                if (tilemap.HasTile(possibleCellPosition)) {
+                    LocalPlayer?.MoveHorde(position);
+                }
             }
         }
     }
@@ -113,7 +120,6 @@ public class InputHandler : MonoBehaviour
     {
         LocalPlayer?.DeselectHorde();
     }
-
     /// <summary>
     ///     Returns horde under mouse position, or null if no horde
     /// </summary>
