@@ -2,67 +2,70 @@ using System.Linq;
 using Horde;
 using UnityEngine;
 
-public class CombatFXManager : MonoBehaviour
+namespace Assets.Scripts
 {
-    public ParticleSystem combatVFX;
-    public AudioSource audioSource;
-    public AudioClip startCombatSound;
-    public AudioClip endCombatSound;
-    public HordeController HordeController;
-
-    private void Update()
+    public class CombatFXManager : MonoBehaviour
     {
-        if (HordeController.CurrentCombatController.HordeInCombat(HordeController) &&
-            !HordeController.CurrentCombatController.HordeIsVoluntary(HordeController))
-            UpdateParticleBounds(GetIntersection(getHordeBounds(), HordeController.GetBounds()));
-    }
+        public ParticleSystem combatVFX;
+        public AudioSource audioSource;
+        public AudioClip startCombatSound;
+        public AudioClip endCombatSound;
+        public HordeController HordeController;
 
-    private void OnEnable()
-    {
-        combatVFX.Play();
-        audioSource.Stop();
-        audioSource.clip = startCombatSound;
-        audioSource.Play();
-    }
+        private void Update()
+        {
+            if (HordeController.CurrentCombatController.HordeInCombat(HordeController) &&
+                !HordeController.CurrentCombatController.HordeIsVoluntary(HordeController))
+                UpdateParticleBounds(GetIntersection(getHordeBounds(), HordeController.GetBounds()));
+        }
 
-    private void OnDisable()
-    {
-        combatVFX.Stop();
-        audioSource.Stop();
-        audioSource.clip = endCombatSound;
-        audioSource.Play();
-    }
+        private void OnEnable()
+        {
+            combatVFX.Play();
+            audioSource.Stop();
+            audioSource.clip = startCombatSound;
+            audioSource.Play();
+        }
 
-    private Bounds GetIntersection(Bounds a, Bounds b)
-    {
-        var min = Vector3.Max(a.min, b.min); // Maximum of the min corners
-        var max = Vector3.Min(a.max, b.max); // Minimum of the max corners
+        private void OnDisable()
+        {
+            combatVFX.Stop();
+            audioSource.Stop();
+            audioSource.clip = endCombatSound;
+            audioSource.Play();
+        }
 
-        if (min.x > max.x || min.y > max.y || min.z > max.z)
-            // No valid intersection
-            return new Bounds(Vector3.zero, Vector3.zero);
+        private Bounds GetIntersection(Bounds a, Bounds b)
+        {
+            var min = Vector3.Max(a.min, b.min); // Maximum of the min corners
+            var max = Vector3.Min(a.max, b.max); // Minimum of the max corners
 
-        var center = (min + max) * 0.5f;
-        var size = max - min;
+            if (min.x > max.x || min.y > max.y || min.z > max.z)
+                // No valid intersection
+                return new Bounds(Vector3.zero, Vector3.zero);
 
-        return new Bounds(center, size);
-    }
+            var center = (min + max) * 0.5f;
+            var size = max - min;
 
-    private void UpdateParticleBounds(Bounds bounds)
-    {
-        // Configure the Shape Module
-        var shape = combatVFX.shape;
-        combatVFX.transform.position = bounds.center;
-        shape.scale = bounds.size;
-        var radius = bounds.extents.magnitude + 1f;
-        combatVFX.emissionRate = radius * radius * 1.7f;
-    }
+            return new Bounds(center, size);
+        }
 
-    private Bounds getHordeBounds()
-    {
-        var hordelist = HordeController.CurrentCombatController.GetHordes().Where(h => h != HordeController).ToList();
-        var SumBound = new Bounds(hordelist[0].GetBounds().center, hordelist[0].GetBounds().size);
-        foreach (var horde in hordelist) SumBound.Encapsulate(horde.GetBounds());
-        return SumBound;
+        private void UpdateParticleBounds(Bounds bounds)
+        {
+            // Configure the Shape Module
+            var shape = combatVFX.shape;
+            combatVFX.transform.position = bounds.center;
+            shape.scale = bounds.size;
+            var radius = bounds.extents.magnitude + 1f;
+            combatVFX.emissionRate = radius * radius * 1.7f;
+        }
+
+        private Bounds getHordeBounds()
+        {
+            var hordelist = HordeController.CurrentCombatController.GetHordes().Where(h => h != HordeController).ToList();
+            var SumBound = new Bounds(hordelist[0].GetBounds().center, hordelist[0].GetBounds().size);
+            foreach (var horde in hordelist) SumBound.Encapsulate(horde.GetBounds());
+            return SumBound;
+        }
     }
 }
