@@ -239,8 +239,12 @@ namespace Horde
             }
 
             PointsAvailable--;
-            GameManager.Instance.UIManager.MutationPopUpDisable();
-            GameManager.Instance.UIManager.MutationPopUpEnable();
+            if (GameManager.Instance.UIManager.mutationPopUp.activeSelf)
+            {
+                GameManager.Instance.UIManager.MutationPopUpDisable();
+                GameManager.Instance.UIManager.MutationPopUpEnable();
+            }
+            
         }
         
         private void CalculateActiveWeights()
@@ -325,6 +329,11 @@ namespace Horde
                 (_hordeController.Player.Type == 0))
             {
                 PointsAvailable++;
+                if (GameManager.Instance.UIManager.mutationPopUp.activeSelf || GameManager.Instance.UIManager.mutationViewer.activeSelf)
+                {
+                    GameManager.Instance.UIManager.MutationPopUpDisable();
+                    GameManager.Instance.UIManager.MutationPopUpEnable();
+                }
                 var icon = Resources.Load<Sprite>("UI_design/Emotes/evolution_emote");
                 _hordeController.AddSpeechBubble(icon);
                 _rareMutationClock.Restart();

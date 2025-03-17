@@ -749,6 +749,11 @@ Count: {AliveRats}
             }
         }
 
+        public void SetCombatStrategy(string strategy)
+        {
+            _combatStrategy = strategy;
+        }
+        
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void EventWonCombatRpc(NetworkBehaviourId[] hordes)
         {

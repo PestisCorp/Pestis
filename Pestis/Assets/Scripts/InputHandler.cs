@@ -99,7 +99,6 @@ public class InputHandler : MonoBehaviour
                 Debug.Log("Attacking horde");
                 LocalPlayer!.selectedEnemyHorde=clickedHorde;
                 clickedHorde.Highlight();
-                UIManager.AttackPanelEnable();
             }
             else if (!(clickedHorde && clickedHorde.Player == LocalPlayer?.selectedHorde.Player))
             {

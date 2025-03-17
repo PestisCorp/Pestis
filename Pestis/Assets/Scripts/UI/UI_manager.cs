@@ -23,6 +23,7 @@ public class UI_Manager : MonoBehaviour
     public GameObject attackPanel;
     public GameObject mutationPopUp;
     public GameObject mutationViewer;
+    public GameObject actionPanel;
     public Transform contentParent;
     public GameObject toolbar;
     public GameObject resourceStats;
@@ -68,7 +69,6 @@ public class UI_Manager : MonoBehaviour
         ResetUI();
         if (mutationPopUp != null) mutationPopUp.SetActive(false);
         if (toolbar != null) toolbar.SetActive(false);
-        if (abilityToolbar != null) abilityToolbar.SetActive(false);
         if (resourceStats != null) resourceStats.SetActive(false);
         if (objectives != null) objectives.SetActive(false);
         if (darkScreen != null)
@@ -86,6 +86,7 @@ public class UI_Manager : MonoBehaviour
         {
             button.enabled = false;
             button.GetComponent<Image>().enabled = false;
+            button.GetComponent<Tooltip>().enabled = false;
             var childrenWithTag = GetComponentsInChildrenWithTag<Image, Button>(button, "UI_cooldown_bar");
             foreach (var child in childrenWithTag)
             {
@@ -119,7 +120,6 @@ public class UI_Manager : MonoBehaviour
             if (hordeTotalText != null)
                 hordeTotalText.text = "0";
         }
-        if (attackPanel.activeSelf) AttackPanelRefresh();
     }
 
     // Function to reset all referenced canvases to their default states to prevent UI clutter
@@ -131,12 +131,7 @@ public class UI_Manager : MonoBehaviour
         {
             infoPanel.SetActive(false);
         }
-
-        if (attackPanel != null)
-        {
-            attackPanel.SetActive(false);
-        }
-
+        
         if (splitPanel != null)
         {
             splitPanel.SetActive(false);
@@ -146,6 +141,11 @@ public class UI_Manager : MonoBehaviour
         {
             mutationPopUp.SetActive(false);
             mutationViewer.SetActive(false);
+        }
+
+        if (actionPanel != null)
+        {
+            ActionPanelDisable();
         }
         
         // Ignoring the state of the tool bar, ensuring the default buttons are visible
@@ -158,6 +158,53 @@ public class UI_Manager : MonoBehaviour
         moveButtonInfo.GetComponent<Image>().color = new Color(colour.r * 0.75f, colour.g * 0.75f, colour.b * 0.75f, 1);
     }
 
+    public void ActionPanelEnable()
+    {
+        ResetUI();
+        var horde = GetSelectedHorde();
+        foreach (var mut in GetSelectedHorde().GetEvolutionState().AcquiredAbilities)
+        {
+            RegisterAbility(mut, horde.GetComponent<AbilityController>());
+        }
+        AbilityToolbarEnable();
+        SplitPanelEnable();
+        var toggles = attackPanel.GetComponentsInChildren<Toggle>();
+        foreach (var toggle in toggles)
+        {
+            var toggleText = toggle.GetComponentInChildren<TextMeshProUGUI>().text.Trim('\n');
+            if (toggle.isOn) GetSelectedHorde().SetCombatStrategy(toggleText);
+            //switch (toggleText)
+            //{
+                //case "Frontal Assault":
+                    //optionInfo.optionText = "Consistently high damage per second, lower armor.";
+                    //break;
+                //case "Shock And Awe":
+                    //optionInfo.optionText = "Massively buff damage. Large decrease in armor. Return to normal stats after 10 seconds. Lower ability cooldown.";
+                    //break;
+                //case "Envelopment":
+                    //optionInfo.optionText = "Damage linearly scales with horde size.";
+                    //break;
+               //case "Fortify":
+                    //optionInfo.optionText = "Gain large armor bonuses when near POIs you own.";
+                    //break;
+                //case "Hedgehog":
+                    //optionInfo.optionText = "Buff armor, reduce damage. Reflect a small amount of damage received.";
+                    //break;
+                //case "All Round":
+                    //optionInfo.optionText = "Armor scales with number of enemies in combat.";
+                    //break;
+            //}
+        }
+        if (actionPanel != null) actionPanel.SetActive(true);
+    }
+
+    public void ActionPanelDisable()
+    {
+        if (actionPanel != null) actionPanel.SetActive(false);
+        AbilityToolbarDisable();
+        SplitPanelDisable();
+    }
+    
     // Function to enable info panel
     // and update the text fields
     public void InfoPanelEnable()
@@ -203,98 +250,7 @@ public class UI_Manager : MonoBehaviour
         else
             InfoPanelEnable();
     }
-
-    // Function to enable attack panel
-    public void AttackPanelEnable()
-    {
-        ResetUI();
-        if (attackPanel != null) attackPanel.SetActive(true);
-        
-    }
-
-    public void AttackPanelRefresh()
-    {
-        var fightButton = attackPanel.GetComponentInChildren<Button>();
-        fightButton.onClick.RemoveAllListeners();
-        // Find all GameObjects with the tag "UI_stats_text"
-        var uiStatsTextObjects = GameObject.FindGameObjectsWithTag("UI_stats_text");
-
-        // Loop through and find the one specific to the attack panel with name "Attack_own_stats"
-        var friendlyHorde = GetSelectedHorde();
-        var enemyHorde = GetSelectedEnemyHorde();
-        foreach (var obj in uiStatsTextObjects)
-            if (obj.name == "Attack_own_stats")
-            {
-                UpdateStats(obj, friendlyHorde);
-            }
-            else if (obj.name == "Attack_enemy_stats")
-            {
-                UpdateStats(obj, enemyHorde);
-            }
-
-        // Find all GameObjects with the tag "Attack_slider_text"
-        var attackSliderObjects = GameObject.FindGameObjectsWithTag("Attack_slider_text");
-
-        // Loop through and find the one specific to the attack panel with name "Attack_own_stats"
-        foreach (var obj in attackSliderObjects)
-            if (obj.name == "Text_max_pop")
-            {
-                var horde = GetSelectedHorde();
-                UpdateSliderMaxPop(obj, horde);
-            }
-
-        var toggles = attackPanel.GetComponentsInChildren<Toggle>();
-        string combatOption = "";
-        foreach (var toggle in toggles)
-        {
-            var toggleText = toggle.GetComponentInChildren<TextMeshProUGUI>().text.Trim('\n');
-            var optionInfo = toggle.GetComponent<CombatOptionInfo>();
-            if (toggle.isOn) combatOption = toggleText;
-            switch (toggleText)
-            {
-                case "Frontal Assault":
-                    optionInfo.optionText = "Consistently high damage per second, lower armor.";
-                    break;
-                case "Shock And Awe":
-                    optionInfo.optionText = "Massively buff damage. Large decrease in armor. Return to normal stats after 10 seconds. Lower ability cooldown.";
-                    break;
-                case "Envelopment":
-                    optionInfo.optionText = "Damage linearly scales with horde size.";
-                    break;
-                case "Fortify":
-                    optionInfo.optionText = "Gain large armor bonuses when near POIs you own.";
-                    break;
-                case "Hedgehog":
-                    optionInfo.optionText = "Buff armor, reduce damage. Reflect a small amount of damage received.";
-                    break;
-                case "All Round":
-                    optionInfo.optionText = "Armor scales with number of enemies in combat.";
-                    break;
-            }
-        }
-
-        if (combatOption != "")
-        {
-            fightButton.onClick.AddListener(delegate {friendlyHorde.AttackHorde(enemyHorde, combatOption);});
-            fightButton.onClick.AddListener(AttackPanelDisable);
-        }
-        
-        AttackPanelEnable();
-    }
-
-    // Function to disable attack panel
-    public void AttackPanelDisable()
-    {
-        if (attackPanel != null) attackPanel.SetActive(false);
-    }
-
-    public void AttackPanelToggle()
-    {
-        if (attackPanel.activeSelf)
-            AttackPanelDisable();
-        else
-            AttackPanelEnable();
-    }
+    
 
     // Function to disable horde split panel
     public void SplitPanelDisable()
@@ -385,14 +341,14 @@ public class UI_Manager : MonoBehaviour
             var population = horde.AliveRats.ToString();
             var attack = horde.GetPopulationState().Damage;
             var defense = hordeState.DamageReduction;
-            var avgSize = "XX";
-            var avgWeight = "XX";
+            var health = horde.TotalHealth;
+            var birthRate = horde.GetPopulationState().BirthRate;
 
             var stats = "Population: " + population + "\n" +
                         "Attack: " + attack + "\n" +
                         "Defense: " + defense + "\n" +
-                        "Avg. Size: " + avgSize + "cm\n" +
-                        "Avg. Weight: " + avgWeight + "Kg";
+                        "Health: " + health + "\n" +
+                        "Birth Rate: " + birthRate;
             statsText.GetComponentInChildren<TextMeshProUGUI>().text = stats;
         }
         else
@@ -602,7 +558,6 @@ public class UI_Manager : MonoBehaviour
     
     public void AbilityToolbarDisable()
     {
-        ResetUI();
         foreach (var button in abilityToolbar.GetComponentsInChildren<Button>())
         {
             button.enabled = false;
@@ -627,7 +582,7 @@ public class UI_Manager : MonoBehaviour
         if (abilityToolbar != null) abilityToolbar.SetActive(false);
     }
 
-    public T[] GetComponentsInChildrenWithTag<T, TP>(TP parent, string tagToFind) where T : Component where TP : Object
+    private T[] GetComponentsInChildrenWithTag<T, TP>(TP parent, string tagToFind) where T : Component where TP : Object
     {
         List<T> componentsInChildren = new List<T>();
         foreach (T obj in parent.GetComponentsInChildren<T>()) 
@@ -640,7 +595,7 @@ public class UI_Manager : MonoBehaviour
         return componentsInChildren.ToArray();
     }
     
-    public void RegisterAbility((string, string) mutation, AbilityController abilityController)
+    private void RegisterAbility((string, string) mutation, AbilityController abilityController)
     {
         foreach (var button in abilityToolbar.GetComponentsInChildren<Button>(true))
         {
