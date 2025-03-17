@@ -67,6 +67,7 @@ public class UI_Manager : MonoBehaviour
     {
         // Ensure appropriate canvases are set to default at the start of the game
         ResetUI();
+        StartCoroutine(showReset());
         if (mutationPopUp != null) mutationPopUp.SetActive(false);
         if (toolbar != null) toolbar.SetActive(false);
         if (abilityToolbar != null) abilityToolbar.SetActive(false);
@@ -93,7 +94,6 @@ public class UI_Manager : MonoBehaviour
                 child.GetComponent<Image>().enabled = false;
             }
         }
-
 
     }
 
@@ -133,6 +133,21 @@ public class UI_Manager : MonoBehaviour
             }
         }
         if (attackPanel.activeSelf) AttackPanelRefresh();
+    }
+
+    //automatically shows reset once timer is 0
+
+    private IEnumerator showReset()
+    {
+        timer.resetButtonUI.SetActive(false);
+        Debug.Log("set false");
+
+        //yield return new WaitUntil(() => localPlayer != null && localPlayer.player != null);
+        Debug.Log("Player assigned");
+        yield return new WaitUntil(() => InputHandler.Instance.LocalPlayer && InputHandler.Instance.LocalPlayer.player.TimeUp);
+        Debug.Log("set true");
+        timer.resetButtonUI.SetActive(true);
+        yield return null;
     }
 
     // Function to reset all referenced canvases to their default states to prevent UI clutter

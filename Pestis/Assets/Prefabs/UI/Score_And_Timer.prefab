@@ -119,6 +119,7 @@ MonoBehaviour:
   timerText: {fileID: 6415671914793778973}
   scoreText: {fileID: 773059013169084629}
   resetButton: {fileID: 5758403958591789632}
+  resetButtonUI: {fileID: 2157258253325636750}
 --- !u!1 &629934624161968338
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,9 +276,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 125, y: -56}
-  m_SizeDelta: {x: 250, y: 60}
-  m_Pivot: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -82}
+  m_SizeDelta: {x: 140, y: 45}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6792724306465849574
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -946,7 +947,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.35110474, y: -0.21560669}
+  m_AnchoredPosition: {x: 0.3515625, y: -0.21560669}
   m_SizeDelta: {x: -18.067, y: -20.0621}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7952557009737066145
