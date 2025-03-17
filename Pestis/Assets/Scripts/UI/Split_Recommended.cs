@@ -51,7 +51,7 @@ public class Split_Recommended : MonoBehaviour
     {
         splitHordeButton.onClick.AddListener(SplitHordeHalf);
     }
-    public void SplitHordeHalf()
+    public static void SplitHordeHalf()
     {
         if (InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats < 10) return;
         var horde = InputHandler.Instance.LocalPlayer?.selectedHorde;
