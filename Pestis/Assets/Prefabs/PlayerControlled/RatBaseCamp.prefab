@@ -127,9 +127,11 @@ MonoBehaviour:
   Type: 0
   hordePrefab: {fileID: 2093969167296477126, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
   cheeseConsumptionRate: 0.001
+  TotalDamageDealt: 0
   _Hordes: []
   _ControlledPOIs: []
   _Username: 
+  _Score: 0
   _CurrentCheese: 0
   _CheeseIncrementRate: 0.03
   _FixedCheeseGain: 0.03

@@ -113,7 +113,6 @@ public class InputHandler : MonoBehaviour
     {
         LocalPlayer?.DeselectHorde();
     }
-
     /// <summary>
     ///     Returns horde under mouse position, or null if no horde
     /// </summary>
