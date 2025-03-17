@@ -18,6 +18,8 @@ public class UI_Manager : MonoBehaviour
     public GameObject inputHandler;
     [CanBeNull] public HumanPlayer localPlayer;
 
+    public static UI_Manager Instance;
+
     // References to the canvas elements
     public GameObject infoPanel;
     public GameObject attackPanel;
@@ -65,6 +67,8 @@ public class UI_Manager : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        Instance = this;
+        
         // Ensure appropriate canvases are set to default at the start of the game
         ResetUI();
         if (mutationPopUp != null) mutationPopUp.SetActive(false);
@@ -686,14 +690,14 @@ public class UI_Manager : MonoBehaviour
             _messageActive = false;
     }
 
-    private void HighlightUiElement(GameObject uiToHighlight)
+    public void HighlightUiElement(GameObject uiToHighlight)
     {
         uiToHighlight.GetComponent<Canvas>().sortingOrder = 2;
         darkScreen.SetActive(true);
         darkScreen.GetComponent<Canvas>().enabled = true;
     }
     
-    private void UnhighlightUiElement(GameObject uiToUnhighlight)
+    public void UnhighlightUiElement(GameObject uiToUnhighlight)
     {
         darkScreen.GetComponent<Canvas>().enabled = false;
         darkScreen.SetActive(false);
