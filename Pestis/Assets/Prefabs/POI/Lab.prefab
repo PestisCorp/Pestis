@@ -1393,7 +1393,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 0.9634665, b: 0.6273585, a: 0.7921569}
+        key0: {r: 1, g: 0.7021342, b: 0, a: 0.7921569}
         key1: {r: 0.854902, g: 0.81568635, b: 0.46274513, a: 0.12647057}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
@@ -1409,9 +1409,9 @@ ParticleSystem:
         ctime5: 0
         ctime6: 0
         ctime7: 0
-        atime0: 0
+        atime0: 34117
         atime1: 57247
-        atime2: 65535
+        atime2: 62066
         atime3: 0
         atime4: 0
         atime5: 0
@@ -1420,7 +1420,7 @@ ParticleSystem:
         m_Mode: 0
         m_ColorSpace: 0
         m_NumColorKeys: 2
-        m_NumAlphaKeys: 3
+        m_NumAlphaKeys: 2
       minGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -5007,7 +5007,7 @@ Light:
   m_BounceIntensity: 100
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 2.8526e-41, y: 2.524355e-29, z: 0, w: 3.9415303e+12}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 100}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -5205,5 +5205,4 @@ MonoBehaviour:
   damagePerHuman: 0.5
   ratDPS: 0.5
   startingHumanCount: 3
-  boids: {fileID: 0}
   _CurrentHumanHealth: 0
