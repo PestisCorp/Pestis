@@ -49,7 +49,7 @@ namespace Players
         [Networked] public string Username { get; private set; }
 
         //time and score
-        public bool TimeUp { get; private set; } = false;
+        public bool TimeUp { get; private set; }
         public int Timer { get; private set; }
         [Networked] public ulong Score { get; private set; }
 
@@ -82,7 +82,7 @@ namespace Players
                 if (HasStateAuthority)
                 {
                     FindAnyObjectByType<Grid>().GetComponent<InputHandler>().LocalPlayer = _humanPlayer;
-                    
+
                     if (GameManager.Instance.localUsername.Length != 0)
                         Username = GameManager.Instance.localUsername;
                     else
@@ -100,7 +100,11 @@ namespace Players
 
             GameManager.Instance.Players.Add(this);
 
-            if (HasStateAuthority) StartCoroutine(JoinStats());
+            if (HasStateAuthority)
+            {
+                CurrentCheese = 50.0f;
+                StartCoroutine(JoinStats());
+            }
         }
 
         // Manage Cheese
@@ -138,7 +142,6 @@ namespace Players
 
         private IEnumerator TimerTilScoreLock(int timeRemaining)
         {
-
             while (timeRemaining > 0)
             {
                 yield return new WaitForSeconds(1f);
@@ -146,10 +149,12 @@ namespace Players
                 Timer = timeRemaining;
                 CalculateScore();
             }
+
             TimeUp = true;
-            Debug.Log("Times Up, final score " + Score.ToString());
+            Debug.Log("Times Up, final score " + Score);
             yield return null;
         }
+
         private IEnumerator JoinStats()
         {
 #if UNITY_EDITOR
@@ -282,7 +287,7 @@ namespace Players
 
         public ulong CalculateScore()
         {
-            if (TimeUp == true) { return this.Score; }
+            if (TimeUp) return Score;
 
             ulong score = 0;
 
@@ -309,7 +314,7 @@ namespace Players
             Debug.Log($"Total Damage Dealt is {TotalDamageDealt}");
             score += Convert.ToUInt64(TotalDamageDealt / 5.0);
 
-            this.Score = score;
+            Score = score;
             return score;
         }
 

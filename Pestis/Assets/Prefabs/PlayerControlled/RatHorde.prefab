@@ -660,7 +660,7 @@ MonoBehaviour:
   splitHordeButton: {fileID: 6914062588992735523}
   image: {fileID: 1105003806134767001}
   buttonTMPText: {fileID: 7442807682479085006}
-  splitRecommended: 500
+  splitRecommended: 300
 --- !u!1 &2386700459452885359
 GameObject:
   m_ObjectHideFlags: 0

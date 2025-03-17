@@ -1,6 +1,7 @@
-using Objectives;
 using System.Collections;
-using Unity.VisualScripting;
+using Horde;
+using Objectives;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using ColorUtility = UnityEngine.ColorUtility;
@@ -8,25 +9,22 @@ using ColorUtility = UnityEngine.ColorUtility;
 public class Split_Recommended_In_Horde : MonoBehaviour
 {
     public GameObject splitHordeUI;
-    public Horde.HordeController horde;
+    public HordeController horde;
     public Button splitHordeButton;
     public Image image;
-    public TMPro.TMP_Text buttonTMPText;
-    public int splitRecommended = 500;
+    public TMP_Text buttonTMPText;
+    public int splitRecommended = 300;
+
     private void Start()
     {
+        if (!horde.Player.IsLocal) return;
         splitHordeUI.SetActive(false);
-        splitHordeButton.onClick.AddListener(Split_Recommended.SplitHordeHalf);
-        if (horde.Player.IsLocal)
-        {
-            StartCoroutine(WaitTilPopulationGreaterThanRecommended());
-        }
+        splitHordeButton.onClick.AddListener(SplitHordeHalf);
+        StartCoroutine(WaitTilPopulationGreaterThanRecommended());
     }
 
 
-
-
-    IEnumerator WaitTilPopulationGreaterThanRecommended()
+    private IEnumerator WaitTilPopulationGreaterThanRecommended()
     {
         while (true)
         {
@@ -35,25 +33,25 @@ public class Split_Recommended_In_Horde : MonoBehaviour
 
             // Show the split UI
             splitHordeUI.SetActive(true);
-            for (int i = 0; i < 10;)
+            for (var i = 0; i < 20; i++)
             {
-                if (horde.AliveRats < splitRecommended) { splitHordeUI.SetActive(false); break; }
-                if (ColorUtility.TryParseHtmlString("#0A2046", out Color newColor))
+                if (horde.AliveRats < splitRecommended)
                 {
+                    splitHordeUI.SetActive(false);
+                    break;
+                }
+
+                if (ColorUtility.TryParseHtmlString("#0A2046", out var newColor))
                     buttonTMPText.color = newColor; // Apply hex color to TextMeshPro text
 
-                }
-
-                if (ColorUtility.TryParseHtmlString("#FF5F5F", out Color newColor2))
-                {
+                if (ColorUtility.TryParseHtmlString("#FF5F5F", out var newColor2))
                     image.color = newColor2; // Apply hex color to TextMeshPro text
-                }
                 yield return new WaitForSeconds(0.5f);
                 buttonTMPText.color = Color.black;
                 image.color = Color.white;
                 yield return new WaitForSeconds(0.5f);
-
             }
+
             splitHordeUI.SetActive(false);
 
             // Wait until the horde population drops below the recommended amount
@@ -68,6 +66,5 @@ public class Split_Recommended_In_Horde : MonoBehaviour
         horde.Player.SplitHorde(horde, 0.5f);
         GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.HordeSplit, 1);
         splitHordeUI.SetActive(false);
-
     }
 }

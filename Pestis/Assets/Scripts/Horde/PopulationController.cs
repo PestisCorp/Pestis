@@ -18,10 +18,12 @@ namespace Horde
         internal float DesertResistance;
         internal float GrassResistance;
         internal float StoneResistance;
+
         /// <summary>
         ///     How much damage the horde does to other hordes per tick in combat
         /// </summary>
         internal float Damage;
+
         internal float DamageReduction;
 
         // Multipliers applied to damage original state
@@ -70,7 +72,7 @@ namespace Horde
         // W < 1 if R < P
         private double ResourceWeightGrowth()
         {
-            return 1 + 0.5 *
+            return 1 + 2.5 *
                 (1.0 - Math.Exp(-(_hordeController.Player.CurrentCheese / _hordeController.AliveRats - 1)));
         }
 
@@ -245,6 +247,9 @@ namespace Horde
             if (!_hordeController.InCombat && _hordeController.PopulationCooldown == 0 &&
                 _populationClock.ElapsedInMilliseconds > 50 && !_hordeController.isApparition) PopulationEvent();
             _highestHealth = Mathf.Max(_hordeController.TotalHealth, _highestHealth);
+            if (!_hordeController.InCombat)
+                _hordeController.TotalHealth =
+                    Mathf.Max(_hordeController.TotalHealth, initialPopulation * State.HealthPerRat);
         }
 
         public void SetDamage(float damage)
