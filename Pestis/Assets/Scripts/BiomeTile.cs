@@ -13,7 +13,7 @@ public class BiomeTile : TileBase
     public float speeedEffect = 0.5f;
     public float damageEffect =0;
     public float resistanceDamage = 0;
-    public float bonusCheeseRatio = 0.0167f;
+    public float bonusCheeseRatio = 0;
     public float resistanceSpeed = 1;
     public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
     {
