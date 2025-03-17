@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,6 +10,11 @@ public class BiomeTile : TileBase
     public int foodLevel, HumanLevel, climate = 0;
     public Sprite tile;
     public Color tilecolor = Color.white;
+    public float speeedEffect = 0.5f;
+    public float damageEffect =0;
+    public float resistanceDamage = 0;
+    public float bonusCheeseRatio = 0;
+    public float resistanceSpeed = 1;
     public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
     {
         tileData.sprite = this.tile;
@@ -16,7 +22,10 @@ public class BiomeTile : TileBase
         tileData.flags = TileFlags.LockTransform;
         tileData.colliderType = Tile.ColliderType.None;
     }
-
+    public virtual void biomeEffect(Horde.PopulationController populationController, Horde.HordeController horde)
+    {
+        Debug.Log(this.GetType());
+    }
     internal BiomeInstance GetBiomeInstanceAtPosition(Vector3Int position, List<BiomeInstance> biomeInstances)
     {
         foreach (var biomeInstance in biomeInstances)
@@ -29,7 +38,22 @@ public class BiomeTile : TileBase
         return null;
     }
 
+    public virtual void GenericEffect(Horde.PopulationController populationController, Horde.HordeController horde, float resistance )
+    {
+        float sigResistance = fastLogistic(resistance);
+        //Debug.Log("default " +resistance+"sig " + sigResistance +"name " +horde.Player.Username + "effect "+ (damageEffect - (sigResistance * resistanceDamage)));
+        horde.DealDamageRpc(damageEffect - (sigResistance * resistanceDamage));
+        horde.Player.AddCheeseRpc(bonusCheeseRatio * resistance);
+        populationController.speedMult(speeedEffect + (resistanceSpeed* sigResistance) );
+    
+    }
 
+    internal float fastLogistic(float x) 
+    {
+        //ranges from 0 to 1
+        return (float)(1 / (1.0 + Math.Exp(-x)));
+        
+    }
     internal List<(TileBase tile, Vector3Int position)> TilesInArea(int x, int y, int size, Tilemap map)
     {
         List<(TileBase tile, Vector3Int position)> tilesWithPositions = new List<(TileBase, Vector3Int)>();
@@ -67,12 +91,12 @@ public class BiomeTile : TileBase
             BiomeInstance commmonBiome = GetBiomeInstanceAtPosition(commonPosition, biomeInstances);
             int commonTileCount =  SurroundingTiles.Count(tile => tile.tile != null && tile.GetType() == mostCommonTile.GetType());
             if (commonTileCount >= 6) { centreBiome.swapTile(map, position, commmonBiome.template.getRandomBiomeTile(), commmonBiome); }
-            else if (Random.value < commmonBiome.template.strength) { centreBiome.swapTile(map, position, commmonBiome.template.getRandomBiomeTile(), commmonBiome); }
+            else if (UnityEngine.Random.value < commmonBiome.template.strength) { centreBiome.swapTile(map, position, commmonBiome.template.getRandomBiomeTile(), commmonBiome); }
             else return;
         }
 
         Vector3Int[] directions = { Vector3Int.up, Vector3Int.down, Vector3Int.left, Vector3Int.right };
-        Vector3Int nextPosition = position + directions[Random.Range(0, 4)];
+        Vector3Int nextPosition = position + directions[UnityEngine.Random.Range(0, 4)];
         
         BiomeTile nextTile = map.GetTile(nextPosition) as BiomeTile;
         if (nextTile != null)

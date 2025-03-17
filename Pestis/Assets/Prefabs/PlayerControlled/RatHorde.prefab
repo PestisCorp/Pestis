@@ -478,6 +478,7 @@ GameObject:
   - component: {fileID: 3670710804318574543}
   - component: {fileID: 6619829849645989142}
   - component: {fileID: 4419380376764164480}
+  - component: {fileID: 8390946195007812581}
   - component: {fileID: -7073726608519572895}
   - component: {fileID: 8072967729009948161}
   - component: {fileID: 2298762105365068013}
@@ -559,6 +560,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialPopulation: 5
+--- !u!114 &8390946195007812581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2093969167296477126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12940a5588d5de442a040f7bbd1f1238, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pop: {fileID: 4419380376764164480}
+  horde: {fileID: 6619829849645989142}
+  tilemap: {fileID: 0}
 --- !u!114 &-7073726608519572895
 MonoBehaviour:
   m_ObjectHideFlags: 0
