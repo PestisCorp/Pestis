@@ -33,7 +33,7 @@ public class UI_Manager : MonoBehaviour
     public GameObject objectives;
     public TimerToScoreLock timer;
     public GameObject darkScreen;
-    public GameObject tutorial;
+    public GameObject startMenu;
     
     // References to the resource text fields
     public TextMeshProUGUI cheeseTotalText;
@@ -77,11 +77,12 @@ public class UI_Manager : MonoBehaviour
     {
         // Ensure appropriate canvases are set to default at the start of the game
         ResetUI();
-        if (mutationPopUp != null) mutationPopUp.SetActive(false);
-        if (toolbar != null) toolbar.SetActive(false);
-        if (abilityToolbar != null) abilityToolbar.SetActive(false);
-        if (resourceStats != null) resourceStats.SetActive(false);
-        if (objectives != null) objectives.SetActive(false);
+        if (mutationPopUp) mutationPopUp.SetActive(false);
+        if (toolbar) toolbar.SetActive(false);
+        if (abilityToolbar) abilityToolbar.SetActive(false);
+        if (resourceStats) resourceStats.SetActive(false);
+        if (objectives) objectives.SetActive(false);
+        if (startMenu) objectives.SetActive(false);
         /*
         if (darkScreen != null)
         {
@@ -710,5 +711,10 @@ public class UI_Manager : MonoBehaviour
         darkScreen.GetComponent<Canvas>().enabled = false;
         darkScreen.SetActive(false);
         uiToUnhighlight.GetComponent<Canvas>().sortingOrder = 0;
+    }
+
+    public void EnableStartMenu()
+    {
+        startMenu.SetActive(true);
     }
 }

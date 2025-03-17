@@ -46,5 +46,6 @@ public class TutorialManager : MonoBehaviour
     {
         current.SetActive(false);
         UI_Manager.Instance.UnhighlightUiElement(current);
+        UI_Manager.Instance.EnableStartMenu();
     }
 }
