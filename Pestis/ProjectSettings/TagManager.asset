@@ -19,6 +19,7 @@ TagManager:
   - mutation_type
   - mutation_use
   - mutation_option
+  - viewer
   layers:
   - Default
   - TransparentFX

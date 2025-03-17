@@ -25,7 +25,6 @@ public class UI_Manager : MonoBehaviour
     public GameObject mutationViewer;
     public GameObject actionPanel;
     public Transform contentParent;
-    public GameObject toolbar;
     public GameObject resourceStats;
     public GameObject splitPanel;
     public GameObject abilityToolbar;
@@ -40,13 +39,8 @@ public class UI_Manager : MonoBehaviour
     public TextMeshProUGUI popTotalText;
 
     public TextMeshProUGUI hordeTotalText;
-
-    // References to the buttons that need some added function
-    // Button type wouldn't show in inspector so using GameObject instead
-    public GameObject moveButton;
-    public GameObject moveButtonInfo;
     
-    public bool moveFunctionality;
+    
 
     // References to notification system objects
     public GameObject notification;
@@ -68,7 +62,6 @@ public class UI_Manager : MonoBehaviour
         // Ensure appropriate canvases are set to default at the start of the game
         ResetUI();
         if (mutationPopUp != null) mutationPopUp.SetActive(false);
-        if (toolbar != null) toolbar.SetActive(false);
         if (resourceStats != null) resourceStats.SetActive(false);
         if (objectives != null) objectives.SetActive(false);
         if (darkScreen != null)
@@ -77,7 +70,7 @@ public class UI_Manager : MonoBehaviour
             darkScreen.SetActive(false);
         }
         displayResourceInfo = false;
-        moveFunctionality = false;
+
 
         _notificationText = notification.GetComponentInChildren<TMP_Text>();
         _notificationBackground = notification.GetComponentInChildren<Image>();
@@ -120,6 +113,17 @@ public class UI_Manager : MonoBehaviour
             if (hordeTotalText != null)
                 hordeTotalText.text = "0";
         }
+
+        if (infoPanel.activeSelf)
+        {
+            var taggedObjects = GameObject.FindGameObjectsWithTag("UI_stats_text");
+            foreach (var obj in taggedObjects)
+                if (obj.name == "Info_own_stats")
+                {
+                    var horde = GetSelectedHorde();
+                    UpdateStats(obj, horde);
+                }
+        }
     }
 
     // Function to reset all referenced canvases to their default states to prevent UI clutter
@@ -151,11 +155,7 @@ public class UI_Manager : MonoBehaviour
         // Ignoring the state of the tool bar, ensuring the default buttons are visible
         var toolbarButtons = GameObject.FindGameObjectsWithTag("UI_button_action");
         foreach (var obj in toolbarButtons) obj.GetComponent<Image>().enabled = true;
-
-        //Change colour to normal
-        var colour = Color.white;
-        moveButton.GetComponent<Image>().color = colour;
-        moveButtonInfo.GetComponent<Image>().color = new Color(colour.r * 0.75f, colour.g * 0.75f, colour.b * 0.75f, 1);
+        
     }
 
     public void ActionPanelEnable()
@@ -173,27 +173,28 @@ public class UI_Manager : MonoBehaviour
         {
             var toggleText = toggle.GetComponentInChildren<TextMeshProUGUI>().text.Trim('\n');
             if (toggle.isOn) GetSelectedHorde().SetCombatStrategy(toggleText);
-            //switch (toggleText)
-            //{
-                //case "Frontal Assault":
-                    //optionInfo.optionText = "Consistently high damage per second, lower armor.";
-                    //break;
-                //case "Shock And Awe":
-                    //optionInfo.optionText = "Massively buff damage. Large decrease in armor. Return to normal stats after 10 seconds. Lower ability cooldown.";
-                    //break;
-                //case "Envelopment":
-                    //optionInfo.optionText = "Damage linearly scales with horde size.";
-                    //break;
-               //case "Fortify":
-                    //optionInfo.optionText = "Gain large armor bonuses when near POIs you own.";
-                    //break;
-                //case "Hedgehog":
-                    //optionInfo.optionText = "Buff armor, reduce damage. Reflect a small amount of damage received.";
-                    //break;
-                //case "All Round":
-                    //optionInfo.optionText = "Armor scales with number of enemies in combat.";
-                    //break;
-            //}
+            var tooltip = toggle.GetComponent<Tooltip>();
+            switch (toggleText)
+            {
+                case "Frontal Assault":
+                    tooltip.tooltipText = "Consistently high damage per second, lower armor.";
+                    break;
+                case "Shock And Awe":
+                    tooltip.tooltipText = "Massively buff damage. Large decrease in armor. Lower ability cooldown.";
+                    break;
+                case "Envelopment":
+                    tooltip.tooltipText = "Damage linearly scales with horde size.";
+                    break;
+               case "Fortify":
+                    tooltip.tooltipText = "Gain large armor bonuses when near POIs you own.";
+                    break;
+                case "Hedgehog":
+                    tooltip.tooltipText = "Buff armor, reduce damage. Reflect a small amount of damage received.";
+                    break;
+                case "All Round":
+                    tooltip.tooltipText = "Armor scales with number of enemies in combat.";
+                    break;
+            }
         }
         if (actionPanel != null) actionPanel.SetActive(true);
     }
@@ -234,6 +235,13 @@ public class UI_Manager : MonoBehaviour
                 var horde = GetSelectedHorde();
                 UpdateMutations(obj, horde);
             }
+
+        var button = GameObject.FindGameObjectWithTag("viewer");
+        button.GetComponent<Button>().onClick.RemoveAllListeners();
+        button.GetComponent<Button>().onClick.AddListener(delegate
+        {
+            Camera.main.GetComponent<Panner>().PanTo(GetSelectedHorde());
+        });
     }
 
     // Function to disable info panel
@@ -274,19 +282,8 @@ public class UI_Manager : MonoBehaviour
     }
 
 
-    // Function to enable toolbar
-    public void ToolbarEnable()
-    {
-        ResetUI();
-        if (toolbar != null) toolbar.SetActive(true);
-    }
 
-    // Function to disable toolbar
-    public void ToolbarDisable()
-    {
-        ResetUI();
-        if (toolbar != null) toolbar.SetActive(false);
-    }
+
 
     // Function to enable resource stats display
     public void ResourceStatsEnable()
@@ -445,22 +442,7 @@ public class UI_Manager : MonoBehaviour
     }
 
 
-    // Toggles if move function is active
-    public void MoveButtonFunction()
-    {
-        moveFunctionality = !moveFunctionality;
-        ResetUI();
 
-        if (moveFunctionality)
-        {
-            //Change colour to 75% darker
-            var colour = moveButton.GetComponent<Image>().color;
-            moveButton.GetComponent<Image>().color = new Color(colour.r * 0.75f, colour.g * 0.75f, colour.b * 0.75f, 1);
-            colour = moveButtonInfo.GetComponent<Image>().color;
-            moveButtonInfo.GetComponent<Image>().color =
-                new Color(colour.r * 0.75f, colour.g * 0.75f, colour.b * 0.75f, 1);
-        }
-    }
     
     
     // Function to enable mutation pop-up

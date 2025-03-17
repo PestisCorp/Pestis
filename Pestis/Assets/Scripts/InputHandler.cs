@@ -68,17 +68,7 @@ public class InputHandler : MonoBehaviour
                 {
                     LocalPlayer?.SelectHorde(horde);
                 }
-                else if (UIManager.moveFunctionality)
-                {
-                    UIManager.moveFunctionality = false;
-                    UIManager.ResetUI();
 
-                    if (!MoveToPoiIfClicked(mouse.position.ReadValue()))
-                    {
-                        Vector2 position = _mainCamera.ScreenToWorldPoint(mouse.position.value);
-                        LocalPlayer?.MoveHorde(position);
-                    }
-                }
                 else
                 {
                     LocalPlayer?.DeselectHorde();
