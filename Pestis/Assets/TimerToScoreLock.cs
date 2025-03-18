@@ -1,6 +1,7 @@
 using Fusion;
 using Players;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -12,7 +13,7 @@ public class TimerToScoreLock : MonoBehaviour
     public TMPro.TMP_Text scoreText;
     public Button resetButton;
     public GameObject resetButtonUI;
-
+    public GameObject prefab;
     public void UpdateScore(ulong ScoreToDisplay)
     {
         scoreText.text = ScoreToDisplay.ToString() + " pts";
@@ -25,10 +26,11 @@ public class TimerToScoreLock : MonoBehaviour
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
-    public static void reset(NetworkRunner netRunner, GameObject runner, string username)
+    public static void reset(GameObject[] destroy)
     {
-        netRunner.Shutdown();
+        foreach (GameObject go in destroy) {GameObject.Destroy(go);}
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
     }
 
 
