@@ -12,6 +12,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 using Color = UnityEngine.Color;
+using Object = UnityEngine.Object;
 
 public class UI_Manager : MonoBehaviour
 {
@@ -80,7 +81,7 @@ public class UI_Manager : MonoBehaviour
             darkScreen.GetComponent<Canvas>().enabled = false;
             darkScreen.SetActive(false);
         }
-        */
+        
         displayResourceInfo = false;
 
 

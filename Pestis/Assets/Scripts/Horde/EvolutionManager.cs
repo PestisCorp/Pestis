@@ -104,7 +104,6 @@ namespace Horde
         private Timer _mutationClock;
         private PopulationController _populationController;
         private Timer _rareMutationClock;
-        public readonly Queue<(ActiveMutation, ActiveMutation, ActiveMutation, EvolutionManager, HordeController)> _mutationQueue = new();
         public int PointsAvailable = 0;
         
         
@@ -225,7 +224,7 @@ namespace Horde
 
             if (mutation.MutationName.Contains("swim"))
                 GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.SwimmingUnlocked, 1);
-            }
+        
             
             if (_evolutionaryState.ActiveMutations.Count < 3) 
             {
@@ -345,4 +344,5 @@ namespace Horde
             }
         }
     }
+
 }
