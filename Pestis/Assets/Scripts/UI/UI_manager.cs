@@ -38,7 +38,8 @@ public class UI_Manager : MonoBehaviour
     public GameObject darkScreen;
     public GameObject textPrefab;
     public GameObject startMenu;
-    
+
+    public Transform abilityPanel;
     // References to the resource text fields
     public TextMeshProUGUI cheeseTotalText;
     public TextMeshProUGUI cheeseRateText;
@@ -58,8 +59,8 @@ public class UI_Manager : MonoBehaviour
     private TMP_Text _notificationText;
     
     private bool displayResourceInfo;
-
-    // Called by EvolutionManager every time a new mutation is acquired
+    
+    public readonly Dictionary<HordeController, GameObject> AbilityBars = new();
 
 
     private void Awake()
@@ -87,18 +88,7 @@ public class UI_Manager : MonoBehaviour
 
         _notificationText = notification.GetComponentInChildren<TMP_Text>();
         _notificationBackground = notification.GetComponentInChildren<Image>();
-
-        foreach (var button in abilityToolbar.GetComponentsInChildren<Button>())
-        {
-            button.enabled = false;
-            button.GetComponent<Image>().enabled = false;
-            button.GetComponent<Tooltip>().enabled = false;
-            var childrenWithTag = GetComponentsInChildrenWithTag<Image, Button>(button, "UI_cooldown_bar");
-            foreach (var child in childrenWithTag)
-            {
-                child.GetComponent<Image>().enabled = false;
-            }
-        }
+        
 
 
     }
@@ -237,7 +227,7 @@ public class UI_Manager : MonoBehaviour
     public void ActionPanelDisable()
     {
         if (actionPanel != null) actionPanel.SetActive(false);
-        AbilityToolbarDisable();
+        if (AbilityBars.Count > 0) AbilityToolbarDisable();
         SplitPanelDisable();
     }
     
@@ -569,36 +559,41 @@ public class UI_Manager : MonoBehaviour
     
     public void AbilityToolbarEnable()
     {
-        if (abilityToolbar != null) abilityToolbar.SetActive(true);
+        var horde = GetSelectedHorde();
+        if (AbilityBars[horde]) AbilityBars[horde].SetActive(true);
     }
     
     public void AbilityToolbarDisable()
     {
-        foreach (var button in abilityToolbar.GetComponentsInChildren<Button>())
+        foreach (var abilityBar in AbilityBars.Values)
         {
-            button.enabled = false;
-            button.onClick.RemoveAllListeners();
-            button.GetComponent<Image>().enabled = false;
-            button.GetComponentInChildren<TextMeshProUGUI>().text = ""; 
+            foreach (var button in abilityBar.GetComponentsInChildren<Button>())
+            {
+                button.enabled = false;
+                button.onClick.RemoveAllListeners();
+                button.GetComponent<Image>().enabled = false;
+                button.GetComponentInChildren<TextMeshProUGUI>().text = "";
 
-            
-            var childrenWithTag = GetComponentsInChildrenWithTag<Image, Button>(button, "UI_cooldown_bar");
-            foreach (var child in childrenWithTag)
-            {
-                child.GetComponent<Image>().enabled = false; 
+
+                var childrenWithTag = GetComponentsInChildrenWithTag<Image, Button>(button, "UI_cooldown_bar");
+                foreach (var child in childrenWithTag)
+                {
+                    child.GetComponent<Image>().enabled = false;
+                }
+
+                var tooltip = button.GetComponent<Tooltip>();
+                if (tooltip)
+                {
+                    tooltip.tooltipText = "";
+                    tooltip.enabled = false;
+                }
             }
-            
-            var tooltip = button.GetComponent<Tooltip>();
-            if (tooltip)
-            {
-                tooltip.tooltipText = "";
-                tooltip.enabled = false;
-            }
+
+            if (abilityBar) abilityBar.SetActive(false);
         }
-        if (abilityToolbar != null) abilityToolbar.SetActive(false);
     }
 
-    private T[] GetComponentsInChildrenWithTag<T, TP>(TP parent, string tagToFind) where T : Component where TP : Object
+    public T[] GetComponentsInChildrenWithTag<T, TP>(TP parent, string tagToFind) where T : Component where TP : Object
     {
         List<T> componentsInChildren = new List<T>();
         foreach (T obj in parent.GetComponentsInChildren<T>()) 
@@ -613,7 +608,9 @@ public class UI_Manager : MonoBehaviour
     
     private void RegisterAbility((string, string) mutation, AbilityController abilityController)
     {
-        foreach (var button in abilityToolbar.GetComponentsInChildren<Button>(true))
+        var horde = GetSelectedHorde();
+        var abilityBar = AbilityBars[horde];
+        foreach (var button in abilityBar.GetComponentsInChildren<Button>(true))
         {
             if (button.enabled) continue;
             button.enabled = true;
