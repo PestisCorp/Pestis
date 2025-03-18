@@ -252,7 +252,7 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
 [numthreads(blockSize, 1, 1)]
 void UpdateBounds(uint3 id : SV_DispatchThreadID)
 {
-    if (id.x >= numBoidsPrevious) return;
+    if (id.x >= numBoids) return;
 
     Boid boid = boidsIn[id.x];
     float left = asfloat(bounds[0]);

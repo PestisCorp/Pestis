@@ -353,8 +353,8 @@ public class RatBoids : MonoBehaviour
         }
 
         _boundsBuffer.GetData(_boundsArr, 0, 0, 4);
-        var extents = new Vector2((_boundsArr[2] - _boundsArr[0]) / 2.0f, (_boundsArr[3] - _boundsArr[1]) / 2.0f);
-        var center = new Vector2(extents.x + _boundsArr[0], extents.y + _boundsArr[1]);
+        var extents = new Vector2(_boundsArr[2] - _boundsArr[0], _boundsArr[1] - _boundsArr[3]);
+        var center = new Vector2(extents.x / 2.0f + _boundsArr[0], extents.y / 2.0f + _boundsArr[3]);
         Bounds = new Bounds(center, extents);
         _boundsArr[0] = 1024.0f;
         _boundsArr[1] = -1024.0f;
