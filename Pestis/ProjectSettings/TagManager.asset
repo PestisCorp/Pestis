@@ -14,7 +14,14 @@ TagManager:
   - fight_button
   - combat_info
   - DebugInfo
+  - mutation_points
+  - mutation_content
+  - mutation_type
+  - mutation_use
+  - mutation_option
+  - viewer
   - tilemap
+  - mutation_bg
   layers:
   - Default
   - TransparentFX

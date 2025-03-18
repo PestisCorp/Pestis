@@ -1,3 +1,4 @@
+using System;
 using Horde;
 using Objectives;
 using TMPro;
@@ -17,6 +18,11 @@ namespace UI
         private int maxPop;
 
         private int splitAmount;
+
+        private void Start()
+        {
+            button.onClick.AddListener(SplitHorde);
+        }
 
         private void Update()
         {
@@ -41,6 +47,7 @@ namespace UI
             // Both hordes must stay above initial population!
             slider.minValue = initialPopulation;
             slider.maxValue = maxPop - initialPopulation;
+            
         }
 
         private void OnEnable()
