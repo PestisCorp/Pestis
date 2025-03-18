@@ -28,14 +28,7 @@ public class TimerToScoreLock : MonoBehaviour
     public static void reset(NetworkRunner netRunner, GameObject runner, string username)
     {
         netRunner.Shutdown();
-        NetworkRunner newRunner = runner.AddComponent<NetworkRunner>();
-        GameManager.Instance.localUsername = username;
-        var args = new StartGameArgs();
-        args.GameMode = GameMode.Shared;
-        var scene = new NetworkSceneInfo();
-        scene.AddSceneRef(SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex));
-        args.Scene = scene;
-        newRunner.StartGame(args);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
 
