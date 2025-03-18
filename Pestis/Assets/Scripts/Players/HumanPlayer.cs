@@ -43,13 +43,10 @@ namespace Players
             if (horde.Player.IsLocal)
             {
                 if (horde.isApparition) return;
-                UI_manager.AbilityToolbarDisable();
                 if (selectedHorde && selectedHorde != horde)
                 {
                     selectedHorde.UnHighlight();
                     selectedHorde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
-                    
-                    UI_manager.ToolbarDisable();
                     
                 }
                 if (selectedHorde != horde)
@@ -58,14 +55,8 @@ namespace Players
                     selectedHorde?.Highlight();
                     if (selectedHorde.Player.IsLocal)
                     {
-                        foreach (var mut in selectedHorde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredAbilities)
-                        {
-                            UI_manager.RegisterAbility(mut, selectedHorde.GetComponent<AbilityController>());
-                        }
-
                         if (selectedHorde.InCombat) selectedHorde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 1;
-                        UI_manager.ToolbarEnable();
-                        UI_manager.AbilityToolbarEnable();
+                        UI_manager.InfoPanelEnable();
                     }
                      
                 }
@@ -92,8 +83,9 @@ namespace Players
             if (selectedHorde) selectedHorde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
             selectedHorde = null;
             selectedEnemyHorde = null;
-            UI_manager.ToolbarDisable();
-            UI_manager.AbilityToolbarDisable();
+            UI_manager.InfoPanelDisable();
+            UI_manager.MutationPopUpDisable();
+            UI_manager.ActionPanelDisable();
         }
 
         public void MoveHorde(Vector2 target)

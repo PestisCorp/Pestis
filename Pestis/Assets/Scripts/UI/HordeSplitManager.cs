@@ -1,3 +1,4 @@
+using System;
 using Horde;
 using Objectives;
 using TMPro;
@@ -12,10 +13,16 @@ namespace UI
         public TMP_Text maxAmountText;
         public Slider slider;
         public Button button;
+        public int spitRecommendedInt = 50;
         private int initialPopulation;
         private int maxPop;
 
         private int splitAmount;
+
+        private void Start()
+        {
+            button.onClick.AddListener(SplitHorde);
+        }
 
         private void Update()
         {
@@ -31,7 +38,6 @@ namespace UI
                 button.interactable = false;
                 return;
             }
-
             button.interactable = true;
 
             splitAmount = (int)slider.value;
@@ -41,6 +47,7 @@ namespace UI
             // Both hordes must stay above initial population!
             slider.minValue = initialPopulation;
             slider.maxValue = maxPop - initialPopulation;
+            
         }
 
         private void OnEnable()
@@ -52,8 +59,7 @@ namespace UI
         public void SplitHorde()
         {
             var horde = InputHandler.Instance.LocalPlayer?.selectedHorde;
-            horde?.Player.SplitHorde(horde,
-                (float)splitAmount / InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats);
+            horde?.Player.SplitHorde(horde,(float)splitAmount / InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats);
             gameObject.SetActive(false);
             if (horde)
             {

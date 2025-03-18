@@ -24,7 +24,6 @@ public class BiomeTile : TileBase
     }
     public virtual void biomeEffect(Horde.PopulationController populationController, Horde.HordeController horde)
     {
-        //Debug.Log(this.GetType());
     }
     internal BiomeInstance GetBiomeInstanceAtPosition(Vector3Int position, List<BiomeInstance> biomeInstances)
     {

@@ -1,0 +1,4498 @@
+fileFormatVersion: 2
+guid: 43b0b4d2ca3554496b2716aae45486d3
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3812731746314019159
+    second: Tutorial_welcome_0
+  - first:
+      213: -3759062478039642268
+    second: Tutorial_welcome_1
+  - first:
+      213: -8142469354198566750
+    second: Tutorial_welcome_2
+  - first:
+      213: -1689870830684234652
+    second: Tutorial_welcome_3
+  - first:
+      213: 1794952593816387724
+    second: Tutorial_welcome_4
+  - first:
+      213: 4581201656951317347
+    second: Tutorial_welcome_5
+  - first:
+      213: 5263856899091926624
+    second: Tutorial_welcome_6
+  - first:
+      213: -4162618482790635199
+    second: Tutorial_welcome_7
+  - first:
+      213: 4161194614426653573
+    second: Tutorial_welcome_8
+  - first:
+      213: -4514730642714015715
+    second: Tutorial_welcome_9
+  - first:
+      213: -2551929187685823821
+    second: Tutorial_welcome_10
+  - first:
+      213: -1586030087385903197
+    second: Tutorial_welcome_11
+  - first:
+      213: -678587937738600751
+    second: Tutorial_welcome_12
+  - first:
+      213: -2449112200588276880
+    second: Tutorial_welcome_13
+  - first:
+      213: 2912313188471710475
+    second: Tutorial_welcome_14
+  - first:
+      213: -1251081774316093047
+    second: Tutorial_welcome_15
+  - first:
+      213: -4853821488122555425
+    second: Tutorial_welcome_16
+  - first:
+      213: -2396098200792445854
+    second: Tutorial_welcome_17
+  - first:
+      213: -4703488019697623732
+    second: Tutorial_welcome_18
+  - first:
+      213: 1380181710752607821
+    second: Tutorial_welcome_19
+  - first:
+      213: 2470434955169910395
+    second: Tutorial_welcome_20
+  - first:
+      213: 4804773095711427489
+    second: Tutorial_welcome_21
+  - first:
+      213: 677042516504953750
+    second: Tutorial_welcome_22
+  - first:
+      213: -8599191651481962077
+    second: Tutorial_welcome_23
+  - first:
+      213: -4274678967445568658
+    second: Tutorial_welcome_24
+  - first:
+      213: -2541126578510509321
+    second: Tutorial_welcome_25
+  - first:
+      213: -6551706932993835092
+    second: Tutorial_welcome_26
+  - first:
+      213: -254126493656197972
+    second: Tutorial_welcome_27
+  - first:
+      213: 8577600902664940388
+    second: Tutorial_welcome_28
+  - first:
+      213: -4406204405140496541
+    second: Tutorial_welcome_29
+  - first:
+      213: 8003731748556301804
+    second: Tutorial_welcome_30
+  - first:
+      213: 80819513647874526
+    second: Tutorial_welcome_31
+  - first:
+      213: 9009852479936239945
+    second: Tutorial_welcome_32
+  - first:
+      213: 2227689846669265812
+    second: Tutorial_welcome_33
+  - first:
+      213: -7534039307115504963
+    second: Tutorial_welcome_34
+  - first:
+      213: -8066257251600399677
+    second: Tutorial_welcome_35
+  - first:
+      213: -5020874167407945008
+    second: Tutorial_welcome_36
+  - first:
+      213: -2562296342089692175
+    second: Tutorial_welcome_37
+  - first:
+      213: 1079700757978309956
+    second: Tutorial_welcome_38
+  - first:
+      213: -1226846599232837379
+    second: Tutorial_welcome_39
+  - first:
+      213: 7479056267912615840
+    second: Tutorial_welcome_40
+  - first:
+      213: 5252690900696851
+    second: Tutorial_welcome_41
+  - first:
+      213: -6823205852811630460
+    second: Tutorial_welcome_42
+  - first:
+      213: 952079338185681618
+    second: Tutorial_welcome_43
+  - first:
+      213: 5320269613329066047
+    second: Tutorial_welcome_44
+  - first:
+      213: 2814073608603188748
+    second: Tutorial_welcome_45
+  - first:
+      213: -4338958861286303497
+    second: Tutorial_welcome_46
+  - first:
+      213: 6586638953082067667
+    second: Tutorial_welcome_47
+  - first:
+      213: 7889375287945258488
+    second: Tutorial_welcome_48
+  - first:
+      213: 2454725414971468215
+    second: Tutorial_welcome_49
+  - first:
+      213: 5286802566121919601
+    second: Tutorial_welcome_50
+  - first:
+      213: 806603275691860957
+    second: Tutorial_welcome_51
+  - first:
+      213: -820874276487676398
+    second: Tutorial_welcome_52
+  - first:
+      213: -5304056589098324339
+    second: Tutorial_welcome_53
+  - first:
+      213: 2483695677183806992
+    second: Tutorial_welcome_54
+  - first:
+      213: -4307062932361603890
+    second: Tutorial_welcome_55
+  - first:
+      213: 3422352799660464483
+    second: Tutorial_welcome_56
+  - first:
+      213: 153376206943971422
+    second: Tutorial_welcome_57
+  - first:
+      213: -6314578276881107510
+    second: Tutorial_welcome_58
+  - first:
+      213: 4766158040900556388
+    second: Tutorial_welcome_59
+  - first:
+      213: 9043730493222112131
+    second: Tutorial_welcome_60
+  - first:
+      213: -4683547950420824578
+    second: Tutorial_welcome_61
+  - first:
+      213: 8553229869574121683
+    second: Tutorial_welcome_62
+  - first:
+      213: 6147109984155475753
+    second: Tutorial_welcome_63
+  - first:
+      213: 3001889212175757155
+    second: Tutorial_welcome_64
+  - first:
+      213: -5652238732773027795
+    second: Tutorial_welcome_65
+  - first:
+      213: -5777302433746563542
+    second: Tutorial_welcome_66
+  - first:
+      213: 4214787734087521453
+    second: Tutorial_welcome_67
+  - first:
+      213: 8323135235010702428
+    second: Tutorial_welcome_68
+  - first:
+      213: -6054298758167431098
+    second: Tutorial_welcome_69
+  - first:
+      213: 4511649228618876306
+    second: Tutorial_welcome_70
+  - first:
+      213: -7193876580988239054
+    second: Tutorial_welcome_71
+  - first:
+      213: 2068216466357149395
+    second: Tutorial_welcome_72
+  - first:
+      213: -6274090324629053615
+    second: Tutorial_welcome_73
+  - first:
+      213: 7923826667494438348
+    second: Tutorial_welcome_74
+  - first:
+      213: -8470255342736553762
+    second: Tutorial_welcome_75
+  - first:
+      213: -6475642935125085615
+    second: Tutorial_welcome_76
+  - first:
+      213: -2729568574793650534
+    second: Tutorial_welcome_77
+  - first:
+      213: -5317618448687803641
+    second: Tutorial_welcome_78
+  - first:
+      213: -2930873478656340034
+    second: Tutorial_welcome_79
+  - first:
+      213: 5736566038215176889
+    second: Tutorial_welcome_80
+  - first:
+      213: -3651391763554641939
+    second: Tutorial_welcome_81
+  - first:
+      213: 8952564228446824274
+    second: Tutorial_welcome_82
+  - first:
+      213: 4141989270183513491
+    second: Tutorial_welcome_83
+  - first:
+      213: 9021889409162899956
+    second: Tutorial_welcome_84
+  - first:
+      213: -5888861436383968095
+    second: Tutorial_welcome_85
+  - first:
+      213: -2363289617922816122
+    second: Tutorial_welcome_86
+  - first:
+      213: -7430602933099015276
+    second: Tutorial_welcome_87
+  - first:
+      213: -2971098241805861190
+    second: Tutorial_welcome_88
+  - first:
+      213: 401038171696481627
+    second: Tutorial_welcome_89
+  - first:
+      213: 134705760711255230
+    second: Tutorial_welcome_90
+  - first:
+      213: 4605982225816183227
+    second: Tutorial_welcome_91
+  - first:
+      213: -5435351953403243020
+    second: Tutorial_welcome_92
+  - first:
+      213: -2226327191183126717
+    second: Tutorial_welcome_93
+  - first:
+      213: 6514176807508851630
+    second: Tutorial_welcome_94
+  - first:
+      213: 7110099465365735057
+    second: Tutorial_welcome_95
+  - first:
+      213: -7815116576173030168
+    second: Tutorial_welcome_96
+  - first:
+      213: -5541969399357358571
+    second: Tutorial_welcome_97
+  - first:
+      213: -2955376756157611522
+    second: Tutorial_welcome_98
+  - first:
+      213: -8553777570042403568
+    second: Tutorial_welcome_99
+  - first:
+      213: 3701865503794591402
+    second: Tutorial_welcome_100
+  - first:
+      213: 2910764980952364471
+    second: Tutorial_welcome_101
+  - first:
+      213: 6014243581339132285
+    second: Tutorial_welcome_102
+  - first:
+      213: -9206505051270229501
+    second: Tutorial_welcome_103
+  - first:
+      213: -4726043491018861405
+    second: Tutorial_welcome_104
+  - first:
+      213: -2326312056888765773
+    second: Tutorial_welcome_105
+  - first:
+      213: 7178450916972220333
+    second: Tutorial_welcome_106
+  - first:
+      213: -2714581481547590189
+    second: Tutorial_welcome_107
+  - first:
+      213: 6378929210413768032
+    second: Tutorial_welcome_108
+  - first:
+      213: 2289450065237967687
+    second: Tutorial_welcome_109
+  - first:
+      213: -1907428497246597999
+    second: Tutorial_welcome_110
+  - first:
+      213: -835306745041092699
+    second: Tutorial_welcome_111
+  - first:
+      213: -7572491267543417366
+    second: Tutorial_welcome_112
+  - first:
+      213: -6055942720087020554
+    second: Tutorial_welcome_113
+  - first:
+      213: -6890626739571528229
+    second: Tutorial_welcome_114
+  - first:
+      213: 1187220596681698720
+    second: Tutorial_welcome_115
+  - first:
+      213: 7841757390907903982
+    second: Tutorial_welcome_116
+  - first:
+      213: 8700477946725382706
+    second: Tutorial_welcome_117
+  - first:
+      213: -4993896121235840552
+    second: Tutorial_welcome_118
+  - first:
+      213: 8272871748870260172
+    second: Tutorial_welcome_119
+  - first:
+      213: -8445425305163220955
+    second: Tutorial_welcome_120
+  - first:
+      213: 2926115114219829797
+    second: Tutorial_welcome_121
+  - first:
+      213: -885026318897141155
+    second: Tutorial_welcome_122
+  - first:
+      213: 4255289642533682046
+    second: Tutorial_welcome_123
+  - first:
+      213: 5196405483401663573
+    second: Tutorial_welcome_124
+  - first:
+      213: -5784819216981839716
+    second: Tutorial_welcome_125
+  - first:
+      213: 6405445169332292258
+    second: Tutorial_welcome_126
+  - first:
+      213: -8106331365556883503
+    second: Tutorial_welcome_127
+  - first:
+      213: 6674797799864457996
+    second: Tutorial_welcome_128
+  - first:
+      213: -7329059770335384846
+    second: Tutorial_welcome_129
+  - first:
+      213: -5169304409367697264
+    second: Tutorial_welcome_130
+  - first:
+      213: -2878986845849918821
+    second: Tutorial_welcome_131
+  - first:
+      213: -4473530521979029758
+    second: Tutorial_welcome_132
+  - first:
+      213: -771915050799676998
+    second: Tutorial_welcome_133
+  - first:
+      213: -3967713290370497900
+    second: Tutorial_welcome_134
+  - first:
+      213: -7483898522927870750
+    second: Tutorial_welcome_135
+  - first:
+      213: 5249062775025626851
+    second: Tutorial_welcome_136
+  - first:
+      213: -6718250902316964815
+    second: Tutorial_welcome_137
+  - first:
+      213: 7839644925750438867
+    second: Tutorial_welcome_138
+  - first:
+      213: 5018211121556146968
+    second: Tutorial_welcome_139
+  - first:
+      213: 7176026281573492501
+    second: Tutorial_welcome_140
+  - first:
+      213: 2829928651380093891
+    second: Tutorial_welcome_141
+  - first:
+      213: -8102631063519177647
+    second: Tutorial_welcome_142
+  - first:
+      213: 6734246717686541794
+    second: Tutorial_welcome_143
+  - first:
+      213: -4928478688480581921
+    second: Tutorial_welcome_144
+  - first:
+      213: -451808450427204239
+    second: Tutorial_welcome_145
+  - first:
+      213: -8194102952381407528
+    second: Tutorial_welcome_146
+  - first:
+      213: -5002502900974639174
+    second: Tutorial_welcome_147
+  - first:
+      213: 6295394967073680725
+    second: Tutorial_welcome_148
+  - first:
+      213: 5845661652581489216
+    second: Tutorial_welcome_149
+  - first:
+      213: -84158367534234728
+    second: Tutorial_welcome_150
+  - first:
+      213: 4538689527374416345
+    second: Tutorial_welcome_151
+  - first:
+      213: 1404206710018478766
+    second: Tutorial_welcome_152
+  - first:
+      213: -2994040758108643923
+    second: Tutorial_welcome_153
+  - first:
+      213: 1502110895351461372
+    second: Tutorial_welcome_154
+  - first:
+      213: 5069073151322036145
+    second: Tutorial_welcome_155
+  - first:
+      213: 7931594791615983847
+    second: Tutorial_welcome_156
+  - first:
+      213: 4739164343733967103
+    second: Tutorial_welcome_157
+  - first:
+      213: -6444302335756645429
+    second: Tutorial_welcome_158
+  - first:
+      213: 8410923951888050834
+    second: Tutorial_welcome_159
+  - first:
+      213: 6523449240806788
+    second: Tutorial_welcome_160
+  - first:
+      213: 8823558559162212146
+    second: Tutorial_welcome_161
+  - first:
+      213: 8463266885200997979
+    second: Tutorial_welcome_162
+  - first:
+      213: -2670941443182971180
+    second: Tutorial_welcome_163
+  - first:
+      213: -5636275152641750914
+    second: Tutorial_welcome_164
+  - first:
+      213: 5545291453096609693
+    second: Tutorial_welcome_165
+  - first:
+      213: -3669770262489503066
+    second: Tutorial_welcome_166
+  - first:
+      213: -2880691799949143215
+    second: Tutorial_welcome_167
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Tutorial_welcome_0
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 2240
+        width: 113
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ae191d6da4761bc0800000000000000
+      internalID: -3812731746314019159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_1
+      rect:
+        serializedVersion: 2
+        x: 1084
+        y: 2240
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46f82f3b79025dbc0800000000000000
+      internalID: -3759062478039642268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_2
+      rect:
+        serializedVersion: 2
+        x: 1217
+        y: 2240
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a87d745343200f80800000000000000
+      internalID: -8142469354198566750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_3
+      rect:
+        serializedVersion: 2
+        x: 1494
+        y: 2240
+        width: 91
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46c95ccce6f5c88e0800000000000000
+      internalID: -1689870830684234652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_4
+      rect:
+        serializedVersion: 2
+        x: 1616
+        y: 2240
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c80871fbfd3f8e810800000000000000
+      internalID: 1794952593816387724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_5
+      rect:
+        serializedVersion: 2
+        x: 1882
+        y: 2218
+        width: 113
+        height: 135
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 363a30f72a2b39f30800000000000000
+      internalID: 4581201656951317347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_6
+      rect:
+        serializedVersion: 2
+        x: 2026
+        y: 2240
+        width: 90
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06e0ddae5f9fc0940800000000000000
+      internalID: 5263856899091926624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_7
+      rect:
+        serializedVersion: 2
+        x: 2148
+        y: 2240
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 149e9cd5b886b36c0800000000000000
+      internalID: -4162618482790635199
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_8
+      rect:
+        serializedVersion: 2
+        x: 2281
+        y: 2218
+        width: 113
+        height: 135
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5835b2274788fb930800000000000000
+      internalID: 4161194614426653573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_9
+      rect:
+        serializedVersion: 2
+        x: 2458
+        y: 2328
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d18c57886647851c0800000000000000
+      internalID: -4514730642714015715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_10
+      rect:
+        serializedVersion: 2
+        x: 2458
+        y: 2240
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ba090cace9b59cd0800000000000000
+      internalID: -2551929187685823821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_11
+      rect:
+        serializedVersion: 2
+        x: 1029
+        y: 2040
+        width: 69
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3af0846e90a4df9e0800000000000000
+      internalID: -1586030087385903197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_12
+      rect:
+        serializedVersion: 2
+        x: 1195
+        y: 2040
+        width: 56
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1dec93eaddb2596f0800000000000000
+      internalID: -678587937738600751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_13
+      rect:
+        serializedVersion: 2
+        x: 1676
+        y: 2040
+        width: 55
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07b4cd4fd61030ed0800000000000000
+      internalID: -2449112200588276880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_14
+      rect:
+        serializedVersion: 2
+        x: 2156
+        y: 2040
+        width: 55
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b03aa813a6d9a6820800000000000000
+      internalID: 2912313188471710475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_15
+      rect:
+        serializedVersion: 2
+        x: 2249
+        y: 2120
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9818ce831c343aee0800000000000000
+      internalID: -1251081774316093047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_16
+      rect:
+        serializedVersion: 2
+        x: 2416
+        y: 2067
+        width: 16
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd31c4db213c3acb0800000000000000
+      internalID: -4853821488122555425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_17
+      rect:
+        serializedVersion: 2
+        x: 1109
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26c40d6a1695fbed0800000000000000
+      internalID: -2396098200792445854
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_18
+      rect:
+        serializedVersion: 2
+        x: 1269
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4d1e94f09ad9beb0800000000000000
+      internalID: -4703488019697623732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_19
+      rect:
+        serializedVersion: 2
+        x: 1349
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4e66e214f3672310800000000000000
+      internalID: 1380181710752607821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_20
+      rect:
+        serializedVersion: 2
+        x: 1429
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7e4c97b08fb84220800000000000000
+      internalID: 2470434955169910395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_21
+      rect:
+        serializedVersion: 2
+        x: 1509
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1abcb3c7cabfda240800000000000000
+      internalID: 4804773095711427489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_22
+      rect:
+        serializedVersion: 2
+        x: 1749
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6934d16e496556900800000000000000
+      internalID: 677042516504953750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_23
+      rect:
+        serializedVersion: 2
+        x: 1909
+        y: 2027
+        width: 69
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a9b9e1e0c889a880800000000000000
+      internalID: -8599191651481962077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_24
+      rect:
+        serializedVersion: 2
+        x: 1989
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e63c298902a4da4c0800000000000000
+      internalID: -4274678967445568658
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_25
+      rect:
+        serializedVersion: 2
+        x: 2069
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7fac39e17da1cbcd0800000000000000
+      internalID: -2541126578510509321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_26
+      rect:
+        serializedVersion: 2
+        x: 2235
+        y: 2040
+        width: 56
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: caf3072c149a315a0800000000000000
+      internalID: -6551706932993835092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_27
+      rect:
+        serializedVersion: 2
+        x: 2309
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca45b99ec49297cf0800000000000000
+      internalID: -254126493656197972
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_28
+      rect:
+        serializedVersion: 2
+        x: 2416
+        y: 2040
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46be96c2392c90770800000000000000
+      internalID: 8577600902664940388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_29
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 1751
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36fd6d740740ad2c0800000000000000
+      internalID: -4406204405140496541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_30
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 1751
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce5e636ae97f21f60800000000000000
+      internalID: 8003731748556301804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_31
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 1811
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed1c6e16be02f1100800000000000000
+      internalID: 80819513647874526
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_32
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 1751
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9499541281d690d70800000000000000
+      internalID: 9009852479936239945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_33
+      rect:
+        serializedVersion: 2
+        x: 465
+        y: 1751
+        width: 42
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49b477cdc185aee10800000000000000
+      internalID: 2227689846669265812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_34
+      rect:
+        serializedVersion: 2
+        x: 1797
+        y: 1758
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbadc8fca27b17790800000000000000
+      internalID: -7534039307115504963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_35
+      rect:
+        serializedVersion: 2
+        x: 1977
+        y: 1758
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c2807b34c5ee0090800000000000000
+      internalID: -8066257251600399677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_36
+      rect:
+        serializedVersion: 2
+        x: 2162
+        y: 1758
+        width: 42
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0dad6b5eb85425ab0800000000000000
+      internalID: -5020874167407945008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_37
+      rect:
+        serializedVersion: 2
+        x: 2676
+        y: 1763
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1fb06707d05e07cd0800000000000000
+      internalID: -2562296342089692175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_38
+      rect:
+        serializedVersion: 2
+        x: 2856
+        y: 1763
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 445640f6e1edbfe00800000000000000
+      internalID: 1079700757978309956
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_39
+      rect:
+        serializedVersion: 2
+        x: 3051
+        y: 1823
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df8a4d2a48d59fee0800000000000000
+      internalID: -1226846599232837379
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_40
+      rect:
+        serializedVersion: 2
+        x: 3221
+        y: 1763
+        width: 42
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a71718cc02fac760800000000000000
+      internalID: 7479056267912615840
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_41
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 1751
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31f30476b49a21000800000000000000
+      internalID: 5252690900696851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_42
+      rect:
+        serializedVersion: 2
+        x: 285
+        y: 1751
+        width: 42
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 488ebc18d6a1f41a0800000000000000
+      internalID: -6823205852811630460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_43
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 1741
+        width: 52
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2daeb8e1d17763d00800000000000000
+      internalID: 952079338185681618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_44
+      rect:
+        serializedVersion: 2
+        x: 914
+        y: 1747
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f38a8cb760565d940800000000000000
+      internalID: 5320269613329066047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_45
+      rect:
+        serializedVersion: 2
+        x: 1094
+        y: 1747
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0e389499099d0720800000000000000
+      internalID: 2814073608603188748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_46
+      rect:
+        serializedVersion: 2
+        x: 1154
+        y: 1747
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f81ff987ebe8c3c0800000000000000
+      internalID: -4338958861286303497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_47
+      rect:
+        serializedVersion: 2
+        x: 1214
+        y: 1747
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3da1536fa31786b50800000000000000
+      internalID: 6586638953082067667
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_48
+      rect:
+        serializedVersion: 2
+        x: 1274
+        y: 1737
+        width: 52
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f5e8b15601bc7d60800000000000000
+      internalID: 7889375287945258488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_49
+      rect:
+        serializedVersion: 2
+        x: 1334
+        y: 1747
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b96f7c52cfe01220800000000000000
+      internalID: 2454725414971468215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_50
+      rect:
+        serializedVersion: 2
+        x: 1394
+        y: 1747
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17412575cee7e5940800000000000000
+      internalID: 5286802566121919601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_51
+      rect:
+        serializedVersion: 2
+        x: 1454
+        y: 1747
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd3a74ad761a13b00800000000000000
+      internalID: 806603275691860957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_52
+      rect:
+        serializedVersion: 2
+        x: 1877
+        y: 1758
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21e32b8d13bab94f0800000000000000
+      internalID: -820874276487676398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_53
+      rect:
+        serializedVersion: 2
+        x: 2037
+        y: 1758
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8e693262a43466b0800000000000000
+      internalID: -5304056589098324339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_54
+      rect:
+        serializedVersion: 2
+        x: 2097
+        y: 1758
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01ec6b82f0cd77220800000000000000
+      internalID: 2483695677183806992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_55
+      rect:
+        serializedVersion: 2
+        x: 2217
+        y: 1758
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec49553351d3a34c0800000000000000
+      internalID: -4307062932361603890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_56
+      rect:
+        serializedVersion: 2
+        x: 2277
+        y: 1758
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36953d72db3ae7f20800000000000000
+      internalID: 3422352799660464483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_57
+      rect:
+        serializedVersion: 2
+        x: 2756
+        y: 1763
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5864ebf8d6e02200800000000000000
+      internalID: 153376206943971422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_58
+      rect:
+        serializedVersion: 2
+        x: 2916
+        y: 1763
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac57a14638c1e58a0800000000000000
+      internalID: -6314578276881107510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_59
+      rect:
+        serializedVersion: 2
+        x: 2976
+        y: 1763
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 466df3b6c7bc42240800000000000000
+      internalID: 4766158040900556388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_60
+      rect:
+        serializedVersion: 2
+        x: 3041
+        y: 1763
+        width: 42
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 38b4fd4c7f8c18d70800000000000000
+      internalID: 9043730493222112131
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_61
+      rect:
+        serializedVersion: 2
+        x: 3096
+        y: 1763
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efd68ae14f1b00fb0800000000000000
+      internalID: -4683547950420824578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_62
+      rect:
+        serializedVersion: 2
+        x: 3156
+        y: 1763
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d8e93adf3d23b670800000000000000
+      internalID: 8553229869574121683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_63
+      rect:
+        serializedVersion: 2
+        x: 3276
+        y: 1763
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92f18d836fbee4550800000000000000
+      internalID: 6147109984155475753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_64
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 1747
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36f20d2755ad8a920800000000000000
+      internalID: 3001889212175757155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_65
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 946
+        width: 772
+        height: 772
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d201c53c1d63f81b0800000000000000
+      internalID: -5652238732773027795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_66
+      rect:
+        serializedVersion: 2
+        x: 916
+        y: 950
+        width: 776
+        height: 776
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2e4984cb06e2dfa0800000000000000
+      internalID: -5777302433746563542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_67
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 947
+        width: 782
+        height: 782
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da4d5fdfc1fed7a30800000000000000
+      internalID: 4214787734087521453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_68
+      rect:
+        serializedVersion: 2
+        x: 2680
+        y: 953
+        width: 782
+        height: 782
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5ca95cf567b18370800000000000000
+      internalID: 8323135235010702428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_69
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 807
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64877534b5fcafba0800000000000000
+      internalID: -6054298758167431098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_70
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 855
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2954ef6d1199c9e30800000000000000
+      internalID: 4511649228618876306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_71
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 807
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 233c1384d573a2c90800000000000000
+      internalID: -7193876580988239054
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_72
+      rect:
+        serializedVersion: 2
+        x: 286
+        y: 855
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ded4d31be7c3bc10800000000000000
+      internalID: 2068216466357149395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_73
+      rect:
+        serializedVersion: 2
+        x: 325
+        y: 807
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15f15cf5714fde8a0800000000000000
+      internalID: -6274090324629053615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_74
+      rect:
+        serializedVersion: 2
+        x: 419
+        y: 807
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc5f5c13f5617fd60800000000000000
+      internalID: 7923826667494438348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_75
+      rect:
+        serializedVersion: 2
+        x: 927
+        y: 803
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed84553a4ab937a80800000000000000
+      internalID: -8470255342736553762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_76
+      rect:
+        serializedVersion: 2
+        x: 1303
+        y: 803
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 152f9975f05e126a0800000000000000
+      internalID: -6475642935125085615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_77
+      rect:
+        serializedVersion: 2
+        x: 1350
+        y: 803
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9eea55d7df9e1ad0800000000000000
+      internalID: -2729568574793650534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_78
+      rect:
+        serializedVersion: 2
+        x: 1405
+        y: 803
+        width: 26
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70356e2e1360436b0800000000000000
+      internalID: -5317618448687803641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_79
+      rect:
+        serializedVersion: 2
+        x: 1632
+        y: 803
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ebf431f79127357d0800000000000000
+      internalID: -2930873478656340034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_80
+      rect:
+        serializedVersion: 2
+        x: 2695
+        y: 799
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b2b26a0b606c9f40800000000000000
+      internalID: 5736566038215176889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_81
+      rect:
+        serializedVersion: 2
+        x: 3216
+        y: 799
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de7d9857986a35dc0800000000000000
+      internalID: -3651391763554641939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_82
+      rect:
+        serializedVersion: 2
+        x: 3259
+        y: 799
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2572179abb5ed3c70800000000000000
+      internalID: 8952564228446824274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_83
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 807
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39d84c8cb4d4b7930800000000000000
+      internalID: 4141989270183513491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_84
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 807
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f1730c1e90343d70800000000000000
+      internalID: 9021889409162899956
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_85
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 807
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a446d069bf864ea0800000000000000
+      internalID: -5888861436383968095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_86
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 807
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 687875e1d98e33fd0800000000000000
+      internalID: -2363289617922816122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_87
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 807
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49358a9500231e890800000000000000
+      internalID: -7430602933099015276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_88
+      rect:
+        serializedVersion: 2
+        x: 462
+        y: 807
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abebf5004e984c6d0800000000000000
+      internalID: -2971098241805861190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_89
+      rect:
+        serializedVersion: 2
+        x: 556
+        y: 799
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b554755a716c09500800000000000000
+      internalID: 401038171696481627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_90
+      rect:
+        serializedVersion: 2
+        x: 603
+        y: 807
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb4a468fc229ed100800000000000000
+      internalID: 134705760711255230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_91
+      rect:
+        serializedVersion: 2
+        x: 650
+        y: 807
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb1698b4e6cbbef30800000000000000
+      internalID: 4605982225816183227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_92
+      rect:
+        serializedVersion: 2
+        x: 697
+        y: 807
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f59c243230c194b0800000000000000
+      internalID: -5435351953403243020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_93
+      rect:
+        serializedVersion: 2
+        x: 974
+        y: 803
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34f8cb7173f7a11e0800000000000000
+      internalID: -2226327191183126717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_94
+      rect:
+        serializedVersion: 2
+        x: 1021
+        y: 803
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eab37a7fa41076a50800000000000000
+      internalID: 6514176807508851630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_95
+      rect:
+        serializedVersion: 2
+        x: 1068
+        y: 803
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 196c1d6fac52ca260800000000000000
+      internalID: 7110099465365735057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_96
+      rect:
+        serializedVersion: 2
+        x: 1115
+        y: 803
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e480f651e02b8390800000000000000
+      internalID: -7815116576173030168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_97
+      rect:
+        serializedVersion: 2
+        x: 1162
+        y: 803
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51e3833a138f613b0800000000000000
+      internalID: -5541969399357358571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_98
+      rect:
+        serializedVersion: 2
+        x: 1209
+        y: 803
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef187cf9f746cf6d0800000000000000
+      internalID: -2955376756157611522
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_99
+      rect:
+        serializedVersion: 2
+        x: 1444
+        y: 803
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0152be1be90ea4980800000000000000
+      internalID: -8553777570042403568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_100
+      rect:
+        serializedVersion: 2
+        x: 1538
+        y: 803
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa6f2f7ff0baf5330800000000000000
+      internalID: 3701865503794591402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_101
+      rect:
+        serializedVersion: 2
+        x: 1585
+        y: 803
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b5ff4a045d156820800000000000000
+      internalID: 2910764980952364471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_102
+      rect:
+        serializedVersion: 2
+        x: 1799
+        y: 795
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7164622ca2e67350800000000000000
+      internalID: 6014243581339132285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_103
+      rect:
+        serializedVersion: 2
+        x: 1905
+        y: 843
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 302d23c1f6ceb3080800000000000000
+      internalID: -9206505051270229501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_104
+      rect:
+        serializedVersion: 2
+        x: 2128
+        y: 795
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a416cc0c78b96eb0800000000000000
+      internalID: -4726043491018861405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_105
+      rect:
+        serializedVersion: 2
+        x: 2328
+        y: 843
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b2df64728747bfd0800000000000000
+      internalID: -2326312056888765773
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_106
+      rect:
+        serializedVersion: 2
+        x: 2422
+        y: 843
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dafc4bf631bfe9360800000000000000
+      internalID: 7178450916972220333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_107
+      rect:
+        serializedVersion: 2
+        x: 1846
+        y: 795
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d59086668ed35ad0800000000000000
+      internalID: -2714581481547590189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_108
+      rect:
+        serializedVersion: 2
+        x: 1897
+        y: 795
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06d5312e152868850800000000000000
+      internalID: 6378929210413768032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_109
+      rect:
+        serializedVersion: 2
+        x: 1940
+        y: 795
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 743018d44b2c5cf10800000000000000
+      internalID: 2289450065237967687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_110
+      rect:
+        serializedVersion: 2
+        x: 2034
+        y: 795
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19cc82343e37785e0800000000000000
+      internalID: -1907428497246597999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_111
+      rect:
+        serializedVersion: 2
+        x: 2175
+        y: 795
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5af7657e0f46864f0800000000000000
+      internalID: -835306745041092699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_112
+      rect:
+        serializedVersion: 2
+        x: 2222
+        y: 795
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aedb35d105b19e690800000000000000
+      internalID: -7572491267543417366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_113
+      rect:
+        serializedVersion: 2
+        x: 2269
+        y: 795
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6fba91d8e28f4fba0800000000000000
+      internalID: -6055942720087020554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_114
+      rect:
+        serializedVersion: 2
+        x: 2320
+        y: 795
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bdde70c0d739f50a0800000000000000
+      internalID: -6890626739571528229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_115
+      rect:
+        serializedVersion: 2
+        x: 2363
+        y: 795
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ad6d3fa7dad97010800000000000000
+      internalID: 1187220596681698720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_116
+      rect:
+        serializedVersion: 2
+        x: 2414
+        y: 795
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eef0cd3bcc483dc60800000000000000
+      internalID: 7841757390907903982
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_117
+      rect:
+        serializedVersion: 2
+        x: 2457
+        y: 795
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23abfae689e4eb870800000000000000
+      internalID: 8700477946725382706
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_118
+      rect:
+        serializedVersion: 2
+        x: 2504
+        y: 795
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d16980cfed12bab0800000000000000
+      internalID: -4993896121235840552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_119
+      rect:
+        serializedVersion: 2
+        x: 2742
+        y: 799
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc5c6c726052fc270800000000000000
+      internalID: 8272871748870260172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_120
+      rect:
+        serializedVersion: 2
+        x: 2789
+        y: 799
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 528b6a44e62dbca80800000000000000
+      internalID: -8445425305163220955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_121
+      rect:
+        serializedVersion: 2
+        x: 2836
+        y: 799
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52a79f27136ab9820800000000000000
+      internalID: 2926115114219829797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_122
+      rect:
+        serializedVersion: 2
+        x: 2883
+        y: 799
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5aa3458041c7b3f0800000000000000
+      internalID: -885026318897141155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_123
+      rect:
+        serializedVersion: 2
+        x: 2977
+        y: 799
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7b7e976263dd0b30800000000000000
+      internalID: 4255289642533682046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_124
+      rect:
+        serializedVersion: 2
+        x: 3024
+        y: 799
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5545c0361475d1840800000000000000
+      internalID: 5196405483401663573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_125
+      rect:
+        serializedVersion: 2
+        x: 3071
+        y: 799
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c90b1f9429138bfa0800000000000000
+      internalID: -5784819216981839716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_126
+      rect:
+        serializedVersion: 2
+        x: 3118
+        y: 799
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2aa0b4aa176b4e850800000000000000
+      internalID: 6405445169332292258
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_127
+      rect:
+        serializedVersion: 2
+        x: 3306
+        y: 799
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1dfef5c7296808f80800000000000000
+      internalID: -8106331365556883503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_128
+      rect:
+        serializedVersion: 2
+        x: 3353
+        y: 799
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0bda700c35a1ac50800000000000000
+      internalID: 6674797799864457996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_129
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 783
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2faad8b48f2f94a90800000000000000
+      internalID: -7329059770335384846
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_130
+      rect:
+        serializedVersion: 2
+        x: 931
+        y: 731
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09827cf1701f248b0800000000000000
+      internalID: -5169304409367697264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_131
+      rect:
+        serializedVersion: 2
+        x: 1072
+        y: 731
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b92e71c97b8cb08d0800000000000000
+      internalID: -2878986845849918821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_132
+      rect:
+        serializedVersion: 2
+        x: 1209
+        y: 731
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 207729921b3dae1c0800000000000000
+      internalID: -4473530521979029758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_133
+      rect:
+        serializedVersion: 2
+        x: 2934
+        y: 727
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ab1ce40e95b9945f0800000000000000
+      internalID: -771915050799676998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_134
+      rect:
+        serializedVersion: 2
+        x: 3036
+        y: 775
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 492ced4c8c9dfe8c0800000000000000
+      internalID: -3967713290370497900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_135
+      rect:
+        serializedVersion: 2
+        x: 3165
+        y: 727
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ec40ddd1f9d32890800000000000000
+      internalID: -7483898522927870750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_136
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 735
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3eee02d78ca68d840800000000000000
+      internalID: 5249062775025626851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_137
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 735
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 134237f266af3c2a0800000000000000
+      internalID: -6718250902316964815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_138
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 735
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3db6c8416830ccc60800000000000000
+      internalID: 7839644925750438867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_139
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 735
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 81bc44c6d6444a540800000000000000
+      internalID: 5018211121556146968
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_140
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 735
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5172e0402ed569360800000000000000
+      internalID: 7176026281573492501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_141
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 735
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c3f5356d1de54720800000000000000
+      internalID: 2829928651380093891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_142
+      rect:
+        serializedVersion: 2
+        x: 321
+        y: 735
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 154d4e03afbad8f80800000000000000
+      internalID: -8102631063519177647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_143
+      rect:
+        serializedVersion: 2
+        x: 974
+        y: 731
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2edeb8dc5b9d47d50800000000000000
+      internalID: 6734246717686541794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_144
+      rect:
+        serializedVersion: 2
+        x: 1021
+        y: 731
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd6280abeb68a9bb0800000000000000
+      internalID: -4928478688480581921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_145
+      rect:
+        serializedVersion: 2
+        x: 1162
+        y: 731
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17d44cdab9adab9f0800000000000000
+      internalID: -451808450427204239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_146
+      rect:
+        serializedVersion: 2
+        x: 1256
+        y: 731
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8de935e67c2b84e80800000000000000
+      internalID: -8194102952381407528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_147
+      rect:
+        serializedVersion: 2
+        x: 1303
+        y: 731
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ab7ab8fad1a839ab0800000000000000
+      internalID: -5002502900974639174
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_148
+      rect:
+        serializedVersion: 2
+        x: 1350
+        y: 731
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55d653d3e5cbd5750800000000000000
+      internalID: 6295394967073680725
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_149
+      rect:
+        serializedVersion: 2
+        x: 1397
+        y: 731
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04a1e372d46ff1150800000000000000
+      internalID: 5845661652581489216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_150
+      rect:
+        serializedVersion: 2
+        x: 1799
+        y: 723
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 893ce3e196205def0800000000000000
+      internalID: -84158367534234728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_151
+      rect:
+        serializedVersion: 2
+        x: 1846
+        y: 723
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d900f0041aacfe30800000000000000
+      internalID: 4538689527374416345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_152
+      rect:
+        serializedVersion: 2
+        x: 1893
+        y: 723
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea21fdd109ebc7310800000000000000
+      internalID: 1404206710018478766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_153
+      rect:
+        serializedVersion: 2
+        x: 1940
+        y: 723
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dad94e92bc70376d0800000000000000
+      internalID: -2994040758108643923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_154
+      rect:
+        serializedVersion: 2
+        x: 1987
+        y: 723
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf5faaa96e198d410800000000000000
+      internalID: 1502110895351461372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_155
+      rect:
+        serializedVersion: 2
+        x: 2038
+        y: 723
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b7150d8c27f85640800000000000000
+      internalID: 5069073151322036145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_156
+      rect:
+        serializedVersion: 2
+        x: 2081
+        y: 723
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e0fb98807fa21e60800000000000000
+      internalID: 7931594791615983847
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_157
+      rect:
+        serializedVersion: 2
+        x: 2128
+        y: 715
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff8d5788cd4e4c140800000000000000
+      internalID: 4739164343733967103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_158
+      rect:
+        serializedVersion: 2
+        x: 2175
+        y: 723
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bcb41044b2d3196a0800000000000000
+      internalID: -6444302335756645429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_159
+      rect:
+        serializedVersion: 2
+        x: 2695
+        y: 719
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29aac1175ca99b470800000000000000
+      internalID: 8410923951888050834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_160
+      rect:
+        serializedVersion: 2
+        x: 2742
+        y: 727
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48565b2ea0d271000800000000000000
+      internalID: 6523449240806788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_161
+      rect:
+        serializedVersion: 2
+        x: 2789
+        y: 727
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23f98b5a2c3937a70800000000000000
+      internalID: 8823558559162212146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_162
+      rect:
+        serializedVersion: 2
+        x: 2836
+        y: 727
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5e6bbb4460937570800000000000000
+      internalID: 8463266885200997979
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_163
+      rect:
+        serializedVersion: 2
+        x: 2977
+        y: 727
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d6b53f98e8eeead0800000000000000
+      internalID: -2670941443182971180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_164
+      rect:
+        serializedVersion: 2
+        x: 3028
+        y: 727
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e788d666c9de7c1b0800000000000000
+      internalID: -5636275152641750914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_165
+      rect:
+        serializedVersion: 2
+        x: 3071
+        y: 727
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9745d54235d4fc40800000000000000
+      internalID: 5545291453096609693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_166
+      rect:
+        serializedVersion: 2
+        x: 3118
+        y: 727
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6aa6509b36b521dc0800000000000000
+      internalID: -3669770262489503066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_welcome_167
+      rect:
+        serializedVersion: 2
+        x: 3212
+        y: 727
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15396ac021ab508d0800000000000000
+      internalID: -2880691799949143215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Tutorial_welcome_0: -3812731746314019159
+      Tutorial_welcome_1: -3759062478039642268
+      Tutorial_welcome_10: -2551929187685823821
+      Tutorial_welcome_100: 3701865503794591402
+      Tutorial_welcome_101: 2910764980952364471
+      Tutorial_welcome_102: 6014243581339132285
+      Tutorial_welcome_103: -9206505051270229501
+      Tutorial_welcome_104: -4726043491018861405
+      Tutorial_welcome_105: -2326312056888765773
+      Tutorial_welcome_106: 7178450916972220333
+      Tutorial_welcome_107: -2714581481547590189
+      Tutorial_welcome_108: 6378929210413768032
+      Tutorial_welcome_109: 2289450065237967687
+      Tutorial_welcome_11: -1586030087385903197
+      Tutorial_welcome_110: -1907428497246597999
+      Tutorial_welcome_111: -835306745041092699
+      Tutorial_welcome_112: -7572491267543417366
+      Tutorial_welcome_113: -6055942720087020554
+      Tutorial_welcome_114: -6890626739571528229
+      Tutorial_welcome_115: 1187220596681698720
+      Tutorial_welcome_116: 7841757390907903982
+      Tutorial_welcome_117: 8700477946725382706
+      Tutorial_welcome_118: -4993896121235840552
+      Tutorial_welcome_119: 8272871748870260172
+      Tutorial_welcome_12: -678587937738600751
+      Tutorial_welcome_120: -8445425305163220955
+      Tutorial_welcome_121: 2926115114219829797
+      Tutorial_welcome_122: -885026318897141155
+      Tutorial_welcome_123: 4255289642533682046
+      Tutorial_welcome_124: 5196405483401663573
+      Tutorial_welcome_125: -5784819216981839716
+      Tutorial_welcome_126: 6405445169332292258
+      Tutorial_welcome_127: -8106331365556883503
+      Tutorial_welcome_128: 6674797799864457996
+      Tutorial_welcome_129: -7329059770335384846
+      Tutorial_welcome_13: -2449112200588276880
+      Tutorial_welcome_130: -5169304409367697264
+      Tutorial_welcome_131: -2878986845849918821
+      Tutorial_welcome_132: -4473530521979029758
+      Tutorial_welcome_133: -771915050799676998
+      Tutorial_welcome_134: -3967713290370497900
+      Tutorial_welcome_135: -7483898522927870750
+      Tutorial_welcome_136: 5249062775025626851
+      Tutorial_welcome_137: -6718250902316964815
+      Tutorial_welcome_138: 7839644925750438867
+      Tutorial_welcome_139: 5018211121556146968
+      Tutorial_welcome_14: 2912313188471710475
+      Tutorial_welcome_140: 7176026281573492501
+      Tutorial_welcome_141: 2829928651380093891
+      Tutorial_welcome_142: -8102631063519177647
+      Tutorial_welcome_143: 6734246717686541794
+      Tutorial_welcome_144: -4928478688480581921
+      Tutorial_welcome_145: -451808450427204239
+      Tutorial_welcome_146: -8194102952381407528
+      Tutorial_welcome_147: -5002502900974639174
+      Tutorial_welcome_148: 6295394967073680725
+      Tutorial_welcome_149: 5845661652581489216
+      Tutorial_welcome_15: -1251081774316093047
+      Tutorial_welcome_150: -84158367534234728
+      Tutorial_welcome_151: 4538689527374416345
+      Tutorial_welcome_152: 1404206710018478766
+      Tutorial_welcome_153: -2994040758108643923
+      Tutorial_welcome_154: 1502110895351461372
+      Tutorial_welcome_155: 5069073151322036145
+      Tutorial_welcome_156: 7931594791615983847
+      Tutorial_welcome_157: 4739164343733967103
+      Tutorial_welcome_158: -6444302335756645429
+      Tutorial_welcome_159: 8410923951888050834
+      Tutorial_welcome_16: -4853821488122555425
+      Tutorial_welcome_160: 6523449240806788
+      Tutorial_welcome_161: 8823558559162212146
+      Tutorial_welcome_162: 8463266885200997979
+      Tutorial_welcome_163: -2670941443182971180
+      Tutorial_welcome_164: -5636275152641750914
+      Tutorial_welcome_165: 5545291453096609693
+      Tutorial_welcome_166: -3669770262489503066
+      Tutorial_welcome_167: -2880691799949143215
+      Tutorial_welcome_17: -2396098200792445854
+      Tutorial_welcome_18: -4703488019697623732
+      Tutorial_welcome_19: 1380181710752607821
+      Tutorial_welcome_2: -8142469354198566750
+      Tutorial_welcome_20: 2470434955169910395
+      Tutorial_welcome_21: 4804773095711427489
+      Tutorial_welcome_22: 677042516504953750
+      Tutorial_welcome_23: -8599191651481962077
+      Tutorial_welcome_24: -4274678967445568658
+      Tutorial_welcome_25: -2541126578510509321
+      Tutorial_welcome_26: -6551706932993835092
+      Tutorial_welcome_27: -254126493656197972
+      Tutorial_welcome_28: 8577600902664940388
+      Tutorial_welcome_29: -4406204405140496541
+      Tutorial_welcome_3: -1689870830684234652
+      Tutorial_welcome_30: 8003731748556301804
+      Tutorial_welcome_31: 80819513647874526
+      Tutorial_welcome_32: 9009852479936239945
+      Tutorial_welcome_33: 2227689846669265812
+      Tutorial_welcome_34: -7534039307115504963
+      Tutorial_welcome_35: -8066257251600399677
+      Tutorial_welcome_36: -5020874167407945008
+      Tutorial_welcome_37: -2562296342089692175
+      Tutorial_welcome_38: 1079700757978309956
+      Tutorial_welcome_39: -1226846599232837379
+      Tutorial_welcome_4: 1794952593816387724
+      Tutorial_welcome_40: 7479056267912615840
+      Tutorial_welcome_41: 5252690900696851
+      Tutorial_welcome_42: -6823205852811630460
+      Tutorial_welcome_43: 952079338185681618
+      Tutorial_welcome_44: 5320269613329066047
+      Tutorial_welcome_45: 2814073608603188748
+      Tutorial_welcome_46: -4338958861286303497
+      Tutorial_welcome_47: 6586638953082067667
+      Tutorial_welcome_48: 7889375287945258488
+      Tutorial_welcome_49: 2454725414971468215
+      Tutorial_welcome_5: 4581201656951317347
+      Tutorial_welcome_50: 5286802566121919601
+      Tutorial_welcome_51: 806603275691860957
+      Tutorial_welcome_52: -820874276487676398
+      Tutorial_welcome_53: -5304056589098324339
+      Tutorial_welcome_54: 2483695677183806992
+      Tutorial_welcome_55: -4307062932361603890
+      Tutorial_welcome_56: 3422352799660464483
+      Tutorial_welcome_57: 153376206943971422
+      Tutorial_welcome_58: -6314578276881107510
+      Tutorial_welcome_59: 4766158040900556388
+      Tutorial_welcome_6: 5263856899091926624
+      Tutorial_welcome_60: 9043730493222112131
+      Tutorial_welcome_61: -4683547950420824578
+      Tutorial_welcome_62: 8553229869574121683
+      Tutorial_welcome_63: 6147109984155475753
+      Tutorial_welcome_64: 3001889212175757155
+      Tutorial_welcome_65: -5652238732773027795
+      Tutorial_welcome_66: -5777302433746563542
+      Tutorial_welcome_67: 4214787734087521453
+      Tutorial_welcome_68: 8323135235010702428
+      Tutorial_welcome_69: -6054298758167431098
+      Tutorial_welcome_7: -4162618482790635199
+      Tutorial_welcome_70: 4511649228618876306
+      Tutorial_welcome_71: -7193876580988239054
+      Tutorial_welcome_72: 2068216466357149395
+      Tutorial_welcome_73: -6274090324629053615
+      Tutorial_welcome_74: 7923826667494438348
+      Tutorial_welcome_75: -8470255342736553762
+      Tutorial_welcome_76: -6475642935125085615
+      Tutorial_welcome_77: -2729568574793650534
+      Tutorial_welcome_78: -5317618448687803641
+      Tutorial_welcome_79: -2930873478656340034
+      Tutorial_welcome_8: 4161194614426653573
+      Tutorial_welcome_80: 5736566038215176889
+      Tutorial_welcome_81: -3651391763554641939
+      Tutorial_welcome_82: 8952564228446824274
+      Tutorial_welcome_83: 4141989270183513491
+      Tutorial_welcome_84: 9021889409162899956
+      Tutorial_welcome_85: -5888861436383968095
+      Tutorial_welcome_86: -2363289617922816122
+      Tutorial_welcome_87: -7430602933099015276
+      Tutorial_welcome_88: -2971098241805861190
+      Tutorial_welcome_89: 401038171696481627
+      Tutorial_welcome_9: -4514730642714015715
+      Tutorial_welcome_90: 134705760711255230
+      Tutorial_welcome_91: 4605982225816183227
+      Tutorial_welcome_92: -5435351953403243020
+      Tutorial_welcome_93: -2226327191183126717
+      Tutorial_welcome_94: 6514176807508851630
+      Tutorial_welcome_95: 7110099465365735057
+      Tutorial_welcome_96: -7815116576173030168
+      Tutorial_welcome_97: -5541969399357358571
+      Tutorial_welcome_98: -2955376756157611522
+      Tutorial_welcome_99: -8553777570042403568
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

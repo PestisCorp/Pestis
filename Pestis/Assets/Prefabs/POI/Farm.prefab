@@ -249,7 +249,6 @@ MonoBehaviour:
   damagePerHuman: 0.5
   ratDPS: 0.5
   startingHumanCount: 1
-  boids: {fileID: 0}
   _CurrentHumanHealth: 0
 --- !u!1 &9081190654416985967
 GameObject:
@@ -340,7 +339,7 @@ Light:
   m_BounceIntensity: 100
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 5.56e-43, y: 1.84e-43, z: 0, w: -1.2154627e-38}
+  m_BoundingSphereOverride: {x: 1, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -1243,7 +1242,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 1
-      scalar: 100
+      scalar: 400
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -1258,8 +1257,17 @@ ParticleSystem:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.1484375
-          value: 0.96304893
+          time: 0.053156435
+          value: 1
+          inSlope: 19.21357
+          outSlope: 19.21357
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.32114178
+          value: 0.31224748
           inSlope: 2
           outSlope: 2
           tangentMode: 0
@@ -1681,9 +1689,9 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 0.9634665, b: 0.6273585, a: 0.7921569}
+        key0: {r: 1, g: 0.7708472, b: 0.23113209, a: 1}
         key1: {r: 0.854902, g: 0.81568635, b: 0.46274513, a: 0.12647057}
-        key2: {r: 0, g: 0, b: 0, a: 0}
+        key2: {r: 0.854902, g: 0.81568635, b: 0.46274513, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
@@ -1691,15 +1699,15 @@ ParticleSystem:
         key7: {r: 0, g: 0, b: 0, a: 0}
         ctime0: 0
         ctime1: 65535
-        ctime2: 0
+        ctime2: 65535
         ctime3: 0
         ctime4: 0
         ctime5: 0
         ctime6: 0
         ctime7: 0
-        atime0: 0
+        atime0: 34117
         atime1: 57247
-        atime2: 65535
+        atime2: 62066
         atime3: 0
         atime4: 0
         atime5: 0
@@ -1708,7 +1716,7 @@ ParticleSystem:
         m_Mode: 0
         m_ColorSpace: 0
         m_NumColorKeys: 2
-        m_NumAlphaKeys: 3
+        m_NumAlphaKeys: 2
       minGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}

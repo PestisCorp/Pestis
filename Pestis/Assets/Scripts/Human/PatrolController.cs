@@ -70,7 +70,7 @@ namespace Human
         {
             if (enemyHorde)
             {
-                if (enemyHorde.AliveRats < 5)
+                if (enemyHorde.AliveRats < 7)
                 {
                     enemyHorde.RetreatRpc();
                     enemyHorde = null;
