@@ -65,8 +65,6 @@ namespace Map
             foreach (var biome in BiomeList)
             {
                 biome.template.FeatureGeneration(Map.tilemap, biome, Map.poi);
-                biome.template.FeatureGeneration(Map.tilemap, biome, Map.poi);
-                biome.template.FeatureGeneration(Map.tilemap, biome, Map.poi);
             }
         }
 

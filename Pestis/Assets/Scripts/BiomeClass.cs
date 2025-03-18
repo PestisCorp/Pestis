@@ -52,6 +52,11 @@ public class BiomeClass : ScriptableObject
 
     public virtual void FeatureGeneration(Tilemap map, BiomeInstance biomeInstance, GameObject parent)
     {
+        placeCity(map, biomeInstance, parent);
+    }
+
+    public virtual void placeCity(Tilemap map, BiomeInstance biomeInstance, GameObject parent)
+    {
         // Convert tile list to a random order.
         System.Random rng = new System.Random();
         List<Vector3Int> shuffledTiles = biomeInstance.tilePositions.OrderBy(t => rng.Next()).ToList();
