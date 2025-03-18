@@ -176,8 +176,8 @@ public class UI_Manager : MonoBehaviour
         {
             RegisterAbility(mut, horde.GetComponent<AbilityController>());
         }
-        AbilityToolbarEnable();
         SplitPanelEnable();
+        AbilityToolbarEnable();
         var toggles = attackPanel.GetComponentsInChildren<Toggle>();
         foreach (var toggle in toggles)
         {
@@ -279,7 +279,6 @@ public class UI_Manager : MonoBehaviour
     // Function to enable horde split panel
     public void SplitPanelEnable()
     {
-        ResetUI();
         if (splitPanel != null) splitPanel.SetActive(true);
     }
 
