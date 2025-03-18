@@ -655,7 +655,7 @@ MonoBehaviour:
   m_AnchorPositionOffset: {x: 0, y: 0, z: 0}
   m_Yaw: 0
   m_Pitch: -4.759999
-  m_Roll: -35.59
+  m_Roll: -35.589996
 --- !u!1 &4934763897307152769
 GameObject:
   m_ObjectHideFlags: 0
@@ -981,10 +981,7 @@ GameObject:
   - component: {fileID: 6961251568612682153}
   - component: {fileID: 4668771228012965489}
   - component: {fileID: -7118694052808421423}
-  - component: {fileID: -8052047275079063060}
-  - component: {fileID: -3920070636787022238}
   - component: {fileID: 9182480813729240789}
-  - component: {fileID: -3669862406392348714}
   m_Layer: 6
   m_Name: Van
   m_TagString: Untagged
@@ -1099,6 +1096,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   captureEffect:
   - {fileID: 4026888961485790380}
+  patrolController: {fileID: 9182480813729240789}
+  boidPoisIndex: 0
   _ControlledBy: {fileID: 0}
   _StationedHordes: []
   _Combat: {fileID: 0}
@@ -1116,48 +1115,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 3859473980
   ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours: []
-  ForceRemoteRenderTimeframe: 0
---- !u!114 &-8052047275079063060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7727599578141111434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a2b2d45d5384d9db834f00036e8fcf1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  captureEffect:
-  - {fileID: 0}
-  _ControlledBy: {fileID: 0}
-  _StationedHordes: []
-  _Combat: {fileID: 0}
---- !u!114 &-3920070636787022238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7727599578141111434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 137881239
-  ObjectInterest: 1
-  Flags: 262145
+  Flags: 131073
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 4668771228012965489}
-  - {fileID: -8052047275079063060}
   - {fileID: 9182480813729240789}
-  - {fileID: -3669862406392348714}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &9182480813729240789
 MonoBehaviour:
@@ -1171,27 +1133,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b3477ab84b4ee9a5f2e8853119955c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  humanPrefab: {fileID: 6463158892316126659, guid: 4264f97e4dd0548a499c2bc2f37b319a, type: 3}
-  poi: {fileID: 7727599578141111434}
-  _HumanCount: 6
-  _PatrolRadius: 5
---- !u!114 &-3669862406392348714
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7727599578141111434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f66c5359dd5447f1aded2c1c7490f983, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  patrolController: {fileID: 9182480813729240789}
+  poi: {fileID: 4668771228012965489}
   healthPerHuman: 5
-  damagePerHuman: 0.05
-  _CurrentHumanHealth: 0
+  damagePerHuman: 0.5
   ratDPS: 0.5
+  startingHumanCount: 3
+  _CurrentHumanHealth: 0
 --- !u!1 &7965740167955942159
 GameObject:
   m_ObjectHideFlags: 0
@@ -2063,7 +2010,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 1
-      scalar: 100
+      scalar: 400
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -2078,8 +2025,17 @@ ParticleSystem:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.1484375
-          value: 0.96304893
+          time: 0.053156435
+          value: 1
+          inSlope: 19.21357
+          outSlope: 19.21357
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.32114178
+          value: 0.31224748
           inSlope: 2
           outSlope: 2
           tangentMode: 0
@@ -2501,9 +2457,9 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 0.9634665, b: 0.6273585, a: 0.7921569}
+        key0: {r: 1, g: 0.7708472, b: 0.23113209, a: 1}
         key1: {r: 0.854902, g: 0.81568635, b: 0.46274513, a: 0.12647057}
-        key2: {r: 0, g: 0, b: 0, a: 0}
+        key2: {r: 0.854902, g: 0.81568635, b: 0.46274513, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
@@ -2511,15 +2467,15 @@ ParticleSystem:
         key7: {r: 0, g: 0, b: 0, a: 0}
         ctime0: 0
         ctime1: 65535
-        ctime2: 0
+        ctime2: 65535
         ctime3: 0
         ctime4: 0
         ctime5: 0
         ctime6: 0
         ctime7: 0
-        atime0: 0
+        atime0: 34117
         atime1: 57247
-        atime2: 65535
+        atime2: 62066
         atime3: 0
         atime4: 0
         atime5: 0
@@ -2528,7 +2484,7 @@ ParticleSystem:
         m_Mode: 0
         m_ColorSpace: 0
         m_NumColorKeys: 2
-        m_NumAlphaKeys: 3
+        m_NumAlphaKeys: 2
       minGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}

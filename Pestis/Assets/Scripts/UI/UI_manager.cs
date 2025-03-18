@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,8 @@ using Color = UnityEngine.Color;
 
 public class UI_Manager : MonoBehaviour
 {
+    public static UI_Manager Instance;
+    
     // References to the game managers and objects to view in UI
     public GameObject inputHandler;
     [CanBeNull] public HumanPlayer localPlayer;
@@ -30,8 +33,10 @@ public class UI_Manager : MonoBehaviour
     public GameObject abilityToolbar;
     public GameObject fearAndMorale;
     public GameObject objectives;
+    public TimerToScoreLock timer;
     public GameObject darkScreen;
     public GameObject textPrefab;
+    public GameObject startMenu;
     
     // References to the resource text fields
     public TextMeshProUGUI cheeseTotalText;
@@ -56,6 +61,11 @@ public class UI_Manager : MonoBehaviour
     // Called by EvolutionManager every time a new mutation is acquired
 
 
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -64,11 +74,13 @@ public class UI_Manager : MonoBehaviour
         if (mutationPopUp != null) mutationPopUp.SetActive(false);
         if (resourceStats != null) resourceStats.SetActive(false);
         if (objectives != null) objectives.SetActive(false);
+        if (startMenu) objectives.SetActive(false);
         if (darkScreen != null)
         {
             darkScreen.GetComponent<Canvas>().enabled = false;
             darkScreen.SetActive(false);
         }
+        */
         displayResourceInfo = false;
 
 
@@ -86,6 +98,8 @@ public class UI_Manager : MonoBehaviour
                 child.GetComponent<Image>().enabled = false;
             }
         }
+
+
     }
 
     private void FixedUpdate()
@@ -112,6 +126,16 @@ public class UI_Manager : MonoBehaviour
             // Update total horde text field
             if (hordeTotalText != null)
                 hordeTotalText.text = "0";
+
+            if(localPlayer.player.Score != null)
+            {
+                timer.UpdateScore(localPlayer.player.Score);
+            }
+
+            if (localPlayer.player.Timer != null)
+            {
+                timer.UpdateTimer(localPlayer.player.Timer);
+            }
         }
 
         if (infoPanel.activeSelf)
@@ -668,17 +692,22 @@ public class UI_Manager : MonoBehaviour
             _messageActive = false;
     }
 
-    private void HighlightUiElement(GameObject uiToHighlight)
+    public void HighlightUiElement(GameObject uiToHighlight)
     {
         uiToHighlight.GetComponent<Canvas>().sortingOrder = 2;
         darkScreen.SetActive(true);
         darkScreen.GetComponent<Canvas>().enabled = true;
     }
     
-    private void UnhighlightUiElement(GameObject uiToUnhighlight)
+    public void UnhighlightUiElement(GameObject uiToUnhighlight)
     {
         darkScreen.GetComponent<Canvas>().enabled = false;
         darkScreen.SetActive(false);
         uiToUnhighlight.GetComponent<Canvas>().sortingOrder = 0;
+    }
+
+    public void EnableStartMenu()
+    {
+        startMenu.SetActive(true);
     }
 }

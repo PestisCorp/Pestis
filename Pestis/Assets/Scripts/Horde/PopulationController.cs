@@ -14,6 +14,10 @@ namespace Horde
         internal double BirthRate;
         internal double DeathRate;
         internal float HealthPerRat;
+        internal float TundraResistance;
+        internal float DesertResistance;
+        internal float GrassResistance;
+        internal float StoneResistance;
 
         /// <summary>
         ///     How much damage the horde does to other hordes per tick in combat
@@ -68,9 +72,10 @@ namespace Horde
         // W < 1 if R < P
         private double ResourceWeightGrowth()
         {
-            return 1 + 0.5 *
+            return 1 + 2.5 *
                 (1.0 - Math.Exp(-(_hordeController.Player.CurrentCheese / _hordeController.AliveRats - 1)));
         }
+
 
         // Weight used in probability of population decline
         // W = 1 if R >= P
@@ -180,7 +185,10 @@ namespace Horde
             State.HealthPerRat = 5.0f;
             State.Damage = 0.5f;
             State.DamageReduction = 1.0f;
-
+            State.GrassResistance = 1.0f;
+            State.DesertResistance = 1.0f;
+            State.TundraResistance = 1.0f;
+            State.StoneResistance = 1.0f;
 
             State.DamageMult = 1.0f;
             State.DamageReductionMult = 1.0f;
@@ -239,6 +247,9 @@ namespace Horde
             if (!_hordeController.InCombat && _hordeController.PopulationCooldown == 0 &&
                 _populationClock.ElapsedInMilliseconds > 50 && !_hordeController.isApparition) PopulationEvent();
             _highestHealth = Mathf.Max(_hordeController.TotalHealth, _highestHealth);
+            if (!_hordeController.InCombat)
+                _hordeController.TotalHealth =
+                    Mathf.Max(_hordeController.TotalHealth, initialPopulation * State.HealthPerRat);
         }
 
         public void SetDamage(float damage)
@@ -284,6 +295,13 @@ namespace Horde
         public void SetState(PopulationState newState)
         {
             State = newState;
+        }
+
+
+        //I don't understand how population stuff works well enough to impliment this
+        public void speedMult(float mult)
+        {
+            //multiplies speed once, should not repeatedly multiply if called multiple times
         }
     }
 }
