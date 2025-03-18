@@ -10,7 +10,6 @@ namespace UI
     public class HordeSplitManager : MonoBehaviour
     {
         public TMP_Text selectedAmountText;
-        public TMP_Text maxAmountText;
         public Slider slider;
         public Button button;
         public int spitRecommendedInt = 50;
@@ -22,6 +21,9 @@ namespace UI
         private void Start()
         {
             button.onClick.AddListener(SplitHorde);
+            slider.minValue = 0;
+            slider.maxValue = 100;
+            slider.value = 50;
         }
 
         private void Update()
@@ -29,25 +31,23 @@ namespace UI
             if (!InputHandler.Instance.LocalPlayer || !InputHandler.Instance.LocalPlayer!.selectedHorde) return;
 
             maxPop = InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats;
-            initialPopulation = InputHandler.Instance.LocalPlayer!.selectedHorde!.GetComponent<PopulationController>()
-                .initialPopulation;
             if (maxPop < 10)
             {
                 selectedAmountText.text = "Too small to split";
-                maxAmountText.text = "";
+                button.interactable = false;
+                return;
+            }
+            splitAmount = (int)Math.Floor((slider.value / 100) * maxPop);
+            if (splitAmount < 5 || maxPop - splitAmount < 5)
+            {
+                selectedAmountText.text = "Too small to split with this amount";
                 button.interactable = false;
                 return;
             }
             button.interactable = true;
 
-            splitAmount = (int)slider.value;
-            selectedAmountText.text = "Horde 1: " + $"{splitAmount}";
-            maxAmountText.text = "Horde 2: " + $"{maxPop - splitAmount}";
-
-            // Both hordes must stay above initial population!
-            slider.minValue = initialPopulation;
-            slider.maxValue = maxPop - initialPopulation;
             
+            selectedAmountText.text = $"{slider.value}%";
         }
 
         private void OnEnable()
