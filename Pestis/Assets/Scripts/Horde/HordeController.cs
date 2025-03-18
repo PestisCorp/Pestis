@@ -529,6 +529,14 @@ Count: {AliveRats}
             moraleAndFearInstance = Instantiate(FindFirstObjectByType<UI_Manager>().fearAndMorale);
             foreach (var bar in moraleAndFearInstance.GetComponentsInChildren<CooldownBar>()) bar.current = bar.maximum;
             moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
+
+            if (Player.IsLocal)
+            {
+                GameManager.Instance.UIManager.AbilityBars[this] =
+                    Instantiate(GameManager.Instance.UIManager.abilityToolbar, 
+                        GameManager.Instance.UIManager.abilityPanel.transform);
+            }
+            GameManager.Instance.UIManager.AbilityBars[this].transform.localPosition = Vector3.zero;
             // Needed to spawn in rats from joined session
         }
 
