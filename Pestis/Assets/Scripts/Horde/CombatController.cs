@@ -223,6 +223,7 @@ POI: {FightingOver}
                     {
                         horde.GetComponent<AbilityController>().forceCooldownRefresh = true;
                     }
+                    horde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
                     var icon = Resources.Load<Sprite>("UI_design/Emotes/victory_emote");
                     horde.AddSpeechBubble(icon);
                     horde.EventWonCombatRpc(AllParticipants.ToArray());
@@ -279,6 +280,7 @@ POI: {FightingOver}
                 {
                     // Tell horde to run away to nearest friendly POI
                     var icon = Resources.Load<Sprite>("UI_design/Emotes/combat_loss_emote");
+                    horde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
                     horde.AddSpeechBubble(icon);
                     horde.RetreatRpc();
                 }
