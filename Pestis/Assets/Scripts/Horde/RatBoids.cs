@@ -37,6 +37,11 @@ public class RatBoids : MonoBehaviour
 {
     private const float blockSize = 512f;
 
+    /// <summary>
+    ///     How many boids to account for in initial memory allocations
+    /// </summary>
+    private static readonly int INITIAL_BOID_MEMORY_ALLOCATION = 2048;
+
     [Header("Settings")] [SerializeField] private float maxSpeed = 2;
 
     [SerializeField] private float edgeMargin = .5f;
@@ -156,9 +161,9 @@ public class RatBoids : MonoBehaviour
         rearrangeBoidsKernel = gridShader.FindKernel("RearrangeBoids");
 
         // Setup compute buffer
-        boidBuffer = new ComputeBuffer(2048, Marshal.SizeOf(typeof(Boid)));
-        boidBufferOut = new ComputeBuffer(2048, Marshal.SizeOf(typeof(Boid)));
-        deadBoids = new ComputeBuffer(2048, Marshal.SizeOf(typeof(Boid)));
+        boidBuffer = new ComputeBuffer(INITIAL_BOID_MEMORY_ALLOCATION, Marshal.SizeOf(typeof(Boid)));
+        boidBufferOut = new ComputeBuffer(INITIAL_BOID_MEMORY_ALLOCATION, Marshal.SizeOf(typeof(Boid)));
+        deadBoids = new ComputeBuffer(INITIAL_BOID_MEMORY_ALLOCATION, Marshal.SizeOf(typeof(Boid)));
 
         Assert.AreEqual(Marshal.SizeOf(typeof(float)), Marshal.SizeOf(typeof(uint)),
             "uint and float have different byte sizes, bounds calc WILL break");
@@ -219,7 +224,8 @@ public class RatBoids : MonoBehaviour
         gridDimY = Mathf.FloorToInt(yBound * 2 / gridCellSize) + 30;
         gridTotalCells = gridDimX * gridDimY;
 
-        gridBuffer = new ComputeBuffer(128, 8);
+
+        gridBuffer = new ComputeBuffer(INITIAL_BOID_MEMORY_ALLOCATION, 8);
         gridOffsetBuffer = new ComputeBuffer(gridTotalCells, 4);
         gridOffsetBufferIn = new ComputeBuffer(gridTotalCells, 4);
         blocks = Mathf.CeilToInt(gridTotalCells / blockSize);
@@ -251,7 +257,7 @@ public class RatBoids : MonoBehaviour
             boidShader.SetInt("horde", -1);
         }
 
-        tempBoidsArr = new Boid[2048];
+        tempBoidsArr = new Boid[INITIAL_BOID_MEMORY_ALLOCATION];
         offsetsTempArr = new uint[gridDimX * gridDimY];
 
         AttachBuffers();

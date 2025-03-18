@@ -29,6 +29,7 @@ namespace Players
 
         public GameObject hordePrefab;
 
+
         [SerializeField] private float cheeseConsumptionRate = 0.001f; // k value
 
         [DoNotSerialize] public double TotalDamageDealt;
@@ -47,6 +48,10 @@ namespace Players
 
         [Networked] public string Username { get; private set; }
 
+        //time and score
+        public bool TimeUp { get; private set; }
+        public int Timer { get; private set; }
+        [Networked] public ulong Score { get; private set; }
 
         // Cheese Management
         [Networked] public float CurrentCheese { get; private set; }
@@ -83,6 +88,7 @@ namespace Players
                     Username = GameManager.Instance.localUsername;
                 else
                     Username = $"Player {Object.StateAuthority}";
+                    StartCoroutine(TimerTilScoreLock(600));
             }
             else
             {
@@ -93,7 +99,9 @@ namespace Players
                 Username = $"Bot {Object.Id.Raw}";
             }
 
+            GameManager.Instance.Players.Add(this);
             StartCoroutine(JoinStats());
+                CurrentCheese = 50.0f;
         }
 
         // Manage Cheese
@@ -126,6 +134,22 @@ namespace Players
         public void DecrementCheeseIncrementRateRpc(float amount)
         {
             FixedCheeseGain -= amount;
+        }
+
+
+        private IEnumerator TimerTilScoreLock(int timeRemaining)
+        {
+            while (timeRemaining > 0)
+            {
+                yield return new WaitForSeconds(1f);
+                timeRemaining--;
+                Timer = timeRemaining;
+                CalculateScore();
+            }
+
+            TimeUp = true;
+            Debug.Log("Times Up, final score " + Score);
+            yield return null;
         }
 
         private IEnumerator JoinStats()
@@ -260,6 +284,8 @@ namespace Players
 
         public ulong CalculateScore()
         {
+            if (TimeUp) return Score;
+
             ulong score = 0;
 
             score += (ulong)Hordes.Sum(horde => horde.AliveRats);
@@ -283,6 +309,7 @@ namespace Players
 
             score += Convert.ToUInt64(TotalDamageDealt / 5.0);
 
+            Score = score;
             return score;
         }
 

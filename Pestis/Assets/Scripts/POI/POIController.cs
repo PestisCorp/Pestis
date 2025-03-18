@@ -119,6 +119,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
 
             if (ControlledBy.IsLocal)
             {
+                EmitCaptureEffect();
                 captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_owned");
                 flag.sprite = captureFlag;
             }
@@ -142,7 +143,6 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
 
         private void StationHorde(HordeController horde)
         {
-            EmitCaptureEffect();
             Debug.Log($"Adding horde {horde.Object.Id} to myself (POI): {Object.Id}");
             StationedHordes.Add(horde);
         }

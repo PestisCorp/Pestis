@@ -85,7 +85,7 @@ uint getGridID(uint2 pos)
     return (gridDimX * pos.y) + pos.x;
 }
 
-void MergedBehaviours(inout Boid boid)
+void MergedBehaviours(inout Boid boid, uint3 id)
 {
     float2 center = 0;
     float2 close = 0;
@@ -104,6 +104,7 @@ void MergedBehaviours(inout Boid boid)
         // Loop boids in left, center, right grid cells
         for (uint i = start; i < end; i++)
         {
+            if (i == id.x) { continue; }
             Boid other = boidsIn[i];
             if (other.dead) // Don't change behaviour because of corpses
             {
@@ -117,11 +118,17 @@ void MergedBehaviours(inout Boid boid)
                 if (distSq < minDistanceSq)
                 {
                     close += diff / distSq;
-
+                }
+                else
+                {
                     center += other.pos;
                     avgVel += other.vel;
                     neighbours++;
                 }
+            }
+            else if (distSq == 0)
+            {
+                close += float2(id.x, id.x);
             }
         }
     }
@@ -221,17 +228,18 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
         {
             if (spawnPoint.x == 0 && spawnPoint.y == 0)
             {
-                boid.pos = boidsIn[floor(numBoidsPrevious / 2.0f)].pos;
+                float2 pos = boidsIn[floor(numBoidsPrevious / 2.0f)].pos;
+                boid.pos = float2(pos.x + (id.x / 1000.0f), pos.y + (id.x / 1000.0f));
             }
             else
             {
-                boid.pos = spawnPoint;
+                boid.pos = float2(spawnPoint.x + (id.x / 1000.0f), spawnPoint.y + (id.x / 1000.0f));
             }
-            boid.vel = float2(0, 0);
+            boid.vel = float2(id.x / 1000.0f, id.x / 1000.0f);
         }
     }
 
-    MergedBehaviours(boid);
+    MergedBehaviours(boid, id);
     LimitSpeed(boid);
     KeepInBounds(boid);
 
