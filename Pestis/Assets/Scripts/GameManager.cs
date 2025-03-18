@@ -44,6 +44,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public float medianHordeHealth;
 
+    public List<HordeController> AllHordes;
+
     private readonly float[] fpsWindow = new float[60];
 
     public Human.BoidPoi[] BoidPois;
@@ -61,8 +63,6 @@ public class GameManager : MonoBehaviour
     ///     Each element represents a grid cell, and the index in poiBuffer of the last poi in that grid cell
     /// </summary>
     public ComputeBuffer poiOffsetBuffer;
-
-    public IEnumerable<HordeController> AllHordes => Players.SelectMany(player => player.Hordes);
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
@@ -175,5 +175,6 @@ public class GameManager : MonoBehaviour
     private void FixedUpdate()
     {
         medianHordeHealth = AllHordes.Select(horde => horde.TotalHealth).Median();
+        AllHordes = Players.SelectMany(player => player.Hordes).ToList();
     }
 }

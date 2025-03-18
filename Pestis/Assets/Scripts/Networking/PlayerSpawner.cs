@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
 {
-    private const int numBots = 5;
+    private const int numBots = 99;
     private const int spawnSeed = 312;
     private static readonly Vector2 spawnCenter = new(0, 0);
 
@@ -25,8 +25,6 @@ public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
                 // Calculate r.
                 var r = A * theta;
 
-                Debug.Log($"Theta: {theta}");
-                Debug.Log($"R: {r}");
                 // Convert to Cartesian coordinates.
                 float x, y;
                 PolarToCartesian(r, theta, out x, out y);
