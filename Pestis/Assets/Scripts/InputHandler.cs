@@ -90,6 +90,7 @@ public class InputHandler : MonoBehaviour
                 Debug.Log("Attacking horde");
                 LocalPlayer!.selectedEnemyHorde=clickedHorde;
                 clickedHorde.Highlight();
+                LocalPlayer!.selectedHorde.AttackHorde(clickedHorde, LocalPlayer.selectedHorde.GetCombatStrategy());
             }
             else if (!(clickedHorde && clickedHorde.Player == LocalPlayer?.selectedHorde.Player))
             {

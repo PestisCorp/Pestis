@@ -52,8 +52,8 @@ namespace UI
 
         private void OnEnable()
         {
-            splitAmount = maxPop / 2;
-            slider.value = splitAmount;
+            slider.value = 50;
+            splitAmount = (int)Math.Floor((slider.value / 100) * maxPop);
         }
 
         public void SplitHorde()
