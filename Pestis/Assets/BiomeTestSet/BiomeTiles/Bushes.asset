@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17af87ed580a97d4cb1bfdc3cf6d9c67, type: 3}
-  m_Name: GrassTile
+  m_Name: Bushes
   m_EditorClassIdentifier: 
   foodLevel: 0
   HumanLevel: 0
   climate: 0
-  tile: {fileID: 3420515626229615298, guid: 97635caa357864996a7c60625e59dc9d, type: 3}
+  tile: {fileID: 4408742526669077336, guid: 1293b2702f2424fe3b015b55302ad719, type: 3}
   tilecolor: {r: 1, g: 1, b: 1, a: 1}

@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17af87ed580a97d4cb1bfdc3cf6d9c67, type: 3}
-  m_Name: GrassTile
+  m_Script: {fileID: 11500000, guid: 3cfcad1778431fd45853f513414c4d08, type: 3}
+  m_Name: SnowTIle 1
   m_EditorClassIdentifier: 
   foodLevel: 0
   HumanLevel: 0
   climate: 0
-  tile: {fileID: 3420515626229615298, guid: 97635caa357864996a7c60625e59dc9d, type: 3}
+  tile: {fileID: -1530323692455362162, guid: e35b221623e98481a8281481620ca7d3, type: 3}
   tilecolor: {r: 1, g: 1, b: 1, a: 1}

@@ -14,6 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TileList:
   - {fileID: 11400000, guid: 1c700d74599161c44937b74579189f89, type: 2}
+  - {fileID: 11400000, guid: 0086aea40be644f85a7f08a0019ea826, type: 2}
+  Weights:
+  - 0.96
+  - 0.04
   FeatureList:
   - {fileID: 7727599578141111434, guid: 27a3f781f19445ce181cdb9b55c37d7c, type: 3}
   - {fileID: 7727599578141111434, guid: 13407f781d1484269808226466e6268d, type: 3}

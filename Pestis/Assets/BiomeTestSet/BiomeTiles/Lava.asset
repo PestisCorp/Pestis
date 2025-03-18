@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17af87ed580a97d4cb1bfdc3cf6d9c67, type: 3}
-  m_Name: GrassTile
+  m_Script: {fileID: 11500000, guid: 79cc6642d6e7a3d41bca67a9bee412fc, type: 3}
+  m_Name: Lava
   m_EditorClassIdentifier: 
   foodLevel: 0
   HumanLevel: 0
   climate: 0
-  tile: {fileID: 3420515626229615298, guid: 97635caa357864996a7c60625e59dc9d, type: 3}
+  tile: {fileID: -869660025240185397, guid: 04fd58003b871495a87f6b6c99e1134e, type: 3}
   tilecolor: {r: 1, g: 1, b: 1, a: 1}

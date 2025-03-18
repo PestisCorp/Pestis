@@ -12,6 +12,7 @@ using Map;
 public class BiomeClass : ScriptableObject
 {
     public BiomeTile[] TileList;
+    public float[] Weights;
     public GameObject[] FeatureList; //set of features that spawn in this biome
 
     public GameObject cityPrefab; // The City POI
@@ -40,6 +41,7 @@ public class BiomeClass : ScriptableObject
     public BiomeTile getRandomBiomeTile()
     {
         var index = UnityEngine.Random.Range(0, TileList.Length);
+        while (Weights[index] < UnityEngine.Random.Range(0f, 1f)) index = UnityEngine.Random.Range(0, TileList.Length);
         return TileList[index];
     }
 
