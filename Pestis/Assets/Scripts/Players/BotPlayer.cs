@@ -73,14 +73,14 @@ namespace Players
                 var hordesByDistance = allHordes.Select(horde =>
                         new Tuple<HordeController, float>(horde,
                             (horde.GetBounds().center - myHorde.GetBounds().center).sqrMagnitude))
-                    .OrderBy(horde => horde.Item2).GetEnumerator();
+                    .Where(tuple => tuple.Item2 < AggressionRange)
+                    .OrderBy(horde => horde.Item2).ToArray();
 
-                hordesByDistance.MoveNext();
-                hordesByDistance.MoveNext();
+                if (hordesByDistance.Length <= 1) continue;
 
                 // First closest horde is us, so get second
-                var closestHorde = hordesByDistance.Current.Item1;
-                var closestHordeDistance = hordesByDistance.Current.Item2;
+                var closestHorde = hordesByDistance[1].Item1;
+                var closestHordeDistance = hordesByDistance[1].Item2;
 
                 var distFromHordeEdgeToClosestHorde = closestHordeDistance -
                                                       closestHorde.GetBounds()
@@ -102,12 +102,9 @@ namespace Players
 
                     if (attack)
                     {
-                        Debug.Log($"Horde {myHorde.Id} too close to other horde, attacking!");
                         myHorde.AttackHorde(closestHorde, "");
                         return;
                     }
-
-                    Debug.Log($"Horde {myHorde.Id} too close to other horde, moving away!");
 
                     Vector2 pushDirection = (myHorde.GetBounds().center - closestHorde.GetBounds().center).normalized;
                     // Go 10 tiles in the opposite direction to the nearest horde.
@@ -166,19 +163,19 @@ namespace Players
                 // OFFENSIVE ACTIONS - HORDE TARGETING
 
                 Dictionary<HordeController, float> hordeDesirabilities = new();
-                foreach (var horde in allHordes)
+                foreach (var kvp in hordesByDistance)
                 {
-                    if (horde.Player == player) return;
+                    if (kvp.Item1.Player == player) return;
 
                     // Skip Horde if too far away
-                    var sqrDistance = (horde.transform.position - myHorde.GetBounds().center).sqrMagnitude;
+                    var sqrDistance = kvp.Item2;
                     if (sqrDistance > AggressionRange) continue;
 
-                    var desirability = CalcCombatDesirability(myHorde, horde);
+                    var desirability = CalcCombatDesirability(myHorde, kvp.Item1);
 
                     desirability *= 1.0f - sqrDistance / AggressionRange;
 
-                    hordeDesirabilities.Add(horde, desirability);
+                    hordeDesirabilities.Add(kvp.Item1, desirability);
                 }
 
                 if (hordeDesirabilities.Count != 0)

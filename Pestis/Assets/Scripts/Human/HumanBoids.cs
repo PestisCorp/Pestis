@@ -262,11 +262,6 @@ namespace Human
             previousNumBoids = numBoids;
             var newNumBoids = GameManager.Instance.pois.Length * 5;
 
-            boidBuffer.GetData(tempBoidsArr, 0, 0, newNumBoids);
-
-            var tempPois = new BoidPoi[GameManager.Instance.pois.Length];
-            poiBuffer.GetData(tempPois, 0, 0, GameManager.Instance.pois.Length);
-
             // Some boids have died
             if (newNumBoids < numBoids && combat)
                 // Don't exceed dead boids buffer
