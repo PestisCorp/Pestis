@@ -55,7 +55,7 @@
     },
     "Heap": {
         "PageShift": 15,
-        "PageCount": 256,
+        "PageCount": 1024,
         "GlobalsSize": 0
     },
     "AssembliesToWeave": [

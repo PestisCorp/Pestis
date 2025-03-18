@@ -60,6 +60,11 @@ uniform float poiGridCellSize;
 uniform uint poiGridDimX;
 uniform uint poiGridDimY;
 
+// Left, Top, Right, Bottom
+// Holds uints, but their bits are actually floats, since the Atomic APIs only support ints
+// This is fine because we only compare for equality, and nothing else, so doesn't matter what the underlying bits represent
+RWStructuredBuffer<uint> bounds;
+
 uint getPOIGridID(Boid boid)
 {
     int x = floor(boid.pos.x / poiGridCellSize + poiGridDimX / 2);
@@ -241,4 +246,40 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
     // Update positions
     boid.pos += boid.vel * deltaTime;
     boidsOut[id.x] = boid;
+}
+
+#pragma kernel UpdateBounds
+[numthreads(blockSize, 1, 1)]
+void UpdateBounds(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= numBoids) return;
+
+    Boid boid = boidsIn[id.x];
+    float left = asfloat(bounds[0]);
+    while (boid.pos.x < left)
+    {
+        InterlockedCompareStore(bounds[0], asuint(left), asuint(boid.pos.x));
+        left = asfloat(bounds[0]);
+    }
+
+    float top = asfloat(bounds[1]);
+    while (boid.pos.y > top)
+    {
+        InterlockedCompareStore(bounds[1], asuint(top), asuint(boid.pos.y));
+        top = asfloat(bounds[1]);
+    }
+
+    float right = asfloat(bounds[2]);
+    while (boid.pos.x > right)
+    {
+        InterlockedCompareStore(bounds[2], asuint(right), asuint(boid.pos.x));
+        right = asfloat(bounds[2]);
+    }
+
+    float bottom = asfloat(bounds[3]);
+    while (boid.pos.y < bottom)
+    {
+        InterlockedCompareStore(bounds[3], asuint(bottom), asuint(boid.pos.y));
+        bottom = asfloat(bounds[3]);
+    }
 }

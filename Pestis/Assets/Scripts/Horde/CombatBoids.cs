@@ -268,7 +268,8 @@ public class CombatBoids : MonoBehaviour
             }
         }
 
-        boidsToKill.SetData(boidsToKillData, 0, 0, boidsToKillData.Length);
+        // If there are any boids to kill
+        if (boidsToKillData.Any(x => x != 0)) boidsToKill.SetData(boidsToKillData, 0, 0, boidsToKillData.Length);
 
         boidShader.Dispatch(updateBoidsKernel, containedHordes.Count,
             Mathf.CeilToInt(numBoids.Values.Sum() / blockSize), 1);
