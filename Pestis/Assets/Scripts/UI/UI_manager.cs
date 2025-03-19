@@ -35,6 +35,7 @@ public class UI_Manager : MonoBehaviour
     public GameObject darkScreen;
     public GameObject textPrefab;
     public GameObject startMenu;
+    public GameObject tutorialButton;
 
     public Transform abilityPanel;
     // References to the resource text fields
@@ -63,10 +64,11 @@ public class UI_Manager : MonoBehaviour
     {
         // Ensure appropriate canvases are set to default at the start of the game
         ResetUI();
-        if (mutationPopUp != null) mutationPopUp.SetActive(false);
-        if (resourceStats != null) resourceStats.SetActive(false);
-        if (objectives != null) objectives.SetActive(false);
+        if (mutationPopUp) mutationPopUp.SetActive(false);
+        if (resourceStats) resourceStats.SetActive(false);
+        if (objectives) objectives.SetActive(false);
         if (startMenu) objectives.SetActive(false);
+        if (tutorialButton) tutorialButton.SetActive(false);
 
 
         _notificationText = notification.GetComponentInChildren<TMP_Text>();
@@ -120,17 +122,17 @@ public class UI_Manager : MonoBehaviour
     // Not including toolbar as this is controlled by the player selecting a horde
     public void ResetUI()
     {
-        if (infoPanel != null) infoPanel.SetActive(false);
+        if (infoPanel) infoPanel.SetActive(false);
 
-        if (splitPanel != null) splitPanel.SetActive(false);
+        if (splitPanel) splitPanel.SetActive(false);
 
-        if (mutationPopUp != null)
+        if (mutationPopUp)
         {
             mutationPopUp.SetActive(false);
             mutationViewer.SetActive(false);
         }
 
-        if (actionPanel != null) ActionPanelDisable();
+        if (actionPanel) ActionPanelDisable();
 
         // Ignoring the state of the tool bar, ensuring the default buttons are visible
         var toolbarButtons = GameObject.FindGameObjectsWithTag("UI_button_action");
@@ -628,5 +630,20 @@ public class UI_Manager : MonoBehaviour
     public void EnableStartMenu()
     {
         startMenu.SetActive(true);
+    }
+
+    public void DisableTutorialButton()
+    {
+        tutorialButton.SetActive(false);
+    }
+
+    public void EnableTutorialButton()
+    {
+        tutorialButton.SetActive(true);
+    }
+
+    public void DisableStartMenu()
+    {
+        startMenu.SetActive(false);
     }
 }
