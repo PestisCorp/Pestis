@@ -85,7 +85,7 @@ public class UI_Manager : MonoBehaviour
             if (cheeseRateText)
             {
                 var cheeseRate = localPlayer!.player.CheesePerSecond;
-                cheeseRateText.text = cheeseRate >= 0 ? "+" + cheeseRate.ToString("F2") : cheeseRate.ToString("F2");
+                cheeseRateText.text = (cheeseRate >= 0 ? "+" + cheeseRate.ToString("F2") : cheeseRate.ToString("F2")) + "/s";
             }
             
             if (localPlayer.player.Score != null) timer.UpdateScore(localPlayer.player.Score);
