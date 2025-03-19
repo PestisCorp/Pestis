@@ -38,11 +38,7 @@ public class UI_Manager : MonoBehaviour
 
     public Transform abilityPanel;
     // References to the resource text fields
-    public TextMeshProUGUI cheeseTotalText;
     public TextMeshProUGUI cheeseRateText;
-    public TextMeshProUGUI popTotalText;
-
-    public TextMeshProUGUI hordeTotalText;
 
 
     // References to notification system objects
@@ -53,8 +49,6 @@ public class UI_Manager : MonoBehaviour
     private bool _messageActive;
     private Image _notificationBackground;
     private TMP_Text _notificationText;
-
-    private bool displayResourceInfo;
     
     public readonly Dictionary<HordeController, GameObject> AbilityBars = new();
 
@@ -74,8 +68,6 @@ public class UI_Manager : MonoBehaviour
         if (objectives != null) objectives.SetActive(false);
         if (startMenu) objectives.SetActive(false);
 
-        displayResourceInfo = false;
-
 
         _notificationText = notification.GetComponentInChildren<TMP_Text>();
         _notificationBackground = notification.GetComponentInChildren<Image>();
@@ -86,29 +78,16 @@ public class UI_Manager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Only display resources if they player hasn't opted to show info
-        if (localPlayer != null && !displayResourceInfo)
+        if (localPlayer )
         {
-            // Update the cheese text fields
-            // Display total cheese up to 2 decimal places
-            if (cheeseTotalText != null)
-                cheeseTotalText.text = localPlayer?.player.CurrentCheese.ToString("F2");
 
             // Display cheese increment rate with a + sign and to 2 decimal places
-            if (cheeseRateText != null)
+            if (cheeseRateText)
             {
                 var cheeseRate = localPlayer!.player.CheesePerSecond;
-                cheeseRateText.text = cheeseRate >= 0 ? "+" + cheeseRate.ToString("F2") : cheeseRate.ToString("F2");
+                cheeseRateText.text = (cheeseRate >= 0 ? "+" + cheeseRate.ToString("F2") : cheeseRate.ToString("F2")) + "/s";
             }
-
-            // Update total pop text field
-            if (popTotalText != null)
-                popTotalText.text = "0";
-
-            // Update total horde text field
-            if (hordeTotalText != null)
-                hordeTotalText.text = "0";
-
+            
             if (localPlayer.player.Score != null) timer.UpdateScore(localPlayer.player.Score);
 
             if (localPlayer.player.Timer != null) timer.UpdateTimer(localPlayer.player.Timer);
@@ -407,24 +386,6 @@ public class UI_Manager : MonoBehaviour
         foreach (var obj in attackSliderObjects)
             if (obj.name == "Text_selected_pop")
                 obj.GetComponentInChildren<TextMeshProUGUI>().text = selectedPopulation.ToString();
-    }
-
-    // Function to toggle resource info display boolean
-    public void ToggleResourceInfoDisplay()
-    {
-        displayResourceInfo = !displayResourceInfo;
-    }
-
-    // Function to change resource text fields to display info about what they show
-    public void ResourceInfoDisplay()
-    {
-        if (displayResourceInfo)
-        {
-            cheeseTotalText.text = "Total Cheese";
-            cheeseRateText.text = "Cheese Increment Rate";
-            popTotalText.text = "Total Population";
-            hordeTotalText.text = "Total Hordes";
-        }
     }
 
     // Function to toggle toolbar to display info or buttons by toggling the buttons tagged "UI_button_action"
