@@ -10,6 +10,7 @@ public class TutorialManager : MonoBehaviour
     public Sprite conquerImage;
     public Sprite evolveImage;
     public Sprite dominateImage;
+    public Sprite controlsImage;
     private Image current;
     private Sprite[] slides;
     private int slidesIndex = 0;
@@ -17,31 +18,40 @@ public class TutorialManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        slides =  new Sprite[] {welcomeImage, fightImage, conquerImage, evolveImage, dominateImage};
-        tutorialCanvas.SetActive(true);
-        UI_Manager.Instance.HighlightUiElement(tutorialCanvas);
+        slides =  new Sprite[] {welcomeImage, fightImage, conquerImage, evolveImage, dominateImage, controlsImage};
         GameObject imageObj = tutorialCanvas.transform.Find("image").gameObject;
         current = imageObj.GetComponent<Image>();
-        displayTutorial();
+        StartTutorial();
     }
 
-    void displayTutorial()
+    public void StartTutorial()
+    {
+        UI_Manager.Instance.DisableTutorialButton();
+        UI_Manager.Instance.DisableStartMenu();
+        slidesIndex = 0;
+        tutorialCanvas.SetActive(true);
+        UI_Manager.Instance.HighlightUiElement(tutorialCanvas);
+        DisplayTutorial();
+    }
+
+    void DisplayTutorial()
     {
         if (slides[slidesIndex] ) current.sprite = slides[slidesIndex];
         else CloseTutorial();
     }
 
-    public void nextSlide()
+    public void NextSlide()
     {
         slidesIndex++;
-        if(slidesIndex > 4) CloseTutorial();
-        displayTutorial();
+        if(slidesIndex > (slides.Length - 1)) CloseTutorial();
+        DisplayTutorial();
     }
 
     public void CloseTutorial()
     {
         tutorialCanvas.SetActive(false);
         UI_Manager.Instance.UnhighlightUiElement(tutorialCanvas);
-        UI_Manager.Instance.EnableStartMenu();
+        if(UI_Manager.Instance.localPlayer == null) UI_Manager.Instance.EnableStartMenu();
+        UI_Manager.Instance.EnableTutorialButton();
     }
 }
