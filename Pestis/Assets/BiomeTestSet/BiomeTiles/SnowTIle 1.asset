@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cfcad1778431fd45853f513414c4d08, type: 3}
+  m_Name: SnowTIle 1
+  m_EditorClassIdentifier: 
+  foodLevel: 0
+  HumanLevel: 0
+  climate: 0
+  tile: {fileID: -1530323692455362162, guid: e35b221623e98481a8281481620ca7d3, type: 3}
+  tilecolor: {r: 1, g: 1, b: 1, a: 1}

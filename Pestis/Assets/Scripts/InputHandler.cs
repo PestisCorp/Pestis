@@ -5,7 +5,7 @@ using POI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.Tilemaps;
+using UnityEngine.Rendering.Universal;
 
 public class InputHandler : MonoBehaviour
 {
@@ -13,16 +13,24 @@ public class InputHandler : MonoBehaviour
 
     [CanBeNull] public HumanPlayer LocalPlayer;
     public UI_Manager UIManager;
+    private float _aspectRatio;
     private InputAction _cameraZoom;
 
     private Camera _mainCamera;
+    private int _maxX;
 
     private InputAction _moveCamAction;
+    private PixelPerfectCamera _pixelPerfectCamera;
 
     private void Awake()
     {
         Instance = this;
         _mainCamera = Camera.main;
+        _pixelPerfectCamera = _mainCamera.GetComponent<PixelPerfectCamera>();
+        _pixelPerfectCamera.refResolutionY = Screen.height;
+        _pixelPerfectCamera.refResolutionX = Screen.width;
+        _maxX = Screen.width * 4;
+        _aspectRatio = (float)Screen.height / Screen.width;
         _moveCamAction = InputSystem.actions.FindAction("Navigate");
         _cameraZoom = InputSystem.actions.FindAction("ScrollWheel");
     }
@@ -40,7 +48,19 @@ public class InputHandler : MonoBehaviour
         if (scroll.y != 0 && !EventSystem.current.IsPointerOverGameObject())
         {
             Vector2 oldTarget = _mainCamera.ScreenToWorldPoint(mouse.position.ReadValue());
-            _mainCamera.orthographicSize = Mathf.Clamp(_mainCamera.orthographicSize - scroll.y, 1, 50);
+            // _mainCamera.orthographicSize = Mathf.Clamp(_mainCamera.orthographicSize - scroll.y, 1, 50);
+            if (scroll.y < 0)
+            {
+                _pixelPerfectCamera.refResolutionX *= 2;
+                if (_pixelPerfectCamera.refResolutionX > _maxX) _pixelPerfectCamera.refResolutionX = _maxX;
+                _pixelPerfectCamera.refResolutionY = (int)(_pixelPerfectCamera.refResolutionX * _aspectRatio);
+            }
+            else
+            {
+                _pixelPerfectCamera.refResolutionX /= 2;
+                _pixelPerfectCamera.refResolutionY /= 2;
+            }
+
             Vector2 newTarget = _mainCamera.ScreenToWorldPoint(mouse.position.ReadValue());
 
             _mainCamera.transform.Translate(oldTarget - newTarget);
@@ -88,20 +108,18 @@ public class InputHandler : MonoBehaviour
             if (clickedHorde && clickedHorde.Player != LocalPlayer?.selectedHorde.Player)
             {
                 Debug.Log("Attacking horde");
-                LocalPlayer!.selectedEnemyHorde=clickedHorde;
+                LocalPlayer!.selectedEnemyHorde = clickedHorde;
                 clickedHorde.Highlight();
                 LocalPlayer!.selectedHorde.AttackHorde(clickedHorde, LocalPlayer.selectedHorde.GetCombatStrategy());
             }
             else if (!(clickedHorde && clickedHorde.Player == LocalPlayer?.selectedHorde.Player))
             {
-                Vector3 position = _mainCamera.ScreenToWorldPoint(mouse.position.value);
-                Tilemap tilemap = GameManager.Instance.terrainMap;
-                Vector3Int possibleCellPosition = tilemap.WorldToCell(position);
+                var position = _mainCamera.ScreenToWorldPoint(mouse.position.value);
+                var tilemap = GameManager.Instance.terrainMap;
+                var possibleCellPosition = tilemap.WorldToCell(position);
                 possibleCellPosition.z = 0; // since tilemap is 2D
 
-                if (tilemap.HasTile(possibleCellPosition)) {
-                    LocalPlayer?.MoveHorde(position);
-                }
+                if (tilemap.HasTile(possibleCellPosition)) LocalPlayer?.MoveHorde(position);
             }
         }
     }
@@ -110,6 +128,7 @@ public class InputHandler : MonoBehaviour
     {
         LocalPlayer?.DeselectHorde();
     }
+
     /// <summary>
     ///     Returns horde under mouse position, or null if no horde
     /// </summary>
