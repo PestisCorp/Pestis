@@ -562,7 +562,6 @@ public class CombatBoids : MonoBehaviour
                 var cellBoids = offsets[y * gridDimX + x] - (y == 0 ? 0 : offsets[y * gridDimX + x - 1]);
                 if (cellBoids == 0) continue;
 
-
                 var boids = new Boid[cellBoids];
                 boidBufferOut.GetData(boids, 0, Convert.ToInt32(y == 0 ? 0 : offsets[y * gridDimX + x - 1]),
                     Convert.ToInt32(cellBoids));
@@ -606,13 +605,13 @@ public class CombatBoids : MonoBehaviour
                 var cellBoids = offsets[y * gridDimX + x] - (y == 0 ? 0 : offsets[y * gridDimX + x - 1]);
                 if (cellBoids == 0) continue;
 
-                empty = false;
-
                 var boids = new Boid[cellBoids];
                 boidBufferOut.GetData(boids, 0, Convert.ToInt32(y == 0 ? 0 : offsets[y * gridDimX + x - 1]),
                     Convert.ToInt32(cellBoids));
 
                 if (boids.Count(boid => boid.horde == hordeIndex) == 0) continue;
+
+                empty = false;
 
                 topRight.x = Mathf.Max(topRight.x,
                     boids.Where(boid => boid.horde == hordeIndex).Maxima(boid => boid.pos.x).First().pos.x);
@@ -624,6 +623,8 @@ public class CombatBoids : MonoBehaviour
 
         var center = bottomLeft + (topRight - bottomLeft) / 2.0f;
         var size = topRight - bottomLeft;
+
+        if (float.IsNaN(center.x)) throw new Exception("Horde bounds center is NaN");
 
         bounds = new Bounds(center, size);
         return bounds;
