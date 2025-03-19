@@ -315,13 +315,11 @@ public class UI_Manager : MonoBehaviour
             var attack = horde.GetPopulationState().Damage;
             var defense = hordeState.DamageReduction;
             var health = horde.TotalHealth;
-            var birthRate = horde.GetPopulationState().BirthRate;
 
             var stats = "Population: " + population + "\n" +
                         "Attack: " + attack + "\n" +
                         "Defense: " + defense + "\n" +
-                        "Health: " + health + "\n" +
-                        "Birth Rate: " + birthRate;
+                        "Health: " + health;
             statsText.GetComponentInChildren<TextMeshProUGUI>().text = stats;
         }
         else
