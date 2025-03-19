@@ -486,6 +486,7 @@ Count: {AliveRats}
 
             if (HasStateAuthority) // Ensure only the host assigns colors
             {
+                boids.local = true;
                 HordeColorIndex = (int)Object.Id.Raw % predefinedHordeColors.Length;
                 _hordeColor =
                     predefinedHordeColors

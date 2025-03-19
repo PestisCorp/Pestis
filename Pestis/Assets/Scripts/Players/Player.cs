@@ -88,7 +88,7 @@ namespace Players
                     Username = GameManager.Instance.localUsername;
                 else
                     Username = $"Player {Object.StateAuthority}";
-                    StartCoroutine(TimerTilScoreLock(600));
+                StartCoroutine(TimerTilScoreLock(600));
             }
             else
             {
@@ -99,9 +99,8 @@ namespace Players
                 Username = $"Bot {Object.Id.Raw}";
             }
 
-            GameManager.Instance.Players.Add(this);
             StartCoroutine(JoinStats());
-                CurrentCheese = 50.0f;
+            CurrentCheese = 50.0f;
         }
 
         // Manage Cheese
@@ -244,6 +243,14 @@ namespace Players
             if (Type == PlayerType.Human) return ref _humanPlayer;
 
             throw new NullReferenceException("Tried to get human player from a bot Player");
+        }
+
+
+        public void DestroyBotRpc()
+        {
+            if (Type != PlayerType.Bot) throw new Exception("Tried to destroy human player remotely!");
+
+            Runner.Despawn(Object);
         }
 
         public void SplitHorde(HordeController toSplit, float splitPercentage)
