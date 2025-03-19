@@ -175,6 +175,10 @@ namespace Horde
             // If not spawned yet
             if (!Object.IsValid) return;
 
+            if (_combatText.activeSelf &&
+                (!CurrentCombatController || CurrentCombatController.NumParticipators <= 1))
+                Debug.LogError("Combat text active but no combat");
+
             if (PopulationCooldown > 0)
                 PopulationCooldown -= Time.deltaTime;
             else if (PopulationCooldown < 0) PopulationCooldown = 0;

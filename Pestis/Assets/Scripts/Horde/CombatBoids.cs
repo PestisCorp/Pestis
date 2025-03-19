@@ -624,7 +624,11 @@ public class CombatBoids : MonoBehaviour
         var center = bottomLeft + (topRight - bottomLeft) / 2.0f;
         var size = topRight - bottomLeft;
 
-        if (float.IsNaN(center.x)) throw new Exception("Horde bounds center is NaN");
+        if (float.IsNaN(center.x))
+        {
+            Debug.LogError("Horde bounds center is NaN");
+            return bounds;
+        }
 
         bounds = new Bounds(center, size);
         return bounds;

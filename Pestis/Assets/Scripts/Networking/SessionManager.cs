@@ -20,19 +20,19 @@ namespace Networking
 
     public class SessionManager : NetworkBehaviour
     {
-        private const int TARGET_PLAYERS = 100;
+        private const int TARGET_PLAYERS = 50;
         public static SessionManager Instance;
 
         public GameObject botPrefab;
         public GameObject playerPrefab;
 
-        [Networked] [Capacity(100)] private NetworkArray<int> PlayerSpawnIndices => default;
+        [Networked] [Capacity(TARGET_PLAYERS)] private NetworkArray<int> PlayerSpawnIndices => default;
 
         /// <summary>
         ///     Mapping of spawn index to bot that spawned there
         /// </summary>
         [Networked]
-        [Capacity(100)]
+        [Capacity(TARGET_PLAYERS)]
         private NetworkArray<NetworkId> BotSpawnIndices => default;
 
 
@@ -40,7 +40,7 @@ namespace Networking
         ///     Each element corresponds to one bot,
         /// </summary>
         [Networked]
-        [Capacity(100)]
+        [Capacity(TARGET_PLAYERS)]
         private NetworkArray<PlayerSlot> Players => default;
 
         /// Convert polar coordinates into Cartesian coordinates.
@@ -88,17 +88,21 @@ namespace Networking
             var presentNumbers = new List<int>();
 
             // Extract the indices of present numbers
-            for (var i = 0; i < PlayerSpawnIndices.Length; i++)
-                if (PlayerSpawnIndices[i] != -1)
+            for (var i = 0; i < Players.Length; i++)
+                if (!Players[i].IsBot)
                     presentNumbers.Add(i);
 
             // If no numbers exist, return 50 as the first placement
             if (presentNumbers.Count == 0)
-                return 50;
+            {
+                Debug.Log("No existing players");
+                return TARGET_PLAYERS / 2;
+            }
+
 
             // Consider the implicit boundaries 0 and 100
-            presentNumbers.Add(0);
-            presentNumbers.Add(100);
+            presentNumbers.Insert(0, 0);
+            presentNumbers.Add(TARGET_PLAYERS);
 
             var maxGap = 0;
             var bestIndex = -1;
@@ -121,7 +125,7 @@ namespace Networking
             {
                 Debug.LogError(
                     "Something went terribly wrong picking a spawn index for the new player. Failing over to spawning player in a random position.");
-                bestIndex = Random.Range(0, 99);
+                bestIndex = Random.Range(0, TARGET_PLAYERS);
             }
 
             return bestIndex;
@@ -147,6 +151,8 @@ namespace Networking
 
             var spawnIndex = FindNewIndex();
 
+            Debug.Log($"Our spawn index is {spawnIndex}");
+
             var player = Runner.Spawn(playerPrefab, spawnPositions[spawnIndex]);
 
             Camera.main.transform.position =
@@ -164,8 +170,10 @@ namespace Networking
             }
 
             // Spawn necessary bots
-            for (var i = 1; i < TARGET_PLAYERS; i++)
+            for (var i = 0; i < TARGET_PLAYERS; i++)
             {
+                if (i == spawnIndex) continue;
+
                 Debug.Log($"Spawning bot {i}");
                 var bot = Runner.Spawn(botPrefab, spawnPositions[i], Quaternion.identity);
                 var slot = new PlayerSlot
