@@ -520,6 +520,7 @@ GameObject:
   - component: {fileID: 2298762105365068013}
   - component: {fileID: 6693759847198177699}
   - component: {fileID: 7873285946953598513}
+  - component: {fileID: 5161670944461755985}
   m_Layer: 0
   m_Name: RatHorde
   m_TagString: Untagged
@@ -623,6 +624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd776c19415ef16be8690d1dc9bb6b77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PointsAvailable: 0
 --- !u!114 &8072967729009948161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -697,6 +699,19 @@ MonoBehaviour:
   image: {fileID: 1105003806134767001}
   buttonTMPText: {fileID: 7442807682479085006}
   splitRecommended: 300
+--- !u!114 &5161670944461755985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2093969167296477126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 526b142195d343c39a9184405f9ed5e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetworkObject: {fileID: 0}
 --- !u!1 &2386700459452885359
 GameObject:
   m_ObjectHideFlags: 0
@@ -11776,7 +11791,7 @@ MonoBehaviour:
   m_text: '[Player Name]'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 6759674021803804285, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -11910,6 +11925,7 @@ MonoBehaviour:
   TargetPos: {x: 0, y: 0}
   paused: 0
   numBoids: 0
+  local: 0
 --- !u!222 &8096480468413857689
 CanvasRenderer:
   m_ObjectHideFlags: 0

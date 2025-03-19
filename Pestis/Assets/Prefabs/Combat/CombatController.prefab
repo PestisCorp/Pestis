@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2700652630668452347}
   - component: {fileID: 5918322506656264874}
   - component: {fileID: 9016072525221615133}
+  - component: {fileID: 1257265131422006064}
   m_Layer: 0
   m_Name: CombatController
   m_TagString: Untagged
@@ -94,3 +95,16 @@ MonoBehaviour:
   TargetPos: {x: 0, y: 0}
   paused: 0
   containedHordes: []
+--- !u!114 &1257265131422006064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6586577913601389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 526b142195d343c39a9184405f9ed5e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetworkObject: {fileID: 0}

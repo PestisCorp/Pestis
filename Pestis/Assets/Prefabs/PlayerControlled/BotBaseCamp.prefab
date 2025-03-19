@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1733681384128497525}
   - component: {fileID: -5284016957979711463}
   - component: {fileID: 8629368954499967657}
+  - component: {fileID: 5194782988445684773}
   m_Layer: 0
   m_Name: BotBaseCamp
   m_TagString: Untagged
@@ -96,6 +97,19 @@ MonoBehaviour:
   SyncParent: 1
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
+--- !u!114 &5194782988445684773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6124682003357980499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 526b142195d343c39a9184405f9ed5e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetworkObject: {fileID: 0}
 --- !u!1001 &2540703415486097592
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -212,6 +226,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7004478929244238534, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 6759674021803804285, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 7162712625720371668, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
