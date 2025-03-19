@@ -58,6 +58,7 @@ namespace Human
         public void DealDamageRpc(float damage)
         {
             CurrentHumanHealth -= damage;
+            CurrentHumanHealth = Mathf.Max(0, CurrentHumanHealth);
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -70,7 +71,7 @@ namespace Human
         {
             if (enemyHorde)
             {
-                if (HumanCount == 0)
+                if (HumanCount <= 0)
                 {
                     // This could technically break if somehow the authority for the patrol controller is different to the one for the POI
                     // But they should both be controlled by the master client
@@ -79,6 +80,7 @@ namespace Human
                     enemyHorde = null;
                     return;
                 }
+
                 if (enemyHorde.AliveRats < 7)
                 {
                     enemyHorde.RetreatRpc();

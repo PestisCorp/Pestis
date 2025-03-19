@@ -102,12 +102,10 @@ namespace Players
 
                     if (attack)
                     {
-                        Debug.Log("Attacking too close horde");
                         myHorde.AttackHorde(closestHorde, "");
                         return;
                     }
 
-                    Debug.Log("Moving away from too close horde");
                     Vector2 pushDirection = (myHorde.GetBounds().center - closestHorde.GetBounds().center).normalized;
                     // Go 10 tiles in the opposite direction to the nearest horde.
                     var newLocation = (Vector2)myHorde.GetBounds().center + pushDirection * 10.0f;
