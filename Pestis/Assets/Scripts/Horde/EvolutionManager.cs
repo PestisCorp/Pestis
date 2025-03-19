@@ -24,6 +24,7 @@ namespace Horde
         public int MutationWeight { get; set; }
         public string[] Effects { get; set; }
         public bool IsAbility { get; set; }
+        public string MutationUse {get; set;}
         public string Tooltip { get; set; }
 
         public bool Equals(ActiveMutation other)
@@ -40,7 +41,7 @@ namespace Horde
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(MutationName, MutationTag, MutationWeight, Effects, IsAbility, Tooltip);
+            return HashCode.Combine(MutationName, MutationTag, MutationWeight, Effects, IsAbility, MutationUse, Tooltip);
         }
     }
 
@@ -103,8 +104,9 @@ namespace Horde
         private Timer _mutationClock;
         private PopulationController _populationController;
         private Timer _rareMutationClock;
-
-
+        public int PointsAvailable = 0;
+        
+        
         // Set the rat stats in the Population Controller
         // Shows notification of mutation
         private void UpdateRatStats(string mutation)
@@ -115,7 +117,9 @@ namespace Horde
                        Math.Round(_evolutionaryState.PassiveEvolutions["evolution strength"][1] * 100 - 100, 2)
                            .ToString(CultureInfo.CurrentCulture) + "%.";
             if (_hordeController.Player.Type == 0)
-                FindFirstObjectByType<UI_Manager>().AddNotification(text, _hordeColor);
+            {
+                GameManager.Instance.UIManager.AddNotification(text, _hordeColor);
+            }
             switch (mutation)
             {
                 case "attack":
@@ -165,16 +169,9 @@ namespace Horde
             }
         }
 
-        private void RareEvolutionaryEvent()
+        public (ActiveMutation, ActiveMutation, ActiveMutation) RareEvolutionaryEvent()
         {
-            _rareMutationClock.Reset();
-            if (_evolutionaryState.ActiveMutations.Count < 3)
-            {
-                FindFirstObjectByType<UI_Manager>()
-                    .AddNotification("This horde has acquired the maximum number of mutations.", _hordeColor);
-                return;
-            }
-
+            CalculateActiveWeights();
             var firstMut = _evolutionaryState.ActiveMutations.Next();
             var secondMut = _evolutionaryState.ActiveMutations.Next();
             var thirdMut = _evolutionaryState.ActiveMutations.Next();
@@ -186,16 +183,12 @@ namespace Horde
                 thirdMut = _evolutionaryState.ActiveMutations.Next();
             }
 
-            FindFirstObjectByType<UI_Manager>()
-                .RareMutationPopup((firstMut, secondMut, thirdMut), this, _hordeController);
-            var icon = Resources.Load<Sprite>("UI_design/Emotes/evolution_emote");
-            _hordeController.AddSpeechBubble(icon);
-            _rareMutationClock.Start();
+            return (firstMut, secondMut, thirdMut);
+
         }
 
         public void ApplyActiveEffects(ActiveMutation mutation)
         {
-            FindFirstObjectByType<UI_Manager>().MutationPopUpDisable();
             _evolutionaryState.ActiveMutations.Remove(mutation);
             _evolutionaryState.AcquiredMutations.Add(mutation);
             foreach (var effect in mutation.Effects)
@@ -231,6 +224,21 @@ namespace Horde
 
             if (mutation.MutationName.Contains("swim"))
                 GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.SwimmingUnlocked, 1);
+        
+            
+            if (_evolutionaryState.ActiveMutations.Count < 3) 
+            {
+                GameManager.Instance.UIManager.AddNotification("This horde has acquired the maximum number of mutations." , _hordeColor);
+                _rareMutationClock.Stop();
+            }
+
+            PointsAvailable--;
+            if (GameManager.Instance.UIManager.mutationPopUp.activeSelf)
+            {
+                GameManager.Instance.UIManager.MutationPopUpDisable();
+                GameManager.Instance.UIManager.MutationPopUpEnable();
+            }
+            
         }
 
         private void CalculateActiveWeights()
@@ -324,9 +332,17 @@ namespace Horde
                 _evolutionaryState.PassiveEvolutions["rare mutation rate"][1] &&
                 _hordeController.Player.Type == 0)
             {
-                CalculateActiveWeights();
-                RareEvolutionaryEvent();
+                PointsAvailable++;
+                if (GameManager.Instance.UIManager.mutationPopUp.activeSelf || GameManager.Instance.UIManager.mutationViewer.activeSelf)
+                {
+                    GameManager.Instance.UIManager.MutationPopUpDisable();
+                    GameManager.Instance.UIManager.MutationPopUpEnable();
+                }
+                var icon = Resources.Load<Sprite>("UI_design/Emotes/evolution_emote");
+                _hordeController.AddSpeechBubble(icon);
+                _rareMutationClock.Restart();
             }
         }
     }
+
 }

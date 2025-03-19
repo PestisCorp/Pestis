@@ -1,51 +1,47 @@
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
 {
-    public GameObject welcomeCanvas;
-    public GameObject fightCanvas;
-    public GameObject conquerCanvas;
-    public GameObject evolveCanvas;
-    public GameObject dominateCanvas;
-    private GameObject current;
+    public GameObject tutorialCanvas;
+    public Sprite welcomeImage;
+    public Sprite fightImage;
+    public Sprite conquerImage;
+    public Sprite evolveImage;
+    public Sprite dominateImage;
+    private Image current;
+    private Sprite[] slides;
+    private int slidesIndex = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        OpenWelcome();
+        slides =  new Sprite[] {welcomeImage, fightImage, conquerImage, evolveImage, dominateImage};
+        tutorialCanvas.SetActive(true);
+        UI_Manager.Instance.HighlightUiElement(tutorialCanvas);
+        GameObject imageObj = tutorialCanvas.transform.Find("image").gameObject;
+        current = imageObj.GetComponent<Image>();
+        displayTutorial();
     }
 
-    void OpenWelcome()
+    void displayTutorial()
     {
-        current = welcomeCanvas;
-        welcomeCanvas.SetActive(true);
-        UI_Manager.Instance.HighlightUiElement(welcomeCanvas);
+        if (slides[slidesIndex] ) current.sprite = slides[slidesIndex];
+        else CloseTutorial();
     }
 
-    public void NextWelcome()
+    public void nextSlide()
     {
-        welcomeCanvas.SetActive(false);
-        UI_Manager.Instance.UnhighlightUiElement(welcomeCanvas);
-        OpenFight();
-    }
-
-    void OpenFight()
-    {
-        current = fightCanvas;
-        fightCanvas.SetActive(true);
-        UI_Manager.Instance.HighlightUiElement(fightCanvas);
-    }
-
-    public void NextFight()
-    {
-        CloseTutorial();
+        slidesIndex++;
+        if(slidesIndex > 4) CloseTutorial();
+        displayTutorial();
     }
 
     public void CloseTutorial()
     {
-        current.SetActive(false);
-        UI_Manager.Instance.UnhighlightUiElement(current);
+        tutorialCanvas.SetActive(false);
+        UI_Manager.Instance.UnhighlightUiElement(tutorialCanvas);
         UI_Manager.Instance.EnableStartMenu();
     }
 }

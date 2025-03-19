@@ -1,0 +1,3926 @@
+fileFormatVersion: 2
+guid: 7031da6ee05654d5e93cb5bd8c86bbf6
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6071127246708273560
+    second: Tutorial_conquer_0
+  - first:
+      213: -1542864789762459971
+    second: Tutorial_conquer_1
+  - first:
+      213: 5005400789439558238
+    second: Tutorial_conquer_2
+  - first:
+      213: -2729168692472528951
+    second: Tutorial_conquer_3
+  - first:
+      213: 7788096209707749883
+    second: Tutorial_conquer_4
+  - first:
+      213: 8124106762102898118
+    second: Tutorial_conquer_5
+  - first:
+      213: -3253195634947141310
+    second: Tutorial_conquer_6
+  - first:
+      213: 1227645281175825282
+    second: Tutorial_conquer_7
+  - first:
+      213: 905177079786705927
+    second: Tutorial_conquer_8
+  - first:
+      213: -2784642682261904060
+    second: Tutorial_conquer_9
+  - first:
+      213: -7033750469445098583
+    second: Tutorial_conquer_10
+  - first:
+      213: -210179102170027001
+    second: Tutorial_conquer_11
+  - first:
+      213: 4628965964567644182
+    second: Tutorial_conquer_12
+  - first:
+      213: 1490805317402925653
+    second: Tutorial_conquer_13
+  - first:
+      213: 4712241785184135648
+    second: Tutorial_conquer_14
+  - first:
+      213: -105455978042460151
+    second: Tutorial_conquer_15
+  - first:
+      213: -6042077663968284559
+    second: Tutorial_conquer_16
+  - first:
+      213: -5719275520958159371
+    second: Tutorial_conquer_17
+  - first:
+      213: 1999633774597910877
+    second: Tutorial_conquer_18
+  - first:
+      213: -5355672799621255923
+    second: Tutorial_conquer_19
+  - first:
+      213: 1082070979270402033
+    second: Tutorial_conquer_20
+  - first:
+      213: 7335760229411210064
+    second: Tutorial_conquer_21
+  - first:
+      213: -2351496040359325044
+    second: Tutorial_conquer_22
+  - first:
+      213: 415741287604428625
+    second: Tutorial_conquer_23
+  - first:
+      213: 4863267733793888185
+    second: Tutorial_conquer_24
+  - first:
+      213: 4793831274606440653
+    second: Tutorial_conquer_25
+  - first:
+      213: -3006649947785310599
+    second: Tutorial_conquer_26
+  - first:
+      213: -2783786658773817075
+    second: Tutorial_conquer_27
+  - first:
+      213: -1861440988056669928
+    second: Tutorial_conquer_28
+  - first:
+      213: -7142067029790171249
+    second: Tutorial_conquer_29
+  - first:
+      213: -7204046240377638208
+    second: Tutorial_conquer_30
+  - first:
+      213: -2950232906349635076
+    second: Tutorial_conquer_31
+  - first:
+      213: 6067741035454223475
+    second: Tutorial_conquer_32
+  - first:
+      213: -862210227678716329
+    second: Tutorial_conquer_33
+  - first:
+      213: 9141761567429865778
+    second: Tutorial_conquer_34
+  - first:
+      213: 964533635848566573
+    second: Tutorial_conquer_35
+  - first:
+      213: 318840276137605841
+    second: Tutorial_conquer_36
+  - first:
+      213: -608819309284046355
+    second: Tutorial_conquer_37
+  - first:
+      213: 1916700746061855395
+    second: Tutorial_conquer_38
+  - first:
+      213: -6990015737699666313
+    second: Tutorial_conquer_39
+  - first:
+      213: -6888088859235129357
+    second: Tutorial_conquer_40
+  - first:
+      213: -8018104723624253642
+    second: Tutorial_conquer_41
+  - first:
+      213: 4859043834600177380
+    second: Tutorial_conquer_42
+  - first:
+      213: -1154609472772089706
+    second: Tutorial_conquer_43
+  - first:
+      213: 476367853076558282
+    second: Tutorial_conquer_44
+  - first:
+      213: -541154989021119932
+    second: Tutorial_conquer_45
+  - first:
+      213: -5124070569416729677
+    second: Tutorial_conquer_46
+  - first:
+      213: -4224229675383838192
+    second: Tutorial_conquer_47
+  - first:
+      213: 8764348673993525461
+    second: Tutorial_conquer_48
+  - first:
+      213: 1431378458409944141
+    second: Tutorial_conquer_49
+  - first:
+      213: -7098766389693364309
+    second: Tutorial_conquer_50
+  - first:
+      213: -6473197814238701087
+    second: Tutorial_conquer_51
+  - first:
+      213: 5262948708549007448
+    second: Tutorial_conquer_52
+  - first:
+      213: 3974511852493323390
+    second: Tutorial_conquer_53
+  - first:
+      213: -3482693660361795011
+    second: Tutorial_conquer_54
+  - first:
+      213: -7033813590041087366
+    second: Tutorial_conquer_55
+  - first:
+      213: 1221448235721439525
+    second: Tutorial_conquer_56
+  - first:
+      213: -829146125447759340
+    second: Tutorial_conquer_57
+  - first:
+      213: -1707376551619401746
+    second: Tutorial_conquer_58
+  - first:
+      213: 6182237160865213430
+    second: Tutorial_conquer_59
+  - first:
+      213: -7238624638233872002
+    second: Tutorial_conquer_60
+  - first:
+      213: 3465262303189203982
+    second: Tutorial_conquer_61
+  - first:
+      213: 5377673014333720738
+    second: Tutorial_conquer_62
+  - first:
+      213: 1377738260203266178
+    second: Tutorial_conquer_63
+  - first:
+      213: 5623070774169433507
+    second: Tutorial_conquer_64
+  - first:
+      213: 5367834218888802228
+    second: Tutorial_conquer_65
+  - first:
+      213: -2973705308772233666
+    second: Tutorial_conquer_66
+  - first:
+      213: 6352533105922242913
+    second: Tutorial_conquer_67
+  - first:
+      213: -6766646606688241944
+    second: Tutorial_conquer_68
+  - first:
+      213: 7104723627805268335
+    second: Tutorial_conquer_69
+  - first:
+      213: 1147423138843972008
+    second: Tutorial_conquer_70
+  - first:
+      213: 4619872754026793077
+    second: Tutorial_conquer_71
+  - first:
+      213: 3390644196166526028
+    second: Tutorial_conquer_72
+  - first:
+      213: -5427461800485421454
+    second: Tutorial_conquer_73
+  - first:
+      213: -3220428171331358
+    second: Tutorial_conquer_74
+  - first:
+      213: 4564401005214544372
+    second: Tutorial_conquer_75
+  - first:
+      213: -8705646155683844189
+    second: Tutorial_conquer_76
+  - first:
+      213: 5345248208162723738
+    second: Tutorial_conquer_77
+  - first:
+      213: 2239991761739978027
+    second: Tutorial_conquer_78
+  - first:
+      213: -8812532277733974327
+    second: Tutorial_conquer_79
+  - first:
+      213: 7433012146325830125
+    second: Tutorial_conquer_80
+  - first:
+      213: -5506050478258292280
+    second: Tutorial_conquer_81
+  - first:
+      213: -5252827192132839089
+    second: Tutorial_conquer_82
+  - first:
+      213: 3823401092496137658
+    second: Tutorial_conquer_83
+  - first:
+      213: 1639327238296929261
+    second: Tutorial_conquer_84
+  - first:
+      213: 5354375067562816718
+    second: Tutorial_conquer_85
+  - first:
+      213: -563160745162965351
+    second: Tutorial_conquer_86
+  - first:
+      213: -7834885204615716319
+    second: Tutorial_conquer_87
+  - first:
+      213: -5628719825706420251
+    second: Tutorial_conquer_88
+  - first:
+      213: -8175283563724422347
+    second: Tutorial_conquer_89
+  - first:
+      213: 1499231677267194708
+    second: Tutorial_conquer_90
+  - first:
+      213: 3810662450389847947
+    second: Tutorial_conquer_91
+  - first:
+      213: 7189705713064833907
+    second: Tutorial_conquer_92
+  - first:
+      213: -1234162043140054747
+    second: Tutorial_conquer_93
+  - first:
+      213: -4178559457354491269
+    second: Tutorial_conquer_94
+  - first:
+      213: -7509749527040244362
+    second: Tutorial_conquer_95
+  - first:
+      213: 2856738559804696401
+    second: Tutorial_conquer_96
+  - first:
+      213: -370834571074629338
+    second: Tutorial_conquer_97
+  - first:
+      213: 3168187083400198797
+    second: Tutorial_conquer_98
+  - first:
+      213: -1818049441067894483
+    second: Tutorial_conquer_99
+  - first:
+      213: -1267606475179266472
+    second: Tutorial_conquer_100
+  - first:
+      213: 4670940035055532906
+    second: Tutorial_conquer_101
+  - first:
+      213: 4790925258366109962
+    second: Tutorial_conquer_102
+  - first:
+      213: 751820093253915168
+    second: Tutorial_conquer_103
+  - first:
+      213: 8199201697203054468
+    second: Tutorial_conquer_104
+  - first:
+      213: 6298205878239633410
+    second: Tutorial_conquer_105
+  - first:
+      213: 3259236030023324208
+    second: Tutorial_conquer_106
+  - first:
+      213: 5504414198176139913
+    second: Tutorial_conquer_107
+  - first:
+      213: -967374006237151487
+    second: Tutorial_conquer_108
+  - first:
+      213: 4962531902865975213
+    second: Tutorial_conquer_109
+  - first:
+      213: -860843419469382604
+    second: Tutorial_conquer_110
+  - first:
+      213: -2963746706729813869
+    second: Tutorial_conquer_111
+  - first:
+      213: 7390649703753233638
+    second: Tutorial_conquer_112
+  - first:
+      213: -2235020310631613287
+    second: Tutorial_conquer_113
+  - first:
+      213: 780871241146044481
+    second: Tutorial_conquer_114
+  - first:
+      213: 5716198448871950735
+    second: Tutorial_conquer_115
+  - first:
+      213: 6891796569312078414
+    second: Tutorial_conquer_116
+  - first:
+      213: -1246704975013171945
+    second: Tutorial_conquer_117
+  - first:
+      213: -8733604032489770288
+    second: Tutorial_conquer_118
+  - first:
+      213: 4511329248535576450
+    second: Tutorial_conquer_119
+  - first:
+      213: 7391413699277846861
+    second: Tutorial_conquer_120
+  - first:
+      213: 6751401113502897420
+    second: Tutorial_conquer_121
+  - first:
+      213: -7987012119608536444
+    second: Tutorial_conquer_122
+  - first:
+      213: 4412513047448896074
+    second: Tutorial_conquer_123
+  - first:
+      213: 5071690316237516872
+    second: Tutorial_conquer_124
+  - first:
+      213: 4580901235550107376
+    second: Tutorial_conquer_125
+  - first:
+      213: 2951805505354189560
+    second: Tutorial_conquer_126
+  - first:
+      213: 2545070268892634073
+    second: Tutorial_conquer_127
+  - first:
+      213: 1095273684874255806
+    second: Tutorial_conquer_128
+  - first:
+      213: 2978154883794021735
+    second: Tutorial_conquer_129
+  - first:
+      213: 1830320470797378062
+    second: Tutorial_conquer_130
+  - first:
+      213: 1589801016664407114
+    second: Tutorial_conquer_131
+  - first:
+      213: 7476443172993659343
+    second: Tutorial_conquer_132
+  - first:
+      213: 614642832278825916
+    second: Tutorial_conquer_133
+  - first:
+      213: 411303982389558086
+    second: Tutorial_conquer_134
+  - first:
+      213: 2290203032505673645
+    second: Tutorial_conquer_135
+  - first:
+      213: 4791229514358125271
+    second: Tutorial_conquer_136
+  - first:
+      213: 5614559629530567153
+    second: Tutorial_conquer_137
+  - first:
+      213: -7160339976767065752
+    second: Tutorial_conquer_138
+  - first:
+      213: 808571981199811914
+    second: Tutorial_conquer_139
+  - first:
+      213: 4623126283091563947
+    second: Tutorial_conquer_140
+  - first:
+      213: -6926688911743017906
+    second: Tutorial_conquer_141
+  - first:
+      213: 8926711581223171061
+    second: Tutorial_conquer_142
+  - first:
+      213: -977902516485701006
+    second: Tutorial_conquer_143
+  - first:
+      213: 461653548130809348
+    second: Tutorial_conquer_144
+  - first:
+      213: -4467480165349956170
+    second: Tutorial_conquer_145
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Tutorial_conquer_0
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 2232
+        width: 113
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86e02c17fe50fbba0800000000000000
+      internalID: -6071127246708273560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_1
+      rect:
+        serializedVersion: 2
+        x: 1084
+        y: 2232
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db630cde5a4a69ae0800000000000000
+      internalID: -1542864789762459971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_2
+      rect:
+        serializedVersion: 2
+        x: 1217
+        y: 2232
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e52310d8f71c67540800000000000000
+      internalID: 5005400789439558238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_3
+      rect:
+        serializedVersion: 2
+        x: 1494
+        y: 2232
+        width: 91
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9cfbe01b88b002ad0800000000000000
+      internalID: -2729168692472528951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_4
+      rect:
+        serializedVersion: 2
+        x: 1616
+        y: 2232
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf152385d30e41c60800000000000000
+      internalID: 7788096209707749883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_5
+      rect:
+        serializedVersion: 2
+        x: 1882
+        y: 2210
+        width: 113
+        height: 135
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6cdfd788e00aeb070800000000000000
+      internalID: 8124106762102898118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_6
+      rect:
+        serializedVersion: 2
+        x: 2026
+        y: 2232
+        width: 90
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 241df126ec35ad2d0800000000000000
+      internalID: -3253195634947141310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_7
+      rect:
+        serializedVersion: 2
+        x: 2148
+        y: 2232
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28b6baef0e8790110800000000000000
+      internalID: 1227645281175825282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_8
+      rect:
+        serializedVersion: 2
+        x: 2281
+        y: 2210
+        width: 113
+        height: 135
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 704138b12c5df8c00800000000000000
+      internalID: 905177079786705927
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_9
+      rect:
+        serializedVersion: 2
+        x: 2458
+        y: 2320
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4456361fb36fa59d0800000000000000
+      internalID: -2784642682261904060
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_10
+      rect:
+        serializedVersion: 2
+        x: 2458
+        y: 2232
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a3ecf5e639136e90800000000000000
+      internalID: -7033750469445098583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_11
+      rect:
+        serializedVersion: 2
+        x: 1469
+        y: 2040
+        width: 69
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70ce1fb583b451df0800000000000000
+      internalID: -210179102170027001
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_12
+      rect:
+        serializedVersion: 2
+        x: 1549
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6188d6bf4046d3040800000000000000
+      internalID: 4628965964567644182
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_13
+      rect:
+        serializedVersion: 2
+        x: 1629
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55a901d998760b410800000000000000
+      internalID: 1490805317402925653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_14
+      rect:
+        serializedVersion: 2
+        x: 1709
+        y: 2027
+        width: 69
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e927a5efee356140800000000000000
+      internalID: 4712241785184135648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_15
+      rect:
+        serializedVersion: 2
+        x: 1789
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9087651c858598ef0800000000000000
+      internalID: -105455978042460151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_16
+      rect:
+        serializedVersion: 2
+        x: 1869
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17039dd706a362ca0800000000000000
+      internalID: -6042077663968284559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_17
+      rect:
+        serializedVersion: 2
+        x: 1949
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f5a3b8373d01a0b0800000000000000
+      internalID: -5719275520958159371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_18
+      rect:
+        serializedVersion: 2
+        x: 664
+        y: 1759
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5138cfc25020cb10800000000000000
+      internalID: 1999633774597910877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_19
+      rect:
+        serializedVersion: 2
+        x: 724
+        y: 1759
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0d6a5dd6f3dca5b0800000000000000
+      internalID: -5355672799621255923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_20
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 1749
+        width: 52
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ffdb2592d9440f00800000000000000
+      internalID: 1082070979270402033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_21
+      rect:
+        serializedVersion: 2
+        x: 849
+        y: 1759
+        width: 42
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0534e77ef0bddc560800000000000000
+      internalID: 7335760229411210064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_22
+      rect:
+        serializedVersion: 2
+        x: 904
+        y: 1759
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8215af5fcecd5fd0800000000000000
+      internalID: -2351496040359325044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_23
+      rect:
+        serializedVersion: 2
+        x: 964
+        y: 1759
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15f10269f7205c500800000000000000
+      internalID: 415741287604428625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_24
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 1759
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b75768bc3ccd7340800000000000000
+      internalID: 4863267733793888185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_25
+      rect:
+        serializedVersion: 2
+        x: 2497
+        y: 1763
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc0331c352c178240800000000000000
+      internalID: 4793831274606440653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_26
+      rect:
+        serializedVersion: 2
+        x: 2557
+        y: 1763
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97e4f4a6dcb3646d0800000000000000
+      internalID: -3006649947785310599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_27
+      rect:
+        serializedVersion: 2
+        x: 2617
+        y: 1763
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d09a05178c00e59d0800000000000000
+      internalID: -2783786658773817075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_28
+      rect:
+        serializedVersion: 2
+        x: 2677
+        y: 1763
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 811b780a845da26e0800000000000000
+      internalID: -1861440988056669928
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_29
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 891
+        width: 732
+        height: 732
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8fd35f60e742ec90800000000000000
+      internalID: -7142067029790171249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_30
+      rect:
+        serializedVersion: 2
+        x: 958
+        y: 906
+        width: 722
+        height: 722
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c27dc0fc16160c90800000000000000
+      internalID: -7204046240377638208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_31
+      rect:
+        serializedVersion: 2
+        x: 1876
+        y: 899
+        width: 730
+        height: 730
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf99c5c7dcaae07d0800000000000000
+      internalID: -2950232906349635076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_32
+      rect:
+        serializedVersion: 2
+        x: 2766
+        y: 1202
+        width: 608
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3745f4fc252f43450800000000000000
+      internalID: 6067741035454223475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_33
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 791
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75e5089bd50d804f0800000000000000
+      internalID: -862210227678716329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_34
+      rect:
+        serializedVersion: 2
+        x: 669
+        y: 791
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 231b9ffd5bf0ede70800000000000000
+      internalID: 9141761567429865778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_35
+      rect:
+        serializedVersion: 2
+        x: 865
+        y: 839
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d277ba24b36b26d00800000000000000
+      internalID: 964533635848566573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_36
+      rect:
+        serializedVersion: 2
+        x: 904
+        y: 791
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1daf447ba8fbc6400800000000000000
+      internalID: 318840276137605841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_37
+      rect:
+        serializedVersion: 2
+        x: 1092
+        y: 791
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de9c9b9501a0d87f0800000000000000
+      internalID: -608819309284046355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_38
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 791
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3aa3eb56c2d799a10800000000000000
+      internalID: 1916700746061855395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_39
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 791
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7767504a8b97efe90800000000000000
+      internalID: -6990015737699666313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_40
+      rect:
+        serializedVersion: 2
+        x: 477
+        y: 791
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f7e6fb5da79860a0800000000000000
+      internalID: -6888088859235129357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_41
+      rect:
+        serializedVersion: 2
+        x: 571
+        y: 791
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 637ae705c38f9b090800000000000000
+      internalID: -8018104723624253642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_42
+      rect:
+        serializedVersion: 2
+        x: 618
+        y: 791
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ee356d8f9ace6340800000000000000
+      internalID: 4859043834600177380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_43
+      rect:
+        serializedVersion: 2
+        x: 712
+        y: 791
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6985e194dc00affe0800000000000000
+      internalID: -1154609472772089706
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_44
+      rect:
+        serializedVersion: 2
+        x: 806
+        y: 791
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac13b09d9066c9600800000000000000
+      internalID: 476367853076558282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_45
+      rect:
+        serializedVersion: 2
+        x: 857
+        y: 791
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44a37f6976e6d78f0800000000000000
+      internalID: -541154989021119932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_46
+      rect:
+        serializedVersion: 2
+        x: 947
+        y: 791
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bbd1e137f4a3e8b0800000000000000
+      internalID: -5124070569416729677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_47
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 791
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01a251dbd758065c0800000000000000
+      internalID: -4224229675383838192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_48
+      rect:
+        serializedVersion: 2
+        x: 1135
+        y: 791
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d8cc09fea831a970800000000000000
+      internalID: 8764348673993525461
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_49
+      rect:
+        serializedVersion: 2
+        x: 2038
+        y: 767
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d44cba8cf174dd310800000000000000
+      internalID: 1431378458409944141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_50
+      rect:
+        serializedVersion: 2
+        x: 2226
+        y: 767
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba748d6549d1c7d90800000000000000
+      internalID: -7098766389693364309
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_51
+      rect:
+        serializedVersion: 2
+        x: 2379
+        y: 815
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e9977962e49a26a0800000000000000
+      internalID: -6473197814238701087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_52
+      rect:
+        serializedVersion: 2
+        x: 2418
+        y: 767
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8581a2457ffb90940800000000000000
+      internalID: 5262948708549007448
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_53
+      rect:
+        serializedVersion: 2
+        x: 2884
+        y: 767
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7cb173d87d482730800000000000000
+      internalID: 3974511852493323390
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_54
+      rect:
+        serializedVersion: 2
+        x: 481
+        y: 719
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3a51a8619cfaafc0800000000000000
+      internalID: -3482693660361795011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_55
+      rect:
+        serializedVersion: 2
+        x: 2085
+        y: 767
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a72394d7ecfd26e90800000000000000
+      internalID: -7033813590041087366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_56
+      rect:
+        serializedVersion: 2
+        x: 2132
+        y: 767
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52934b9e2b473f010800000000000000
+      internalID: 1221448235721439525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_57
+      rect:
+        serializedVersion: 2
+        x: 2179
+        y: 767
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41a7bcdedf74e74f0800000000000000
+      internalID: -829146125447759340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_58
+      rect:
+        serializedVersion: 2
+        x: 2320
+        y: 767
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee7e4e6821e2e48e0800000000000000
+      internalID: -1707376551619401746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_59
+      rect:
+        serializedVersion: 2
+        x: 2371
+        y: 767
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6fb279261f7bbc550800000000000000
+      internalID: 6182237160865213430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_60
+      rect:
+        serializedVersion: 2
+        x: 2461
+        y: 767
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e79fdaf4e3d3b8b90800000000000000
+      internalID: -7238624638233872002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_61
+      rect:
+        serializedVersion: 2
+        x: 2508
+        y: 767
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0cf42b74b5171030800000000000000
+      internalID: 3465262303189203982
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_62
+      rect:
+        serializedVersion: 2
+        x: 2602
+        y: 767
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a8c0994d1551aa40800000000000000
+      internalID: 5377673014333720738
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_63
+      rect:
+        serializedVersion: 2
+        x: 2649
+        y: 767
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28061e8e5a5be1310800000000000000
+      internalID: 1377738260203266178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_64
+      rect:
+        serializedVersion: 2
+        x: 2696
+        y: 767
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a5ff39a319290e40800000000000000
+      internalID: 5623070774169433507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_65
+      rect:
+        serializedVersion: 2
+        x: 2743
+        y: 767
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bfad0638c06e7a40800000000000000
+      internalID: 5367834218888802228
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_66
+      rect:
+        serializedVersion: 2
+        x: 2837
+        y: 767
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3e00fbe6c64bb6d0800000000000000
+      internalID: -2973705308772233666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_67
+      rect:
+        serializedVersion: 2
+        x: 2931
+        y: 767
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1697762e33bb82850800000000000000
+      internalID: 6352533105922242913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_68
+      rect:
+        serializedVersion: 2
+        x: 2978
+        y: 767
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e6bebf23ca0812a0800000000000000
+      internalID: -6766646606688241944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_69
+      rect:
+        serializedVersion: 2
+        x: 3025
+        y: 767
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6958ae3f7c099260800000000000000
+      internalID: 7104723627805268335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_70
+      rect:
+        serializedVersion: 2
+        x: 3072
+        y: 767
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a1dbd5f3477cef00800000000000000
+      internalID: 1147423138843972008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_71
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 719
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 578c54beac51d1040800000000000000
+      internalID: 4619872754026793077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_72
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 719
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c44ee389eecfd0f20800000000000000
+      internalID: 3390644196166526028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_73
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 711
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27e70169f38cda4b0800000000000000
+      internalID: -5427461800485421454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_74
+      rect:
+        serializedVersion: 2
+        x: 524
+        y: 719
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e8b2d2a90f84fff0800000000000000
+      internalID: -3220428171331358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_75
+      rect:
+        serializedVersion: 2
+        x: 571
+        y: 719
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f1bf30f782085f30800000000000000
+      internalID: 4564401005214544372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_76
+      rect:
+        serializedVersion: 2
+        x: 618
+        y: 719
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3af283622f45f2780800000000000000
+      internalID: -8705646155683844189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_77
+      rect:
+        serializedVersion: 2
+        x: 2036
+        y: 627
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9715dbcce22e2a40800000000000000
+      internalID: 5345248208162723738
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_78
+      rect:
+        serializedVersion: 2
+        x: 2134
+        y: 627
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b25105aa3ac061f10800000000000000
+      internalID: 2239991761739978027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_79
+      rect:
+        serializedVersion: 2
+        x: 2189
+        y: 675
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ce900e859893b580800000000000000
+      internalID: -8812532277733974327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_80
+      rect:
+        serializedVersion: 2
+        x: 2228
+        y: 627
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de93ae05a2d572760800000000000000
+      internalID: 7433012146325830125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_81
+      rect:
+        serializedVersion: 2
+        x: 2412
+        y: 627
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c97b0823449693b0800000000000000
+      internalID: -5506050478258292280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_82
+      rect:
+        serializedVersion: 2
+        x: 2557
+        y: 627
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f49d86adf753a17b0800000000000000
+      internalID: -5252827192132839089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_83
+      rect:
+        serializedVersion: 2
+        x: 2651
+        y: 627
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abd921059037f0530800000000000000
+      internalID: 3823401092496137658
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_84
+      rect:
+        serializedVersion: 2
+        x: 2706
+        y: 675
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de38f4d007f00c610800000000000000
+      internalID: 1639327238296929261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_85
+      rect:
+        serializedVersion: 2
+        x: 2083
+        y: 619
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec43a4851cf8e4a40800000000000000
+      internalID: 5354375067562816718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_86
+      rect:
+        serializedVersion: 2
+        x: 2181
+        y: 627
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99efd1939404f28f0800000000000000
+      internalID: -563160745162965351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_87
+      rect:
+        serializedVersion: 2
+        x: 2318
+        y: 627
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 122aaeada65e44390800000000000000
+      internalID: -7834885204615716319
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_88
+      rect:
+        serializedVersion: 2
+        x: 2365
+        y: 627
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e7f1980425c2e1b0800000000000000
+      internalID: -5628719825706420251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_89
+      rect:
+        serializedVersion: 2
+        x: 2506
+        y: 627
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 533cd1ec9ee8b8e80800000000000000
+      internalID: -8175283563724422347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_90
+      rect:
+        serializedVersion: 2
+        x: 2600
+        y: 627
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 453368764475ec410800000000000000
+      internalID: 1499231677267194708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_91
+      rect:
+        serializedVersion: 2
+        x: 2698
+        y: 627
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8f08621f4132e430800000000000000
+      internalID: 3810662450389847947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_92
+      rect:
+        serializedVersion: 2
+        x: 2741
+        y: 627
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37373dad047f6c360800000000000000
+      internalID: 7189705713064833907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_93
+      rect:
+        serializedVersion: 2
+        x: 2788
+        y: 627
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 521ed5f19206fdee0800000000000000
+      internalID: -1234162043140054747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_94
+      rect:
+        serializedVersion: 2
+        x: 2882
+        y: 627
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7a598fff46c206c0800000000000000
+      internalID: -4178559457354491269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_95
+      rect:
+        serializedVersion: 2
+        x: 318
+        y: 563
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 675cb90f79208c790800000000000000
+      internalID: -7509749527040244362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_96
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 563
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 157e151a59c25a720800000000000000
+      internalID: 2856738559804696401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_97
+      rect:
+        serializedVersion: 2
+        x: 1035
+        y: 611
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62199a02ce78adaf0800000000000000
+      internalID: -370834571074629338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_98
+      rect:
+        serializedVersion: 2
+        x: 1074
+        y: 563
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8abc08dd59a7fb20800000000000000
+      internalID: 3168187083400198797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_99
+      rect:
+        serializedVersion: 2
+        x: 2036
+        y: 555
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d29fc017aadf4c6e0800000000000000
+      internalID: -1818049441067894483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_100
+      rect:
+        serializedVersion: 2
+        x: 2177
+        y: 555
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85e64fb70ae886ee0800000000000000
+      internalID: -1267606475179266472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_101
+      rect:
+        serializedVersion: 2
+        x: 2322
+        y: 555
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6bb2a4d63382d040800000000000000
+      internalID: 4670940035055532906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_102
+      rect:
+        serializedVersion: 2
+        x: 2459
+        y: 555
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a09cb5a9329cc7240800000000000000
+      internalID: 4790925258366109962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_103
+      rect:
+        serializedVersion: 2
+        x: 2557
+        y: 555
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 022966934600f6a00800000000000000
+      internalID: 751820093253915168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_104
+      rect:
+        serializedVersion: 2
+        x: 2694
+        y: 555
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 487619b908a69c170800000000000000
+      internalID: 8199201697203054468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_105
+      rect:
+        serializedVersion: 2
+        x: 365
+        y: 563
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20020ce70e8b76750800000000000000
+      internalID: 6298205878239633410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_106
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 563
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 032d1b0b6e12b3d20800000000000000
+      internalID: 3259236030023324208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_107
+      rect:
+        serializedVersion: 2
+        x: 459
+        y: 563
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98ac7e2bc8b936c40800000000000000
+      internalID: 5504414198176139913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_108
+      rect:
+        serializedVersion: 2
+        x: 506
+        y: 563
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10fb94977723392f0800000000000000
+      internalID: -967374006237151487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_109
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 563
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da7aed819747ed440800000000000000
+      internalID: 4962531902865975213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_110
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 563
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43c7b4f887bad04f0800000000000000
+      internalID: -860843419469382604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_111
+      rect:
+        serializedVersion: 2
+        x: 741
+        y: 563
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 398b225a218aed6d0800000000000000
+      internalID: -2963746706729813869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_112
+      rect:
+        serializedVersion: 2
+        x: 788
+        y: 563
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e4be8b8fbcd09660800000000000000
+      internalID: 7390649703753233638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_113
+      rect:
+        serializedVersion: 2
+        x: 835
+        y: 563
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99cf40f7edc9bf0e0800000000000000
+      internalID: -2235020310631613287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_114
+      rect:
+        serializedVersion: 2
+        x: 882
+        y: 563
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14014dfa14636da00800000000000000
+      internalID: 780871241146044481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_115
+      rect:
+        serializedVersion: 2
+        x: 976
+        y: 563
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f89c6aa1434045f40800000000000000
+      internalID: 5716198448871950735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_116
+      rect:
+        serializedVersion: 2
+        x: 1027
+        y: 563
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4a2a1a277494af50800000000000000
+      internalID: 6891796569312078414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_117
+      rect:
+        serializedVersion: 2
+        x: 1117
+        y: 563
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71da0a83e60d2bee0800000000000000
+      internalID: -1246704975013171945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_118
+      rect:
+        serializedVersion: 2
+        x: 1164
+        y: 563
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d23782b7610cc680800000000000000
+      internalID: -8733604032489770288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_119
+      rect:
+        serializedVersion: 2
+        x: 2083
+        y: 555
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28ffacbac067b9e30800000000000000
+      internalID: 4511329248535576450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_120
+      rect:
+        serializedVersion: 2
+        x: 2130
+        y: 555
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d49796d1993939660800000000000000
+      internalID: 7391413699277846861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_121
+      rect:
+        serializedVersion: 2
+        x: 2224
+        y: 555
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c055482da8bc1bd50800000000000000
+      internalID: 6751401113502897420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_122
+      rect:
+        serializedVersion: 2
+        x: 2365
+        y: 555
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4825ef15bce682190800000000000000
+      internalID: -7987012119608536444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_123
+      rect:
+        serializedVersion: 2
+        x: 2506
+        y: 555
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a42c7f7fc356c3d30800000000000000
+      internalID: 4412513047448896074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_124
+      rect:
+        serializedVersion: 2
+        x: 2600
+        y: 555
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 840302eb873426640800000000000000
+      internalID: 5071690316237516872
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_125
+      rect:
+        serializedVersion: 2
+        x: 2647
+        y: 555
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f6bc103761a29f30800000000000000
+      internalID: 4580901235550107376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_126
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 491
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8facda0c77be6f820800000000000000
+      internalID: 2951805505354189560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_127
+      rect:
+        serializedVersion: 2
+        x: 506
+        y: 491
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9dbd0c9dce7e15320800000000000000
+      internalID: 2545070268892634073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_128
+      rect:
+        serializedVersion: 2
+        x: 659
+        y: 539
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ebd53c60d91333f00800000000000000
+      internalID: 1095273684874255806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_129
+      rect:
+        serializedVersion: 2
+        x: 318
+        y: 491
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76d23ae7618845920800000000000000
+      internalID: 2978154883794021735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_130
+      rect:
+        serializedVersion: 2
+        x: 365
+        y: 491
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e02e00f45ca966910800000000000000
+      internalID: 1830320470797378062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_131
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 491
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4c36ddf99b101610800000000000000
+      internalID: 1589801016664407114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_132
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 491
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc17ea53479a1c760800000000000000
+      internalID: 7476443172993659343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_133
+      rect:
+        serializedVersion: 2
+        x: 651
+        y: 491
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbb28b14666a78800800000000000000
+      internalID: 614642832278825916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_134
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 491
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64b7805face35b500800000000000000
+      internalID: 411303982389558086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_135
+      rect:
+        serializedVersion: 2
+        x: 741
+        y: 483
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da7e508268f68cf10800000000000000
+      internalID: 2290203032505673645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_136
+      rect:
+        serializedVersion: 2
+        x: 788
+        y: 491
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d2fea8bbdddd7240800000000000000
+      internalID: 4791229514358125271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_137
+      rect:
+        serializedVersion: 2
+        x: 882
+        y: 491
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f11b606c3ceaed40800000000000000
+      internalID: 5614559629530567153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_138
+      rect:
+        serializedVersion: 2
+        x: 929
+        y: 491
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86135cd6abc51ac90800000000000000
+      internalID: -7160339976767065752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_139
+      rect:
+        serializedVersion: 2
+        x: 976
+        y: 491
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a45afb2deef983b00800000000000000
+      internalID: 808571981199811914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_140
+      rect:
+        serializedVersion: 2
+        x: 1023
+        y: 491
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba5d17f2cd4a82040800000000000000
+      internalID: 4623126283091563947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_141
+      rect:
+        serializedVersion: 2
+        x: 1070
+        y: 483
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4c9be942257fdf90800000000000000
+      internalID: -6926688911743017906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_142
+      rect:
+        serializedVersion: 2
+        x: 1164
+        y: 491
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f33c2b23ec02eb70800000000000000
+      internalID: 8926711581223171061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_143
+      rect:
+        serializedVersion: 2
+        x: 1211
+        y: 491
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 272c8e7a7dacd62f0800000000000000
+      internalID: -977902516485701006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_144
+      rect:
+        serializedVersion: 2
+        x: 1258
+        y: 491
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 406b2a1c47f186600800000000000000
+      internalID: 461653548130809348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_conquer_145
+      rect:
+        serializedVersion: 2
+        x: 1305
+        y: 491
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b5663795725002c0800000000000000
+      internalID: -4467480165349956170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Tutorial_conquer_0: -6071127246708273560
+      Tutorial_conquer_1: -1542864789762459971
+      Tutorial_conquer_10: -7033750469445098583
+      Tutorial_conquer_100: -1267606475179266472
+      Tutorial_conquer_101: 4670940035055532906
+      Tutorial_conquer_102: 4790925258366109962
+      Tutorial_conquer_103: 751820093253915168
+      Tutorial_conquer_104: 8199201697203054468
+      Tutorial_conquer_105: 6298205878239633410
+      Tutorial_conquer_106: 3259236030023324208
+      Tutorial_conquer_107: 5504414198176139913
+      Tutorial_conquer_108: -967374006237151487
+      Tutorial_conquer_109: 4962531902865975213
+      Tutorial_conquer_11: -210179102170027001
+      Tutorial_conquer_110: -860843419469382604
+      Tutorial_conquer_111: -2963746706729813869
+      Tutorial_conquer_112: 7390649703753233638
+      Tutorial_conquer_113: -2235020310631613287
+      Tutorial_conquer_114: 780871241146044481
+      Tutorial_conquer_115: 5716198448871950735
+      Tutorial_conquer_116: 6891796569312078414
+      Tutorial_conquer_117: -1246704975013171945
+      Tutorial_conquer_118: -8733604032489770288
+      Tutorial_conquer_119: 4511329248535576450
+      Tutorial_conquer_12: 4628965964567644182
+      Tutorial_conquer_120: 7391413699277846861
+      Tutorial_conquer_121: 6751401113502897420
+      Tutorial_conquer_122: -7987012119608536444
+      Tutorial_conquer_123: 4412513047448896074
+      Tutorial_conquer_124: 5071690316237516872
+      Tutorial_conquer_125: 4580901235550107376
+      Tutorial_conquer_126: 2951805505354189560
+      Tutorial_conquer_127: 2545070268892634073
+      Tutorial_conquer_128: 1095273684874255806
+      Tutorial_conquer_129: 2978154883794021735
+      Tutorial_conquer_13: 1490805317402925653
+      Tutorial_conquer_130: 1830320470797378062
+      Tutorial_conquer_131: 1589801016664407114
+      Tutorial_conquer_132: 7476443172993659343
+      Tutorial_conquer_133: 614642832278825916
+      Tutorial_conquer_134: 411303982389558086
+      Tutorial_conquer_135: 2290203032505673645
+      Tutorial_conquer_136: 4791229514358125271
+      Tutorial_conquer_137: 5614559629530567153
+      Tutorial_conquer_138: -7160339976767065752
+      Tutorial_conquer_139: 808571981199811914
+      Tutorial_conquer_14: 4712241785184135648
+      Tutorial_conquer_140: 4623126283091563947
+      Tutorial_conquer_141: -6926688911743017906
+      Tutorial_conquer_142: 8926711581223171061
+      Tutorial_conquer_143: -977902516485701006
+      Tutorial_conquer_144: 461653548130809348
+      Tutorial_conquer_145: -4467480165349956170
+      Tutorial_conquer_15: -105455978042460151
+      Tutorial_conquer_16: -6042077663968284559
+      Tutorial_conquer_17: -5719275520958159371
+      Tutorial_conquer_18: 1999633774597910877
+      Tutorial_conquer_19: -5355672799621255923
+      Tutorial_conquer_2: 5005400789439558238
+      Tutorial_conquer_20: 1082070979270402033
+      Tutorial_conquer_21: 7335760229411210064
+      Tutorial_conquer_22: -2351496040359325044
+      Tutorial_conquer_23: 415741287604428625
+      Tutorial_conquer_24: 4863267733793888185
+      Tutorial_conquer_25: 4793831274606440653
+      Tutorial_conquer_26: -3006649947785310599
+      Tutorial_conquer_27: -2783786658773817075
+      Tutorial_conquer_28: -1861440988056669928
+      Tutorial_conquer_29: -7142067029790171249
+      Tutorial_conquer_3: -2729168692472528951
+      Tutorial_conquer_30: -7204046240377638208
+      Tutorial_conquer_31: -2950232906349635076
+      Tutorial_conquer_32: 6067741035454223475
+      Tutorial_conquer_33: -862210227678716329
+      Tutorial_conquer_34: 9141761567429865778
+      Tutorial_conquer_35: 964533635848566573
+      Tutorial_conquer_36: 318840276137605841
+      Tutorial_conquer_37: -608819309284046355
+      Tutorial_conquer_38: 1916700746061855395
+      Tutorial_conquer_39: -6990015737699666313
+      Tutorial_conquer_4: 7788096209707749883
+      Tutorial_conquer_40: -6888088859235129357
+      Tutorial_conquer_41: -8018104723624253642
+      Tutorial_conquer_42: 4859043834600177380
+      Tutorial_conquer_43: -1154609472772089706
+      Tutorial_conquer_44: 476367853076558282
+      Tutorial_conquer_45: -541154989021119932
+      Tutorial_conquer_46: -5124070569416729677
+      Tutorial_conquer_47: -4224229675383838192
+      Tutorial_conquer_48: 8764348673993525461
+      Tutorial_conquer_49: 1431378458409944141
+      Tutorial_conquer_5: 8124106762102898118
+      Tutorial_conquer_50: -7098766389693364309
+      Tutorial_conquer_51: -6473197814238701087
+      Tutorial_conquer_52: 5262948708549007448
+      Tutorial_conquer_53: 3974511852493323390
+      Tutorial_conquer_54: -3482693660361795011
+      Tutorial_conquer_55: -7033813590041087366
+      Tutorial_conquer_56: 1221448235721439525
+      Tutorial_conquer_57: -829146125447759340
+      Tutorial_conquer_58: -1707376551619401746
+      Tutorial_conquer_59: 6182237160865213430
+      Tutorial_conquer_6: -3253195634947141310
+      Tutorial_conquer_60: -7238624638233872002
+      Tutorial_conquer_61: 3465262303189203982
+      Tutorial_conquer_62: 5377673014333720738
+      Tutorial_conquer_63: 1377738260203266178
+      Tutorial_conquer_64: 5623070774169433507
+      Tutorial_conquer_65: 5367834218888802228
+      Tutorial_conquer_66: -2973705308772233666
+      Tutorial_conquer_67: 6352533105922242913
+      Tutorial_conquer_68: -6766646606688241944
+      Tutorial_conquer_69: 7104723627805268335
+      Tutorial_conquer_7: 1227645281175825282
+      Tutorial_conquer_70: 1147423138843972008
+      Tutorial_conquer_71: 4619872754026793077
+      Tutorial_conquer_72: 3390644196166526028
+      Tutorial_conquer_73: -5427461800485421454
+      Tutorial_conquer_74: -3220428171331358
+      Tutorial_conquer_75: 4564401005214544372
+      Tutorial_conquer_76: -8705646155683844189
+      Tutorial_conquer_77: 5345248208162723738
+      Tutorial_conquer_78: 2239991761739978027
+      Tutorial_conquer_79: -8812532277733974327
+      Tutorial_conquer_8: 905177079786705927
+      Tutorial_conquer_80: 7433012146325830125
+      Tutorial_conquer_81: -5506050478258292280
+      Tutorial_conquer_82: -5252827192132839089
+      Tutorial_conquer_83: 3823401092496137658
+      Tutorial_conquer_84: 1639327238296929261
+      Tutorial_conquer_85: 5354375067562816718
+      Tutorial_conquer_86: -563160745162965351
+      Tutorial_conquer_87: -7834885204615716319
+      Tutorial_conquer_88: -5628719825706420251
+      Tutorial_conquer_89: -8175283563724422347
+      Tutorial_conquer_9: -2784642682261904060
+      Tutorial_conquer_90: 1499231677267194708
+      Tutorial_conquer_91: 3810662450389847947
+      Tutorial_conquer_92: 7189705713064833907
+      Tutorial_conquer_93: -1234162043140054747
+      Tutorial_conquer_94: -4178559457354491269
+      Tutorial_conquer_95: -7509749527040244362
+      Tutorial_conquer_96: 2856738559804696401
+      Tutorial_conquer_97: -370834571074629338
+      Tutorial_conquer_98: 3168187083400198797
+      Tutorial_conquer_99: -1818049441067894483
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

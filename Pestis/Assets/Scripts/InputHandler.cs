@@ -89,17 +89,7 @@ public class InputHandler : MonoBehaviour
                 {
                     LocalPlayer?.SelectHorde(horde);
                 }
-                else if (UIManager.moveFunctionality)
-                {
-                    UIManager.moveFunctionality = false;
-                    UIManager.ResetUI();
 
-                    if (!MoveToPoiIfClicked(mouse.position.ReadValue()))
-                    {
-                        Vector2 position = _mainCamera.ScreenToWorldPoint(mouse.position.value);
-                        LocalPlayer?.MoveHorde(position);
-                    }
-                }
                 else
                 {
                     LocalPlayer?.DeselectHorde();
@@ -120,7 +110,7 @@ public class InputHandler : MonoBehaviour
                 Debug.Log("Attacking horde");
                 LocalPlayer!.selectedEnemyHorde = clickedHorde;
                 clickedHorde.Highlight();
-                UIManager.AttackPanelEnable();
+                LocalPlayer!.selectedHorde.AttackHorde(clickedHorde, LocalPlayer.selectedHorde.GetCombatStrategy());
             }
             else if (!(clickedHorde && clickedHorde.Player == LocalPlayer?.selectedHorde.Player))
             {

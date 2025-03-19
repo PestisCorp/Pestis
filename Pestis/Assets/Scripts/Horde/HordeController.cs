@@ -113,7 +113,7 @@ namespace Horde
 
         [CanBeNull] private HordeController _targetHorde;
 
-        private CooldownBar[] fearAndMoraleBars;
+        private List<CooldownBar> fearAndMoraleBars = new List<CooldownBar>();
 
 
         [CanBeNull] private Action OnArriveAtTarget;
@@ -482,6 +482,7 @@ Count: {AliveRats}
             Player = GetComponentInParent<Player>();
             boids = GetComponentInChildren<RatBoids>();
             Player.Hordes.Add(this);
+            _combatStrategy = "Frontal Assault";
 
             if (HasStateAuthority) // Ensure only the host assigns colors
             {
@@ -526,9 +527,20 @@ Count: {AliveRats}
                 icon.sprite = iconSprite;
             }
 
-            moraleAndFearInstance = Instantiate(FindFirstObjectByType<UI_Manager>().fearAndMorale);
-            foreach (var bar in moraleAndFearInstance.GetComponentsInChildren<CooldownBar>()) bar.current = bar.maximum;
+            moraleAndFearInstance = Instantiate(GameManager.Instance.UIManager.fearAndMorale);
             moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
+            foreach (var bar in moraleAndFearInstance.GetComponentsInChildren<CooldownBar>())
+            {
+                bar.current = bar.maximum;
+                fearAndMoraleBars.Add(bar);
+            }
+            if (Player.IsLocal)
+            {
+                GameManager.Instance.UIManager.AbilityBars[this] =
+                    Instantiate(GameManager.Instance.UIManager.abilityToolbar, 
+                        GameManager.Instance.UIManager.abilityPanel.transform);
+            }
+            GameManager.Instance.UIManager.AbilityBars[this].transform.localPosition = Vector3.zero;
             // Needed to spawn in rats from joined session
         }
 
@@ -769,6 +781,16 @@ Count: {AliveRats}
             }
         }
 
+        public void SetCombatStrategy(string strategy)
+        {
+            _combatStrategy = strategy;
+        }
+
+        public string GetCombatStrategy()
+        {
+            return _combatStrategy;
+        }
+        
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void EventWonCombatRpc(NetworkBehaviourId[] hordes)
         {
