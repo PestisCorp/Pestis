@@ -6,6 +6,7 @@ using Fusion;
 using KaimiraGames;
 using Newtonsoft.Json;
 using Objectives;
+using TMPro;
 using UnityEngine;
 using Random = System.Random;
 
@@ -328,20 +329,23 @@ namespace Horde
                 _mutationClock.Restart();
             }
 
-            if (_rareMutationClock.ElapsedInSeconds >
-                _evolutionaryState.PassiveEvolutions["rare mutation rate"][1] &&
-                _hordeController.Player.Type == 0)
+            if (!(_rareMutationClock.ElapsedInSeconds >
+                  _evolutionaryState.PassiveEvolutions["rare mutation rate"][1]) ||
+                _hordeController.Player.Type != 0) return;
+            PointsAvailable++;
+            if (GameManager.Instance.UIManager.mutationPopUp.activeSelf)
             {
-                PointsAvailable++;
-                if (GameManager.Instance.UIManager.mutationPopUp.activeSelf || GameManager.Instance.UIManager.mutationViewer.activeSelf)
+                GameObject.FindGameObjectWithTag("mutation_points").GetComponent<TextMeshProUGUI>().text =
+                    PointsAvailable + "pts";
+                if (PointsAvailable == 1)
                 {
                     GameManager.Instance.UIManager.MutationPopUpDisable();
                     GameManager.Instance.UIManager.MutationPopUpEnable();
                 }
-                var icon = Resources.Load<Sprite>("UI_design/Emotes/evolution_emote");
-                _hordeController.AddSpeechBubble(icon);
-                _rareMutationClock.Restart();
             }
+            var icon = Resources.Load<Sprite>("UI_design/Emotes/evolution_emote");
+            _hordeController.AddSpeechBubble(icon);
+            _rareMutationClock.Restart();
         }
     }
 

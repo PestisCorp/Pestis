@@ -11,6 +11,7 @@ using UnityEngine.UI;
 using Color = UnityEngine.Color;
 using Object = UnityEngine.Object;
 
+
 public class UI_Manager : MonoBehaviour
 {
     public static UI_Manager Instance;
@@ -37,6 +38,11 @@ public class UI_Manager : MonoBehaviour
     public GameObject startMenu;
     public GameObject tutorialButton;
 
+    public GameObject mutationButtonOne;
+    public GameObject mutationButtonTwo;
+    public GameObject mutationButtonThree;
+    public GameObject noPointsWarning;
+    
     public Transform abilityPanel;
     // References to the resource text fields
     public TextMeshProUGUI cheeseRateText;
@@ -126,11 +132,9 @@ public class UI_Manager : MonoBehaviour
 
         if (splitPanel) splitPanel.SetActive(false);
 
-        if (mutationPopUp)
-        {
-            mutationPopUp.SetActive(false);
-            mutationViewer.SetActive(false);
-        }
+        if (mutationPopUp) MutationPopUpDisable();
+        
+        if (mutationViewer) MutationViewerDisable();
 
         if (actionPanel) ActionPanelDisable();
 
@@ -312,8 +316,8 @@ public class UI_Manager : MonoBehaviour
             // Create string variables for the stats, with XX as default if no value is present
             var hordeState = horde.GetPopulationState();
             var population = horde.AliveRats.ToString();
-            var attack = horde.GetPopulationState().Damage;
-            var defense = hordeState.DamageReduction;
+            var attack = horde.GetPopulationState().Damage.ToString("F2");
+            var defense = hordeState.DamageReduction.ToString("F2");
             var health = horde.TotalHealth;
 
             var stats = "Population: " + population + "\n" +
@@ -397,86 +401,107 @@ public class UI_Manager : MonoBehaviour
         foreach (var obj in toolbarButtons) obj.GetComponent<Image>().enabled = !obj.GetComponent<Image>().enabled;
     }
 
+    public void MutationViewerEnable()
+    {
+        ResetUI();
+        mutationViewer.SetActive(true);
+        var horde = GetSelectedHorde();
+        var evolutionManager = horde.GetComponent<EvolutionManager>();
+        mutationViewer.SetActive(true);
+        foreach (Transform child in contentParent) Destroy(child.gameObject);
+        foreach (var mutation in evolutionManager.GetEvolutionaryState().AcquiredMutations)
+        {
+            var textBox = Instantiate(textPrefab, contentParent);
+            textBox.GetComponent<Tooltip>().tooltipText = mutation.Tooltip;
+            var mutationType = GetComponentsInChildrenWithTag<Image, GameObject>(textBox, "mutation_type")[0];
+            mutationType.sprite = Resources.Load<Sprite>(mutation.IsAbility
+                ? "UI_design/Mutations/active_mutation"
+                : "UI_design/Mutations/passive_mutation");
+            var mutationUse = GetComponentsInChildrenWithTag<Image, GameObject>(textBox, "mutation_use")[0];
+            var path = "UI_design/Mutations/" + mutation.MutationUse + "_mutation";
+            mutationUse.sprite = Resources.Load<Sprite>(path);
+            textBox.GetComponentInChildren<TMP_Text>().text = mutation.MutationName;
+        }
+    }
 
     // Function to enable mutation pop-up
     public void MutationPopUpEnable()
     {
-        if (mutationPopUp.activeSelf)
+        ResetUI();
+        if (mutationPopUp != null) mutationPopUp.SetActive(true);
+        var evolutionManager = GetSelectedHorde().GetComponent<EvolutionManager>();
+        GameObject.FindGameObjectWithTag("mutation_points").GetComponent<TextMeshProUGUI>().text =
+            evolutionManager.PointsAvailable + "pts";
+        var buttons = new GameObject[] { mutationButtonOne, mutationButtonTwo, mutationButtonThree };
+        if (evolutionManager.PointsAvailable == 0)
         {
-            mutationPopUp.SetActive(false);
-            return;
-        }
+            buttons[0].SetActive(false);
+            buttons[1].SetActive(false);
+            buttons[2].SetActive(false);
+            noPointsWarning.SetActive(true);
 
-        if (mutationViewer.activeSelf)
-        {
-            mutationViewer.SetActive(false);
-            return;
         }
-
-        MutationPopUpDisable();
-        var horde = GetSelectedHorde();
-        var evolutionManager = horde.GetComponent<EvolutionManager>();
-        if (evolutionManager.PointsAvailable == 0 && mutationViewer.activeSelf == false)
+        else
         {
-            mutationViewer.SetActive(true);
-            foreach (Transform child in contentParent) Destroy(child.gameObject);
-            foreach (var mutation in evolutionManager.GetEvolutionaryState().AcquiredMutations)
-            {
-                var textBox = Instantiate(textPrefab, contentParent);
-                textBox.GetComponent<Tooltip>().tooltipText = mutation.Tooltip;
-                var mutationType = GetComponentsInChildrenWithTag<Image, GameObject>(textBox, "mutation_type")[0];
-                mutationType.sprite = Resources.Load<Sprite>(mutation.IsAbility
-                    ? "UI_design/Mutations/active_mutation"
-                    : "UI_design/Mutations/passive_mutation");
-                var mutationUse = GetComponentsInChildrenWithTag<Image, GameObject>(textBox, "mutation_use")[0];
-                var path = "UI_design/Mutations/" + mutation.MutationUse + "_mutation";
-                mutationUse.sprite = Resources.Load<Sprite>(path);
-                textBox.GetComponentInChildren<TMP_Text>().text = mutation.MutationName;
-            }
-        }
-
-        if (evolutionManager.PointsAvailable > 0 && mutationPopUp.activeSelf == false)
-        {
-            if (mutationPopUp != null) mutationPopUp.SetActive(true);
-            GameObject.FindGameObjectWithTag("mutation_points").GetComponent<TextMeshProUGUI>().text =
-                evolutionManager.PointsAvailable + "pts";
+            buttons[0].SetActive(true);
+            buttons[1].SetActive(true);
+            buttons[2].SetActive(true);
+            GameObject.FindGameObjectsWithTag("no_points")[0].SetActive(false);
             var mutations = GetSelectedHorde().GetComponent<EvolutionManager>().RareEvolutionaryEvent();
-            var buttons = GetComponentsInChildrenWithTag<Button, GameObject>(mutationPopUp, "mutation_option");
             buttons[0].GetComponentInChildren<TMP_Text>().text = mutations.Item1.MutationName;
             buttons[0].GetComponent<Tooltip>().tooltipText = mutations.Item1.Tooltip;
-            GetComponentsInChildrenWithTag<Image, Button>(buttons[0], "mutation_type")[0].sprite =
+            GetComponentsInChildrenWithTag<Image, Button>(buttons[0].GetComponent<Button>(), "mutation_type")[0]
+                    .sprite =
                 mutations.Item1.IsAbility
                     ? Resources.Load<Sprite>("UI_design/Mutations/active_mutation")
                     : Resources.Load<Sprite>("UI_design/Mutations/passive_mutation");
-            GetComponentsInChildrenWithTag<Image, Button>(buttons[0], "mutation_use")[0].sprite =
+            GetComponentsInChildrenWithTag<Image, Button>(buttons[0].GetComponent<Button>(), "mutation_use")[0].sprite =
                 Resources.Load<Sprite>("UI_design/Mutations/" + mutations.Item1.MutationUse + "_mutation");
-            buttons[0].onClick.RemoveAllListeners();
-            buttons[0].onClick.AddListener(delegate { evolutionManager.ApplyActiveEffects(mutations.Item1); });
-            buttons[0].onClick.AddListener(delegate { Destroy(buttons[0].GetComponent<Tooltip>().tooltipInstance); });
+            buttons[0].GetComponent<Button>().onClick.RemoveAllListeners();
+            buttons[0].GetComponent<Button>().onClick.AddListener(delegate
+            {
+                evolutionManager.ApplyActiveEffects(mutations.Item1);
+            });
+            buttons[0].GetComponent<Button>().onClick.AddListener(delegate
+            {
+                Destroy(buttons[0].GetComponent<Tooltip>().tooltipInstance);
+            });
 
             buttons[1].GetComponentInChildren<TMP_Text>().text = mutations.Item2.MutationName;
             buttons[1].GetComponent<Tooltip>().tooltipText = mutations.Item2.Tooltip;
-            GetComponentsInChildrenWithTag<Image, Button>(buttons[1], "mutation_type")[0].sprite =
-                mutations.Item2.IsAbility
-                    ? Resources.Load<Sprite>("UI_design/Mutations/active_mutation")
-                    : Resources.Load<Sprite>("UI_design/Mutations/passive_mutation");
-            GetComponentsInChildrenWithTag<Image, Button>(buttons[1], "mutation_use")[0].sprite =
+            GetComponentsInChildrenWithTag<Image, Button>(buttons[1].GetComponent<Button>(), "mutation_type")[0]
+                .sprite = mutations.Item2.IsAbility
+                ? Resources.Load<Sprite>("UI_design/Mutations/active_mutation")
+                : Resources.Load<Sprite>("UI_design/Mutations/passive_mutation");
+            GetComponentsInChildrenWithTag<Image, Button>(buttons[1].GetComponent<Button>(), "mutation_use")[0].sprite =
                 Resources.Load<Sprite>("UI_design/Mutations/" + mutations.Item2.MutationUse + "_mutation");
-            buttons[1].onClick.RemoveAllListeners();
-            buttons[1].onClick.AddListener(delegate { evolutionManager.ApplyActiveEffects(mutations.Item2); });
-            buttons[1].onClick.AddListener(delegate { Destroy(buttons[1].GetComponent<Tooltip>().tooltipInstance); });
+            buttons[1].GetComponent<Button>().onClick.RemoveAllListeners();
+            buttons[1].GetComponent<Button>().onClick.AddListener(delegate
+            {
+                evolutionManager.ApplyActiveEffects(mutations.Item2);
+            });
+            buttons[1].GetComponent<Button>().onClick.AddListener(delegate
+            {
+                Destroy(buttons[1].GetComponent<Tooltip>().tooltipInstance);
+            });
 
             buttons[2].GetComponentInChildren<TMP_Text>().text = mutations.Item3.MutationName;
             buttons[2].GetComponent<Tooltip>().tooltipText = mutations.Item3.Tooltip;
-            GetComponentsInChildrenWithTag<Image, Button>(buttons[2], "mutation_type")[0].sprite =
-                mutations.Item3.IsAbility
-                    ? Resources.Load<Sprite>("UI_design/Mutations/active_mutation")
-                    : Resources.Load<Sprite>("UI_design/Mutations/passive_mutation");
-            GetComponentsInChildrenWithTag<Image, Button>(buttons[2], "mutation_use")[0].sprite =
+            GetComponentsInChildrenWithTag<Image, Button>(buttons[2].GetComponent<Button>(), "mutation_type")[0]
+                .sprite = mutations.Item3.IsAbility
+                ? Resources.Load<Sprite>("UI_design/Mutations/active_mutation")
+                : Resources.Load<Sprite>("UI_design/Mutations/passive_mutation");
+            GetComponentsInChildrenWithTag<Image, Button>(buttons[2].GetComponent<Button>(), "mutation_use")[0].sprite =
                 Resources.Load<Sprite>("UI_design/Mutations/" + mutations.Item3.MutationUse + "_mutation");
-            buttons[2].onClick.RemoveAllListeners();
-            buttons[2].onClick.AddListener(delegate { evolutionManager.ApplyActiveEffects(mutations.Item3); });
-            buttons[2].onClick.AddListener(delegate { Destroy(buttons[2].GetComponent<Tooltip>().tooltipInstance); });
+            buttons[2].GetComponent<Button>().onClick.RemoveAllListeners();
+            buttons[2].GetComponent<Button>().onClick.AddListener(delegate
+            {
+                evolutionManager.ApplyActiveEffects(mutations.Item3);
+            });
+            buttons[2].GetComponent<Button>().onClick.AddListener(delegate
+            {
+                Destroy(buttons[2].GetComponent<Tooltip>().tooltipInstance);
+            });
         }
     }
 
@@ -484,7 +509,11 @@ public class UI_Manager : MonoBehaviour
     public void MutationPopUpDisable()
     {
         if (mutationPopUp != null) mutationPopUp.SetActive(false);
-        if (mutationViewer != null) mutationViewer.SetActive(false);
+    }
+
+    public void MutationViewerDisable()
+    {
+        if (mutationViewer) mutationViewer.SetActive(false);
     }
 
 
