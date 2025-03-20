@@ -17,6 +17,30 @@ using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
+[Serializable]
+public struct IntPositive : INetworkStruct
+{
+    [SerializeField] public int compressed;
+
+    public IntPositive(uint value)
+    {
+        if ((value & 1) == 0)
+            compressed = (int)(value >> 1); // Even
+        else
+            compressed = -((int)(value + 1) >> 1); // Odd
+    }
+
+    public static implicit operator uint(IntPositive value)
+    {
+        return value.compressed >= 0 ? (uint)(value.compressed << 1) : (uint)-((value.compressed << 1) + 1);
+    }
+
+    public static implicit operator int(IntPositive value)
+    {
+        return value.compressed >= 0 ? value.compressed << 1 : -((value.compressed << 1) + 1);
+    }
+}
+
 namespace Horde
 {
     public enum CombatOptions
@@ -92,6 +116,8 @@ namespace Horde
 
         private readonly List<CooldownBar> fearAndMoraleBars = new();
 
+        private float _aliveRatsRemainder;
+
         [CanBeNull] private PatrolController _attackingPatrol;
         private Camera _camera;
 
@@ -123,9 +149,22 @@ namespace Horde
         /// </summary>
         public float lastInCombat { get; private set; }
 
-        public int AliveRats => (int)Mathf.Max(TotalHealth / _populationController.GetState().HealthPerRat, 1.0f);
+        [Networked] public IntPositive AliveRats { get; private set; }
 
-        [Networked] internal float TotalHealth { get; set; } = 25.0f;
+        /// <summary>
+        ///     Will be slightly inaccurate if the client you're accessing this on isn't the horde's state authority
+        /// </summary>
+        internal float TotalHealth
+        {
+            get => (Convert.ToSingle(AliveRats) + _aliveRatsRemainder) * _populationController.GetState().HealthPerRat;
+            set
+            {
+                AliveRats = new IntPositive(
+                    Convert.ToUInt32(Mathf.FloorToInt(value / _populationController.GetState().HealthPerRat)));
+                _aliveRatsRemainder = value % _populationController.GetState().HealthPerRat /
+                                      _populationController.GetState().HealthPerRat;
+            }
+        }
 
         /// <summary>
         ///     Bounds containing every rat in Horde
@@ -259,9 +298,9 @@ Count: {AliveRats}
 
             if (_attackingPatrol)
             {
-                var damageToDeal = AliveRats / 50.0f * (GetPopulationState().Damage
-                                                        * GetPopulationState().DamageMult
-                                                        * GetPopulationState().SepticMult);
+                var damageToDeal = (uint)AliveRats / 50.0f * (GetPopulationState().Damage
+                                                              * GetPopulationState().DamageMult
+                                                              * GetPopulationState().SepticMult);
                 _attackingPatrol.DealDamageRpc(damageToDeal);
             }
 
@@ -290,10 +329,10 @@ Count: {AliveRats}
                         if (random < 0.05) return;
                     }
 
-                    var damageToDeal = AliveRats / 50.0f * ((GetPopulationState().Damage
-                                                                * GetPopulationState().DamageMult
-                                                                * GetPopulationState().SepticMult + bonusDamage)
-                                                            / enemyHordes.Length);
+                    var damageToDeal = (uint)AliveRats / 50.0f * ((GetPopulationState().Damage
+                                                                      * GetPopulationState().DamageMult
+                                                                      * GetPopulationState().SepticMult + bonusDamage)
+                                                                  / enemyHordes.Length);
                     enemy.DealDamageRpc(damageToDeal);
                     Player.TotalDamageDealt += damageToDeal;
                     if (enemy.isHedgehogged) DealDamageRpc(0.001f);
@@ -676,8 +715,8 @@ Count: {AliveRats}
 
         private IEnumerator ApplyStrategy(CombatOptions action)
         {
-            var oldAlive = AliveRats;
-            var oldEnemyAlive = CurrentCombatController!.GetNearestEnemy(this).AliveRats;
+            var oldAlive = (uint)AliveRats;
+            var oldEnemyAlive = (uint)CurrentCombatController!.GetNearestEnemy(this).AliveRats;
             var poiCount = 0;
             var poiMult = 1.0f;
             switch (action)

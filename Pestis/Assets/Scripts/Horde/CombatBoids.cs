@@ -201,7 +201,7 @@ public class CombatBoids : MonoBehaviour
 
         _previousNumBoids = numBoids;
 
-        var newNumBoids = containedHordes.ToDictionary(x => x, x => x.AliveRats);
+        var newNumBoids = containedHordes.ToDictionary(x => x, x => (int)x.AliveRats);
 
         // Some boids have died
         if (newNumBoids.Values.Sum() < numBoids.Values.Sum())

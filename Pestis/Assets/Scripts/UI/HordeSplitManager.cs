@@ -1,5 +1,4 @@
 using System;
-using Horde;
 using Objectives;
 using TMPro;
 using UnityEngine;
@@ -37,34 +36,34 @@ namespace UI
                 button.interactable = false;
                 return;
             }
-            splitAmount = (int)Math.Floor((slider.value / 100) * maxPop);
+
+            splitAmount = (int)Math.Floor(slider.value / 100 * maxPop);
             if (splitAmount < 5 || maxPop - splitAmount < 5)
             {
                 selectedAmountText.text = "Too small to split with this amount";
                 button.interactable = false;
                 return;
             }
+
             button.interactable = true;
 
-            
+
             selectedAmountText.text = $"{slider.value}%";
         }
 
         private void OnEnable()
         {
             slider.value = 50;
-            splitAmount = (int)Math.Floor((slider.value / 100) * maxPop);
+            splitAmount = (int)Math.Floor(slider.value / 100 * maxPop);
         }
 
         public void SplitHorde()
         {
             var horde = InputHandler.Instance.LocalPlayer?.selectedHorde;
-            horde?.Player.SplitHorde(horde,(float)splitAmount / InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats);
+            horde?.Player.SplitHorde(horde,
+                (float)splitAmount / (uint)InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats);
             gameObject.SetActive(false);
-            if (horde)
-            {
-                GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.HordeSplit, 1);
-            }
+            if (horde) GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.HordeSplit, 1);
         }
     }
 }
