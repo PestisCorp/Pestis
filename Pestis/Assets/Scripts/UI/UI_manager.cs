@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Fusion;
 using Horde;
 using JetBrains.Annotations;
 using Players;
@@ -19,6 +21,7 @@ public class UI_Manager : MonoBehaviour
     public GameObject inputHandler;
     [CanBeNull] public HumanPlayer localPlayer;
 
+    public GameObject[] destroy;
     // References to the canvas elements
     public GameObject infoPanel;
     public GameObject attackPanel;
@@ -62,6 +65,8 @@ public class UI_Manager : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        //if (timer.resetButton != null) { timer.resetButton.onClick.AddListener(() => TimerToScoreLock.reset( runner, InputHandler.Instance.LocalPlayer.player.Username)); }
+        if (timer.resetButton != null) { timer.resetButton.onClick.AddListener(() => TimerToScoreLock.reset(destroy)); }
         // Ensure appropriate canvases are set to default at the start of the game
         ResetUI();
         if (mutationPopUp) mutationPopUp.SetActive(false);
@@ -74,7 +79,6 @@ public class UI_Manager : MonoBehaviour
         _notificationText = notification.GetComponentInChildren<TMP_Text>();
         _notificationBackground = notification.GetComponentInChildren<Image>();
         
-
 
     }
 
@@ -115,6 +119,21 @@ public class UI_Manager : MonoBehaviour
                 if (toggle.isOn) GetSelectedHorde().SetCombatStrategy(toggleText);
             }
         }
+    }
+
+    //automatically shows reset once timer is 0
+
+    private IEnumerator showReset()
+    {
+        timer.resetButtonUI.SetActive(false);
+        Debug.Log("set false");
+
+        //yield return new WaitUntil(() => localPlayer != null && localPlayer.player != null);
+        Debug.Log("Player assigned");
+        yield return new WaitUntil(() => InputHandler.Instance.LocalPlayer && InputHandler.Instance.LocalPlayer.player.TimeUp);
+        Debug.Log("set true");
+        timer.resetButtonUI.SetActive(true);
+        yield return null;
     }
 
     // Function to reset all referenced canvases to their default states to prevent UI clutter
