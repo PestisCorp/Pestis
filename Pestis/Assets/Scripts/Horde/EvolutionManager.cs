@@ -24,7 +24,7 @@ namespace Horde
         public int MutationWeight { get; set; }
         public string[] Effects { get; set; }
         public bool IsAbility { get; set; }
-        public string MutationUse {get; set;}
+        public string MutationUse { get; set; }
         public string Tooltip { get; set; }
 
         public bool Equals(ActiveMutation other)
@@ -41,7 +41,8 @@ namespace Horde
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(MutationName, MutationTag, MutationWeight, Effects, IsAbility, MutationUse, Tooltip);
+            return HashCode.Combine(MutationName, MutationTag, MutationWeight, Effects, IsAbility, MutationUse,
+                Tooltip);
         }
     }
 
@@ -96,30 +97,26 @@ namespace Horde
     public class EvolutionManager : NetworkBehaviour
     {
         private const double PredispositionStrength = 1.01;
+        public int PointsAvailable;
         private readonly Random _random = new();
 
         private EvolutionaryState _evolutionaryState;
-        private Color _hordeColor;
+        private readonly Color _hordeColor = Color.black;
         private HordeController _hordeController;
         private Timer _mutationClock;
         private PopulationController _populationController;
         private Timer _rareMutationClock;
-        public int PointsAvailable = 0;
-        
-        
+
+
         // Set the rat stats in the Population Controller
         // Shows notification of mutation
         private void UpdateRatStats(string mutation)
         {
-            _hordeColor = _hordeController.GetHordeColor();
             var mutEffect = _evolutionaryState.PassiveEvolutions[mutation][1];
             var text = "A horde's " + mutation + " has improved by " +
                        Math.Round(_evolutionaryState.PassiveEvolutions["evolution strength"][1] * 100 - 100, 2)
                            .ToString(CultureInfo.CurrentCulture) + "%.";
-            if (_hordeController.Player.Type == 0)
-            {
-                GameManager.Instance.UIManager.AddNotification(text, _hordeColor);
-            }
+            if (_hordeController.Player.Type == 0) GameManager.Instance.UIManager.AddNotification(text, _hordeColor);
             switch (mutation)
             {
                 case "attack":
@@ -184,7 +181,6 @@ namespace Horde
             }
 
             return (firstMut, secondMut, thirdMut);
-
         }
 
         public void ApplyActiveEffects(ActiveMutation mutation)
@@ -224,11 +220,12 @@ namespace Horde
 
             if (mutation.MutationName.Contains("swim"))
                 GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.SwimmingUnlocked, 1);
-        
-            
-            if (_evolutionaryState.ActiveMutations.Count < 3) 
+
+
+            if (_evolutionaryState.ActiveMutations.Count < 3)
             {
-                GameManager.Instance.UIManager.AddNotification("This horde has acquired the maximum number of mutations." , _hordeColor);
+                GameManager.Instance.UIManager.AddNotification(
+                    "This horde has acquired the maximum number of mutations.", _hordeColor);
                 _rareMutationClock.Stop();
             }
 
@@ -238,7 +235,6 @@ namespace Horde
                 GameManager.Instance.UIManager.MutationPopUpDisable();
                 GameManager.Instance.UIManager.MutationPopUpEnable();
             }
-            
         }
 
         private void CalculateActiveWeights()
@@ -333,16 +329,17 @@ namespace Horde
                 _hordeController.Player.Type == 0)
             {
                 PointsAvailable++;
-                if (GameManager.Instance.UIManager.mutationPopUp.activeSelf || GameManager.Instance.UIManager.mutationViewer.activeSelf)
+                if (GameManager.Instance.UIManager.mutationPopUp.activeSelf ||
+                    GameManager.Instance.UIManager.mutationViewer.activeSelf)
                 {
                     GameManager.Instance.UIManager.MutationPopUpDisable();
                     GameManager.Instance.UIManager.MutationPopUpEnable();
                 }
+
                 var icon = Resources.Load<Sprite>("UI_design/Emotes/evolution_emote");
                 _hordeController.AddSpeechBubble(icon);
                 _rareMutationClock.Restart();
             }
         }
     }
-
 }
