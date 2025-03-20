@@ -70,6 +70,8 @@ public class RatBoids : MonoBehaviour
 
     public int numBoids;
 
+    public bool local;
+
     private float[] _boundsArr;
     private ComputeBuffer _boundsBuffer;
 
@@ -342,6 +344,8 @@ public class RatBoids : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!local) return;
+
         if (numBoids == 0 || paused || !_started)
         {
             _boundsArr[0] = 1024.0f;
