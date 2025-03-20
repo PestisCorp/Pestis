@@ -88,8 +88,6 @@ namespace Horde
 
         [SerializeField] private PopulationController _populationController;
 
-        private readonly List<RatController> _spawnedRats = new();
-
         private readonly Queue<Sprite> _speechBubbles = new();
 
         private readonly List<CooldownBar> fearAndMoraleBars = new();
@@ -125,12 +123,6 @@ namespace Horde
         /// </summary>
         public float lastInCombat { get; private set; }
 
-        /// <summary>
-        ///     The horde we're currently damaging. Our rats will animate against them.
-        /// </summary>
-        [Networked]
-        internal HordeController HordeBeingDamaged { get; set; }
-
         public int AliveRats => (int)Mathf.Max(TotalHealth / _populationController.GetState().HealthPerRat, 1.0f);
 
         [Networked] internal float TotalHealth { get; set; } = 25.0f;
@@ -141,13 +133,9 @@ namespace Horde
         [Networked]
         private Bounds HordeBounds { set; get; }
 
-        [Networked] [CanBeNull] public POIController StationedAt { get; private set; }
+        [CanBeNull] [Networked] public POIController StationedAt { get; private set; }
 
-        [Networked] [CanBeNull] public POIController TargetPoi { get; private set; }
-
-        [Networked] private Color _hordeColor { get; set; }
-
-        [Networked] private int HordeColorIndex { get; set; } // Track assigned color index
+        [CanBeNull] public POIController TargetPoi { get; private set; }
 
         /// <summary>
         ///     Can only be in one combat instance at a time.
@@ -243,7 +231,6 @@ namespace Horde
 {Object.Id}
 {(HasStateAuthority ? "Local" : "Remote")}
 Combat: {InCombat}
-Horde Target: {(HordeBeingDamaged ? HordeBeingDamaged.Object.Id : "None")}
 Stationed At {(StationedAt ? StationedAt.Object.Id : "None")}
 POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
 Count: {AliveRats}
@@ -492,13 +479,7 @@ Count: {AliveRats}
             _combatStrategy = "Frontal Assault";
 
             if (HasStateAuthority) // Ensure only the host assigns colors
-            {
                 boids.local = true;
-                HordeColorIndex = (int)Object.Id.Raw % predefinedHordeColors.Length;
-                _hordeColor =
-                    predefinedHordeColors
-                        [HordeColorIndex]; // Assign color based on index
-            }
 
             _selectionLightTerrain = transform.Find("SelectionLightTerrain").gameObject.GetComponent<Light2D>();
             _selectionLightPoi = transform.Find("SelectionLightPOI").gameObject.GetComponent<Light2D>();
@@ -595,30 +576,6 @@ Count: {AliveRats}
             return HordeBounds;
         }
 
-        //get the color of the horde
-        public Color GetHordeColor()
-        {
-            return _hordeColor;
-        }
-
-        public RatController ClosestRat(Vector2 pos)
-        {
-            RatController bestTarget = null;
-            var closestDistance = Mathf.Infinity;
-
-            foreach (var rat in _spawnedRats)
-            {
-                var dist = ((Vector2)rat.transform.position - pos).sqrMagnitude;
-
-                if (dist < closestDistance)
-                {
-                    closestDistance = dist;
-                    bestTarget = rat;
-                }
-            }
-
-            return bestTarget;
-        }
 
         /// <summary>
         ///     Run for your furry little lives to the nearest friendly POI
@@ -656,7 +613,6 @@ Count: {AliveRats}
                 StationedAt = null;
             }
 
-            HordeBeingDamaged = null;
             PopulationCooldown = 15.0f;
             lastInCombat = Time.time;
         }
@@ -837,7 +793,6 @@ Count: {AliveRats}
                 FindFirstObjectByType<UI_Manager>()
                     .AddNotification("In your conquests you have gained the strength of your subjects", Color.red);
             CurrentCombatController = null;
-            HordeBeingDamaged = null;
             PopulationCooldown = 20.0f;
             lastInCombat = Time.time;
         }
