@@ -74,37 +74,33 @@ namespace Players
 
         public override void Spawned()
         {
+            GameManager.Instance.Players.Add(this);
+
+            if (!HasStateAuthority) return;
+
             if (Type == PlayerType.Human)
             {
                 _humanPlayer = this.AddComponent<HumanPlayer>();
                 _humanPlayer!.player = this;
 
-                if (HasStateAuthority)
-                {
-                    FindAnyObjectByType<Grid>().GetComponent<InputHandler>().LocalPlayer = _humanPlayer;
-
-                    if (GameManager.Instance.localUsername.Length != 0)
-                        Username = GameManager.Instance.localUsername;
-                    else
-                        Username = $"Player {Object.StateAuthority}";
-                    StartCoroutine(TimerTilScoreLock(600));
-                }
+                FindAnyObjectByType<Grid>().GetComponent<InputHandler>().LocalPlayer = _humanPlayer;
+                if (GameManager.Instance.localUsername.Length != 0)
+                    Username = GameManager.Instance.localUsername;
+                else
+                    Username = $"Player {Object.StateAuthority}";
+                StartCoroutine(TimerTilScoreLock(600));
             }
             else
             {
                 _botPlayer = this.AddComponent<BotPlayer>();
                 _botPlayer!.player = this;
 
+
                 Username = $"Bot {Object.Id.Raw}";
             }
 
-            GameManager.Instance.Players.Add(this);
-
-            if (HasStateAuthority)
-            {
-                CurrentCheese = 50.0f;
-                StartCoroutine(JoinStats());
-            }
+            StartCoroutine(JoinStats());
+            CurrentCheese = 50.0f;
         }
 
         // Manage Cheese
@@ -249,6 +245,14 @@ namespace Players
             throw new NullReferenceException("Tried to get human player from a bot Player");
         }
 
+
+        public void DestroyBotRpc()
+        {
+            if (Type != PlayerType.Bot) throw new Exception("Tried to destroy human player remotely!");
+
+            Runner.Despawn(Object);
+        }
+
         public void SplitHorde(HordeController toSplit, float splitPercentage)
         {
             if (!HasStateAuthority) throw new Exception("Only State Authority can split a horde");
@@ -310,8 +314,6 @@ namespace Players
             score += (ulong)(300 * allMutations.Count);
             score += (ulong)(500 * mutationTags.Count);
 
-            Debug.Log($"Score before total damage is {score}");
-            Debug.Log($"Total Damage Dealt is {TotalDamageDealt}");
             score += Convert.ToUInt64(TotalDamageDealt / 5.0);
 
             Score = score;

@@ -38,13 +38,11 @@ public class UI_Manager : MonoBehaviour
     public GameObject darkScreen;
     public GameObject textPrefab;
     public GameObject startMenu;
+    public GameObject tutorialButton;
 
+    public Transform abilityPanel;
     // References to the resource text fields
-    public TextMeshProUGUI cheeseTotalText;
     public TextMeshProUGUI cheeseRateText;
-    public TextMeshProUGUI popTotalText;
-
-    public TextMeshProUGUI hordeTotalText;
 
 
     // References to notification system objects
@@ -55,10 +53,8 @@ public class UI_Manager : MonoBehaviour
     private bool _messageActive;
     private Image _notificationBackground;
     private TMP_Text _notificationText;
-
-    private bool displayResourceInfo;
-
-    // Called by EvolutionManager every time a new mutation is acquired
+    
+    public readonly Dictionary<HordeController, GameObject> AbilityBars = new();
 
 
     private void Awake()
@@ -73,54 +69,31 @@ public class UI_Manager : MonoBehaviour
         if (timer.resetButton != null) { timer.resetButton.onClick.AddListener(() => TimerToScoreLock.reset(destroy)); }
         // Ensure appropriate canvases are set to default at the start of the game
         ResetUI();
-        StartCoroutine(showReset());
-        if (mutationPopUp != null) mutationPopUp.SetActive(false);
-        if (resourceStats != null) resourceStats.SetActive(false);
-        if (objectives != null) objectives.SetActive(false);
+        if (mutationPopUp) mutationPopUp.SetActive(false);
+        if (resourceStats) resourceStats.SetActive(false);
+        if (objectives) objectives.SetActive(false);
         if (startMenu) objectives.SetActive(false);
-
-        displayResourceInfo = false;
+        if (tutorialButton) tutorialButton.SetActive(false);
 
 
         _notificationText = notification.GetComponentInChildren<TMP_Text>();
         _notificationBackground = notification.GetComponentInChildren<Image>();
-
-        foreach (var button in abilityToolbar.GetComponentsInChildren<Button>())
-        {
-            button.enabled = false;
-            button.GetComponent<Image>().enabled = false;
-            button.GetComponent<Tooltip>().enabled = false;
-            var childrenWithTag = GetComponentsInChildrenWithTag<Image, Button>(button, "UI_cooldown_bar");
-            foreach (var child in childrenWithTag) child.GetComponent<Image>().enabled = false;
-        }
+        
 
     }
 
     private void FixedUpdate()
     {
-        //Only display resources if they player hasn't opted to show info
-        if (localPlayer != null && !displayResourceInfo)
+        if (localPlayer )
         {
-            // Update the cheese text fields
-            // Display total cheese up to 2 decimal places
-            if (cheeseTotalText != null)
-                cheeseTotalText.text = localPlayer?.player.CurrentCheese.ToString("F2");
 
             // Display cheese increment rate with a + sign and to 2 decimal places
-            if (cheeseRateText != null)
+            if (cheeseRateText)
             {
                 var cheeseRate = localPlayer!.player.CheesePerSecond;
-                cheeseRateText.text = cheeseRate >= 0 ? "+" + cheeseRate.ToString("F2") : cheeseRate.ToString("F2");
+                cheeseRateText.text = (cheeseRate >= 0 ? "+" + cheeseRate.ToString("F2") : cheeseRate.ToString("F2")) + "/s";
             }
-
-            // Update total pop text field
-            if (popTotalText != null)
-                popTotalText.text = "0";
-
-            // Update total horde text field
-            if (hordeTotalText != null)
-                hordeTotalText.text = "0";
-
+            
             if (localPlayer.player.Score != null) timer.UpdateScore(localPlayer.player.Score);
 
             if (localPlayer.player.Timer != null) timer.UpdateTimer(localPlayer.player.Timer);
@@ -168,17 +141,17 @@ public class UI_Manager : MonoBehaviour
     // Not including toolbar as this is controlled by the player selecting a horde
     public void ResetUI()
     {
-        if (infoPanel != null) infoPanel.SetActive(false);
+        if (infoPanel) infoPanel.SetActive(false);
 
-        if (splitPanel != null) splitPanel.SetActive(false);
+        if (splitPanel) splitPanel.SetActive(false);
 
-        if (mutationPopUp != null)
+        if (mutationPopUp)
         {
             mutationPopUp.SetActive(false);
             mutationViewer.SetActive(false);
         }
 
-        if (actionPanel != null) ActionPanelDisable();
+        if (actionPanel) ActionPanelDisable();
 
         // Ignoring the state of the tool bar, ensuring the default buttons are visible
         var toolbarButtons = GameObject.FindGameObjectsWithTag("UI_button_action");
@@ -228,7 +201,7 @@ public class UI_Manager : MonoBehaviour
     public void ActionPanelDisable()
     {
         if (actionPanel != null) actionPanel.SetActive(false);
-        AbilityToolbarDisable();
+        if (AbilityBars.Count > 0) AbilityToolbarDisable();
         SplitPanelDisable();
     }
 
@@ -436,24 +409,6 @@ public class UI_Manager : MonoBehaviour
                 obj.GetComponentInChildren<TextMeshProUGUI>().text = selectedPopulation.ToString();
     }
 
-    // Function to toggle resource info display boolean
-    public void ToggleResourceInfoDisplay()
-    {
-        displayResourceInfo = !displayResourceInfo;
-    }
-
-    // Function to change resource text fields to display info about what they show
-    public void ResourceInfoDisplay()
-    {
-        if (displayResourceInfo)
-        {
-            cheeseTotalText.text = "Total Cheese";
-            cheeseRateText.text = "Cheese Increment Rate";
-            popTotalText.text = "Total Population";
-            hordeTotalText.text = "Total Hordes";
-        }
-    }
-
     // Function to toggle toolbar to display info or buttons by toggling the buttons tagged "UI_button_action"
     // Allowing the hidden button_info's to be seen instead
     public void ToolbarInfoDisplay()
@@ -556,34 +511,41 @@ public class UI_Manager : MonoBehaviour
 
     public void AbilityToolbarEnable()
     {
-        if (abilityToolbar != null) abilityToolbar.SetActive(true);
+        var horde = GetSelectedHorde();
+        if (AbilityBars[horde]) AbilityBars[horde].SetActive(true);
     }
 
     public void AbilityToolbarDisable()
     {
-        foreach (var button in abilityToolbar.GetComponentsInChildren<Button>())
+        foreach (var abilityBar in AbilityBars.Values)
         {
-            button.enabled = false;
-            button.onClick.RemoveAllListeners();
-            button.GetComponent<Image>().enabled = false;
-            button.GetComponentInChildren<TextMeshProUGUI>().text = "";
-
-
-            var childrenWithTag = GetComponentsInChildrenWithTag<Image, Button>(button, "UI_cooldown_bar");
-            foreach (var child in childrenWithTag) child.GetComponent<Image>().enabled = false;
-
-            var tooltip = button.GetComponent<Tooltip>();
-            if (tooltip)
+            foreach (var button in abilityBar.GetComponentsInChildren<Button>())
             {
-                tooltip.tooltipText = "";
-                tooltip.enabled = false;
-            }
-        }
+                button.enabled = false;
+                button.onClick.RemoveAllListeners();
+                button.GetComponent<Image>().enabled = false;
+                button.GetComponentInChildren<TextMeshProUGUI>().text = "";
 
-        if (abilityToolbar != null) abilityToolbar.SetActive(false);
+
+                var childrenWithTag = GetComponentsInChildrenWithTag<Image, Button>(button, "UI_cooldown_bar");
+                foreach (var child in childrenWithTag)
+                {
+                    child.GetComponent<Image>().enabled = false;
+                }
+
+                var tooltip = button.GetComponent<Tooltip>();
+                if (tooltip)
+                {
+                    tooltip.tooltipText = "";
+                    tooltip.enabled = false;
+                }
+            }
+
+            if (abilityBar) abilityBar.SetActive(false);
+        }
     }
 
-    private T[] GetComponentsInChildrenWithTag<T, TP>(TP parent, string tagToFind) where T : Component where TP : Object
+    public T[] GetComponentsInChildrenWithTag<T, TP>(TP parent, string tagToFind) where T : Component where TP : Object
     {
         var componentsInChildren = new List<T>();
         foreach (var obj in parent.GetComponentsInChildren<T>())
@@ -595,7 +557,9 @@ public class UI_Manager : MonoBehaviour
 
     private void RegisterAbility((string, string) mutation, AbilityController abilityController)
     {
-        foreach (var button in abilityToolbar.GetComponentsInChildren<Button>(true))
+        var horde = GetSelectedHorde();
+        var abilityBar = AbilityBars[horde];
+        foreach (var button in abilityBar.GetComponentsInChildren<Button>(true))
         {
             if (button.enabled) continue;
             button.enabled = true;
@@ -685,5 +649,20 @@ public class UI_Manager : MonoBehaviour
     public void EnableStartMenu()
     {
         startMenu.SetActive(true);
+    }
+
+    public void DisableTutorialButton()
+    {
+        tutorialButton.SetActive(false);
+    }
+
+    public void EnableTutorialButton()
+    {
+        tutorialButton.SetActive(true);
+    }
+
+    public void DisableStartMenu()
+    {
+        startMenu.SetActive(false);
     }
 }

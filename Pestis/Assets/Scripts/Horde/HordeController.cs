@@ -92,6 +92,8 @@ namespace Horde
 
         private readonly Queue<Sprite> _speechBubbles = new();
 
+        private readonly List<CooldownBar> fearAndMoraleBars = new();
+
         [CanBeNull] private PatrolController _attackingPatrol;
         private Camera _camera;
 
@@ -112,8 +114,6 @@ namespace Horde
         private bool _speechBubbleActive;
 
         [CanBeNull] private HordeController _targetHorde;
-
-        private CooldownBar[] fearAndMoraleBars;
 
 
         [CanBeNull] private Action OnArriveAtTarget;
@@ -175,6 +175,10 @@ namespace Horde
             // If not spawned yet
             if (!Object.IsValid) return;
 
+            if (_combatText.activeSelf &&
+                (!CurrentCombatController || CurrentCombatController.NumParticipators <= 1))
+                Debug.LogError("Combat text active but no combat");
+
             if (PopulationCooldown > 0)
                 PopulationCooldown -= Time.deltaTime;
             else if (PopulationCooldown < 0) PopulationCooldown = 0;
@@ -193,14 +197,14 @@ namespace Horde
             {
                 if (AliveRats == 1)
                 {
-                    HordeBounds = boids.GetBounds();
+                    HordeBounds = boids.Bounds;
                 }
                 else if (AliveRats > 0) // Move horde center slowly to avoid jitter due to center rat changing
                 {
                     if (InCombat && CurrentCombatController!.boids.containedHordes.Contains(this))
                         HordeBounds = CurrentCombatController!.boids.GetBounds(this);
                     else
-                        HordeBounds = boids.GetBounds();
+                        HordeBounds = boids.Bounds;
                 }
                 else
                 {
@@ -397,15 +401,19 @@ Count: {AliveRats}
             _combatText.SetActive(true);
             if (_targetHorde.InCombat) // If the target is already in combat, join it
             {
+                CurrentCombatController = _targetHorde.CurrentCombatController;
+                AddBoidsToCombatRpc(CurrentCombatController);
                 _targetHorde.CurrentCombatController!.AddHordeRpc(this, true);
             }
             else // Otherwise start new combat and add the target to it
             {
                 CurrentCombatController =
                     Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
+                AddBoidsToCombatRpc(CurrentCombatController);
                 CurrentCombatController!.AddHordeRpc(this, true);
                 CurrentCombatController.AddHordeRpc(_targetHorde, false);
             }
+
 
             Enum.TryParse(_combatStrategy!.Replace(" ", ""), out CombatOptions option);
             StartCoroutine(ApplyStrategy(option));
@@ -415,7 +423,6 @@ Count: {AliveRats}
                 _targetHorde.Player.AddCheeseRpc(Player.CurrentCheese * 0.1f);
             }
 
-            AddBoidsToCombatRpc(CurrentCombatController);
             _combatStrategy = null;
             _targetHorde = null;
         }
@@ -482,9 +489,11 @@ Count: {AliveRats}
             Player = GetComponentInParent<Player>();
             boids = GetComponentInChildren<RatBoids>();
             Player.Hordes.Add(this);
+            _combatStrategy = "Frontal Assault";
 
             if (HasStateAuthority) // Ensure only the host assigns colors
             {
+                boids.local = true;
                 HordeColorIndex = (int)Object.Id.Raw % predefinedHordeColors.Length;
                 _hordeColor =
                     predefinedHordeColors
@@ -526,9 +535,22 @@ Count: {AliveRats}
                 icon.sprite = iconSprite;
             }
 
-            moraleAndFearInstance = Instantiate(FindFirstObjectByType<UI_Manager>().fearAndMorale);
-            foreach (var bar in moraleAndFearInstance.GetComponentsInChildren<CooldownBar>()) bar.current = bar.maximum;
+            moraleAndFearInstance = Instantiate(GameManager.Instance.UIManager.fearAndMorale);
             moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
+            foreach (var bar in moraleAndFearInstance.GetComponentsInChildren<CooldownBar>())
+            {
+                bar.current = bar.maximum;
+                fearAndMoraleBars.Add(bar);
+            }
+
+            if (Player.IsLocal)
+            {
+                GameManager.Instance.UIManager.AbilityBars[this] =
+                    Instantiate(GameManager.Instance.UIManager.abilityToolbar,
+                        GameManager.Instance.UIManager.abilityPanel.transform);
+
+                GameManager.Instance.UIManager.AbilityBars[this].transform.localPosition = Vector3.zero;
+            }
             // Needed to spawn in rats from joined session
         }
 
@@ -773,7 +795,12 @@ Count: {AliveRats}
         {
             _combatStrategy = strategy;
         }
-        
+
+        public string GetCombatStrategy()
+        {
+            return _combatStrategy;
+        }
+
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void EventWonCombatRpc(NetworkBehaviourId[] hordes)
         {
@@ -865,6 +892,8 @@ Count: {AliveRats}
         public void AddBoidsToCombatRpc(CombatController combat)
         {
             Debug.Log($"HORDE {Object.Id} of {Player.Username}: Joining boids to combat");
+
+            if (combat == null) throw new Exception("Tried to add boids to non-existent combat");
             boids.JoinCombat(combat.boids, this);
             _combatText.SetActive(true);
         }

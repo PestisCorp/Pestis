@@ -5,8 +5,9 @@ using Horde;
 using MoreLinq.Extensions;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Assertions;
 
-internal struct Boid
+public struct Boid
 {
     public float2 pos;
     public float2 vel;
@@ -69,13 +70,18 @@ public class RatBoids : MonoBehaviour
 
     public int numBoids;
 
+    public bool local;
+
+    private float[] _boundsArr;
+    private ComputeBuffer _boundsBuffer;
+
     private bool _started;
+
+    private bool _waitingForBounds;
     private int blocks;
 
     private ComputeBuffer boidBuffer;
     private ComputeBuffer boidBufferOut;
-
-    private Bounds bounds;
 
     private int corpseKernel;
     private ComputeBuffer deadBoids;
@@ -110,7 +116,7 @@ public class RatBoids : MonoBehaviour
     private Vector2[] triangleVerts;
     private float turnSpeed;
 
-    private int updateBoidsKernel, generateBoidsKernel;
+    private int updateBoidsKernel, generateBoidsKernel, updateBoundsKernel;
 
     private int updateGridKernel,
         clearGridKernel,
@@ -120,6 +126,8 @@ public class RatBoids : MonoBehaviour
         rearrangeBoidsKernel;
 
     private float xBound, yBound;
+
+    public Bounds Bounds { private set; get; }
 
     private float visualRangeSq => visualRange * visualRange;
     private float minDistanceSq => minDistance * minDistance;
@@ -146,6 +154,7 @@ public class RatBoids : MonoBehaviour
 
         // Get kernel IDs
         updateBoidsKernel = boidShader.FindKernel("UpdateBoids");
+        updateBoundsKernel = boidShader.FindKernel("UpdateBounds");
         updateGridKernel = gridShader.FindKernel("UpdateGrid");
         clearGridKernel = gridShader.FindKernel("ClearGrid");
         prefixSumKernel = gridShader.FindKernel("PrefixSum");
@@ -157,6 +166,20 @@ public class RatBoids : MonoBehaviour
         boidBuffer = new ComputeBuffer(INITIAL_BOID_MEMORY_ALLOCATION, Marshal.SizeOf(typeof(Boid)));
         boidBufferOut = new ComputeBuffer(INITIAL_BOID_MEMORY_ALLOCATION, Marshal.SizeOf(typeof(Boid)));
         deadBoids = new ComputeBuffer(INITIAL_BOID_MEMORY_ALLOCATION, Marshal.SizeOf(typeof(Boid)));
+
+        Assert.AreEqual(Marshal.SizeOf(typeof(float)), Marshal.SizeOf(typeof(uint)),
+            "uint and float have different byte sizes, bounds calc WILL break");
+        _boundsBuffer = new ComputeBuffer(4, Marshal.SizeOf(typeof(float)));
+        _boundsArr = new float[4];
+
+        _boundsArr[0] = 1024.0f;
+        _boundsArr[1] = -1024.0f;
+        _boundsArr[2] = -1024.0f;
+        _boundsArr[3] = 1024.0f;
+        _boundsBuffer.SetData(_boundsArr, 0, 0, 4);
+
+        boidShader.SetBuffer(updateBoundsKernel, "bounds", _boundsBuffer);
+        boidShader.SetBuffer(updateBoundsKernel, "boidsIn", boidBuffer);
 
         deadBoidsCountBuffer = new ComputeBuffer(1, sizeof(uint));
         var counter = new uint[1];
@@ -301,10 +324,10 @@ public class RatBoids : MonoBehaviour
         boidShader.SetInt("numBoidsPrevious", previousNumBoids);
 
         // 0,0 case is overriden in the shader to use an approximate center
-        if (bounds.size.sqrMagnitude == 0 || float.IsNaN(bounds.center.x) || float.IsNaN(bounds.center.y))
+        if (Bounds.size.sqrMagnitude == 0 || float.IsNaN(Bounds.center.x) || float.IsNaN(Bounds.center.y))
             boidShader.SetFloats("spawnPoint", 0, 0);
         else
-            boidShader.SetFloats("spawnPoint", bounds.center.x + 0.01f, bounds.center.y + 0.01f);
+            boidShader.SetFloats("spawnPoint", Bounds.center.x + 0.01f, Bounds.center.y + 0.01f);
 
         // Compute boid behaviours
         boidShader.Dispatch(updateBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
@@ -317,6 +340,32 @@ public class RatBoids : MonoBehaviour
         // Actually draw the boids
         Graphics.RenderPrimitives(rp, MeshTopology.Quads, numBoids * 4);
         Graphics.RenderPrimitives(rpDead, MeshTopology.Quads, deadBoidsCount * 4);
+    }
+
+    private void FixedUpdate()
+    {
+        if (!local) return;
+
+        if (numBoids == 0 || paused || !_started)
+        {
+            _boundsArr[0] = 1024.0f;
+            _boundsArr[1] = -1024.0f;
+            _boundsArr[2] = -1024.0f;
+            _boundsArr[3] = 1024.0f;
+            _boundsBuffer.SetData(_boundsArr, 0, 0, 4);
+            return;
+        }
+
+        _boundsBuffer.GetData(_boundsArr, 0, 0, 4);
+        var extents = new Vector2(_boundsArr[2] - _boundsArr[0], _boundsArr[1] - _boundsArr[3]);
+        var center = new Vector2(extents.x / 2.0f + _boundsArr[0], extents.y / 2.0f + _boundsArr[3]);
+        Bounds = new Bounds(center, extents);
+        _boundsArr[0] = 1024.0f;
+        _boundsArr[1] = -1024.0f;
+        _boundsArr[2] = -1024.0f;
+        _boundsArr[3] = 1024.0f;
+        _boundsBuffer.SetData(_boundsArr, 0, 0, 4);
+        boidShader.Dispatch(updateBoundsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
     }
 
     private void OnDestroy()
@@ -425,7 +474,6 @@ public class RatBoids : MonoBehaviour
     {
         return gridDimX * pos.y + pos.x;
     }
-
 
     /// <summary>
     ///     Check whether a given position is within the horde.
@@ -558,8 +606,8 @@ public class RatBoids : MonoBehaviour
         var center = bottomLeft + (topRight - bottomLeft) / 2.0f;
         var size = topRight - bottomLeft;
 
-        bounds = new Bounds(center, size);
-        return bounds;
+        Bounds = new Bounds(center, size);
+        return Bounds;
     }
 
     /// <summary>

@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: Sand
   m_EditorClassIdentifier: 
   TileList:
-  - {fileID: 11400000, guid: 7d2c60f69ea46564faa2037126335fe7, type: 2}
+  - {fileID: 11400000, guid: 145d018ad5381410bacefc9caf887ec6, type: 2}
+  - {fileID: 11400000, guid: 3300e25ad52bb4c09b7a2ed513b35e25, type: 2}
+  Weights:
+  - 0.98
+  - 0.02
   FeatureList:
   - {fileID: 7727599578141111434, guid: 27a3f781f19445ce181cdb9b55c37d7c, type: 3}
   - {fileID: 7727599578141111434, guid: 13407f781d1484269808226466e6268d, type: 3}

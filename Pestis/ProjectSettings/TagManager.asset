@@ -21,6 +21,7 @@ TagManager:
   - mutation_option
   - viewer
   - tilemap
+  - mutation_bg
   layers:
   - Default
   - TransparentFX

@@ -76,6 +76,8 @@ namespace Horde
         [Capacity(MAX_PARTICIPANTS)]
         private NetworkLinkedList<NetworkBehaviourId> AllParticipants => default;
 
+        public int NumParticipators => Participators.Count;
+
         /// <summary>
         ///     Bounds of all *actively* participating hordes i.e. hordes which are dealing damage due to proximity.
         /// </summary>
@@ -193,7 +195,9 @@ POI: {FightingOver}
                         horde.RetreatRpc();
                     }
                     else
+                    {
                         horde.DestroyHordeRpc();
+                    }
                 }
 
                 return;
@@ -206,11 +210,8 @@ POI: {FightingOver}
                 var winner = Participators.First().Key;
                 Debug.Log($"Combat is over! Winner is {winner.Object.StateAuthority}");
                 var winnerParticipant = Participators.First().Value;
-                if (winner.IsLocal)
-                {
-                    GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.BattleWon, 1);
-                }
-                
+                if (winner.IsLocal) GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.BattleWon, 1);
+
                 // Tell each winning horde that they won.
                 foreach (var hordeID in winnerParticipant.Hordes)
                 {
@@ -220,9 +221,8 @@ POI: {FightingOver}
                     if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredEffects
                         .Contains("unlock_septic_bite")) horde.GetComponent<PopulationController>().SetSepticMult(1.0f);
                     if (horde.GetEvolutionState().AcquiredEffects.Contains("unlock_war_hawk"))
-                    {
                         horde.GetComponent<AbilityController>().forceCooldownRefresh = true;
-                    }
+                    horde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
                     var icon = Resources.Load<Sprite>("UI_design/Emotes/victory_emote");
                     horde.AddSpeechBubble(icon);
                     horde.EventWonCombatRpc(AllParticipants.ToArray());
@@ -241,7 +241,7 @@ POI: {FightingOver}
                 {
                     Debug.Log($"Transferring POI Ownership to {winner.Object.StateAuthority}");
                     FightingOver.ChangeController(winner);
-                    
+
                     foreach (var hordeID in winnerParticipant.Hordes)
                     {
                         Runner.TryFindBehaviour(hordeID, out HordeController horde);
@@ -279,6 +279,7 @@ POI: {FightingOver}
                 {
                     // Tell horde to run away to nearest friendly POI
                     var icon = Resources.Load<Sprite>("UI_design/Emotes/combat_loss_emote");
+                    horde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
                     horde.AddSpeechBubble(icon);
                     horde.RetreatRpc();
                 }
@@ -298,6 +299,20 @@ POI: {FightingOver}
         {
             Debug.Log("COMBAT CONTROLLER: Despawning now");
             Runner.Despawn(Object);
+        }
+
+        private void Timeout()
+        {
+            foreach (var participant in Participators)
+            foreach (var hordeId in participant.Value.Hordes)
+            {
+                Runner.TryFindBehaviour(hordeId, out var horde);
+                var cont = horde.GetComponent<HordeController>();
+                cont.RemoveBoidsFromCombatRpc(this);
+                cont.RetreatRpc();
+            }
+
+            Despawn();
         }
 
 
@@ -333,7 +348,11 @@ POI: {FightingOver}
                 horde.AddBoidsToCombatRpc(this);
             }
 
-            if (Participators.Count > 1) _initiated = true;
+            if (Participators.Count > 1 && !_initiated)
+            {
+                _initiated = true;
+                Invoke(nameof(Timeout), 60);
+            }
         }
 
         public HordeController GetNearestEnemy(HordeController me)

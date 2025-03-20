@@ -1,4 +1,3 @@
-using System.Linq;
 using Horde;
 using UnityEngine;
 
@@ -12,7 +11,8 @@ public class CombatFXManager : MonoBehaviour
 
     private void Update()
     {
-        if (HordeController.CurrentCombatController.HordeInCombat(HordeController) &&
+        if (HordeController.CurrentCombatController &&
+            HordeController.CurrentCombatController.HordeInCombat(HordeController) &&
             !HordeController.CurrentCombatController.HordeIsVoluntary(HordeController))
             UpdateParticleBounds(GetIntersection(getHordeBounds(), HordeController.GetBounds()));
     }
@@ -60,9 +60,6 @@ public class CombatFXManager : MonoBehaviour
 
     private Bounds getHordeBounds()
     {
-        var hordelist = HordeController.CurrentCombatController.GetHordes().Where(h => h != HordeController).ToList();
-        var SumBound = new Bounds(hordelist[0].GetBounds().center, hordelist[0].GetBounds().size);
-        foreach (var horde in hordelist) SumBound.Encapsulate(horde.GetBounds());
-        return SumBound;
+        return HordeController.CurrentCombatController.bounds;
     }
 }

@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TileList:
   - {fileID: 11400000, guid: 97111af94a490894385d5ee062502201, type: 2}
+  Weights:
+  - 1
   FeatureList:
   - {fileID: 0}
   cityPrefab: {fileID: 7727599578141111434, guid: dc9871f9bdee740e8a3fe2c2f8a96f71, type: 3}

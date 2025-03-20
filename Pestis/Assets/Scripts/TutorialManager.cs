@@ -1,51 +1,57 @@
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
 {
-    public GameObject welcomeCanvas;
-    public GameObject fightCanvas;
-    public GameObject conquerCanvas;
-    public GameObject evolveCanvas;
-    public GameObject dominateCanvas;
-    private GameObject current;
+    public GameObject tutorialCanvas;
+    public Sprite welcomeImage;
+    public Sprite fightImage;
+    public Sprite conquerImage;
+    public Sprite evolveImage;
+    public Sprite dominateImage;
+    public Sprite controlsImage;
+    private Image current;
+    private Sprite[] slides;
+    private int slidesIndex = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        OpenWelcome();
+        slides =  new Sprite[] {welcomeImage, fightImage, conquerImage, evolveImage, dominateImage, controlsImage};
+        GameObject imageObj = tutorialCanvas.transform.Find("image").gameObject;
+        current = imageObj.GetComponent<Image>();
+        StartTutorial();
     }
 
-    void OpenWelcome()
+    public void StartTutorial()
     {
-        current = welcomeCanvas;
-        welcomeCanvas.SetActive(true);
-        UI_Manager.Instance.HighlightUiElement(welcomeCanvas);
+        UI_Manager.Instance.DisableTutorialButton();
+        UI_Manager.Instance.DisableStartMenu();
+        slidesIndex = 0;
+        tutorialCanvas.SetActive(true);
+        UI_Manager.Instance.HighlightUiElement(tutorialCanvas);
+        DisplayTutorial();
     }
 
-    public void NextWelcome()
+    void DisplayTutorial()
     {
-        welcomeCanvas.SetActive(false);
-        UI_Manager.Instance.UnhighlightUiElement(welcomeCanvas);
-        OpenFight();
+        if (slides[slidesIndex] ) current.sprite = slides[slidesIndex];
+        else CloseTutorial();
     }
 
-    void OpenFight()
+    public void NextSlide()
     {
-        current = fightCanvas;
-        fightCanvas.SetActive(true);
-        UI_Manager.Instance.HighlightUiElement(fightCanvas);
-    }
-
-    public void NextFight()
-    {
-        CloseTutorial();
+        slidesIndex++;
+        if(slidesIndex > (slides.Length - 1)) CloseTutorial();
+        DisplayTutorial();
     }
 
     public void CloseTutorial()
     {
-        current.SetActive(false);
-        UI_Manager.Instance.UnhighlightUiElement(current);
-        UI_Manager.Instance.EnableStartMenu();
+        tutorialCanvas.SetActive(false);
+        UI_Manager.Instance.UnhighlightUiElement(tutorialCanvas);
+        if(UI_Manager.Instance.localPlayer == null) UI_Manager.Instance.EnableStartMenu();
+        UI_Manager.Instance.EnableTutorialButton();
     }
 }

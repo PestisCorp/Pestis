@@ -54,8 +54,8 @@
         "AdditionalLoss": 0.0
     },
     "Heap": {
-        "PageShift": 15,
-        "PageCount": 256,
+        "PageShift": 18,
+        "PageCount": 1024,
         "GlobalsSize": 0
     },
     "AssembliesToWeave": [
