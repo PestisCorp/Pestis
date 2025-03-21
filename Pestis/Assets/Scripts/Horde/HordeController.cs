@@ -6,6 +6,7 @@ using Fusion;
 using Human;
 using JetBrains.Annotations;
 using KaimiraGames;
+using Networking;
 using Objectives;
 using Players;
 using POI;
@@ -15,31 +16,9 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
+using Bounds = UnityEngine.Bounds;
 using Random = UnityEngine.Random;
 
-[Serializable]
-public struct IntPositive : INetworkStruct
-{
-    [SerializeField] public int compressed;
-
-    public IntPositive(uint value)
-    {
-        if ((value & 1) == 0)
-            compressed = (int)(value >> 1); // Even
-        else
-            compressed = -((int)(value + 1) >> 1); // Odd
-    }
-
-    public static implicit operator uint(IntPositive value)
-    {
-        return value.compressed >= 0 ? (uint)(value.compressed << 1) : (uint)-((value.compressed << 1) + 1);
-    }
-
-    public static implicit operator int(IntPositive value)
-    {
-        return value.compressed >= 0 ? value.compressed << 1 : -((value.compressed << 1) + 1);
-    }
-}
 
 namespace Horde
 {
@@ -170,7 +149,14 @@ namespace Horde
         ///     Bounds containing every rat in Horde
         /// </summary>
         [Networked]
-        private Bounds HordeBounds { set; get; }
+        private Networking.Bounds HordeBoundsNetworked { set; get; }
+
+        private Bounds HordeBounds
+        {
+            set => HordeBoundsNetworked = value;
+
+            get => HordeBoundsNetworked;
+        }
 
         [CanBeNull] [Networked] public POIController StationedAt { get; private set; }
 
