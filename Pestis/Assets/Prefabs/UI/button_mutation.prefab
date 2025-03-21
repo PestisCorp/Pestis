@@ -300,7 +300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tooltipText: 
-  tooltipObject: {fileID: 537699768847741873, guid: 1a729c8c51156474eb475e40837a1ea2, type: 3}
+  tooltipObject: {fileID: 1219239807730873936, guid: ad5125a31f3ec5b488bc8275767df36f, type: 3}
   tooltipInstance: {fileID: 0}
 --- !u!224 &4335897696044336833 stripped
 RectTransform:
