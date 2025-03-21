@@ -30,7 +30,6 @@ public class UI_Manager : MonoBehaviour
     public GameObject resourceStats;
     public GameObject splitPanel;
     public GameObject abilityToolbar;
-    public GameObject fearAndMorale;
     public GameObject objectives;
     public TimerToScoreLock timer;
     public GameObject darkScreen;
