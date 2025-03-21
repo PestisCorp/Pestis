@@ -56,6 +56,7 @@ namespace Players
                     if (selectedHorde.Player.IsLocal)
                     {
                         if (selectedHorde.InCombat) selectedHorde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 1;
+                        UI_manager.HordesListDisable();
                         UI_manager.InfoPanelEnable();
                     }
                      
@@ -87,6 +88,7 @@ namespace Players
             UI_manager.MutationPopUpDisable();
             UI_manager.MutationViewerDisable();
             UI_manager.ActionPanelDisable();
+            UI_manager.HordesListEnable();
         }
 
         public void MoveHorde(Vector2 target)

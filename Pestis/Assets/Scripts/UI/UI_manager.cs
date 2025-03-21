@@ -37,6 +37,9 @@ public class UI_Manager : MonoBehaviour
     public GameObject textPrefab;
     public GameObject startMenu;
     public GameObject tutorialButton;
+    public GameObject hordesListPanel;
+    public Transform hordesListContentParent;
+    public GameObject hordeButtonPrefab;
 
     public GameObject mutationButtonOne;
     public GameObject mutationButtonTwo;
@@ -121,6 +124,7 @@ public class UI_Manager : MonoBehaviour
                 if (toggle.isOn) GetSelectedHorde().SetCombatStrategy(toggleText);
             }
         }
+        
     }
 
     // Function to reset all referenced canvases to their default states to prevent UI clutter
@@ -137,12 +141,47 @@ public class UI_Manager : MonoBehaviour
         if (mutationViewer) MutationViewerDisable();
 
         if (actionPanel) ActionPanelDisable();
+        
+        if (hordesListPanel) HordesListDisable();
 
         // Ignoring the state of the tool bar, ensuring the default buttons are visible
         var toolbarButtons = GameObject.FindGameObjectsWithTag("UI_button_action");
         foreach (var obj in toolbarButtons) obj.GetComponent<Image>().enabled = true;
     }
 
+    public void HordesListEnable()
+    {
+        ResetUI();
+        if (hordesListPanel) hordesListPanel.SetActive(true);
+        if (!localPlayer) return;
+        foreach (Transform child in hordesListContentParent) Destroy(child.gameObject);
+        int count = 0;
+        foreach (var horde in localPlayer!.player.Hordes)
+        {
+            var hordeButton = Instantiate(hordeButtonPrefab, hordesListContentParent.transform);
+            hordeButton.GetComponentInChildren<TMP_Text>().text = "Horde " + count + "\n" +
+                                                        "Population: " + horde.AliveRats + "\n" +
+                                                        "No. mutations: " + horde.GetEvolutionState().AcquiredMutations.Count;
+            hordeButton.GetComponent<Button>().onClick.RemoveAllListeners();
+            hordeButton.GetComponent<Button>().onClick.AddListener(delegate {Camera.main.GetComponent<Panner>().PanTo(horde);});
+            count++;
+        }
+
+        StartCoroutine(RefreshHordeList());
+    }
+
+    IEnumerator RefreshHordeList()
+    {
+        yield return new WaitForSeconds(5);
+        HordesListDisable();
+        HordesListEnable();
+    }
+    
+    public void HordesListDisable()
+    {
+        if (hordesListPanel) hordesListPanel.SetActive(false);
+    }
+    
     public void ActionPanelEnable()
     {
         ResetUI();
