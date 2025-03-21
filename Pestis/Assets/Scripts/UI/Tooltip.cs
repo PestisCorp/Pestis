@@ -14,10 +14,11 @@ namespace UI
         
         public void OnPointerEnter(PointerEventData eventData)
         {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            Vector3 mousePos = Mouse.current.position.ReadValue();
             Debug.Log("Pointer Entered");
-            tooltipInstance = Instantiate(tooltipObject, mousePos, Quaternion.identity);
-            tooltipInstance.transform.position = mousePos;
+            tooltipInstance = Instantiate(tooltipObject);
+            tooltipInstance.transform.position =
+                new Vector2(mousePos.x + tooltipObject.GetComponent<RectTransform>().sizeDelta.x * 2, mousePos.y);
             tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = tooltipText;
             
         }

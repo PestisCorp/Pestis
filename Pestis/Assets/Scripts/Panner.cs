@@ -11,6 +11,7 @@ public class Panner : MonoBehaviour
 
     public void PanTo(HordeController horde)
     {
+        if (!horde) return;
         shouldPan = true;
         target.x = horde.GetBounds().center.x;
         target.y = horde.GetBounds().center.y;
