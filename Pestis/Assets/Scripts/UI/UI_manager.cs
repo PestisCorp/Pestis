@@ -446,7 +446,7 @@ public class UI_Manager : MonoBehaviour
             buttons[0].SetActive(true);
             buttons[1].SetActive(true);
             buttons[2].SetActive(true);
-            GameObject.FindGameObjectsWithTag("no_points")[0].SetActive(false);
+            if (GameObject.FindGameObjectWithTag("no_points")) GameObject.FindGameObjectWithTag("no_points").SetActive(false);
             var mutations = GetSelectedHorde().GetComponent<EvolutionManager>().RareEvolutionaryEvent();
             buttons[0].GetComponentInChildren<TMP_Text>().text = mutations.Item1.MutationName;
             buttons[0].GetComponent<Tooltip>().tooltipText = mutations.Item1.Tooltip;

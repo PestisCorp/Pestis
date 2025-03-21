@@ -85,7 +85,7 @@ namespace Players
             selectedEnemyHorde = null;
             UI_manager.InfoPanelDisable();
             UI_manager.MutationPopUpDisable();
-            UI_manager.MutationPopUpDisable();
+            UI_manager.MutationViewerDisable();
             UI_manager.ActionPanelDisable();
         }
 
