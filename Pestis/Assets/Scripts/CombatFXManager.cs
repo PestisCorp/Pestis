@@ -19,18 +19,24 @@ public class CombatFXManager : MonoBehaviour
 
     private void OnEnable()
     {
-        combatVFX.Play();
-        audioSource.Stop();
-        audioSource.clip = startCombatSound;
-        audioSource.Play();
+        if (HordeController.Player.IsLocal)
+        {
+            combatVFX.Play();
+            audioSource.Stop();
+            audioSource.clip = startCombatSound;
+            audioSource.Play();
+        }
     }
 
     private void OnDisable()
     {
-        combatVFX.Stop();
-        audioSource.Stop();
-        audioSource.clip = endCombatSound;
-        audioSource.Play();
+        if (HordeController.Player.IsLocal)
+        {
+            combatVFX.Stop();
+            audioSource.Stop();
+            audioSource.clip = endCombatSound;
+            audioSource.Play();
+        }
     }
 
     private Bounds GetIntersection(Bounds a, Bounds b)
