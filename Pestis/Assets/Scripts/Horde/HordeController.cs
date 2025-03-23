@@ -215,9 +215,16 @@ namespace Horde
                 else if (AliveRats > 0) // Move horde center slowly to avoid jitter due to center rat changing
                 {
                     if (InCombat && CurrentCombatController!.boids.containedHordes.Contains(this))
-                        HordeBounds = CurrentCombatController!.boids.GetBounds(this);
+                    {
+                        if (CurrentCombatController!.boids.hordeBounds.TryGetValue(this, out var newBounds))
+                            HordeBounds = newBounds;
+                        else
+                            HordeBounds = new Bounds(targetLocation.transform.position, Vector2.zero);
+                    }
                     else
+                    {
                         HordeBounds = boids.Bounds;
+                    }
                 }
                 else
                 {

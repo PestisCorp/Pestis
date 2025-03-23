@@ -112,25 +112,17 @@ POI: {FightingOver}
 ";
 
             _participatorsLock.WaitOne();
-            var b = new Bounds();
             foreach (var kvp in Participators)
             {
                 text += $"\n{kvp.Key}:";
-                foreach (var hordeID in kvp.Value.Hordes)
-                {
-                    Runner.TryFindBehaviour(hordeID, out HordeController horde);
-                    if (b.size == new Vector3()) b.center = horde.GetBounds().center;
-
-                    b.Encapsulate(horde.GetBounds());
-                    text += $"\n  {hordeID}";
-                }
+                foreach (var hordeID in kvp.Value.Hordes) text += $"\n  {hordeID}";
             }
 
             _participatorsLock.ReleaseMutex();
 
             Gizmos.color = Color.red;
-            Gizmos.DrawWireCube(b.center, b.size);
-            Handles.Label(new Vector3(b.center.x - b.extents.x, b.center.y + b.extents.y), text);
+            Gizmos.DrawWireCube(bounds.center, bounds.size);
+            Handles.Label(new Vector3(bounds.center.x - bounds.extents.x, bounds.center.y + bounds.extents.y), text);
         }
 #endif
 
@@ -138,7 +130,7 @@ POI: {FightingOver}
         {
             if (Participators.Count == 0 || !_initiated) return;
 
-            bounds = boids.GetBounds();
+            bounds = boids.bounds;
 
             List<HordeController> hordesToRemove = new();
             List<Player> playersToRemove = new();
@@ -441,6 +433,7 @@ POI: {FightingOver}
 
         public override void Spawned()
         {
+            if (HasStateAuthority) boids.local = true;
             boids.Start();
         }
 
