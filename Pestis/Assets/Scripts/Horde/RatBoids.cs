@@ -69,8 +69,6 @@ public class RatBoids : MonoBehaviour
 
     public int numBoids;
 
-    public bool local;
-
     private float[] _boundsArr;
     private ComputeBuffer _boundsBuffer;
 
@@ -125,6 +123,8 @@ public class RatBoids : MonoBehaviour
         rearrangeBoidsKernel;
 
     private float xBound, yBound;
+
+    public bool Local => hordeController.HasStateAuthority;
 
     public Bounds Bounds { private set; get; }
 
@@ -343,7 +343,7 @@ public class RatBoids : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!local) return;
+        if (!Local) return;
 
         if (numBoids == 0 || paused || !_started)
         {
