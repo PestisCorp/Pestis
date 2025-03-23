@@ -162,7 +162,7 @@ POI: {FightingOver}
 
             foreach (var horde in hordesToRemove)
             {
-                Debug.Log($"COMBAT: Removing horde {horde.Object.Id} from particpator");
+                Debug.Log($"COMBAT: Removing horde {horde.Object.Id} from participator");
                 var copy = Participators.Get(horde.Player);
                 copy.RemoveHorde(horde);
                 Participators.Set(horde.Player, copy);

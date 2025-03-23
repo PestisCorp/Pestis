@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Fusion;
 using Players;
 using UnityEngine;
@@ -9,12 +10,12 @@ namespace Networking
 {
     public struct PlayerSlot : INetworkStruct
     {
-        // Always set to the player who either controls the bot taking this slot, or takes up the slot themselves
+        /// Always set to the player who either controls the bot taking this slot, or takes up the slot themselves
         public PlayerRef PlayerRef;
 
         public NetworkBool IsBot;
 
-        // Network ID of Player's NetworkObject
+        /// Network ID of Player's NetworkObject
         public NetworkId PlayerId;
     }
 
@@ -143,6 +144,45 @@ namespace Networking
             Players.Set(playerSpawnIndex, player);
         }
 
+        private void SetSlotOwnerRpc(int playerIndex, RpcInfo info = default)
+        {
+            var slot = Players[playerIndex];
+            slot.PlayerRef = info.Source;
+            Players.Set(playerIndex, slot);
+        }
+
+        private void StealBot(int playerIndex)
+        {
+            if (Runner.TryFindObject(Players[playerIndex].PlayerId, out var botObj))
+            {
+                botObj.RequestStateAuthority();
+                SetSlotOwnerRpc(playerIndex);
+                Debug.Log($"Stole bot at player index {playerIndex}");
+            }
+            else
+            {
+                Debug.LogWarning("Failed to get bot object in order to steal it");
+            }
+        }
+
+        private void StealBots()
+        {
+            var numBots = Players.Count(slot => slot.IsBot);
+            var numClients = Players.Length - numBots + 1; // Plus one for ourselves
+            var botsPerClient = numBots / numClients;
+
+            var clientRefs = Players.Select(slot => slot.PlayerRef).Distinct().Where(x => x != Runner.LocalPlayer)
+                .ToArray();
+
+            var botsStolen = 0;
+            for (var i = 0; botsStolen < botsPerClient; i = (i + 1) % clientRefs.Length)
+            {
+                var index = Array.FindIndex(Players.ToArray(), slot => slot.PlayerRef == clientRefs[i] && slot.IsBot);
+                StealBot(index);
+                botsStolen++;
+            }
+        }
+
         public override void Spawned()
         {
             Instance = this;
@@ -166,6 +206,8 @@ namespace Networking
                 Runner.TryFindObject(BotSpawnIndices[spawnIndex], out var botObj);
                 var bot = botObj.GetComponent<Player>();
                 bot.DestroyBotRpc();
+
+                StealBots();
                 return;
             }
 

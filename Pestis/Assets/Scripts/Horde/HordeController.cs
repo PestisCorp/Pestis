@@ -510,9 +510,6 @@ Count: {AliveRats}
             Player.Hordes.Add(this);
             _combatStrategy = "Frontal Assault";
 
-            if (HasStateAuthority) // Ensure only the host assigns colors
-                boids.local = true;
-
             _selectionLightTerrain = transform.Find("SelectionLightTerrain").gameObject.GetComponent<Light2D>();
             _selectionLightPoi = transform.Find("SelectionLightPOI").gameObject.GetComponent<Light2D>();
             if (!Player.IsLocal)
