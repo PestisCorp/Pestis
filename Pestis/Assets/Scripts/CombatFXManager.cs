@@ -60,6 +60,6 @@ public class CombatFXManager : MonoBehaviour
 
     private Bounds getHordeBounds()
     {
-        return HordeController.CurrentCombatController.bounds;
+        return HordeController.CurrentCombatController.Bounds;
     }
 }
