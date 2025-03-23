@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Horde;
-using MoreLinq.Extensions;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -357,6 +356,14 @@ public class RatBoids : MonoBehaviour
         }
 
         _boundsBuffer.GetData(_boundsArr, 0, 0, 4);
+
+        if (_boundsArr[0] == 1024.0f)
+        {
+            Bounds = new Bounds(TargetPos, Vector2.zero);
+            boidShader.Dispatch(updateBoundsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
+            return;
+        }
+
         var extents = new Vector2(_boundsArr[2] - _boundsArr[0], _boundsArr[1] - _boundsArr[3]);
         var center = new Vector2(extents.x / 2.0f + _boundsArr[0], extents.y / 2.0f + _boundsArr[3]);
         Bounds = new Bounds(center, extents);
@@ -510,105 +517,6 @@ public class RatBoids : MonoBehaviour
         return boids.Any(boid => (new Vector2(boid.pos.x, boid.pos.y) - pos).sqrMagnitude < rangeSq);
     }
 
-
-    /// <summary>
-    ///     EXPENSIVE, should only be used by HordeController to update bounds each frame, otherwise you should get the bounds
-    ///     from the HordeController.
-    /// </summary>
-    /// <returns>Bounds encapsulating all rats in the horde</returns>
-    public Bounds GetBounds()
-    {
-        if (numBoids == 0) return new Bounds(TargetPos, Vector3.zero);
-
-        gridOffsetBuffer.GetData(offsetsTempArr, 0, 0, gridDimX * gridDimY);
-
-        var bottomLeft = Vector2.positiveInfinity;
-
-        // Find first non-empty row from bottom
-        for (var y = 0; y < gridDimY; y++)
-        {
-            var rowBoids = offsetsTempArr[(y + 1) * gridDimX - 1] - offsetsTempArr[y * gridDimX];
-            if (rowBoids == 0) continue;
-
-            // Setting boids (when we split a horde) messes up the offsets for one iteration
-            if (rowBoids > 4244857296) return new Bounds(TargetPos, Vector3.zero);
-
-            boidBufferOut.GetData(tempBoidsArr, 0, Convert.ToInt32(offsetsTempArr[y * gridDimX]),
-                Convert.ToInt32(rowBoids));
-
-            bottomLeft.y = tempBoidsArr.Slice(0, Convert.ToInt32(rowBoids)).Minima(boid => boid.pos.y).First().pos.y;
-            break;
-        }
-
-        // Find first non-empty column from left
-        for (var x = 0; x < gridDimX; x++)
-        {
-            var empty = true;
-
-            for (var y = 0; y < gridDimY; y++)
-            {
-                var cellBoids = offsetsTempArr[y * gridDimX + x] - (y == 0 ? 0 : offsetsTempArr[y * gridDimX + x - 1]);
-                if (cellBoids == 0) continue;
-
-                empty = false;
-
-                boidBufferOut.GetData(tempBoidsArr, 0,
-                    Convert.ToInt32(y == 0 ? 0 : offsetsTempArr[y * gridDimX + x - 1]),
-                    Convert.ToInt32(cellBoids));
-
-                bottomLeft.x = Mathf.Min(bottomLeft.x,
-                    tempBoidsArr.Slice(0, Convert.ToInt32(cellBoids)).Minima(boid => boid.pos.x).First().pos.x);
-            }
-
-            // Break once we've processed the first non-empty row
-            if (!empty) break;
-        }
-
-        var topRight = Vector2.negativeInfinity;
-
-        // Find first non-empty row from top
-        for (var y = gridDimY - 1; y >= 0; y--)
-        {
-            var rowBoids = offsetsTempArr[(y + 1) * gridDimX - 1] - offsetsTempArr[y * gridDimX];
-            if (rowBoids == 0) continue;
-
-            boidBufferOut.GetData(tempBoidsArr, 0, Convert.ToInt32(offsetsTempArr[y * gridDimX]),
-                Convert.ToInt32(rowBoids));
-
-            topRight.y = tempBoidsArr.Slice(0, Convert.ToInt32(rowBoids)).Maxima(boid => boid.pos.y).First().pos.y;
-            break;
-        }
-
-        // Find first non-empty column from right
-        for (var x = gridDimX - 1; x >= 0; x--)
-        {
-            var empty = true;
-
-            for (var y = 0; y < gridDimY; y++)
-            {
-                var cellBoids = offsetsTempArr[y * gridDimX + x] - (y == 0 ? 0 : offsetsTempArr[y * gridDimX + x - 1]);
-                if (cellBoids == 0) continue;
-
-                empty = false;
-
-                boidBufferOut.GetData(tempBoidsArr, 0,
-                    Convert.ToInt32(y == 0 ? 0 : offsetsTempArr[y * gridDimX + x - 1]),
-                    Convert.ToInt32(cellBoids));
-
-                topRight.x = Mathf.Max(topRight.x,
-                    tempBoidsArr.Slice(0, Convert.ToInt32(cellBoids)).Maxima(boid => boid.pos.x).First().pos.x);
-            }
-
-            // Break once we've processed the first non-empty row
-            if (!empty) break;
-        }
-
-        var center = bottomLeft + (topRight - bottomLeft) / 2.0f;
-        var size = topRight - bottomLeft;
-
-        Bounds = new Bounds(center, size);
-        return Bounds;
-    }
 
     /// <summary>
     ///     Get my boids back from a combat controller.

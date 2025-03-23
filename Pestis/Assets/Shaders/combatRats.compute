@@ -55,6 +55,8 @@ uniform float poiGridCellSize;
 uniform uint poiGridDimX;
 uniform uint poiGridDimY;
 
+RWStructuredBuffer<uint> bounds;
+
 uint getPOIGridID(Boid boid)
 {
     int x = floor(boid.pos.x / poiGridCellSize + poiGridDimX / 2);
@@ -233,4 +235,43 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
     // Update positions
     boid.pos += boid.vel * deltaTime;
     boidsOut[id.x] = boid;
+}
+
+#pragma kernel UpdateBounds
+[numthreads(blockSize, 1, 1)]
+void UpdateBounds(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= numBoids) return;
+
+    Boid boid = boidsIn[id.x];
+
+    int hordeBoundsIndex = boid.horde * 4;
+
+    float left = asfloat(bounds[hordeBoundsIndex]);
+    while (boid.pos.x < left)
+    {
+        InterlockedCompareStore(bounds[hordeBoundsIndex], asuint(left), asuint(boid.pos.x));
+        left = asfloat(bounds[hordeBoundsIndex]);
+    }
+
+    float top = asfloat(bounds[hordeBoundsIndex + 1]);
+    while (boid.pos.y > top)
+    {
+        InterlockedCompareStore(bounds[hordeBoundsIndex + 1], asuint(top), asuint(boid.pos.y));
+        top = asfloat(bounds[hordeBoundsIndex + 1]);
+    }
+
+    float right = asfloat(bounds[hordeBoundsIndex + 2]);
+    while (boid.pos.x > right)
+    {
+        InterlockedCompareStore(bounds[hordeBoundsIndex + 2], asuint(right), asuint(boid.pos.x));
+        right = asfloat(bounds[hordeBoundsIndex + 2]);
+    }
+
+    float bottom = asfloat(bounds[hordeBoundsIndex + 3]);
+    while (boid.pos.y < bottom)
+    {
+        InterlockedCompareStore(bounds[hordeBoundsIndex + 3], asuint(bottom), asuint(boid.pos.y));
+        bottom = asfloat(bounds[hordeBoundsIndex + 3]);
+    }
 }

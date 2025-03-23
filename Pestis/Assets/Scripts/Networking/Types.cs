@@ -26,6 +26,11 @@ namespace Networking
         {
             return value.compressed >= 0 ? value.compressed << 1 : -((value.compressed << 1) + 1);
         }
+
+        public override string ToString()
+        {
+            return ((uint)this).ToString();
+        }
     }
 
     [Serializable]
@@ -84,6 +89,9 @@ namespace Networking
 
         public static implicit operator Vector2CompRes10(Vector2 v2)
         {
+            if (v2.x < -RANGE || v2.x > RANGE || v2.y < -RANGE || v2.y > RANGE)
+                throw new OverflowException("Compressed Vector arguments were outside range.");
+
             var x = Convert.ToUInt32((v2.x + RANGE) * ENC);
             var y = Convert.ToUInt32((v2.y + RANGE) * ENC);
             return new Vector2CompRes10((x, y));
