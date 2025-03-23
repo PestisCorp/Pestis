@@ -9,6 +9,7 @@ using Players;
 using POI;
 using UnityEditor;
 using UnityEngine;
+using Bounds = Networking.Bounds;
 
 namespace Horde
 {
@@ -81,7 +82,16 @@ namespace Horde
         /// <summary>
         ///     Bounds of all *actively* participating hordes i.e. hordes which are dealing damage due to proximity.
         /// </summary>
-        public Bounds bounds { private set; get; }
+        [Networked]
+        private Bounds BoundsNetworked { set; get; }
+
+        public UnityEngine.Bounds Bounds
+        {
+            private set => BoundsNetworked = value;
+
+            get => BoundsNetworked;
+        }
+
 
         [Networked] private Player InitiatingPlayer { get; set; }
 
@@ -121,8 +131,8 @@ POI: {FightingOver}
             _participatorsLock.ReleaseMutex();
 
             Gizmos.color = Color.red;
-            Gizmos.DrawWireCube(bounds.center, bounds.size);
-            Handles.Label(new Vector3(bounds.center.x - bounds.extents.x, bounds.center.y + bounds.extents.y), text);
+            Gizmos.DrawWireCube(Bounds.center, Bounds.size);
+            Handles.Label(new Vector3(Bounds.center.x - Bounds.extents.x, Bounds.center.y + Bounds.extents.y), text);
         }
 #endif
 
@@ -130,7 +140,7 @@ POI: {FightingOver}
         {
             if (Participators.Count == 0 || !_initiated) return;
 
-            bounds = boids.bounds;
+            Bounds = boids.bounds;
 
             List<HordeController> hordesToRemove = new();
             List<Player> playersToRemove = new();
