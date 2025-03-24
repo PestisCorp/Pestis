@@ -172,6 +172,7 @@ public class UI_Manager : MonoBehaviour
     IEnumerator RefreshHordeList()
     {
         yield return new WaitForSeconds(5);
+        if (!hordesListPanel.activeSelf) yield break;
         HordesListDisable();
         HordesListEnable();
     }
