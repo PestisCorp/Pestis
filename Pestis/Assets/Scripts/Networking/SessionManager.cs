@@ -19,7 +19,7 @@ namespace Networking
         public NetworkId PlayerId;
     }
 
-    public class SessionManager : NetworkBehaviour
+    public class SessionManager : NetworkBehaviour, IPlayerLeft
     {
         private const int TARGET_PLAYERS = 50;
         public static SessionManager Instance;
@@ -27,22 +27,49 @@ namespace Networking
         public GameObject botPrefab;
         public GameObject playerPrefab;
 
-        [Networked] [Capacity(TARGET_PLAYERS)] private NetworkArray<int> PlayerSpawnIndices => default;
-
-        /// <summary>
-        ///     Mapping of spawn index to bot that spawned there
-        /// </summary>
-        [Networked]
-        [Capacity(TARGET_PLAYERS)]
-        private NetworkArray<NetworkId> BotSpawnIndices => default;
-
-
         /// <summary>
         ///     Each element corresponds to one bot,
         /// </summary>
         [Networked]
         [Capacity(TARGET_PLAYERS)]
         private NetworkArray<PlayerSlot> Players => default;
+
+        /// <summary>
+        ///     Called by Fusion when a player leaves
+        /// </summary>
+        /// <param name="player"></param>
+        public void PlayerLeft(PlayerRef player)
+        {
+            var botsNeedingStealing = Players.Select((slot, index) => new KeyValuePair<int, PlayerSlot>(index, slot))
+                .Where(kvp => kvp.Value.PlayerRef == player).ToList();
+            var clients = Players.Select(slot => slot.PlayerRef).Distinct().Where(p => p != player).ToArray();
+            for (var i = 0; botsNeedingStealing.Count != 0; i = (i + 1) % clients.Length)
+            {
+                if (botsNeedingStealing.Last().Value.IsBot)
+                {
+                    if (clients[i] == Runner.LocalPlayer) StealBot(botsNeedingStealing.Last().Key);
+                }
+                else if (clients[i] == Runner.LocalPlayer)
+                {
+                    // Replace left player with bot
+                    var spawnIndex = Players.ToList().IndexOf(botsNeedingStealing.Last().Value);
+                    var spawnPoint = CalcSpawnPositions()[spawnIndex];
+                    var bot = Runner.Spawn(botPrefab, spawnPoint, Quaternion.identity);
+                    var slot = new PlayerSlot
+                    {
+                        IsBot = true,
+                        PlayerRef = Runner.LocalPlayer,
+                        PlayerId = bot.Id
+                    };
+                    Players.Set(i, slot);
+                }
+
+                botsNeedingStealing.RemoveAt(botsNeedingStealing.Count - 1);
+            }
+
+
+            throw new NotImplementedException();
+        }
 
         /// Convert polar coordinates into Cartesian coordinates.
         private void PolarToCartesian(float r, float theta,
@@ -203,7 +230,7 @@ namespace Networking
             if (!HasStateAuthority)
             {
                 // Despawn the bot whose place we're taking
-                Runner.TryFindObject(BotSpawnIndices[spawnIndex], out var botObj);
+                Runner.TryFindObject(Players[spawnIndex].PlayerId, out var botObj);
                 var bot = botObj.GetComponent<Player>();
                 bot.DestroyBotRpc();
 
@@ -221,11 +248,10 @@ namespace Networking
                 var slot = new PlayerSlot
                 {
                     IsBot = true,
-                    PlayerRef = Object.StateAuthority,
+                    PlayerRef = Runner.LocalPlayer,
                     PlayerId = bot.Id
                 };
                 Players.Set(i, slot);
-                BotSpawnIndices.Set(i, bot.Id);
             }
         }
     }
