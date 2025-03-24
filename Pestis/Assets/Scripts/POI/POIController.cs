@@ -36,6 +36,8 @@ namespace POI
 
         [Networked] [CanBeNull] public CombatController Combat { get; private set; }
 
+        [Networked] public float TimeWhenPoiAbandoned { get; set; }
+
         public void Awake()
         {
             // Create a new GameObject for the icon
@@ -63,6 +65,15 @@ namespace POI
                 var flag = flagObject.AddComponent<Image>();
                 captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_uncaptured");
                 flag.sprite = captureFlag;
+            }
+        }
+
+        public override void FixedUpdateNetwork()
+        {
+            // Respawn human patrol if POI has not been controlled for a while
+            if (StationedHordes.Count == 0 && Runner.SimulationTime - TimeWhenPoiAbandoned > 500) 
+            {
+                patrolController.UpdateHumanCountRpc(patrolController.startingHumanCount);
             }
         }
 
@@ -157,6 +168,10 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         public void UnStationHordeRpc(HordeController horde, RpcInfo rpcInfo = default)
         {
             StationedHordes.Remove(horde);
+            if (StationedHordes.Count == 0)
+            {
+                TimeWhenPoiAbandoned = Runner.SimulationTime;
+            }
         }
 
         public override void Spawned()
