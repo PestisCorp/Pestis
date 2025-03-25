@@ -174,7 +174,7 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        medianHordeHealth = AllHordes.Select(horde => horde.TotalHealth).Median();
         AllHordes = Players.SelectMany(player => player.Hordes).ToList();
+        medianHordeHealth = AllHordes.Select(horde => horde.TotalHealth).Median();
     }
 }

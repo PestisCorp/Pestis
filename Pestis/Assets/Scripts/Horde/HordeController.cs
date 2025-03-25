@@ -281,7 +281,7 @@ Count: {AliveRats}
                 if (_evolutionManager.GetEvolutionaryState().AcquiredEffects.Contains("unlock_septic_bite"))
                 {
                     var septicMult = _populationController.GetState().SepticMult;
-                    _populationController.SetSepticMult(septicMult * 1.005f);
+                    _populationController.SetSepticMult(septicMult * 1.0001f);
                 }
 
                 var enemyHordes =
@@ -295,12 +295,18 @@ Count: {AliveRats}
                         bonusDamage += CurrentCombatController.boids.totalDeathsPerHorde.GetValueOrDefault(this, 0) *
                                        0.1f;
 
-                    if (enemy.GetEvolutionState().AcquiredEffects.Contains("unlock_mentat"))
+                    if (enemy.GetEvolutionState().AcquiredEffects.Contains("unlock_mentat") 
+                        || enemy.GetEvolutionState().AcquiredEffects.Contains("unlock_eyeless"))
                     {
                         var random = Random.Range(0f, 1f);
                         if (random < 0.05) return;
                     }
 
+                    if (GetEvolutionState().AcquiredEffects.Contains("unlock_eyeless"))
+                    {
+                        var random = Random.Range(0f, 1f);
+                        if (random < 0.01) return;
+                    }
                     var damageToDeal = AliveRats / 50.0f * ((GetPopulationState().Damage
                                                                 * GetPopulationState().DamageMult
                                                                 * GetPopulationState().SepticMult + bonusDamage)
@@ -308,6 +314,11 @@ Count: {AliveRats}
                     enemy.DealDamageRpc(damageToDeal);
                     Player.TotalDamageDealt += damageToDeal;
                     if (enemy.isHedgehogged) DealDamageRpc(0.001f);
+                    if (enemy.GetEvolutionState().AcquiredEffects.Contains("unlock_blood_pocket"))
+                    {
+                        var random = Random.Range(0f, 1f);
+                        if (random < 0.05) DealDamageRpc(1f) ;
+                    }
                 }
             }
         }
@@ -860,6 +871,15 @@ Count: {AliveRats}
         public void DestroyHordeRpc()
         {
             Player.Hordes.Remove(this);
+            if (GetEvolutionState().AcquiredEffects.Contains("unlock_gods_mistake"))
+            {
+                foreach (var horde in Player.Hordes)
+                {
+                    horde.GetComponent<EvolutionManager>().PointsAvailable++;
+                    var icon = Resources.Load<Sprite>("UI_design/Emotes/evolution_emote");
+                    horde.AddSpeechBubble(icon);
+                }
+            }
             Runner.Despawn(Object);
         }
 

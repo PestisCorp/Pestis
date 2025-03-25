@@ -198,6 +198,23 @@ namespace Horde
                 if (effect == "unlock_necrosis")
                     _populationController.SetDamageReductionMult(_populationController.GetState().DamageReductionMult *
                                                                  1.2f);
+                if (effect == "unlock_farmer") _populationController.isAgriculturalist = true;
+                if (effect == "unlock_syndicalism")
+                {
+                    var hordesControlled = _hordeController.Player.Hordes.Count;
+                    var newState = new PopulationState
+                    {
+                        BirthRate = _populationController.GetState().BirthRate * 1.01 * hordesControlled,
+                        Damage = _populationController.GetState().Damage * 1.01f * hordesControlled,
+                        DamageMult = _populationController.GetState().DamageMult,
+                        DamageReduction = _populationController.GetState().DamageReduction * 1.01f * hordesControlled,
+                        DamageReductionMult = _populationController.GetState().DamageReductionMult,
+                        DeathRate = _populationController.GetState().DeathRate,
+                        HealthPerRat = _populationController.GetState().HealthPerRat * 1.01f * hordesControlled,
+                        SepticMult = _populationController.GetState().SepticMult
+                    };
+                    _populationController.SetState(newState);
+                }
             }
 
             if ((_evolutionaryState.AcquiredEffects.Contains("unlock_fester") && mutation.MutationTag == "disease") ||
@@ -207,12 +224,12 @@ namespace Horde
                 {
                     BirthRate = _populationController.GetState().BirthRate * 1.1,
                     Damage = _populationController.GetState().Damage * 1.1f,
-                    DamageMult = _populationController.GetState().DamageMult * 1.1f,
+                    DamageMult = _populationController.GetState().DamageMult,
                     DamageReduction = _populationController.GetState().DamageReduction * 1.1f,
-                    DamageReductionMult = _populationController.GetState().DamageReductionMult * 1.1f,
-                    DeathRate = _populationController.GetState().DeathRate * 1.1,
+                    DamageReductionMult = _populationController.GetState().DamageReductionMult,
+                    DeathRate = _populationController.GetState().DeathRate,
                     HealthPerRat = _populationController.GetState().HealthPerRat * 1.1f,
-                    SepticMult = _populationController.GetState().SepticMult * 1.1f
+                    SepticMult = _populationController.GetState().SepticMult
                 };
                 _populationController.SetState(newState);
             }
@@ -257,7 +274,7 @@ namespace Horde
             // Initialise all the passive mutations
             _mutationClock.Start();
             _evolutionaryState.PassiveEvolutions["attack"] =
-                new[] { 0.03, _populationController.GetState().Damage, 2.0 };
+                new[] { 0.03, _populationController.GetState().Damage, 1.2 };
             _evolutionaryState.PassiveEvolutions["health"] =
                 new[] { 0.03, _populationController.GetState().HealthPerRat, 20.0 };
             _evolutionaryState.PassiveEvolutions["defense"] =
@@ -278,7 +295,7 @@ namespace Horde
                 new[] { 0.01, _populationController.GetState().BirthRate, 0.1 };
             //_evolutionaryState.PassiveEvolutions["resource consumption"] = new []{ 0.0005, _hordeController.Player.CheeseIncrementRate };
             // Need to change the default values for rate, and strength of evolutions to referring to values in PC.State (for horde split reasons)
-            _evolutionaryState.PassiveEvolutions["rare mutation rate"] = new[] { 0.01, 5, 1 };
+            _evolutionaryState.PassiveEvolutions["rare mutation rate"] = new[] { 0.01, 40, 20 };
         }
 
         private void CreateActiveEvolutions()
@@ -329,14 +346,17 @@ namespace Horde
                   _evolutionaryState.PassiveEvolutions["rare mutation rate"][1]) ||
                 _hordeController.Player.Type != 0) return;
             PointsAvailable++;
-            if (GameManager.Instance.UIManager.mutationPopUp.activeSelf)
+            if (GameManager.Instance.UIManager.mutationPopUp.activeSelf &&
+                _hordeController.Player.GetHumanPlayer().selectedHorde!.Id == _hordeController.Id)
             {
-                GameObject.FindGameObjectWithTag("mutation_points").GetComponent<TextMeshProUGUI>().text =
-                    PointsAvailable + "pts";
                 if (PointsAvailable == 1)
                 {
                     GameManager.Instance.UIManager.MutationPopUpDisable();
                     GameManager.Instance.UIManager.MutationPopUpEnable();
+                }
+                else
+                {
+                    GameObject.FindGameObjectWithTag("mutation_points").GetComponent<TextMeshProUGUI>().text = PointsAvailable + "pts";
                 }
             }
             var icon = Resources.Load<Sprite>("UI_design/Emotes/evolution_emote");

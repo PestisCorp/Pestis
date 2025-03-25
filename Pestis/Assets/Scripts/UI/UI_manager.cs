@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Horde;
@@ -615,22 +616,28 @@ public class UI_Manager : MonoBehaviour
             button.GetComponentInChildren<TextMeshProUGUI>().text = mutation.Item1;
             var childrenWithTag = GetComponentsInChildrenWithTag<Image, Button>(button, "UI_cooldown_bar");
             foreach (var child in childrenWithTag) child.GetComponent<Image>().enabled = true;
-            switch (mutation.Item1)
+            Enum.TryParse(mutation.Item1.Replace(" ", ""), out Abilities ability);
+            switch (ability)
             {
-                case "Pestis":
+                case Abilities.Pestis:
                     button.onClick.AddListener(delegate { abilityController.UsePestis(button); });
                     break;
-                case "Sewer Dwellers":
+                case Abilities.SewerDwellers:
                     button.onClick.AddListener(delegate { abilityController.UseSewerDwellers(button); });
                     break;
-                case "Poltergeist":
+                case Abilities.Poltergeist:
                     button.onClick.AddListener(delegate { abilityController.UsePoltergeist(button); });
                     break;
-                case "Apparition":
+                case Abilities.Apparition:
                     button.onClick.AddListener(delegate { abilityController.UseApparition(button); });
                     break;
+                case Abilities.MAD:
+                    button.onClick.AddListener(delegate { abilityController.UseMAD(button); });
+                    break;
+                case Abilities.Corpsebloom:
+                    button.onClick.AddListener(delegate { abilityController.UseCorpseBloom(button); });
+                    break;
             }
-
             var tooltip = button.GetComponent<Tooltip>();
             if (tooltip) tooltip.enabled = true;
             tooltip.tooltipText = mutation.Item2;
