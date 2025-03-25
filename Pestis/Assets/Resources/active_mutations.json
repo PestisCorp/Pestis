@@ -58,7 +58,7 @@
 		"MutationTag": "psionic",
 		"MutationWeight": 10,
 		"Effects": ["unlock_haunt"],
-		"Tooltip": "When a rat you control dies, traumatise your enemies.",
+		"Tooltip": "Gain damage reduction when your rats die in combat.",
 		"MutationUse": "defensive",
 		"IsAbility": false
 	},

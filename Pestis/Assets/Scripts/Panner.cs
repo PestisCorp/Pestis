@@ -7,15 +7,13 @@ public class Panner : MonoBehaviour
 
     public bool shouldPan = false;
     private const float TimeToMove = 1f;
-    public Vector3 target;
+    private HordeController _target;
 
     public void PanTo(HordeController horde)
     {
         if (!horde) return;
         shouldPan = true;
-        target.x = horde.GetBounds().center.x;
-        target.y = horde.GetBounds().center.y;
-        target.z = -1;
+        _target = horde;
     }
     
     // Update is called once per frame
@@ -23,8 +21,10 @@ public class Panner : MonoBehaviour
     {
         if (shouldPan)
         {
-            transform.position = Vector3.Lerp(transform.position, target, Time.deltaTime / TimeToMove);
-            if (Vector3.Distance(transform.position, target) < 1f)
+            var center = _target.GetBounds().center;
+            var targetPosition = new Vector3(center.x, center.y, -1);
+            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime / TimeToMove);
+            if (Vector3.Distance(transform.position, targetPosition) < 1f)
             {
                 shouldPan = false;
             }

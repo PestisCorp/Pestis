@@ -94,12 +94,13 @@ namespace Horde
             foreach (var poi in _hordeController.Player.ControlledPOIs)
             {
                 if (!poi.gameObject.name.Contains("City")) continue;
+                if (Vector2.Distance(poi.Collider.bounds.center, _hordeController.GetBounds().center) > 50f) continue;
                 if (!poi.Collider.bounds.Contains(_hordeController.GetBounds().center)) continue;
                 travelFrom = poi;
                 break;
             }
             
-            if (travelFrom == null)
+            if (!travelFrom)
             {
                 FindFirstObjectByType<UI_Manager>().AddNotification("You are not near a city that you control!", Color.red);
                 return;
@@ -110,7 +111,7 @@ namespace Horde
             {
                 if (!poi.gameObject.name.Contains("City")) continue;
                 if (poi.GetHashCode() == travelFrom.GetHashCode()) continue;
-                if (travelTo == null)
+                if (!travelTo)
                 {
                     travelTo = poi;
                 }
@@ -125,7 +126,7 @@ namespace Horde
                 }
             }
 
-            if (travelTo == null)
+            if (!travelTo)
             {
                 FindFirstObjectByType<UI_Manager>().AddNotification("You do not control any other cities!", Color.red);
                 return;
@@ -133,6 +134,7 @@ namespace Horde
             
             _hordeController.targetLocation.Teleport(travelTo.Collider.bounds.center);
             _hordeController.TeleportHordeRPC(travelTo.Collider.bounds.center);
+            Camera.main.GetComponent<Panner>().PanTo(_hordeController);
             StartCoroutine(Cooldown(60, calledBy, "Sewer Dwellers"));
 
         }

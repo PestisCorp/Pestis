@@ -690,11 +690,5 @@ public class RatBoids : MonoBehaviour
 
         boidBuffer.SetData(tempBoidsArr, 0, 0, numBoids);
         boidBufferOut.SetData(tempBoidsArr, 0, 0, numBoids);
-
-        var panner = FindFirstObjectByType<Panner>();
-        panner.target.x = newHordeCenter.x;
-        panner.target.y = newHordeCenter.y;
-        panner.target.z = -1;
-        panner.shouldPan = true;
     }
 }

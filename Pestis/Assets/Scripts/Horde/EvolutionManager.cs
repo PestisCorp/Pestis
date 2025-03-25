@@ -96,7 +96,7 @@ namespace Horde
 
     public class EvolutionManager : NetworkBehaviour
     {
-        private const double PredispositionStrength = 1.01;
+        private const double PredispositionStrength = 1.005;
         private readonly Random _random = new();
 
         private EvolutionaryState _evolutionaryState;
@@ -226,7 +226,7 @@ namespace Horde
             if (_evolutionaryState.ActiveMutations.Count < 3) 
             {
                 GameManager.Instance.UIManager.AddNotification("This horde has acquired the maximum number of mutations." , _hordeColor);
-                _rareMutationClock.Stop();
+                _rareMutationClock.Reset();
             }
 
             PointsAvailable--;
