@@ -581,8 +581,9 @@ MonoBehaviour:
   ownIcon: {fileID: 0}
   speechBubble: {fileID: 0}
   _populationController: {fileID: 4419380376764164480}
+  _AliveRats:
+    compressed: 0
   _StationedAt: {fileID: 0}
-  _TargetPoi: {fileID: 0}
   _CurrentCombatController: {fileID: 0}
 --- !u!114 &4419380376764164480
 MonoBehaviour:
@@ -11910,10 +11911,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 3
   edgeMargin: 0.5
-  visualRange: 50
+  visualRange: 7
   minDistance: 0.8
   cohesionFactor: 1
-  separationFactor: 2
+  separationFactor: 20
   alignmentFactor: 0.5
   targetFactor: 2
   boidShader: {fileID: 7200000, guid: 9c4516c864c64285a3313ea819bbf605, type: 3}
@@ -11925,7 +11926,6 @@ MonoBehaviour:
   TargetPos: {x: 0, y: 0}
   paused: 0
   numBoids: 0
-  local: 0
 --- !u!222 &8096480468413857689
 CanvasRenderer:
   m_ObjectHideFlags: 0

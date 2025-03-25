@@ -39,7 +39,7 @@ namespace Horde
 
         // The maximum change in a population per network tick
         private const int MaxPopGrowth = 500;
-        public int initialPopulation = 20000;
+        public int initialPopulation = 1;
 
         private readonly Random _random = new();
 
