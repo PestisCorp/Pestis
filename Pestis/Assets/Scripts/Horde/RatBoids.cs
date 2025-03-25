@@ -343,6 +343,7 @@ public class RatBoids : MonoBehaviour
 
     private void FixedUpdate()
     {
+        return;
         if (!Local) return;
 
         if (numBoids == 0 || paused || !_started)

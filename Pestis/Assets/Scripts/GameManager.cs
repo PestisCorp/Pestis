@@ -155,6 +155,7 @@ public class GameManager : MonoBehaviour
 
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 0;
+        Debug.Log($"Supports gpu async: {SystemInfo.supportsAsyncCompute}");
     }
 
     private void Update()
@@ -166,10 +167,8 @@ public class GameManager : MonoBehaviour
             fpsIndex++;
 
         currentFps = 60.0f / fpsWindow.Sum();
-#if UNITY_EDITOR
         fpsText.text = $"FPS: {currentFps}";
         boidText.text = $"Boids: {Players.Sum(player => player.Hordes.Sum(horde => horde.AliveRats))}";
-#endif
     }
 
     private void FixedUpdate()
