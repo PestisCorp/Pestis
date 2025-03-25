@@ -35,11 +35,11 @@ namespace Horde
     public class PopulationController : NetworkBehaviour
     {
         // Soft population limit, should be extremely difficult for the player to grow beyond this, but still possible
-        private const int PopMax = 1000;
+        private const int PopMax = 999999999;
 
         // The maximum change in a population per network tick
-        private const int MaxPopGrowth = 3;
-        public int initialPopulation = 5;
+        private const int MaxPopGrowth = 500;
+        public int initialPopulation = 20000;
 
         private readonly Random _random = new();
 

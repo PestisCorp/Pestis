@@ -30,7 +30,7 @@ namespace Players
         public GameObject hordePrefab;
 
 
-        [SerializeField] private float cheeseConsumptionRate = 0.001f; // k value
+        [SerializeField] private float cheeseConsumptionRate = 0.000f; // k value
 
         [DoNotSerialize] public double TotalDamageDealt;
 
@@ -234,7 +234,7 @@ namespace Players
             else if (CheeseIncrementRate > -0.005f && CheeseIncrementRate < 0.00) CheeseIncrementRate = 0.00f;
 
             // Prevent negative cheese values
-            CurrentCheese = Mathf.Max(0, CurrentCheese + CheeseIncrementRate);
+            CurrentCheese = 9000000000000000000; //Mathf.Max(0, CurrentCheese + CheeseIncrementRate);
         }
 
 
