@@ -277,7 +277,6 @@ public class RatBoids : MonoBehaviour
             // Don't exceed dead boids buffer
             deadBoidsCount = Math.Min(deadBoidsCount + numBoids - newNumBoids, deadBoids.count);
 
-
         if (boidBuffer.count < newNumBoids) ResizeBuffers(newNumBoids * 2);
 
         // Increase separation force the bigger the horde is.
@@ -343,7 +342,8 @@ public class RatBoids : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!Local) return;
+        if (!Local || hordeController.Id.Object.Raw % GameManager.Instance.recoverPerfLevel !=
+            GameManager.Instance.currentPerfBucket) return;
 
         if (numBoids == 0 || paused || !_started)
         {

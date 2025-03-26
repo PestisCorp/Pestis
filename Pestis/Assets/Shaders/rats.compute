@@ -104,32 +104,19 @@ void MergedBehaviours(inout Boid boid, uint3 id)
         // Loop boids in left, center, right grid cells
         for (uint i = start; i < end; i++)
         {
-            if (i == id.x) { continue; }
             Boid other = boidsIn[i];
-            if (other.dead) // Don't change behaviour because of corpses
+            if (other.dead || i == id.x) // Don't change behaviour because of corpses
             {
                 continue;
             }
             float2 diff = boid.pos - other.pos;
-            float distSq = dot(diff, diff);
+            // To never be 0
+            float distSq = dot(diff, diff) + 0.001;
 
-            if (distSq > 0 && distSq < visualRangeSq)
-            {
-                if (distSq < minDistanceSq)
-                {
-                    close += diff / distSq;
-                }
-                else
-                {
-                    center += other.pos;
-                    avgVel += other.vel;
-                    neighbours++;
-                }
-            }
-            else if (distSq == 0)
-            {
-                close += float2(id.x, id.x);
-            }
+            close += (diff / distSq) * (-sign(distSq - minDistanceSq) + 0.99f);
+
+            avgVel += other.vel;
+            neighbours++;
         }
     }
 
@@ -149,29 +136,23 @@ void MergedBehaviours(inout Boid boid, uint3 id)
             float2 diff = boid.pos - other.Pos;
             float distSq = dot(diff, diff);
 
-            if (distSq > 0 && distSq < visualRangeSq)
+            if (distSq > 0 && distSq < other.RadiusSQ)
             {
-                if (distSq < other.RadiusSQ)
-                {
-                    poiClose += diff / distSq;
-                }
+                poiClose += diff / distSq;
             }
         }
-    }
-
-    if (neighbours > 0)
-    {
-        center /= neighbours;
-        avgVel /= neighbours;
-
-        boid.vel += (center - boid.pos) * (cohesionFactor * deltaTime * turnSpeed);
-        boid.vel += (avgVel - boid.vel) * (alignmentFactor * deltaTime * turnSpeed);
     }
 
 
     boid.vel += normalize(targetPos - boid.pos) * (targetFactor * deltaTime * turnSpeed);
     boid.vel += close * (separationFactor * deltaTime * turnSpeed);
     boid.vel += poiClose * (50 * deltaTime * turnSpeed);
+
+    if (neighbours > 0)
+    {
+        avgVel /= neighbours;
+        boid.vel += (avgVel - boid.vel) * (alignmentFactor * deltaTime * turnSpeed);
+    }
 }
 
 void LimitSpeed(inout Boid boid)
