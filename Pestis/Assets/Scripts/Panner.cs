@@ -6,7 +6,7 @@ public class Panner : MonoBehaviour
 {
 
     public bool shouldPan = false;
-    private const float TimeToMove = 1f;
+    private const float TimeToMove = 0.5f;
     private HordeController _target;
 
     public void PanTo(HordeController horde)
