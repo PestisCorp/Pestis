@@ -1,11 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using ExitGames.Client.Photon.StructWrapping;
 using Fusion;
 using Human;
-using Players;
 using POI;
 using UI;
 using UnityEngine;
@@ -27,6 +24,9 @@ namespace Horde
     
     public class AbilityController : NetworkBehaviour
     {
+        public int abilityHaste;
+        public bool feared;
+        public bool forceCooldownRefresh;
         private HordeController _hordeController;
         private PopulationController _populationController;
         public int abilityHaste = 0;
@@ -37,33 +37,32 @@ namespace Horde
             HashSet<HordeController> affectedHordes = new HashSet<HordeController>();
             var players = GameManager.Instance.Players;
             foreach (var player in players)
+            foreach (var horde in player.Hordes)
             {
-                foreach (var horde in player.Hordes)
+                if (_hordeController.Player.Hordes.Contains(horde)) continue;
+                var dist = Vector2.Distance(horde.GetBounds().center, _hordeController.GetBounds().center);
+                if (dist < 20f)
                 {
-                    if (_hordeController.Player.Hordes.Contains(horde)) continue;
-                    var dist =Vector2.Distance(horde.GetBounds().center, _hordeController.GetBounds().center);
-                    if (dist < 20f)
-                    {
-                        affectedHordes.Add(horde);
-                        var populationController = horde.GetComponent<PopulationController>();
-                        float damageReductionMult = horde.GetPopulationState().DamageReductionMult * 1.3f;
-                        populationController.SetDamageReductionMult(damageReductionMult);
-                        StartCoroutine(RemovePestisAfterDelayRat(populationController));
-                    }
+                    affectedHordes.Add(horde);
+                    var populationController = horde.GetComponent<PopulationController>();
+                    var damageReductionMult = horde.GetPopulationState().DamageReductionMult * 1.3f;
+                    populationController.SetDamageReductionMult(damageReductionMult);
+                    StartCoroutine(RemovePestisAfterDelayRat(populationController));
                 }
             }
-            
-            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(_hordeController.GetBounds().center, 20f);
-            HashSet<HumanController> affectedHumans = new HashSet<HumanController>();
+
+            var hitColliders = Physics2D.OverlapCircleAll(_hordeController.GetBounds().center, 20f);
+            var affectedHumans = new HashSet<HumanController>();
             foreach (var col in hitColliders)
             {
-                HumanController affectedHuman = col.GetComponentInParent<HumanController>();
+                var affectedHuman = col.GetComponentInParent<HumanController>();
                 if (affectedHuman && affectedHumans.Add(affectedHuman))
                 {
                     affectedHuman.SetRadius(affectedHuman.GetRadius() + 10.0f);
                     StartCoroutine(RemovePestisAfterDelayHuman(affectedHuman));
                 }
             }
+
             if (affectedHordes.Count == 0 && affectedHumans.Count == 0)
             {
                 FindFirstObjectByType<UI_Manager>().AddNotification("No enemies nearby!", Color.red);
@@ -72,15 +71,15 @@ namespace Horde
             _hordeController.TotalHealth = (int)Math.Ceiling(_hordeController.AliveRats * _populationController.GetState().HealthPerRat * 0.7);
             StartCoroutine(Cooldown(60, calledBy, Abilities.Pestis));
         }
-        
-        IEnumerator RemovePestisAfterDelayHuman(HumanController affectedHuman)
+
+        private IEnumerator RemovePestisAfterDelayHuman(HumanController affectedHuman)
         {
             yield return new WaitForSeconds(30f);
             if (affectedHuman)
                 affectedHuman.SetRadius(affectedHuman.GetRadius() - 10.0f);
         }
-        
-        IEnumerator RemovePestisAfterDelayRat(PopulationController affectedEnemy)
+
+        private IEnumerator RemovePestisAfterDelayRat(PopulationController affectedEnemy)
         {
             yield return new WaitForSeconds(30f);
             if (affectedEnemy)
@@ -101,10 +100,11 @@ namespace Horde
             
             if (!travelFrom)
             {
-                FindFirstObjectByType<UI_Manager>().AddNotification("You are not near a city that you control!", Color.red);
+                FindFirstObjectByType<UI_Manager>()
+                    .AddNotification("You are not near a city that you control!", Color.red);
                 return;
             }
-            
+
             POIController travelTo = null;
             foreach (var poi in _hordeController.Player.ControlledPOIs)
             {
@@ -118,10 +118,7 @@ namespace Horde
                 {
                     var dist = (travelFrom.Collider.bounds.center - travelTo.Collider.bounds.center).sqrMagnitude;
                     var newDist = (travelFrom.Collider.bounds.center - poi.Collider.bounds.center).sqrMagnitude;
-                    if (newDist < dist)
-                    {
-                        travelTo = poi;
-                    }
+                    if (newDist < dist) travelTo = poi;
                 }
             }
 
@@ -130,7 +127,7 @@ namespace Horde
                 FindFirstObjectByType<UI_Manager>().AddNotification("You do not control any other cities!", Color.red);
                 return;
             }
-            
+
             _hordeController.targetLocation.Teleport(travelTo.Collider.bounds.center);
             _hordeController.TeleportHordeRPC(travelTo.Collider.bounds.center);
             Camera.main.GetComponent<Panner>().PanTo(_hordeController);
@@ -145,7 +142,7 @@ namespace Horde
             StartCoroutine(RemovePoltergeist());
         }
 
-        IEnumerator RemovePoltergeist()
+        private IEnumerator RemovePoltergeist()
         {
             yield return new WaitForSeconds(5f);
             _populationController.SetDamageReductionMult(_populationController.GetState().DamageMult / 0.001f);
@@ -178,13 +175,10 @@ namespace Horde
             StartCoroutine(RemoveApparation(newHorde));
         }
 
-        IEnumerator RemoveApparation(HordeController apparition)
+        private IEnumerator RemoveApparation(HordeController apparition)
         {
             yield return new WaitForSeconds(20f);
-            while (apparition.InCombat)
-            {
-                yield return null;
-            }
+            while (apparition.InCombat) yield return null;
             if (apparition)
                 apparition.DestroyHordeRpc();
         }
@@ -245,7 +239,7 @@ namespace Horde
             calledBy.onClick.AddListener(delegate {FindFirstObjectByType<UI_Manager>().AddNotification(
                 $"{Enum.GetName(typeof(Abilities), ability)} is on cooldown!", Color.red);});
             var elapsedTime = 0.0f;
-            CooldownBar cooldownBar = calledBy.GetComponentInChildren<CooldownBar>();
+            var cooldownBar = calledBy.GetComponentInChildren<CooldownBar>();
             cooldownBar.current = 100;
             while (elapsedTime < duration - abilityHaste)
             {
@@ -257,8 +251,10 @@ namespace Horde
                     forceCooldownRefresh = false;
                     break;
                 }
+
                 yield return null;
             }
+
             calledBy.onClick.RemoveAllListeners();
             switch (ability)
             {
@@ -276,7 +272,7 @@ namespace Horde
                     break;
             }
         }
-        
+
         public override void Spawned()
         {
             _hordeController = GetComponent<HordeController>();

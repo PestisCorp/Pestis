@@ -2,6 +2,7 @@ using Horde;
 using JetBrains.Annotations;
 using Players;
 using POI;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -50,16 +51,10 @@ public class InputHandler : MonoBehaviour
             Vector2 oldTarget = _mainCamera.ScreenToWorldPoint(mouse.position.ReadValue());
             // _mainCamera.orthographicSize = Mathf.Clamp(_mainCamera.orthographicSize - scroll.y, 1, 50);
             if (scroll.y < 0)
-            {
-                _pixelPerfectCamera.refResolutionX *= 2;
-                if (_pixelPerfectCamera.refResolutionX > _maxX) _pixelPerfectCamera.refResolutionX = _maxX;
-                _pixelPerfectCamera.refResolutionY = (int)(_pixelPerfectCamera.refResolutionX * _aspectRatio);
-            }
+                _pixelPerfectCamera.assetsPPU /= 2;
             else
-            {
-                _pixelPerfectCamera.refResolutionX /= 2;
-                _pixelPerfectCamera.refResolutionY /= 2;
-            }
+                _pixelPerfectCamera.assetsPPU *= 2;
+            _pixelPerfectCamera.assetsPPU = math.clamp(_pixelPerfectCamera.assetsPPU, 16, 128);
 
             Vector2 newTarget = _mainCamera.ScreenToWorldPoint(mouse.position.ReadValue());
 
@@ -86,14 +81,10 @@ public class InputHandler : MonoBehaviour
             {
                 var horde = DidWeClickHorde(mousePosition);
                 if (horde)
-                {
                     LocalPlayer?.SelectHorde(horde);
-                }
 
                 else
-                {
                     LocalPlayer?.DeselectHorde();
-                }
             }
         }
 

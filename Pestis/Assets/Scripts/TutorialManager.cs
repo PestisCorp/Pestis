@@ -44,7 +44,7 @@ public class TutorialManager : MonoBehaviour
     {
         slidesIndex++;
         if(slidesIndex > (slides.Length - 1)) CloseTutorial();
-        DisplayTutorial();
+        else DisplayTutorial();
     }
 
     public void CloseTutorial()

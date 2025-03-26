@@ -51,6 +51,7 @@ public class UI_Manager : MonoBehaviour
     public GameObject noPointsWarning;
     
     public Transform abilityPanel;
+
     // References to the resource text fields
     public TextMeshProUGUI cheeseRateText;
 
@@ -59,12 +60,12 @@ public class UI_Manager : MonoBehaviour
     public GameObject notification;
     public float displayTime = 3f;
     public float fadeDuration = 1f;
+
+    public readonly Dictionary<HordeController, GameObject> AbilityBars = new();
     private readonly Queue<(string, Color)> messages = new();
     private bool _messageActive;
     private Image _notificationBackground;
     private TMP_Text _notificationText;
-    
-    public readonly Dictionary<HordeController, GameObject> AbilityBars = new();
 
 
     private void Awake()
@@ -86,23 +87,20 @@ public class UI_Manager : MonoBehaviour
 
         _notificationText = notification.GetComponentInChildren<TMP_Text>();
         _notificationBackground = notification.GetComponentInChildren<Image>();
-        
-
-
     }
 
     private void FixedUpdate()
     {
-        if (localPlayer )
+        if (localPlayer)
         {
-
             // Display cheese increment rate with a + sign and to 2 decimal places
             if (cheeseRateText)
             {
                 var cheeseRate = localPlayer!.player.CheesePerSecond;
-                cheeseRateText.text = (cheeseRate >= 0 ? "+" + cheeseRate.ToString("F2") : cheeseRate.ToString("F2")) + "/s";
+                cheeseRateText.text = (cheeseRate >= 0 ? "+" + cheeseRate.ToString("F2") : cheeseRate.ToString("F2")) +
+                                      "/s";
             }
-            
+
             if (localPlayer.player.Score != null) timer.UpdateScore(localPlayer.player.Score);
 
             if (localPlayer.player.Timer != null) timer.UpdateTimer(localPlayer.player.Timer);
@@ -401,7 +399,7 @@ public class UI_Manager : MonoBehaviour
             var population = horde.AliveRats;
 
             //Change the max value of the slider to the population of the horde
-            slider.GetComponent<Slider>().maxValue = population;
+            slider.GetComponent<Slider>().maxValue = (uint)population;
 
             maxPopText.GetComponentInChildren<TextMeshProUGUI>().text = population.ToString();
         }
@@ -580,10 +578,7 @@ public class UI_Manager : MonoBehaviour
 
 
                 var childrenWithTag = GetComponentsInChildrenWithTag<Image, Button>(button, "UI_cooldown_bar");
-                foreach (var child in childrenWithTag)
-                {
-                    child.GetComponent<Image>().enabled = false;
-                }
+                foreach (var child in childrenWithTag) child.GetComponent<Image>().enabled = false;
 
                 var tooltip = button.GetComponent<Tooltip>();
                 if (tooltip)
