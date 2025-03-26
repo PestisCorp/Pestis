@@ -10,7 +10,6 @@ using TMPro;
 using UnityEngine;
 using Random = System.Random;
 
-// TODO: Change AcquiredMutations to a HashSet.
 
 
 namespace Horde

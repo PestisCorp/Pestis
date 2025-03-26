@@ -357,7 +357,7 @@ public class UI_Manager : MonoBehaviour
             var hordeState = horde.GetPopulationState();
             var population = horde.AliveRats.ToString();
             var attack = horde.GetPopulationState().Damage.ToString("F2");
-            var defense = hordeState.DamageReduction.ToString("F2");
+            var defense = (1 / hordeState.DamageReduction).ToString("F2");
             var health = horde.TotalHealth;
 
             var stats = "Population: " + population + "\n" +
