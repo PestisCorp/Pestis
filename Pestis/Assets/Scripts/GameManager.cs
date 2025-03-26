@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     public Tilemap terrainMap;
     public List<Player> Players;
     public UI_Manager UIManager;
+
     /// <summary>
     ///     All POIs in the game, in no particular order
     /// </summary>
@@ -32,6 +33,16 @@ public class GameManager : MonoBehaviour
     public TMP_Text fpsText;
     public TMP_Text boidText;
     public float currentFps;
+
+    /// <summary>
+    ///     Increase the worse performance is to decrease frequency of some updates. Must not be zero, lowest is 1.
+    /// </summary>
+    public int recoverPerfLevel = 1;
+
+    /// <summary>
+    ///     Which perf bucket should currently be running
+    /// </summary>
+    public int currentPerfBucket;
 
     public float poiGridCellSize = 5;
     public int poiGridDimX;
@@ -155,6 +166,7 @@ public class GameManager : MonoBehaviour
 
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 0;
+        Debug.Log($"Async GPU support: {SystemInfo.supportsAsyncCompute}");
     }
 
     private void Update()
@@ -166,6 +178,13 @@ public class GameManager : MonoBehaviour
             fpsIndex++;
 
         currentFps = 60.0f / fpsWindow.Sum();
+
+        var instantaneousFPS = Mathf.FloorToInt(1.0f / Time.unscaledDeltaTime);
+        if (instantaneousFPS >= 30)
+            recoverPerfLevel = 1;
+        else
+            recoverPerfLevel = 30 - instantaneousFPS;
+
 #if UNITY_EDITOR
         fpsText.text = $"FPS: {currentFps}";
         boidText.text = $"Boids: {Players.Sum(player => player.Hordes.Sum(horde => horde.AliveRats))}";
@@ -174,7 +193,9 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        medianHordeHealth = AllHordes.Select(horde => horde.TotalHealth).Median();
         AllHordes = Players.SelectMany(player => player.Hordes).ToList();
+        medianHordeHealth = AllHordes.Select(horde => horde.TotalHealth).Median();
+
+        currentPerfBucket = Players.Count != 0 ? Players[0].Runner.Tick % recoverPerfLevel : 0;
     }
 }

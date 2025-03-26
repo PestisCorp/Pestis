@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Fusion;
 using Players;
 using UnityEngine;
@@ -9,16 +10,16 @@ namespace Networking
 {
     public struct PlayerSlot : INetworkStruct
     {
-        // Always set to the player who either controls the bot taking this slot, or takes up the slot themselves
+        /// Always set to the player who either controls the bot taking this slot, or takes up the slot themselves
         public PlayerRef PlayerRef;
 
         public NetworkBool IsBot;
 
-        // Network ID of Player's NetworkObject
+        /// Network ID of Player's NetworkObject
         public NetworkId PlayerId;
     }
 
-    public class SessionManager : NetworkBehaviour
+    public class SessionManager : NetworkBehaviour, IPlayerLeft
     {
         private const int TARGET_PLAYERS = 50;
         public static SessionManager Instance;
@@ -26,22 +27,49 @@ namespace Networking
         public GameObject botPrefab;
         public GameObject playerPrefab;
 
-        [Networked] [Capacity(TARGET_PLAYERS)] private NetworkArray<int> PlayerSpawnIndices => default;
-
-        /// <summary>
-        ///     Mapping of spawn index to bot that spawned there
-        /// </summary>
-        [Networked]
-        [Capacity(TARGET_PLAYERS)]
-        private NetworkArray<NetworkId> BotSpawnIndices => default;
-
-
         /// <summary>
         ///     Each element corresponds to one bot,
         /// </summary>
         [Networked]
         [Capacity(TARGET_PLAYERS)]
         private NetworkArray<PlayerSlot> Players => default;
+
+        /// <summary>
+        ///     Called by Fusion when a player leaves
+        /// </summary>
+        /// <param name="player"></param>
+        public void PlayerLeft(PlayerRef player)
+        {
+            var botsNeedingStealing = Players.Select((slot, index) => new KeyValuePair<int, PlayerSlot>(index, slot))
+                .Where(kvp => kvp.Value.PlayerRef == player).ToList();
+            var clients = Players.Select(slot => slot.PlayerRef).Distinct().Where(p => p != player).ToArray();
+            for (var i = 0; botsNeedingStealing.Count != 0; i = (i + 1) % clients.Length)
+            {
+                if (botsNeedingStealing.Last().Value.IsBot)
+                {
+                    if (clients[i] == Runner.LocalPlayer) StealBot(botsNeedingStealing.Last().Key);
+                }
+                else if (clients[i] == Runner.LocalPlayer)
+                {
+                    // Replace left player with bot
+                    var spawnIndex = Players.ToList().IndexOf(botsNeedingStealing.Last().Value);
+                    var spawnPoint = CalcSpawnPositions()[spawnIndex];
+                    var bot = Runner.Spawn(botPrefab, spawnPoint, Quaternion.identity);
+                    var slot = new PlayerSlot
+                    {
+                        IsBot = true,
+                        PlayerRef = Runner.LocalPlayer,
+                        PlayerId = bot.Id
+                    };
+                    Players.Set(i, slot);
+                }
+
+                botsNeedingStealing.RemoveAt(botsNeedingStealing.Count - 1);
+            }
+
+
+            throw new NotImplementedException();
+        }
 
         /// Convert polar coordinates into Cartesian coordinates.
         private void PolarToCartesian(float r, float theta,
@@ -143,6 +171,45 @@ namespace Networking
             Players.Set(playerSpawnIndex, player);
         }
 
+        private void SetSlotOwnerRpc(int playerIndex, RpcInfo info = default)
+        {
+            var slot = Players[playerIndex];
+            slot.PlayerRef = info.Source;
+            Players.Set(playerIndex, slot);
+        }
+
+        private void StealBot(int playerIndex)
+        {
+            if (Runner.TryFindObject(Players[playerIndex].PlayerId, out var botObj))
+            {
+                botObj.RequestStateAuthority();
+                SetSlotOwnerRpc(playerIndex);
+                Debug.Log($"Stole bot at player index {playerIndex}");
+            }
+            else
+            {
+                Debug.LogWarning("Failed to get bot object in order to steal it");
+            }
+        }
+
+        private void StealBots()
+        {
+            var numBots = Players.Count(slot => slot.IsBot);
+            var numClients = Players.Length - numBots + 1; // Plus one for ourselves
+            var botsPerClient = numBots / numClients;
+
+            var clientRefs = Players.Select(slot => slot.PlayerRef).Distinct().Where(x => x != Runner.LocalPlayer)
+                .ToArray();
+
+            var botsStolen = 0;
+            for (var i = 0; botsStolen < botsPerClient; i = (i + 1) % clientRefs.Length)
+            {
+                var index = Array.FindIndex(Players.ToArray(), slot => slot.PlayerRef == clientRefs[i] && slot.IsBot);
+                StealBot(index);
+                botsStolen++;
+            }
+        }
+
         public override void Spawned()
         {
             Instance = this;
@@ -163,9 +230,11 @@ namespace Networking
             if (!HasStateAuthority)
             {
                 // Despawn the bot whose place we're taking
-                Runner.TryFindObject(BotSpawnIndices[spawnIndex], out var botObj);
+                Runner.TryFindObject(Players[spawnIndex].PlayerId, out var botObj);
                 var bot = botObj.GetComponent<Player>();
                 bot.DestroyBotRpc();
+
+                StealBots();
                 return;
             }
 
@@ -179,11 +248,10 @@ namespace Networking
                 var slot = new PlayerSlot
                 {
                     IsBot = true,
-                    PlayerRef = Object.StateAuthority,
+                    PlayerRef = Runner.LocalPlayer,
                     PlayerId = bot.Id
                 };
                 Players.Set(i, slot);
-                BotSpawnIndices.Set(i, bot.Id);
             }
         }
     }
