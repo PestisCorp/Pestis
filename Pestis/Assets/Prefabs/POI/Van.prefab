@@ -982,6 +982,7 @@ GameObject:
   - component: {fileID: 4668771228012965489}
   - component: {fileID: -7118694052808421423}
   - component: {fileID: 9182480813729240789}
+  - component: {fileID: 7161531675218248414}
   m_Layer: 6
   m_Name: Van
   m_TagString: Untagged
@@ -1139,6 +1140,19 @@ MonoBehaviour:
   ratDPS: 0.5
   startingHumanCount: 3
   _CurrentHumanHealth: 0
+--- !u!114 &7161531675218248414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7727599578141111434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 526b142195d343c39a9184405f9ed5e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetworkObject: {fileID: 0}
 --- !u!1 &7965740167955942159
 GameObject:
   m_ObjectHideFlags: 0

@@ -190,7 +190,7 @@ namespace Players
                     hordes = Hordes.Select(horde => new HordeUpdate
                     {
                         id = horde.Object.Id.Raw,
-                        rats = (ulong)horde.AliveRats
+                        rats = horde.AliveRats
                     }).ToArray(),
                     pois = ControlledPOIs.Select(poi => new POIUpdate
                     {
@@ -220,7 +220,7 @@ namespace Players
 
 
             // Consume cheese
-            var totalRatsCount = Hordes.Select(horde => horde.AliveRats).Sum();
+            var totalRatsCount = Hordes.Select(horde => (int)horde.AliveRats).Sum();
 
             // Cheese consumption formula
             var cheeseConsumed = cheeseConsumptionRate * totalRatsCount;

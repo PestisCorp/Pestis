@@ -73,7 +73,7 @@ namespace Horde
         private double ResourceWeightGrowth()
         {
             return 1 + 2.5 *
-                (1.0 - Math.Exp(-(_hordeController.Player.CurrentCheese / _hordeController.AliveRats - 1)));
+                (1.0 - Math.Exp(-(_hordeController.Player.CurrentCheese / (uint)_hordeController.AliveRats - 1)));
         }
 
 
@@ -82,8 +82,8 @@ namespace Horde
         // W > 1 if R < P
         private double ResourceWeightDecline()
         {
-            if (_hordeController.Player.CurrentCheese >= _hordeController.AliveRats) return 1.0;
-            return Math.Exp(1.0 - _hordeController.Player.CurrentCheese / _hordeController.AliveRats);
+            if (_hordeController.Player.CurrentCheese >= (uint)_hordeController.AliveRats) return 1.0;
+            return Math.Exp(1.0 - _hordeController.Player.CurrentCheese / (uint)_hordeController.AliveRats);
         }
 
         // Calculate probability of population growth
