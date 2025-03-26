@@ -74,6 +74,8 @@ public class RatBoids : MonoBehaviour
 
     private bool _started;
 
+    private float _timeSinceVelUpdate;
+
     private bool _waitingForBounds;
     private int blocks;
 
@@ -113,7 +115,7 @@ public class RatBoids : MonoBehaviour
     private Vector2[] triangleVerts;
     private float turnSpeed;
 
-    private int updateBoidsKernel, generateBoidsKernel, updateBoundsKernel;
+    private int updateBoidsKernel, generateBoidsKernel, updateBoundsKernel, updatePositionsKernel;
 
     private int updateGridKernel,
         clearGridKernel,
@@ -152,7 +154,8 @@ public class RatBoids : MonoBehaviour
         gridShader = Instantiate(gridShader);
 
         // Get kernel IDs
-        updateBoidsKernel = boidShader.FindKernel("UpdateBoids");
+        updateBoidsKernel = boidShader.FindKernel("UpdateBoidsVelocity");
+        updatePositionsKernel = boidShader.FindKernel("UpdateBoidsPositions");
         updateBoundsKernel = boidShader.FindKernel("UpdateBounds");
         updateGridKernel = gridShader.FindKernel("UpdateGrid");
         clearGridKernel = gridShader.FindKernel("ClearGrid");
@@ -269,6 +272,47 @@ public class RatBoids : MonoBehaviour
     {
         if (AliveRats == 0 || paused) return;
 
+        _timeSinceVelUpdate += Time.deltaTime;
+
+        boidShader.SetFloat("positionDeltaTime", Time.deltaTime);
+        if (hordeController.Id.Object.Raw % GameManager.Instance.recoverPerfLevel !=
+            GameManager.Instance.currentPerfBucket)
+        {
+            // Clear indices
+            gridShader.Dispatch(clearGridKernel, blocks, 1, 1);
+
+            // Populate grid
+            gridShader.Dispatch(updateGridKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
+
+            // Generate Offsets (Prefix Sum)
+            // Offsets in each block
+            gridShader.Dispatch(prefixSumKernel, blocks, 1, 1);
+
+            // Offsets for sums of blocks
+            var swapInner = false;
+            for (var d = 1; d < blocks; d *= 2)
+            {
+                gridShader.SetBuffer(sumBlocksKernel, "gridSumsBufferIn", swapInner ? gridSumsBuffer : gridSumsBuffer2);
+                gridShader.SetBuffer(sumBlocksKernel, "gridSumsBuffer", swapInner ? gridSumsBuffer2 : gridSumsBuffer);
+                gridShader.SetInt("d", d);
+                gridShader.Dispatch(sumBlocksKernel, Mathf.CeilToInt(blocks / blockSize), 1, 1);
+                swapInner = !swapInner;
+            }
+
+            // Apply offsets of sums to each block
+            gridShader.SetBuffer(addSumsKernel, "gridSumsBufferIn", swapInner ? gridSumsBuffer : gridSumsBuffer2);
+            gridShader.Dispatch(addSumsKernel, blocks, 1, 1);
+
+            // Rearrange boids
+            gridShader.Dispatch(rearrangeBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
+
+            boidShader.Dispatch(updatePositionsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
+            // Actually draw the boids
+            Graphics.RenderPrimitives(rp, MeshTopology.Quads, numBoids * 4);
+            Graphics.RenderPrimitives(rpDead, MeshTopology.Quads, deadBoidsCount * 4);
+            return;
+        }
+
         previousNumBoids = numBoids;
         var newNumBoids = AliveRats;
 
@@ -282,7 +326,8 @@ public class RatBoids : MonoBehaviour
         // Increase separation force the bigger the horde is.
         boidShader.SetFloat("separationFactor", separationFactor);
 
-        boidShader.SetFloat("deltaTime", Time.deltaTime);
+        boidShader.SetFloat("velocityDeltaTime", _timeSinceVelUpdate);
+        _timeSinceVelUpdate = 0;
         // If I don't add something to it, the first time the shader accesses it in the shader it is NaN !?
         boidShader.SetFloats("targetPos", TargetPos.x, TargetPos.y);
         boidShader.SetFloat("targetPosX", TargetPos.x + 0.01f);
@@ -391,6 +436,8 @@ public class RatBoids : MonoBehaviour
     {
         boidShader.SetBuffer(updateBoidsKernel, "boidsIn", boidBufferOut);
         boidShader.SetBuffer(updateBoidsKernel, "boidsOut", boidBuffer);
+        boidShader.SetBuffer(updatePositionsKernel, "boidsIn", boidBufferOut);
+        boidShader.SetBuffer(updatePositionsKernel, "boidsOut", boidBuffer);
         boidShader.SetBuffer(updateBoidsKernel, "deadBoids", deadBoids);
         rp.matProps.SetBuffer("boids", boidBuffer);
         rp.matProps.SetBuffer("_Positions", trianglePositions);
