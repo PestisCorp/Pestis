@@ -46,7 +46,6 @@ namespace Players
                 if (selectedHorde && selectedHorde != horde)
                 {
                     selectedHorde.UnHighlight();
-                    selectedHorde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
                     
                 }
                 if (selectedHorde != horde)
@@ -55,7 +54,7 @@ namespace Players
                     selectedHorde?.Highlight();
                     if (selectedHorde.Player.IsLocal)
                     {
-                        if (selectedHorde.InCombat) selectedHorde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 1;
+                        UI_manager.HordesListDisable();
                         UI_manager.InfoPanelEnable();
                     }
                      
@@ -80,12 +79,13 @@ namespace Players
         {
             selectedHorde?.UnHighlight();
             selectedEnemyHorde?.UnHighlight();
-            if (selectedHorde) selectedHorde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
             selectedHorde = null;
             selectedEnemyHorde = null;
             UI_manager.InfoPanelDisable();
             UI_manager.MutationPopUpDisable();
+            UI_manager.MutationViewerDisable();
             UI_manager.ActionPanelDisable();
+            UI_manager.HordesListEnable();
         }
 
         public void MoveHorde(Vector2 target)

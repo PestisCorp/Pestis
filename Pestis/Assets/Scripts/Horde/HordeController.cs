@@ -54,7 +54,6 @@ namespace Horde
 
         public GameObject ratPrefab;
         public bool isHedgehogged;
-        public GameObject moraleAndFearInstance;
 
         // Do not use or edit yourself, used to expose internals to Editor
         [SerializeField] private int devToolsTotalRats;
@@ -92,8 +91,7 @@ namespace Horde
         [SerializeField] private PopulationController _populationController;
 
         private readonly Queue<Sprite> _speechBubbles = new();
-
-        private readonly List<CooldownBar> fearAndMoraleBars = new();
+        
 
         private float _aliveRatsRemainder;
 
@@ -466,41 +464,6 @@ Count: {AliveRats}
             StationedAt = null;
         }
 
-
-        public void IncreaseFear()
-        {
-            if (fearAndMoraleBars[0].name == "FearBar")
-            {
-                if (fearAndMoraleBars[0].current == 0) return;
-                fearAndMoraleBars[0].current -= 2;
-                if (fearAndMoraleBars[0].current != 0) return;
-                StartCoroutine(FearDebuff(fearAndMoraleBars[0]));
-            }
-            else
-            {
-                if (fearAndMoraleBars[1].current == 0) return;
-                fearAndMoraleBars[1].current -= 2;
-                if (fearAndMoraleBars[1].current != 0) return;
-                StartCoroutine(FearDebuff(fearAndMoraleBars[1]));
-            }
-        }
-
-        private IEnumerator FearDebuff(CooldownBar bar)
-        {
-            var icon = Resources.Load<Sprite>("UI_design/Emotes/traumatised_emote");
-            AddSpeechBubble(icon);
-            GetComponent<AbilityController>().feared = true;
-            var elapsedTime = 0.0f;
-            while (elapsedTime < 10f)
-            {
-                elapsedTime += Time.deltaTime;
-                bar.current = 0 + (int)(elapsedTime / 10 * bar.maximum);
-                yield return null;
-            }
-
-            GetComponent<AbilityController>().feared = false;
-        }
-
         public override void Spawned()
         {
             _populationController = GetComponent<PopulationController>();
@@ -544,14 +507,7 @@ Count: {AliveRats}
 
                 icon.sprite = iconSprite;
             }
-
-            moraleAndFearInstance = Instantiate(GameManager.Instance.UIManager.fearAndMorale);
-            moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
-            foreach (var bar in moraleAndFearInstance.GetComponentsInChildren<CooldownBar>())
-            {
-                bar.current = bar.maximum;
-                fearAndMoraleBars.Add(bar);
-            }
+            
 
             if (Player.IsLocal)
             {
@@ -699,7 +655,6 @@ Count: {AliveRats}
             _combatStrategy = combatOption;
             var icon = Resources.Load<Sprite>("UI_design/Emotes/attack_emote");
             AddSpeechBubble(icon);
-            moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 1;
             GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.CombatStarted, 1);
         }
 

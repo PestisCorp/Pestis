@@ -281,13 +281,6 @@ public class CombatBoids : MonoBehaviour
                 totalDeathsPerHorde[horde] += Math.Max(_previousNumBoids[horde] - numBoids[horde], 0);
             else
                 totalDeathsPerHorde[horde] = Math.Max(_previousNumBoids[horde] - numBoids[horde], 0);
-            for (var i = 0; i < _previousNumBoids[horde] - numBoids[horde]; i++)
-            {
-                horde.IncreaseFear();
-                if (horde.GetEvolutionState().AcquiredEffects.Contains("unlock_haunt"))
-                    foreach (var enemy in containedHordes.Where(enemy => enemy.Id != horde.Id))
-                        enemy.IncreaseFear();
-            }
         }
 
         // If there are any boids to kill

@@ -6,6 +6,7 @@ using Fusion;
 using KaimiraGames;
 using Newtonsoft.Json;
 using Objectives;
+using TMPro;
 using UnityEngine;
 using Random = System.Random;
 
@@ -217,12 +218,8 @@ namespace Horde
                     ? _evolutionaryState.TagCounts[mutation.MutationTag]++
                     : 0;
             if (mutation.IsAbility) _evolutionaryState.AcquiredAbilities.Add((mutation.MutationName, mutation.Tooltip));
-
-            if (mutation.MutationName.Contains("swim"))
-                GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.SwimmingUnlocked, 1);
-
-
-            if (_evolutionaryState.ActiveMutations.Count < 3)
+            
+            if (_evolutionaryState.ActiveMutations.Count < 3) 
             {
                 GameManager.Instance.UIManager.AddNotification(
                     "This horde has acquired the maximum number of mutations.", _hordeColor);
@@ -277,7 +274,7 @@ namespace Horde
                 new[] { 0.01, _populationController.GetState().BirthRate, 0.1 };
             //_evolutionaryState.PassiveEvolutions["resource consumption"] = new []{ 0.0005, _hordeController.Player.CheeseIncrementRate };
             // Need to change the default values for rate, and strength of evolutions to referring to values in PC.State (for horde split reasons)
-            _evolutionaryState.PassiveEvolutions["rare mutation rate"] = new[] { 0.01, 40, 20 };
+            _evolutionaryState.PassiveEvolutions["rare mutation rate"] = new[] { 0.01, 5, 1 };
         }
 
         private void CreateActiveEvolutions()
@@ -324,22 +321,23 @@ namespace Horde
                 _mutationClock.Restart();
             }
 
-            if (_rareMutationClock.ElapsedInSeconds >
-                _evolutionaryState.PassiveEvolutions["rare mutation rate"][1] &&
-                _hordeController.Player.Type == 0)
+            if (!(_rareMutationClock.ElapsedInSeconds >
+                  _evolutionaryState.PassiveEvolutions["rare mutation rate"][1]) ||
+                _hordeController.Player.Type != 0) return;
+            PointsAvailable++;
+            if (GameManager.Instance.UIManager.mutationPopUp.activeSelf)
             {
-                PointsAvailable++;
-                if (GameManager.Instance.UIManager.mutationPopUp.activeSelf ||
-                    GameManager.Instance.UIManager.mutationViewer.activeSelf)
+                GameObject.FindGameObjectWithTag("mutation_points").GetComponent<TextMeshProUGUI>().text =
+                    PointsAvailable + "pts";
+                if (PointsAvailable == 1)
                 {
                     GameManager.Instance.UIManager.MutationPopUpDisable();
                     GameManager.Instance.UIManager.MutationPopUpEnable();
                 }
-
-                var icon = Resources.Load<Sprite>("UI_design/Emotes/evolution_emote");
-                _hordeController.AddSpeechBubble(icon);
-                _rareMutationClock.Restart();
             }
+            var icon = Resources.Load<Sprite>("UI_design/Emotes/evolution_emote");
+            _hordeController.AddSpeechBubble(icon);
+            _rareMutationClock.Restart();
         }
     }
 }
