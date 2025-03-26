@@ -224,7 +224,7 @@ namespace Horde
                     BirthRate = _populationController.GetState().BirthRate * 1.1,
                     Damage = _populationController.GetState().Damage * 1.1f,
                     DamageMult = _populationController.GetState().DamageMult,
-                    DamageReduction = _populationController.GetState().DamageReduction * 1.1f,
+                    DamageReduction = _populationController.GetState().DamageReduction / 1.1f,
                     DamageReductionMult = _populationController.GetState().DamageReductionMult,
                     DeathRate = _populationController.GetState().DeathRate,
                     HealthPerRat = _populationController.GetState().HealthPerRat * 1.1f,
