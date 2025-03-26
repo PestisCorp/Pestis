@@ -24,9 +24,6 @@ namespace Horde
     
     public class AbilityController : NetworkBehaviour
     {
-        public int abilityHaste;
-        public bool feared;
-        public bool forceCooldownRefresh;
         private HordeController _hordeController;
         private PopulationController _populationController;
         public int abilityHaste = 0;
@@ -68,7 +65,9 @@ namespace Horde
                 FindFirstObjectByType<UI_Manager>().AddNotification("No enemies nearby!", Color.red);
                 return;
             }
-            _hordeController.TotalHealth = (int)Math.Ceiling(_hordeController.AliveRats * _populationController.GetState().HealthPerRat * 0.7);
+
+            
+            _hordeController.TotalHealth = (int)Math.Ceiling((int)_hordeController.AliveRats * _populationController.GetState().HealthPerRat * 0.7);
             StartCoroutine(Cooldown(60, calledBy, Abilities.Pestis));
         }
 
@@ -195,14 +194,14 @@ namespace Horde
                     var dist =Vector2.Distance(horde.GetBounds().center, _hordeController.GetBounds().center);
                     if (!(dist < 30)) continue;
                     affectedHordes.Add(horde);
-                    horde.TotalHealth = (int)Math.Ceiling(horde.AliveRats * horde.GetPopulationState().HealthPerRat * 0.2);
+                    horde.TotalHealth = (int)Math.Ceiling((int)horde.AliveRats * horde.GetPopulationState().HealthPerRat * 0.2);
 
                 }
             }
 
             if (affectedHordes.Count > 0)
             {
-                _hordeController.TotalHealth = (int)Math.Ceiling(_hordeController.AliveRats * _populationController.GetState().HealthPerRat * 0.2);
+                _hordeController.TotalHealth = (int)Math.Ceiling((int)_hordeController.AliveRats * _populationController.GetState().HealthPerRat * 0.2);
                 _hordeController.PopulationCooldown += 10;
             }
             else

@@ -126,7 +126,7 @@ namespace Horde
         /// </summary>
         public float lastInCombat { get; private set; }
 
-        [Networked] public IntPositive AliveRats { get; private set; }
+        [Networked] public IntPositive AliveRats { get; set; }
 
         /// <summary>
         ///     Will be slightly inaccurate if the client you're accessing this on isn't the horde's state authority

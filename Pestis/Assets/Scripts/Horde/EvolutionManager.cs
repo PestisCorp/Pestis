@@ -105,6 +105,7 @@ namespace Horde
         private Timer _mutationClock;
         private PopulationController _populationController;
         private Timer _rareMutationClock;
+        public int PointsAvailable = 0;
 
 
         // Set the rat stats in the Population Controller

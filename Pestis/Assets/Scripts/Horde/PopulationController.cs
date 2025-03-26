@@ -75,7 +75,7 @@ namespace Horde
             var w = 2.5;
             if (isAgriculturalist) w *= 1.2;
             return 1 + w *
-                (1.0 - Math.Exp(-(_hordeController.Player.CurrentCheese / _hordeController.AliveRats - 1)));
+                (1.0 - Math.Exp(-(_hordeController.Player.CurrentCheese / (uint)_hordeController.AliveRats - 1)));
         }
 
 
