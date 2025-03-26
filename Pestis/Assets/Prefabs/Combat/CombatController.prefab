@@ -82,7 +82,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 0.8
   edgeMargin: 0.5
-  visualRange: 50
+  visualRange: 10
   minDistance: 0.4
   cohesionFactor: 0
   separationFactor: 100
@@ -94,7 +94,11 @@ MonoBehaviour:
   deadBoidMat: {fileID: 2100000, guid: 5f6be8f0d010ed2ca8a5dda610fa09ee, type: 2}
   TargetPos: {x: 0, y: 0}
   paused: 0
+  local: 0
   containedHordes: []
+  bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!114 &1257265131422006064
 MonoBehaviour:
   m_ObjectHideFlags: 0
