@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Fusion;
 using Human;
+using Networking;
 using POI;
 using UI;
 using UnityEngine;
@@ -159,7 +160,7 @@ namespace Horde
                         // Ensure new horde spawns in at current location
                         NO.transform.position = _hordeController.GetBounds().center;
                         var horde = NO.GetComponent<HordeController>();
-                        horde.TotalHealth = _hordeController.TotalHealth;
+                        horde.AliveRats = new IntPositive((uint)_hordeController.AliveRats);
                         horde.SetPopulationState(populationState);
                         horde.SetPopulationInit(_hordeController.AliveRats);
                     })
@@ -168,6 +169,8 @@ namespace Horde
             _hordeController.CreateApparitionRPC(newHorde, newHorde.AliveRats);
             newHorde.SetEvolutionaryState(evolutionaryState.DeepCopy());
             newHorde.Move(_hordeController.targetLocation.transform.position - _hordeController.GetBounds().extents);
+            GameManager.Instance.UIManager.ActionPanelDisable();
+            GameManager.Instance.UIManager.ActionPanelEnable();
             
             
             StartCoroutine(Cooldown(120, calledBy, Abilities.Apparition));

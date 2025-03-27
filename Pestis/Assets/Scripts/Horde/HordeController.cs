@@ -520,7 +520,7 @@ Count: {AliveRats}
             }
             
 
-            if (Player.IsLocal)
+            if (Player.IsLocal && !isApparition)
             {
                 GameManager.Instance.UIManager.AbilityBars[this] =
                     Instantiate(GameManager.Instance.UIManager.abilityToolbar,

@@ -157,11 +157,13 @@ public class UI_Manager : MonoBehaviour
         if (hordesListPanel) hordesListPanel.SetActive(true);
         if (!localPlayer) return;
         foreach (Transform child in hordesListContentParent) Destroy(child.gameObject);
-        int count = 0;
+        int count = 1;
         foreach (var horde in localPlayer!.player.Hordes)
         {
             var hordeButton = Instantiate(hordeButtonPrefab, hordesListContentParent.transform);
-            hordeButton.GetComponentInChildren<TMP_Text>().text = "Horde " + count + "\n" +
+            var hordeName = count.ToString();
+            if (horde.isApparition) hordeName += " (Apparition)";
+            hordeButton.GetComponentInChildren<TMP_Text>().text = "Horde No.: " + hordeName + "\n" +
                                                         "Population: " + horde.AliveRats + "\n" +
                                                         "No. mutations: " + horde.GetEvolutionState().AcquiredMutations.Count;
             hordeButton.GetComponent<Button>().onClick.RemoveAllListeners();
