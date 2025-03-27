@@ -593,6 +593,8 @@ Count: {AliveRats}
             CurrentCombatController = null;
             _attackingPatrol = null;
 
+            if (player.IsLocal) GameManager.Instance.PlaySfx(SoundEffectType.BattleEnd);
+
             var baseCamp = transform.parent.position;
             if (player.ControlledPOIs.Count != 0)
             {
@@ -805,6 +807,7 @@ Count: {AliveRats}
         public void EventJoinedCombatRpc(CombatController combat)
         {
             CurrentCombatController = combat;
+            if (player.IsLocal) GameManager.Instance.PlaySfx(SoundEffectType.BattleStart);
         }
 
         public PopulationState GetPopulationState()
