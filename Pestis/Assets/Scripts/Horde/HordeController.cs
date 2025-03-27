@@ -13,6 +13,8 @@ using Players;
 using POI;
 using TMPro;
 using Unity.Mathematics;
+using UI;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -74,6 +76,7 @@ namespace Horde
         public float populationCooldown;
 
         [SerializeField] private GameObject speechBubble;
+        [SerializeField] private Image speechBubbleImage;
 
         /// <summary>
         ///     Location rats are trying to get to, synced across network
@@ -364,14 +367,20 @@ Count: {AliveRats}
         {
             if (_speechBubbles.Count == 0) yield break;
             _speechBubbleActive = true;
+            speechBubbleImage.enabled = true;
             var type = _speechBubbles.Dequeue();
             _speechBubbleImage.sprite = EmoteSprites[type];
             yield return new WaitForSeconds(5f);
-            _speechBubbleImage.sprite = null;
+            speechBubbleImage.sprite = null;
             if (_speechBubbles.Count > 0)
                 StartCoroutine(ShowSpeechBubble());
             else
+            {
                 _speechBubbleActive = false;
+                speechBubbleImage.enabled = false;
+            }
+                
+            
         }
 
         /// <summary>
@@ -507,6 +516,7 @@ Count: {AliveRats}
             _combatText = transform.Find("Canvas/PlayerName/Combat").gameObject;
 
             var text = _playerText.transform.Find("Border/Background/Text").GetComponent<TMP_Text>();
+            var textBackground = _playerText.transform.Find("Border/Background").GetComponent<Image>();
 
             text.text = player.Username;
             hordeIcon = transform.Find("Canvas/PlayerName/HordeIcon").gameObject;
@@ -514,44 +524,39 @@ Count: {AliveRats}
 
 
             speechBubble = transform.Find("Canvas/PlayerName/SpeechBubble").gameObject;
+            speechBubbleImage = speechBubble.GetComponentInChildren<Image>();
+            speechBubbleImage.enabled = false;
 
             if (player.IsLocal)
             {
                 var iconSprite = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_self");
-                text.color = Color.red;
+                textBackground.color = new Color(255, 215, 0, 255);
                 icon.sprite = iconSprite;
-            }
-            else
-            {
-                var iconSprite = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_enemy");
-
-                icon.sprite = iconSprite;
-            }
-
-            if (player.IsLocal && !isApparition)
-            {
                 GameManager.Instance.UIManager.AbilityBars[this] =
                     Instantiate(GameManager.Instance.UIManager.abilityToolbar,
                         GameManager.Instance.UIManager.abilityPanel.transform);
 
                 GameManager.Instance.UIManager.AbilityBars[this].transform.localPosition = Vector3.zero;
             }
-
-            // If we joined a session where this horde is in combat, we need to make sure the combat has our boids in it!
+            else
+            {
+                var iconSprite = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_enemy");
+                icon.sprite = iconSprite;
+            }
             if (CurrentCombatController)
             {
-                var boids = new Boid[AliveRats];
-                for (var i = 0; i < AliveRats; i++)
-                {
-                    boids[i].pos = new float2(HordeBounds.center.x, HordeBounds.center.y);
-                    boids[i].vel = new float2(1.0f / (int)AliveRats, 1.0f / (int)AliveRats);
-                }
-
-                Boids.Start();
-                CurrentCombatController.boids.Start();
-                Boids.SetBoids(boids);
                 Boids.JoinCombat(CurrentCombatController.boids, this);
             }
+                Boids.SetBoids(boids);
+                Boids.Start();
+                CurrentCombatController.boids.Start();
+
+                }
+                    boids[i].pos = new float2(HordeBounds.center.x, HordeBounds.center.y);
+                    boids[i].vel = new float2(1.0f / (int)AliveRats, 1.0f / (int)AliveRats);
+                {
+                for (var i = 0; i < AliveRats; i++)
+                var boids = new Boid[AliveRats];
         }
 
 
