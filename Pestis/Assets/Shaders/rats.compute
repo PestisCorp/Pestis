@@ -15,7 +15,8 @@ RWStructuredBuffer<Boid> boidsOut;
 uniform uint numBoids;
 /// Number of boids in the previous frame
 uniform uint numBoidsPrevious;
-uniform float deltaTime;
+uniform float velocityDeltaTime;
+uniform float positionDeltaTime;
 uniform float maxSpeed;
 uniform float minSpeed;
 uniform float edgeMargin;
@@ -28,7 +29,7 @@ uniform float turnSpeed;
 uniform float xBound;
 uniform float yBound;
 /// Target position for boids to move towards
-float2 targetPos = float2(0, 0);
+uniform float2 targetPos = float2(0, 0);
 uniform float targetFactor;
 // Player ID these boids belong to
 uniform int player;
@@ -37,16 +38,16 @@ uniform int horde;
 
 uniform bool combatRats;
 
-float2 spawnPoint;
+uniform float2 spawnPoint;
 
-float targetPosX;
-float targetPosY;
+uniform float targetPosX;
+uniform float targetPosY;
 /// Cumulative boid count for each grid cell
 /// I.e. count for block N is the sum of counts for blocks 0 to N
 StructuredBuffer<uint> gridOffsetBuffer;
-float gridCellSize;
-uint gridDimY;
-uint gridDimX;
+uniform float gridCellSize;
+uniform uint gridDimY;
+uniform uint gridDimX;
 
 struct BoidPoi
 {
@@ -87,7 +88,6 @@ uint getGridID(uint2 pos)
 
 void MergedBehaviours(inout Boid boid, uint3 id)
 {
-    float2 center = 0;
     float2 close = 0;
     float2 avgVel = 0;
     uint neighbours = 0;
@@ -104,32 +104,19 @@ void MergedBehaviours(inout Boid boid, uint3 id)
         // Loop boids in left, center, right grid cells
         for (uint i = start; i < end; i++)
         {
-            if (i == id.x) { continue; }
             Boid other = boidsIn[i];
-            if (other.dead) // Don't change behaviour because of corpses
+            if (other.dead || i == id.x) // Don't change behaviour because of corpses
             {
                 continue;
             }
             float2 diff = boid.pos - other.pos;
-            float distSq = dot(diff, diff);
+            // To never be 0
+            float distSq = dot(diff, diff) + 0.001;
 
-            if (distSq > 0 && distSq < visualRangeSq)
-            {
-                if (distSq < minDistanceSq)
-                {
-                    close += diff / distSq;
-                }
-                else
-                {
-                    center += other.pos;
-                    avgVel += other.vel;
-                    neighbours++;
-                }
-            }
-            else if (distSq == 0)
-            {
-                close += float2(id.x, id.x);
-            }
+            close += (diff / distSq) * (-sign(distSq - minDistanceSq) + 0.99f);
+
+            avgVel += other.vel;
+            neighbours++;
         }
     }
 
@@ -149,29 +136,22 @@ void MergedBehaviours(inout Boid boid, uint3 id)
             float2 diff = boid.pos - other.Pos;
             float distSq = dot(diff, diff);
 
-            if (distSq > 0 && distSq < visualRangeSq)
+            if (distSq > 0 && distSq < other.RadiusSQ)
             {
-                if (distSq < other.RadiusSQ)
-                {
-                    poiClose += diff / distSq;
-                }
+                poiClose += diff / distSq;
             }
         }
     }
 
+    boid.vel += normalize(targetPos - boid.pos) * (targetFactor * velocityDeltaTime * turnSpeed);
+    boid.vel += close * (separationFactor * velocityDeltaTime * turnSpeed);
+    boid.vel += poiClose * (50 * velocityDeltaTime * turnSpeed);
+
     if (neighbours > 0)
     {
-        center /= neighbours;
         avgVel /= neighbours;
-
-        boid.vel += (center - boid.pos) * (cohesionFactor * deltaTime * turnSpeed);
-        boid.vel += (avgVel - boid.vel) * (alignmentFactor * deltaTime * turnSpeed);
+        boid.vel += (avgVel - boid.vel) * (alignmentFactor * velocityDeltaTime * turnSpeed);
     }
-
-
-    boid.vel += normalize(targetPos - boid.pos) * (targetFactor * deltaTime * turnSpeed);
-    boid.vel += close * (separationFactor * deltaTime * turnSpeed);
-    boid.vel += poiClose * (50 * deltaTime * turnSpeed);
 }
 
 void LimitSpeed(inout Boid boid)
@@ -185,17 +165,17 @@ void KeepInBounds(inout Boid boid)
 {
     if (abs(boid.pos.x) > xBound)
     {
-        boid.vel.x -= sign(boid.pos.x) * deltaTime * turnSpeed;
+        boid.vel.x -= sign(boid.pos.x) * velocityDeltaTime * turnSpeed;
     }
     if (abs(boid.pos.y) > yBound)
     {
-        boid.vel.y -= sign(boid.pos.y) * deltaTime * turnSpeed;
+        boid.vel.y -= sign(boid.pos.y) * velocityDeltaTime * turnSpeed;
     }
 }
 
-#pragma kernel UpdateBoids // ID 0
+#pragma kernel UpdateBoidsVelocity // ID 0
 [numthreads(blockSize, 1, 1)]
-void UpdateBoids(uint3 id : SV_DispatchThreadID)
+void UpdateBoidsVelocity(uint3 id : SV_DispatchThreadID)
 {
     if (id.x >= numBoids)
     {
@@ -244,9 +224,21 @@ void UpdateBoids(uint3 id : SV_DispatchThreadID)
     KeepInBounds(boid);
 
     // Update positions
-    boid.pos += boid.vel * deltaTime;
+    boid.pos += boid.vel * positionDeltaTime;
     boidsOut[id.x] = boid;
 }
+
+#pragma kernel UpdateBoidsPositions
+[numthreads(blockSize, 1, 1)]
+void UpdateBoidsPositions(uint3 id: SV_DispatchThreadID)
+{
+    if (id.x >= numBoidsPrevious) { return; }
+
+    Boid boid = boidsIn[id.x];
+    boid.pos += boid.vel * positionDeltaTime;
+    boidsOut[id.x] = boid;
+}
+
 
 #pragma kernel UpdateBounds
 [numthreads(blockSize, 1, 1)]

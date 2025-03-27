@@ -9,6 +9,7 @@ using Players;
 using POI;
 using UnityEditor;
 using UnityEngine;
+using Bounds = Networking.Bounds;
 
 namespace Horde
 {
@@ -81,7 +82,16 @@ namespace Horde
         /// <summary>
         ///     Bounds of all *actively* participating hordes i.e. hordes which are dealing damage due to proximity.
         /// </summary>
-        public Bounds bounds { private set; get; }
+        [Networked]
+        private Bounds BoundsNetworked { set; get; }
+
+        public UnityEngine.Bounds Bounds
+        {
+            private set => BoundsNetworked = value;
+
+            get => BoundsNetworked;
+        }
+
 
         [Networked] private Player InitiatingPlayer { get; set; }
 
@@ -112,25 +122,17 @@ POI: {FightingOver}
 ";
 
             _participatorsLock.WaitOne();
-            var b = new Bounds();
             foreach (var kvp in Participators)
             {
                 text += $"\n{kvp.Key}:";
-                foreach (var hordeID in kvp.Value.Hordes)
-                {
-                    Runner.TryFindBehaviour(hordeID, out HordeController horde);
-                    if (b.size == new Vector3()) b.center = horde.GetBounds().center;
-
-                    b.Encapsulate(horde.GetBounds());
-                    text += $"\n  {hordeID}";
-                }
+                foreach (var hordeID in kvp.Value.Hordes) text += $"\n  {hordeID}";
             }
 
             _participatorsLock.ReleaseMutex();
 
             Gizmos.color = Color.red;
-            Gizmos.DrawWireCube(b.center, b.size);
-            Handles.Label(new Vector3(b.center.x - b.extents.x, b.center.y + b.extents.y), text);
+            Gizmos.DrawWireCube(Bounds.center, Bounds.size);
+            Handles.Label(new Vector3(Bounds.center.x - Bounds.extents.x, Bounds.center.y + Bounds.extents.y), text);
         }
 #endif
 
@@ -138,7 +140,7 @@ POI: {FightingOver}
         {
             if (Participators.Count == 0 || !_initiated) return;
 
-            bounds = boids.GetBounds();
+            Bounds = boids.bounds;
 
             List<HordeController> hordesToRemove = new();
             List<Player> playersToRemove = new();
@@ -160,7 +162,7 @@ POI: {FightingOver}
 
             foreach (var horde in hordesToRemove)
             {
-                Debug.Log($"COMBAT: Removing horde {horde.Object.Id} from particpator");
+                Debug.Log($"COMBAT: Removing horde {horde.Object.Id} from participator");
                 var copy = Participators.Get(horde.Player);
                 copy.RemoveHorde(horde);
                 Participators.Set(horde.Player, copy);
@@ -191,7 +193,6 @@ POI: {FightingOver}
                         // Tell horde to run away to nearest friendly POI
                         var icon = Resources.Load<Sprite>("UI_design/Emotes/combat_loss_emote");
                         horde.AddSpeechBubble(icon);
-                        horde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
                         horde.RetreatRpc();
                     }
                     else
@@ -222,11 +223,9 @@ POI: {FightingOver}
                         .Contains("unlock_septic_bite")) horde.GetComponent<PopulationController>().SetSepticMult(1.0f);
                     if (horde.GetEvolutionState().AcquiredEffects.Contains("unlock_war_hawk"))
                         horde.GetComponent<AbilityController>().forceCooldownRefresh = true;
-                    horde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
                     var icon = Resources.Load<Sprite>("UI_design/Emotes/victory_emote");
                     horde.AddSpeechBubble(icon);
                     horde.EventWonCombatRpc(AllParticipants.ToArray());
-                    horde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
                 }
 
                 if (FightingOver)
@@ -279,7 +278,6 @@ POI: {FightingOver}
                 {
                     // Tell horde to run away to nearest friendly POI
                     var icon = Resources.Load<Sprite>("UI_design/Emotes/combat_loss_emote");
-                    horde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
                     horde.AddSpeechBubble(icon);
                     horde.RetreatRpc();
                 }
@@ -441,6 +439,7 @@ POI: {FightingOver}
 
         public override void Spawned()
         {
+            if (HasStateAuthority) boids.local = true;
             boids.Start();
         }
 
