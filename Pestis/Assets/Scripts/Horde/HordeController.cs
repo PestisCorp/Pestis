@@ -201,7 +201,7 @@ namespace Horde
 
             if (_combatText.activeSelf &&
                 (!CurrentCombatController || CurrentCombatController.state == CombatState.Finished))
-                Debug.LogError("Combat text active but no combat");
+                Debug.LogError($"HORDE {Object.Id} Combat text active but no combat");
 
             if (populationCooldown > 0)
                 populationCooldown -= Time.deltaTime;

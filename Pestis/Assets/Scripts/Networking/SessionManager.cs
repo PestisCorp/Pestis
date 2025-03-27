@@ -21,7 +21,7 @@ namespace Networking
 
     public class SessionManager : NetworkBehaviour, IPlayerLeft
     {
-        private const int TARGET_PLAYERS = 2;
+        private const int TARGET_PLAYERS = 50;
         public static SessionManager Instance;
 
         public GameObject botPrefab;

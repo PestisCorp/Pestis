@@ -28,6 +28,14 @@ public class CombatFXManager : MonoBehaviour
         for (var i = 0; i < combatVFX.Count; i++)
         {
             var vfx = combatVFX[i];
+
+            // Horde we created this vfx for no longer exists
+            if (i > hordes.Count - 1)
+            {
+                vfx.Stop();
+                continue;
+            }
+
             var hordeOne = hordes[i];
             var hordeTwo = hordes[i + 1];
 
@@ -38,7 +46,7 @@ public class CombatFXManager : MonoBehaviour
             shape.radius = overlap.extents.magnitude;
             var emissions = vfx.emission;
             emissions.rateOverDistanceMultiplier = overlap.extents.sqrMagnitude * 1.7f;
-            if (vfx.isPaused) vfx.Play();
+            if (!vfx.isPlaying) vfx.Play();
         }
     }
 
