@@ -410,9 +410,9 @@ public class RatBoids : MonoBehaviour
             return;
         }
 
-        var extents = new Vector2(_boundsArr[2] - _boundsArr[0], _boundsArr[1] - _boundsArr[3]);
-        var center = new Vector2(extents.x / 2.0f + _boundsArr[0], extents.y / 2.0f + _boundsArr[3]);
-        Bounds = new Bounds(center, extents);
+        var size = new Vector2(_boundsArr[2] - _boundsArr[0], _boundsArr[1] - _boundsArr[3]);
+        var center = new Vector2(size.x / 2.0f + _boundsArr[0], size.y / 2.0f + _boundsArr[3]);
+        Bounds = new Bounds(center, size * 2);
         _boundsArr[0] = 1024.0f;
         _boundsArr[1] = -1024.0f;
         _boundsArr[2] = -1024.0f;

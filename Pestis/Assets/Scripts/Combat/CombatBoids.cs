@@ -322,7 +322,7 @@ namespace Combat
                     _boundsArr[horde * 4 + 1] - _boundsArr[horde * 4 + 3]);
                 var center = new Vector2(extents.x / 2.0f + _boundsArr[horde * 4 + 0],
                     extents.y / 2.0f + _boundsArr[horde * 4 + 3]);
-                hordeBounds[containedHordes[horde]] = new Bounds(center, extents);
+                hordeBounds[containedHordes[horde]] = new Bounds(center, extents * 2);
                 _boundsArr[horde * 4 + 0] = 1024.0f;
                 _boundsArr[horde * 4 + 1] = -1024.0f;
                 _boundsArr[horde * 4 + 2] = -1024.0f;

@@ -499,6 +499,7 @@ Count: {AliveRats}
             {
                 _selectionLightPoi.color = Color.red;
                 _selectionLightTerrain.color = Color.red;
+                _selectionLightTerrain.intensity = 100;
             }
 
             targetLocation = transform.Find("TargetLocation").gameObject.GetComponent<NetworkTransform>();
