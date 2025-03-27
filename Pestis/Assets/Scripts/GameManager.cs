@@ -13,6 +13,12 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+public enum SoundEffectType
+{
+    BattleStart,
+    BattleEnd
+}
+
 /// <summary>
 ///     Responsible for managing the game as a whole. Calls out to other managers to control their behaviour.
 /// </summary>
@@ -24,6 +30,8 @@ public class GameManager : MonoBehaviour
     public Tilemap terrainMap;
     public List<Player> Players;
     public UI_Manager UIManager;
+
+    [SerializeField] private AudioSource audioSource;
 
     /// <summary>
     ///     All POIs in the game, in no particular order
@@ -59,6 +67,8 @@ public class GameManager : MonoBehaviour
 
     private readonly float[] fpsWindow = new float[60];
 
+    private Dictionary<SoundEffectType, AudioClip> _soundEffects;
+
     public Human.BoidPoi[] BoidPois;
 
     private int fpsIndex;
@@ -92,6 +102,12 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        _soundEffects = new Dictionary<SoundEffectType, AudioClip>
+        {
+            { SoundEffectType.BattleStart, Resources.Load<AudioClip>("SFX/Event_raidhorn4") },
+            { SoundEffectType.BattleEnd, Resources.Load<AudioClip>("SFX/Vote_started") }
+        };
 
         pois = FindObjectsByType<PoiController>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
 
@@ -197,5 +213,12 @@ public class GameManager : MonoBehaviour
         medianHordeHealth = AllHordes.Select(horde => horde.TotalHealth).Median();
 
         currentPerfBucket = Players.Count != 0 ? Players[0].Runner.Tick % recoverPerfLevel : 0;
+    }
+
+    public void PlaySfx(SoundEffectType type)
+    {
+        audioSource.Stop();
+        audioSource.clip = _soundEffects[type];
+        audioSource.Play();
     }
 }
