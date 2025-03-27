@@ -138,6 +138,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2635317114417265760}
+  - component: {fileID: 1349961956429724050}
   m_Layer: 0
   m_Name: Jukebox
   m_TagString: Untagged
@@ -161,3 +162,24 @@ Transform:
   - {fileID: 4409451053992969637}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1349961956429724050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3664688091801944773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 014f40c4a18014f4da6a5ce8f91e6c62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tracks:
+  - {fileID: 8300000, guid: dba0c72c80ecb4447a46f0fe9f892d6c, type: 3}
+  - {fileID: 8300000, guid: dba0c72c80ecb4447a46f0fe9f892d6c, type: 3}
+  - {fileID: 8300000, guid: dba0c72c80ecb4447a46f0fe9f892d6c, type: 3}
+  - {fileID: 8300000, guid: dba0c72c80ecb4447a46f0fe9f892d6c, type: 3}
+  audioSource: {fileID: 7323416379080234585}
+  tilemap: {fileID: 0}
+  fadeDuration: 3
+  secondsBeforeCheckTrackSwap: 8
