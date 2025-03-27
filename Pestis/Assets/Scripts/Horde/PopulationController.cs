@@ -39,7 +39,6 @@ namespace Horde
 
         // The maximum change in a population per network tick
         private const int MaxPopGrowth = 3;
-        public int initialPopulation = 5;
 
         private readonly Random _random = new();
 
@@ -59,9 +58,10 @@ namespace Horde
         private Timer _populationClock;
 
         private int _populationPeak;
-        public bool isAgriculturalist;
 
         private List<double[]> _transitionMatrix;
+        public int initialPopulation = 5;
+        public bool isAgriculturalist;
 
         [Networked] private ref PopulationState State => ref MakeRef<PopulationState>();
 
@@ -75,7 +75,7 @@ namespace Horde
             var w = 2.5;
             if (isAgriculturalist) w *= 1.2;
             return 1 + w *
-                (1.0 - Math.Exp(-(_hordeController.Player.CurrentCheese / (uint)_hordeController.AliveRats - 1)));
+                (1.0 - Math.Exp(-(_hordeController.player.CurrentCheese / (uint)_hordeController.AliveRats - 1)));
         }
 
 
@@ -84,8 +84,8 @@ namespace Horde
         // W > 1 if R < P
         private double ResourceWeightDecline()
         {
-            if (_hordeController.Player.CurrentCheese >= (uint)_hordeController.AliveRats) return 1.0;
-            return Math.Exp(1.0 - _hordeController.Player.CurrentCheese / (uint)_hordeController.AliveRats);
+            if (_hordeController.player.CurrentCheese >= (uint)_hordeController.AliveRats) return 1.0;
+            return Math.Exp(1.0 - _hordeController.player.CurrentCheese / (uint)_hordeController.AliveRats);
         }
 
         // Calculate probability of population growth
@@ -246,7 +246,7 @@ namespace Horde
         public override void FixedUpdateNetwork()
         {
             // Suspend population simulation during combat or retreat to avoid interference
-            if (!_hordeController.InCombat && _hordeController.PopulationCooldown == 0 &&
+            if (!_hordeController.InCombat && _hordeController.populationCooldown == 0 &&
                 _populationClock.ElapsedInMilliseconds > 50 && !_hordeController.isApparition) PopulationEvent();
             _highestHealth = Mathf.Max(_hordeController.TotalHealth, _highestHealth);
             if (!_hordeController.InCombat)
@@ -254,37 +254,44 @@ namespace Horde
                     Mathf.Max(_hordeController.TotalHealth, initialPopulation * State.HealthPerRat);
         }
 
-        public void SetDamage(float damage)
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void SetDamageRpc(float damage)
         {
             State.Damage = damage;
         }
 
-        public void SetHealthPerRat(float healthPerRat)
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void SetHealthPerRatRpc(float healthPerRat)
         {
             State.HealthPerRat = healthPerRat;
         }
 
-        public void SetDamageReduction(float damageReduction)
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void SetDamageReductionRpc(float damageReduction)
         {
             State.DamageReduction = 1.0f / damageReduction;
         }
 
-        public void SetDamageReductionMult(float damageReductionMult)
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void SetDamageReductionMultRpc(float damageReductionMult)
         {
             State.DamageReductionMult = damageReductionMult;
         }
 
-        public void SetBirthRate(double birthRate)
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void SetBirthRateRpc(double birthRate)
         {
             State.BirthRate = birthRate;
         }
 
-        public void SetDamageMult(float damageMult)
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void SetDamageMultRpc(float damageMult)
         {
             State.DamageMult = damageMult;
         }
 
-        public void SetSepticMult(float damageMult)
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void SetSepticMultRpc(float damageMult)
         {
             State.DamageMult = damageMult;
         }

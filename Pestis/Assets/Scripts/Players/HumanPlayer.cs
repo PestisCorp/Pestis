@@ -14,7 +14,7 @@ namespace Players
         public bool IsLocal;
 
         public Player player;
-        
+
         private UI_Manager UI_manager;
 
         private void Awake()
@@ -39,33 +39,24 @@ namespace Players
 
         public void SelectHorde(HordeController horde)
         {
-            
-            if (horde.Player.IsLocal)
+            if (horde.player.IsLocal)
             {
                 if (horde.isApparition) return;
-                if (selectedHorde && selectedHorde != horde)
-                {
-                    selectedHorde.UnHighlight();
-                    
-                }
+                if (selectedHorde && selectedHorde != horde) selectedHorde.UnHighlight();
                 if (selectedHorde != horde)
                 {
                     selectedHorde = horde;
                     selectedHorde?.Highlight();
-                    if (selectedHorde.Player.IsLocal)
+                    if (selectedHorde.player.IsLocal)
                     {
                         UI_manager.HordesListDisable();
                         UI_manager.InfoPanelEnable();
                     }
-                     
                 }
             }
             else
             {
-                if (selectedEnemyHorde && selectedEnemyHorde != horde)
-                {
-                    selectedEnemyHorde.UnHighlight();
-                }
+                if (selectedEnemyHorde && selectedEnemyHorde != horde) selectedEnemyHorde.UnHighlight();
 
                 if (selectedEnemyHorde != horde)
                 {

@@ -8,7 +8,7 @@ namespace Human
 {
     public class PatrolController : NetworkBehaviour
     {
-        [SerializeField] private POIController poi; // POI reference (van)
+        [SerializeField] private PoiController poi; // POI reference (van)
 
         // Each human's base health
         [SerializeField] private float healthPerHuman = 5f;
@@ -75,7 +75,7 @@ namespace Human
                 {
                     // This could technically break if somehow the authority for the patrol controller is different to the one for the POI
                     // But they should both be controlled by the master client
-                    poi.ChangeController(enemyHorde.Player);
+                    poi.ChangeController(enemyHorde.player);
                     enemyHorde.StationAtRpc(poi);
                     enemyHorde = null;
                     return;

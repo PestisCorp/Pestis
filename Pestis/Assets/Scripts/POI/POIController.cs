@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Combat;
 using Fusion;
 using Horde;
 using Human;
@@ -12,7 +13,7 @@ using UnityEngine.UI;
 
 namespace POI
 {
-    public class POIController : NetworkBehaviour
+    public class PoiController : NetworkBehaviour
     {
         public ParticleSystem[] captureEffect;
 
@@ -168,7 +169,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void AttackRpc(HordeController horde)
         {
-            if (ControlledBy == horde.Player)
+            if (ControlledBy == horde.player)
             {
                 StationHorde(horde);
                 return;
@@ -177,7 +178,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             // No need to start combat, just hand over control
             if (StationedHordes.Count == 0)
             {
-                ChangeController(horde.Player);
+                ChangeController(horde.player);
                 StationHorde(horde);
                 return;
             }
@@ -187,11 +188,11 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             {
                 Debug.Log("Changing POI Combat Controller");
                 Combat = Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
-                Combat!.SetFightingOverRpc(this);
-                foreach (var defender in StationedHordes) Combat.AddHordeRpc(defender, false);
+                Combat!.SetFightingOver(this);
+                foreach (var defender in StationedHordes) Combat.AddHordeRpc(defender);
             }
 
-            Combat.AddHordeRpc(horde, true);
+            Combat.AddHordeRpc(horde);
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]

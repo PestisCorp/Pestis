@@ -60,8 +60,9 @@ namespace UI
         public void SplitHorde()
         {
             var horde = InputHandler.Instance.LocalPlayer?.selectedHorde;
-            horde?.Player.SplitHorde(horde,
+            horde?.player.SplitHorde(horde,
                 slider.value / 100);
+
             gameObject.SetActive(false);
             if (horde) GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.HordeSplit, 1);
         }

@@ -5,11 +5,9 @@ using System.Linq;
 using Fusion;
 using KaimiraGames;
 using Newtonsoft.Json;
-using Objectives;
 using TMPro;
 using UnityEngine;
 using Random = System.Random;
-
 
 
 namespace Horde
@@ -97,15 +95,14 @@ namespace Horde
     public class EvolutionManager : NetworkBehaviour
     {
         private const double PredispositionStrength = 1.005;
+        public int PointsAvailable;
         private readonly Random _random = new();
 
         private EvolutionaryState _evolutionaryState;
-        private readonly Color _hordeColor = Color.black;
         private HordeController _hordeController;
         private Timer _mutationClock;
         private PopulationController _populationController;
         private Timer _rareMutationClock;
-        public int PointsAvailable = 0;
 
 
         // Set the rat stats in the Population Controller
@@ -116,24 +113,22 @@ namespace Horde
             var text = "A horde's " + mutation + " has improved by " +
                        Math.Round(_evolutionaryState.PassiveEvolutions["evolution strength"][1] * 100 - 100, 2)
                            .ToString(CultureInfo.CurrentCulture) + "%.";
-            if (_hordeController.Player.Type == 0) GameManager.Instance.UIManager.AddNotification(text, _hordeColor);
+            if (_hordeController.player.Type == 0) GameManager.Instance.UIManager.AddNotification(text, Color.black);
             switch (mutation)
             {
                 case "attack":
-                    var icon = Resources.Load<Sprite>("UI_design/Emotes/damage_buff_emote");
-                    _hordeController.AddSpeechBubble(icon);
-                    _populationController.SetDamage((float)mutEffect);
+                    _hordeController.AddSpeechBubbleRpc(EmoteType.DamageBuff);
+                    _populationController.SetDamageRpc((float)mutEffect);
                     break;
                 case "health":
-                    _populationController.SetHealthPerRat((float)mutEffect);
+                    _populationController.SetHealthPerRatRpc((float)mutEffect);
                     break;
                 case "defense":
-                    icon = Resources.Load<Sprite>("UI_design/Emotes/damage_reduction_buff_emote");
-                    _hordeController.AddSpeechBubble(icon);
-                    _populationController.SetDamageReduction((float)mutEffect);
+                    _hordeController.AddSpeechBubbleRpc(EmoteType.DamageReductionBuff);
+                    _populationController.SetDamageReductionRpc((float)mutEffect);
                     break;
                 case "birth rate":
-                    _populationController.SetBirthRate(mutEffect);
+                    _populationController.SetBirthRateRpc(mutEffect);
                     break;
                 //case "resource consumption":
                 //hordeController.Player.
@@ -191,12 +186,13 @@ namespace Horde
             {
                 _evolutionaryState.AcquiredEffects.Add(effect);
                 if (effect == "unlock_necrosis")
-                    _populationController.SetDamageReductionMult(_populationController.GetState().DamageReductionMult *
-                                                                 1.2f);
+                    _populationController.SetDamageReductionMultRpc(
+                        _populationController.GetState().DamageReductionMult *
+                        1.2f);
                 if (effect == "unlock_farmer") _populationController.isAgriculturalist = true;
                 if (effect == "unlock_syndicalism")
                 {
-                    var hordesControlled = _hordeController.Player.Hordes.Count;
+                    var hordesControlled = _hordeController.player.Hordes.Count;
                     var newState = new PopulationState
                     {
                         BirthRate = _populationController.GetState().BirthRate * 1.01 * hordesControlled,
@@ -234,10 +230,11 @@ namespace Horde
                     ? _evolutionaryState.TagCounts[mutation.MutationTag]++
                     : 0;
             if (mutation.IsAbility) _evolutionaryState.AcquiredAbilities.Add((mutation.MutationName, mutation.Tooltip));
-            
-            if (_evolutionaryState.ActiveMutations.Count < 3) 
+
+            if (_evolutionaryState.ActiveMutations.Count < 3)
             {
-                GameManager.Instance.UIManager.AddNotification("This horde has acquired the maximum number of mutations." , _hordeColor);
+                GameManager.Instance.UIManager.AddNotification(
+                    "This horde has acquired the maximum number of mutations.", Color.red);
                 _rareMutationClock.Reset();
             }
 
@@ -338,10 +335,10 @@ namespace Horde
 
             if (!(_rareMutationClock.ElapsedInSeconds >
                   _evolutionaryState.PassiveEvolutions["rare mutation rate"][1]) ||
-                _hordeController.Player.Type != 0) return;
+                _hordeController.player.Type != 0) return;
             PointsAvailable++;
             if (GameManager.Instance.UIManager.mutationPopUp.activeSelf &&
-                _hordeController.Player.GetHumanPlayer().selectedHorde!.Id == _hordeController.Id)
+                _hordeController.player.GetHumanPlayer().selectedHorde!.Id == _hordeController.Id)
             {
                 if (PointsAvailable == 1)
                 {
@@ -350,11 +347,12 @@ namespace Horde
                 }
                 else
                 {
-                    GameObject.FindGameObjectWithTag("mutation_points").GetComponent<TextMeshProUGUI>().text = PointsAvailable + "pts";
+                    GameObject.FindGameObjectWithTag("mutation_points").GetComponent<TextMeshProUGUI>().text =
+                        PointsAvailable + "pts";
                 }
             }
-            var icon = Resources.Load<Sprite>("UI_design/Emotes/evolution_emote");
-            _hordeController.AddSpeechBubble(icon);
+
+            _hordeController.AddSpeechBubbleRpc(EmoteType.Evolution);
             _rareMutationClock.Restart();
         }
     }

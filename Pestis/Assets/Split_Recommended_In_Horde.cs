@@ -17,7 +17,7 @@ public class Split_Recommended_In_Horde : MonoBehaviour
 
     private void Start()
     {
-        if (!horde.Player.IsLocal) return;
+        if (!horde.player.IsLocal) return;
         splitHordeUI.SetActive(false);
         splitHordeButton.onClick.AddListener(SplitHordeHalf);
         StartCoroutine(WaitTilPopulationGreaterThanRecommended());
@@ -63,7 +63,7 @@ public class Split_Recommended_In_Horde : MonoBehaviour
     public void SplitHordeHalf()
     {
         if (horde.AliveRats < 10) return;
-        horde.Player.SplitHorde(horde, 0.5f);
+        horde.player.SplitHorde(horde, 0.5f);
         GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.HordeSplit, 1);
         splitHordeUI.SetActive(false);
     }
