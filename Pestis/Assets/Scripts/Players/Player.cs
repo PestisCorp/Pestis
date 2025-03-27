@@ -271,9 +271,9 @@ namespace Players
                         // Ensure new horde spawns in at current location
                         NO.transform.position = toSplit.GetBounds().center;
                         var horde = NO.GetComponent<HordeController>();
-                        horde.AliveRats = new IntPositive((uint)newRats);
                         horde.SetPopulationState(populationState);
                         horde.SetPopulationInit(newRats);
+                        horde.AliveRats = new IntPositive((uint)newRats);
                     })
                 .GetComponent<HordeController>();
             toSplit.SplitBoidsRpc(newHorde, newRats, toSplit.AliveRats);
