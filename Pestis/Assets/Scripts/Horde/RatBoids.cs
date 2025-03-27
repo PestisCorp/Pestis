@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Combat;
 using Horde;
 using Unity.Mathematics;
 using UnityEngine;
@@ -252,7 +253,7 @@ public class RatBoids : MonoBehaviour
         var horde = gameObject.GetComponentInParent<HordeController>();
         if (horde)
         {
-            boidShader.SetInt("player", unchecked((int)horde.Player.Id.Object.Raw));
+            boidShader.SetInt("player", unchecked((int)horde.player.Id.Object.Raw));
             boidShader.SetInt("horde", unchecked((int)horde.Id.Object.Raw));
         }
         else
@@ -276,7 +277,7 @@ public class RatBoids : MonoBehaviour
 
         boidShader.SetFloat("positionDeltaTime", Time.deltaTime);
         if (hordeController.Id.Object.Raw % GameManager.Instance.recoverPerfLevel !=
-            GameManager.Instance.currentPerfBucket)
+            GameManager.Instance.currentPerfBucket && numBoids != 0)
         {
             // Clear indices
             gridShader.Dispatch(clearGridKernel, blocks, 1, 1);
@@ -572,7 +573,7 @@ public class RatBoids : MonoBehaviour
     /// <param name="myHorde">The horde that owns me</param>
     public void GetBoidsBack(CombatController combat, HordeController myHorde)
     {
-        combat.boids.RemoveBoids(boidBuffer, boidBufferOut, deadBoids, deadBoidsCountBuffer, ref deadBoidsCount,
+        combat.boids.RetrieveBoids(boidBuffer, boidBufferOut, deadBoids, deadBoidsCountBuffer, ref deadBoidsCount,
             myHorde);
         paused = false;
     }

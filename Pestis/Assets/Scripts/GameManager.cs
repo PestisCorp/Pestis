@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     ///     All POIs in the game, in no particular order
     /// </summary>
-    public POIController[] pois;
+    public PoiController[] pois;
 
     public TMP_Text fpsText;
     public TMP_Text boidText;
@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        pois = FindObjectsByType<POIController>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        pois = FindObjectsByType<PoiController>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
 
         terrainMap.CompressBounds();
         poiGridDimX =
@@ -101,12 +101,12 @@ public class GameManager : MonoBehaviour
         poiGridDimY =
             (int)Math.Ceiling(terrainMap.transform.localScale.y * terrainMap.localBounds.size.y / poiGridCellSize);
 
-        var poiGrid = new List<POIController>[poiGridDimY * poiGridDimX];
+        var poiGrid = new List<PoiController>[poiGridDimY * poiGridDimX];
         var grid = new List<BoidPoi>[poiGridDimX * poiGridDimY];
         for (var i = 0; i < poiGridDimX * poiGridDimY; i++)
         {
             grid[i] = new List<BoidPoi>();
-            poiGrid[i] = new List<POIController>();
+            poiGrid[i] = new List<PoiController>();
         }
 
         BoidPois = new Human.BoidPoi[pois.Length];

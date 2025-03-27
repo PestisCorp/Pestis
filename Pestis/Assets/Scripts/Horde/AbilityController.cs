@@ -7,12 +7,10 @@ using Networking;
 using POI;
 using UI;
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
 using UnityEngine.UI;
 
 namespace Horde
 {
-
     public enum Abilities
     {
         Pestis,
@@ -22,29 +20,29 @@ namespace Horde
         MAD,
         Corpsebloom
     }
-    
+
     public class AbilityController : NetworkBehaviour
     {
+        public int abilityHaste;
+        public bool forceCooldownRefresh;
         private HordeController _hordeController;
         private PopulationController _populationController;
-        public int abilityHaste = 0;
-        public bool forceCooldownRefresh = false;
-        
+
         public void UsePestis(Button calledBy)
         {
-            HashSet<HordeController> affectedHordes = new HashSet<HordeController>();
+            var affectedHordes = new HashSet<HordeController>();
             var players = GameManager.Instance.Players;
             foreach (var player in players)
             foreach (var horde in player.Hordes)
             {
-                if (_hordeController.Player.Hordes.Contains(horde)) continue;
+                if (_hordeController.player.Hordes.Contains(horde)) continue;
                 var dist = Vector2.Distance(horde.GetBounds().center, _hordeController.GetBounds().center);
                 if (dist < 20f)
                 {
                     affectedHordes.Add(horde);
                     var populationController = horde.GetComponent<PopulationController>();
                     var damageReductionMult = horde.GetPopulationState().DamageReductionMult * 1.3f;
-                    populationController.SetDamageReductionMult(damageReductionMult);
+                    populationController.SetDamageReductionMultRpc(damageReductionMult);
                     StartCoroutine(RemovePestisAfterDelayRat(populationController));
                 }
             }
@@ -67,8 +65,9 @@ namespace Horde
                 return;
             }
 
-            
-            _hordeController.TotalHealth = (int)Math.Ceiling((int)_hordeController.AliveRats * _populationController.GetState().HealthPerRat * 0.7);
+
+            _hordeController.TotalHealth = (int)Math.Ceiling((int)_hordeController.AliveRats *
+                                                             _populationController.GetState().HealthPerRat * 0.7);
             StartCoroutine(Cooldown(60, calledBy, Abilities.Pestis));
         }
 
@@ -83,13 +82,13 @@ namespace Horde
         {
             yield return new WaitForSeconds(30f);
             if (affectedEnemy)
-                affectedEnemy.SetDamageReductionMult(affectedEnemy.GetState().DamageReductionMult / 1.3f);
+                affectedEnemy.SetDamageReductionMultRpc(affectedEnemy.GetState().DamageReductionMult / 1.3f);
         }
 
         public void UseSewerDwellers(Button calledBy)
         {
-            POIController travelFrom = null;
-            foreach (var poi in _hordeController.Player.ControlledPOIs)
+            PoiController travelFrom = null;
+            foreach (var poi in _hordeController.player.ControlledPOIs)
             {
                 if (!poi.gameObject.name.Contains("City")) continue;
                 if (Vector2.Distance(poi.Collider.bounds.center, _hordeController.GetBounds().center) > 50f) continue;
@@ -97,7 +96,7 @@ namespace Horde
                 travelFrom = poi;
                 break;
             }
-            
+
             if (!travelFrom)
             {
                 FindFirstObjectByType<UI_Manager>()
@@ -105,8 +104,8 @@ namespace Horde
                 return;
             }
 
-            POIController travelTo = null;
-            foreach (var poi in _hordeController.Player.ControlledPOIs)
+            PoiController travelTo = null;
+            foreach (var poi in _hordeController.player.ControlledPOIs)
             {
                 if (!poi.gameObject.name.Contains("City")) continue;
                 if (poi.Id == travelFrom.Id) continue;
@@ -132,12 +131,11 @@ namespace Horde
             _hordeController.TeleportHordeRPC(travelTo.Collider.bounds.center);
             Camera.main.GetComponent<Panner>().PanTo(_hordeController);
             StartCoroutine(Cooldown(60, calledBy, Abilities.SewerDwellers));
-
         }
 
         public void UsePoltergeist(Button calledBy)
         {
-            _populationController.SetDamageReductionMult(_populationController.GetState().DamageMult * 0.001f);
+            _populationController.SetDamageReductionMultRpc(_populationController.GetState().DamageMult * 0.001f);
             StartCoroutine(Cooldown(90, calledBy, Abilities.Poltergeist));
             StartCoroutine(RemovePoltergeist());
         }
@@ -145,22 +143,22 @@ namespace Horde
         private IEnumerator RemovePoltergeist()
         {
             yield return new WaitForSeconds(5f);
-            _populationController.SetDamageReductionMult(_populationController.GetState().DamageMult / 0.001f);
+            _populationController.SetDamageReductionMultRpc(_populationController.GetState().DamageMult / 0.001f);
         }
 
         public void UseApparition(Button calledBy)
         {
             var populationState = _hordeController.GetPopulationState();
             var evolutionaryState = _hordeController.GetEvolutionState();
-            var newHorde = Runner.Spawn(_hordeController.Player.hordePrefab, Vector3.zero,
+            var newHorde = Runner.Spawn(_hordeController.player.hordePrefab, Vector3.zero,
                     Quaternion.identity,
                     null, (runner, NO) =>
                     {
-                        NO.transform.parent = _hordeController.Player.transform;
+                        NO.transform.parent = _hordeController.player.transform;
                         // Ensure new horde spawns in at current location
                         NO.transform.position = _hordeController.GetBounds().center;
                         var horde = NO.GetComponent<HordeController>();
-                        horde.AliveRats = new IntPositive((uint)_hordeController.AliveRats);
+                        horde.AliveRats = new IntPositive(_hordeController.AliveRats);
                         horde.SetPopulationState(populationState);
                         horde.SetPopulationInit(_hordeController.AliveRats);
                     })
@@ -171,8 +169,8 @@ namespace Horde
             newHorde.Move(_hordeController.targetLocation.transform.position - _hordeController.GetBounds().extents);
             GameManager.Instance.UIManager.ActionPanelDisable();
             GameManager.Instance.UIManager.ActionPanelEnable();
-            
-            
+
+
             StartCoroutine(Cooldown(120, calledBy, Abilities.Apparition));
             StartCoroutine(RemoveApparation(newHorde));
         }
@@ -187,30 +185,30 @@ namespace Horde
 
         public void UseMAD(Button calledBy)
         {
-            HashSet<HordeController> affectedHordes = new HashSet<HordeController>();
+            var affectedHordes = new HashSet<HordeController>();
             var players = GameManager.Instance.Players;
             foreach (var player in players)
+            foreach (var horde in player.Hordes)
             {
-                foreach (var horde in player.Hordes)
-                {
-                    if (horde.Id == _hordeController.Id) continue;
-                    var dist =Vector2.Distance(horde.GetBounds().center, _hordeController.GetBounds().center);
-                    if (!(dist < 30)) continue;
-                    affectedHordes.Add(horde);
-                    horde.TotalHealth = (int)Math.Ceiling((int)horde.AliveRats * horde.GetPopulationState().HealthPerRat * 0.2);
-
-                }
+                if (horde.Id == _hordeController.Id) continue;
+                var dist = Vector2.Distance(horde.GetBounds().center, _hordeController.GetBounds().center);
+                if (!(dist < 30)) continue;
+                affectedHordes.Add(horde);
+                horde.TotalHealth =
+                    (int)Math.Ceiling((int)horde.AliveRats * horde.GetPopulationState().HealthPerRat * 0.2);
             }
 
             if (affectedHordes.Count > 0)
             {
-                _hordeController.TotalHealth = (int)Math.Ceiling((int)_hordeController.AliveRats * _populationController.GetState().HealthPerRat * 0.2);
-                _hordeController.PopulationCooldown += 10;
+                _hordeController.TotalHealth = (int)Math.Ceiling((int)_hordeController.AliveRats *
+                                                                 _populationController.GetState().HealthPerRat * 0.2);
+                _hordeController.populationCooldown += 10;
             }
             else
             {
                 GameManager.Instance.UIManager.AddNotification("You are not near any hordes!", Color.red);
             }
+
             StartCoroutine(Cooldown(180, calledBy, Abilities.MAD));
         }
 
@@ -221,25 +219,29 @@ namespace Horde
                 GameManager.Instance.UIManager.AddNotification("You cannot use Corpsebloom in combat!", Color.red);
                 return;
             }
-            if (_hordeController.Player.Hordes.Count == 1)
+
+            if (_hordeController.player.Hordes.Count == 1)
             {
-                GameManager.Instance.UIManager.AddNotification("Cannot use Corpsebloom with one horde left!", Color.red);
+                GameManager.Instance.UIManager.AddNotification("Cannot use Corpsebloom with one horde left!",
+                    Color.red);
                 return;
             }
+
             GameManager.Instance.UIManager.HordesListEnable();
             Destroy(calledBy.GetComponent<Tooltip>().tooltipInstance);
             _hordeController.DestroyHordeRpc();
-            foreach (var horde in _hordeController.Player.Hordes)
-            {
-                horde.GetComponent<PopulationController>().SetBirthRate(horde.GetPopulationState().BirthRate * 1.5);
-            }
+            foreach (var horde in _hordeController.player.Hordes)
+                horde.GetComponent<PopulationController>().SetBirthRateRpc(horde.GetPopulationState().BirthRate * 1.5);
         }
-        
-        IEnumerator Cooldown(int duration, Button calledBy, Abilities ability)
+
+        private IEnumerator Cooldown(int duration, Button calledBy, Abilities ability)
         {
             calledBy.onClick.RemoveAllListeners();
-            calledBy.onClick.AddListener(delegate {FindFirstObjectByType<UI_Manager>().AddNotification(
-                $"{Enum.GetName(typeof(Abilities), ability)} is on cooldown!", Color.red);});
+            calledBy.onClick.AddListener(delegate
+            {
+                FindFirstObjectByType<UI_Manager>().AddNotification(
+                    $"{Enum.GetName(typeof(Abilities), ability)} is on cooldown!", Color.red);
+            });
             var elapsedTime = 0.0f;
             var cooldownBar = calledBy.GetComponentInChildren<CooldownBar>();
             cooldownBar.current = 100;
@@ -261,16 +263,16 @@ namespace Horde
             switch (ability)
             {
                 case Abilities.Pestis:
-                    calledBy.onClick.AddListener(delegate {UsePestis(calledBy);});
+                    calledBy.onClick.AddListener(delegate { UsePestis(calledBy); });
                     break;
                 case Abilities.SewerDwellers:
-                    calledBy.onClick.AddListener(delegate {UseSewerDwellers(calledBy);});
+                    calledBy.onClick.AddListener(delegate { UseSewerDwellers(calledBy); });
                     break;
                 case Abilities.Poltergeist:
-                    calledBy.onClick.AddListener(delegate {UsePoltergeist(calledBy);});
+                    calledBy.onClick.AddListener(delegate { UsePoltergeist(calledBy); });
                     break;
                 case Abilities.Apparition:
-                    calledBy.onClick.AddListener(delegate {UseApparition(calledBy);});
+                    calledBy.onClick.AddListener(delegate { UseApparition(calledBy); });
                     break;
             }
         }
@@ -279,6 +281,12 @@ namespace Horde
         {
             _hordeController = GetComponent<HordeController>();
             _populationController = GetComponent<PopulationController>();
+        }
+
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void RefreshCooldownsRpc()
+        {
+            forceCooldownRefresh = true;
         }
     }
 }

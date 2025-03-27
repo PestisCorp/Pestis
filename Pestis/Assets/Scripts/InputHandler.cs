@@ -89,21 +89,21 @@ public class InputHandler : MonoBehaviour
         }
 
         // If right-clicked, and local player is allowed to control the selected horde
-        if (mouse.rightButton.wasPressedThisFrame && (LocalPlayer?.selectedHorde?.Player.IsLocal ?? false))
+        if (mouse.rightButton.wasPressedThisFrame && (LocalPlayer?.selectedHorde?.player.IsLocal ?? false))
         {
             Vector3 mousePos = mouse.position.ReadValue();
 
             var clickedHorde = DidWeClickHorde(mousePos);
 
             if (MoveToPoiIfClicked(mousePos)) return;
-            if (clickedHorde && clickedHorde.Player != LocalPlayer?.selectedHorde.Player)
+            if (clickedHorde && clickedHorde.player != LocalPlayer?.selectedHorde.player)
             {
                 Debug.Log("Attacking horde");
                 LocalPlayer!.selectedEnemyHorde = clickedHorde;
                 clickedHorde.Highlight();
                 LocalPlayer!.selectedHorde.AttackHorde(clickedHorde, LocalPlayer.selectedHorde.GetCombatStrategy());
             }
-            else if (!(clickedHorde && clickedHorde.Player == LocalPlayer?.selectedHorde.Player))
+            else if (!(clickedHorde && clickedHorde.player == LocalPlayer?.selectedHorde.player))
             {
                 var position = _mainCamera.ScreenToWorldPoint(mouse.position.value);
                 var tilemap = GameManager.Instance.terrainMap;
@@ -131,7 +131,7 @@ public class InputHandler : MonoBehaviour
         var worldPoint = _mainCamera.ScreenToWorldPoint(mousePos);
         foreach (var player in GameManager.Instance.Players)
         foreach (var horde in player.Hordes)
-            if (horde.boids.PosInHorde(worldPoint, 2.0f, horde.GetBounds()))
+            if (horde.Boids.PosInHorde(worldPoint, 2.0f, horde.GetBounds()))
                 return horde;
 
         return null;
@@ -143,14 +143,14 @@ public class InputHandler : MonoBehaviour
     /// <param name="mousePos"></param>
     /// <param name="poiController"></param>
     /// <returns></returns>
-    public bool DidWeClickPOI(Vector2 mousePos, out POIController poiController)
+    public bool DidWeClickPOI(Vector2 mousePos, out PoiController poiController)
     {
         var ray = _mainCamera.ScreenPointToRay(mousePos);
         var layerMask = LayerMask.GetMask("POI Selection");
         var hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity, layerMask);
         if (hit)
         {
-            var poi = hit.collider.GetComponentInParent<POIController>();
+            var poi = hit.collider.GetComponentInParent<PoiController>();
             if (poi)
             {
                 poiController = poi;
