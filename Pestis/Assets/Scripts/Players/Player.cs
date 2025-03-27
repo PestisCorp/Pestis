@@ -5,6 +5,7 @@ using System.Linq;
 using Fusion;
 using Horde;
 using JetBrains.Annotations;
+using Networking;
 using POI;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -257,7 +258,7 @@ namespace Players
         {
             if (!HasStateAuthority) throw new Exception("Only State Authority can split a horde");
 
-            var newRats = (int)(toSplit.TotalHealth * splitPercentage / toSplit.GetPopulationState().HealthPerRat);
+            var newRats = (int)((uint)toSplit.AliveRats * splitPercentage);
 
             var totalHealth = toSplit.TotalHealth;
             var populationState = toSplit.GetPopulationState();
@@ -270,13 +271,13 @@ namespace Players
                         // Ensure new horde spawns in at current location
                         NO.transform.position = toSplit.GetBounds().center;
                         var horde = NO.GetComponent<HordeController>();
-                        horde.TotalHealth = totalHealth * splitPercentage;
+                        horde.AliveRats = new IntPositive((uint)newRats);
                         horde.SetPopulationState(populationState);
                         horde.SetPopulationInit(newRats);
                     })
                 .GetComponent<HordeController>();
             toSplit.SplitBoidsRpc(newHorde, newRats, toSplit.AliveRats);
-            toSplit.TotalHealth = totalHealth * (1.0f - splitPercentage);
+            toSplit.AliveRats = new IntPositive(Convert.ToUInt32((uint)toSplit.AliveRats * (1.0f - splitPercentage)));
             newHorde.SetEvolutionaryState(evolutionaryState.DeepCopy());
 
             // Move two hordes slightly apart
