@@ -313,7 +313,7 @@ namespace Combat
         {
             if (HasStateAuthority) boids.local = true;
             boids.Start();
-            fxManager.gameObject.SetActive(true);
+            fxManager.enabled = true;
         }
 
         public List<HordeController> GetHordes()
