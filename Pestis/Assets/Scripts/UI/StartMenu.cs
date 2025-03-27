@@ -16,7 +16,7 @@ namespace UI
         {
             GameManager.Instance.localUsername = usernameInput.text;
             var args = new StartGameArgs();
-            args.GameMode = GameMode.Single;
+            args.GameMode = GameMode.Shared;
             var scene = new NetworkSceneInfo();
             scene.AddSceneRef(SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex));
             args.Scene = scene;
