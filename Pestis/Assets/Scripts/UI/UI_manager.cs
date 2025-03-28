@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Horde;
@@ -7,9 +8,13 @@ using TMPro;
 using UI;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
+using Button = UnityEngine.UI.Button;
 using Color = UnityEngine.Color;
+using Image = UnityEngine.UI.Image;
 using Object = UnityEngine.Object;
+using Slider = UnityEngine.UI.Slider;
+using Toggle = UnityEngine.UI.Toggle;
 
 
 public class UI_Manager : MonoBehaviour
@@ -152,11 +157,13 @@ public class UI_Manager : MonoBehaviour
         if (hordesListPanel) hordesListPanel.SetActive(true);
         if (!localPlayer) return;
         foreach (Transform child in hordesListContentParent) Destroy(child.gameObject);
-        int count = 0;
+        int count = 1;
         foreach (var horde in localPlayer!.player.Hordes)
         {
             var hordeButton = Instantiate(hordeButtonPrefab, hordesListContentParent.transform);
-            hordeButton.GetComponentInChildren<TMP_Text>().text = "Horde " + count + "\n" +
+            var hordeName = count.ToString();
+            if (horde.isApparition) hordeName += " (Apparition)";
+            hordeButton.GetComponentInChildren<TMP_Text>().text = "Horde No.: " + hordeName + "\n" +
                                                         "Population: " + horde.AliveRats + "\n" +
                                                         "No. mutations: " + horde.GetEvolutionState().AcquiredMutations.Count;
             hordeButton.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -354,7 +361,7 @@ public class UI_Manager : MonoBehaviour
             var hordeState = horde.GetPopulationState();
             var population = horde.AliveRats.ToString();
             var attack = horde.GetPopulationState().Damage.ToString("F2");
-            var defense = hordeState.DamageReduction.ToString("F2");
+            var defense = (1 / hordeState.DamageReduction).ToString("F2");
             var health = horde.TotalHealth;
 
             var stats = "Population: " + population + "\n" +
@@ -606,26 +613,38 @@ public class UI_Manager : MonoBehaviour
             if (button.enabled) continue;
             button.enabled = true;
             button.onClick.RemoveAllListeners();
-            button.GetComponent<Image>().enabled = true;
-            button.GetComponentInChildren<TextMeshProUGUI>().text = mutation.Item1;
+            var btnImage = button.GetComponent<Image>();
+            btnImage.enabled = true;
             var childrenWithTag = GetComponentsInChildrenWithTag<Image, Button>(button, "UI_cooldown_bar");
             foreach (var child in childrenWithTag) child.GetComponent<Image>().enabled = true;
-            switch (mutation.Item1)
+            Enum.TryParse(mutation.Item1.Replace(" ", ""), out Abilities ability);
+            switch (ability)
             {
-                case "Pestis":
+                case Abilities.Pestis:
                     button.onClick.AddListener(delegate { abilityController.UsePestis(button); });
+                    btnImage.sprite = Resources.Load<Sprite>("UI_design/Mutations/pestis_btn");
                     break;
-                case "Sewer Dwellers":
+                case Abilities.SewerDwellers:
                     button.onClick.AddListener(delegate { abilityController.UseSewerDwellers(button); });
+                    btnImage.sprite = Resources.Load<Sprite>("UI_design/Mutations/sewer_dwellers_btn");
                     break;
-                case "Poltergeist":
+                case Abilities.Poltergeist:
                     button.onClick.AddListener(delegate { abilityController.UsePoltergeist(button); });
+                    btnImage.sprite = Resources.Load<Sprite>("UI_design/Mutations/poltergeist_btn");
                     break;
-                case "Apparition":
+                case Abilities.Apparition:
                     button.onClick.AddListener(delegate { abilityController.UseApparition(button); });
+                    btnImage.sprite = Resources.Load<Sprite>("UI_design/Mutations/apparition_btn");
+                    break;
+                case Abilities.MAD:
+                    button.onClick.AddListener(delegate { abilityController.UseMAD(button); });
+                    btnImage.sprite = Resources.Load<Sprite>("UI_design/Mutations/MAD_btn");
+                    break;
+                case Abilities.Corpsebloom:
+                    button.onClick.AddListener(delegate { abilityController.UseCorpseBloom(button); });
+                    btnImage.sprite = Resources.Load<Sprite>("UI_design/Mutations/corpsebloom_btn");
                     break;
             }
-
             var tooltip = button.GetComponent<Tooltip>();
             if (tooltip) tooltip.enabled = true;
             tooltip.tooltipText = mutation.Item2;

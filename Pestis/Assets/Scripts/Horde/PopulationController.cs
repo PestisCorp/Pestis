@@ -59,7 +59,7 @@ namespace Horde
         private Timer _populationClock;
 
         private int _populationPeak;
-
+        public bool isAgriculturalist;
 
         private List<double[]> _transitionMatrix;
 
@@ -72,7 +72,9 @@ namespace Horde
         // W < 1 if R < P
         private double ResourceWeightGrowth()
         {
-            return 1 + 2.5 *
+            var w = 2.5;
+            if (isAgriculturalist) w *= 1.2;
+            return 1 + w *
                 (1.0 - Math.Exp(-(_hordeController.Player.CurrentCheese / (uint)_hordeController.AliveRats - 1)));
         }
 
@@ -182,7 +184,7 @@ namespace Horde
             State.BirthRate = 0.01;
             State.DeathRate = 0.005;
 
-            State.HealthPerRat = 5.0f;
+            State.HealthPerRat = 10.0f;
             State.Damage = 0.5f;
             State.DamageReduction = 1.0f;
             State.GrassResistance = 1.0f;

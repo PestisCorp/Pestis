@@ -37,7 +37,7 @@ namespace UI
                 return;
             }
 
-            splitAmount = (int)Math.Floor(slider.value / 100 * maxPop);
+            splitAmount = (int)Math.Floor(slider.value / 100.0f * maxPop);
             if (splitAmount < 5 || maxPop - splitAmount < 5)
             {
                 selectedAmountText.text = "Too small to split with this amount";
@@ -61,7 +61,7 @@ namespace UI
         {
             var horde = InputHandler.Instance.LocalPlayer?.selectedHorde;
             horde?.Player.SplitHorde(horde,
-                (float)splitAmount / (uint)InputHandler.Instance.LocalPlayer!.selectedHorde!.AliveRats);
+                slider.value / 100);
             gameObject.SetActive(false);
             if (horde) GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.HordeSplit, 1);
         }
