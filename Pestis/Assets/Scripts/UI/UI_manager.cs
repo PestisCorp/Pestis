@@ -165,8 +165,10 @@ public class UI_Manager : MonoBehaviour
             var textBoxes = hordeButton.GetComponentsInChildren<TextMeshProUGUI>();
             textBoxes[0].text = horde.AliveRats.ToString();
             textBoxes[1].text = horde.GetComponent<EvolutionManager>().PointsAvailable.ToString();
-            hordeButton.GetComponent<Button>().onClick.RemoveAllListeners();
-            hordeButton.GetComponent<Button>().onClick.AddListener(delegate {Camera.main.GetComponent<Panner>().PanTo(horde);});
+            var button = hordeButton.GetComponent<Button>();
+            button.onClick.RemoveAllListeners();
+            button.onClick.AddListener(delegate {Camera.main.GetComponent<Panner>().PanTo(horde);});
+            button.onClick.AddListener(delegate { localPlayer.SelectHorde(horde); });
         }
         _refreshClock.Restart();
     }
