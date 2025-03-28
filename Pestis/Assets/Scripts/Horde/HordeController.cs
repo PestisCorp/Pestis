@@ -51,34 +51,6 @@ namespace Horde
 
     {
         private static Dictionary<EmoteType, Sprite> EmoteSprites = new();
-
-        private readonly Queue<EmoteType> _speechBubbles = new();
-
-        private float _aliveRatsRemainder;
-
-        [CanBeNull] private PatrolController _attackingPatrol;
-        private Camera _camera;
-
-        [CanBeNull] private string _combatStrategy;
-        private GameObject _combatText;
-        private EvolutionManager _evolutionManager;
-
-        /// <summary>
-        ///     Mid-point of all the rats in the horde
-        /// </summary>
-        private Vector2 _hordeCenter;
-
-        [CanBeNull] private Action _onArriveAtTarget;
-
-        private GameObject _playerText;
-
-        private Light2D _selectionLightPoi;
-
-        private Light2D _selectionLightTerrain;
-        private bool _speechBubbleActive;
-        private Image _speechBubbleImage;
-
-        [CanBeNull] private HordeController _targetHorde;
         [SerializeField] private Vector2 devToolsTargetLocation;
         [SerializeField] private float devToolsTotalHealth;
 
@@ -109,6 +81,34 @@ namespace Horde
         ///     Location rats are trying to get to, synced across network
         /// </summary>
         public NetworkTransform targetLocation;
+
+        private readonly Queue<EmoteType> _speechBubbles = new();
+
+        private float _aliveRatsRemainder;
+
+        [CanBeNull] private PatrolController _attackingPatrol;
+        private Camera _camera;
+
+        [CanBeNull] private string _combatStrategy;
+        private GameObject _combatText;
+        private EvolutionManager _evolutionManager;
+
+        /// <summary>
+        ///     Mid-point of all the rats in the horde
+        /// </summary>
+        private Vector2 _hordeCenter;
+
+        [CanBeNull] private Action _onArriveAtTarget;
+
+        private GameObject _playerText;
+
+        private Light2D _selectionLightPoi;
+
+        private Light2D _selectionLightTerrain;
+        private bool _speechBubbleActive;
+        private Image _speechBubbleImage;
+
+        [CanBeNull] private HordeController _targetHorde;
 
         public RatBoids Boids { get; private set; }
 
@@ -258,6 +258,7 @@ namespace Horde
         private void OnDestroy()
         {
             player.Hordes.Remove(this);
+            Debug.Log($"HORDE {Object.Id}: Destroyed self");
         }
 
 #if UNITY_EDITOR
@@ -773,7 +774,9 @@ Count: {AliveRats}
             var newMutations = new WeightedList<ActiveMutation>();
             foreach (var hordeID in hordes)
             {
-                Runner.TryFindBehaviour(hordeID, out HordeController horde);
+                if (!Runner.TryFindBehaviour(hordeID, out HordeController horde))
+                    throw new NullReferenceException("Couldn't find horde controller from ID");
+                ;
                 if (horde.Id == hordeID) continue;
                 state.PassiveEvolutions["attack"][1] = Math.Max(horde.GetPopulationState().Damage * 0.8,
                     state.PassiveEvolutions["attack"][1]);
@@ -874,6 +877,7 @@ Count: {AliveRats}
                     horde.AddSpeechBubbleRpc(EmoteType.Evolution);
                 }
 
+            Debug.Log($"HORDE {Object.Id}: Despawned self");
             Runner.Despawn(Object);
         }
 

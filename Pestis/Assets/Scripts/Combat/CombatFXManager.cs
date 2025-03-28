@@ -27,7 +27,7 @@ namespace Combat
                 var vfx = combatVFX[i];
 
                 // Horde we created this vfx for no longer exists
-                if (i > hordes.Count - 1)
+                if (i > hordes.Count - 2)
                 {
                     vfx.Stop();
                     continue;
