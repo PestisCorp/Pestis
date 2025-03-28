@@ -399,7 +399,7 @@ Count: {AliveRats}
             if (TargetPoi.StationedHordes.Count == 0 && TargetPoi.patrolController.HumanCount == 0)
             {
                 AddSpeechBubbleRpc(EmoteType.Defend);
-                TargetPoi.ChangeController(player);
+                TargetPoi.ChangeControllerRpc(player);
                 StationAtRpc(TargetPoi);
                 return;
             }

@@ -193,7 +193,7 @@ namespace Combat
                 if (FightingOver && winner != FightingOver.ControlledBy)
                 {
                     Debug.Log($"Transferring POI Ownership to {winner.Object.StateAuthority}");
-                    FightingOver.ChangeController(winner);
+                    FightingOver.ChangeControllerRpc(winner);
 
                     foreach (var hordeID in winnerParticipant.Hordes)
                     {

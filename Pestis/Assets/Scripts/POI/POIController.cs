@@ -91,7 +91,8 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         }
 #endif
 
-        public void ChangeController(Player player)
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void ChangeControllerRpc(Player player)
         {
             Debug.Log(
                 $"Changing POI Controller from {(ControlledBy ? ControlledBy.Object.Id : "None")} to {player.Object.Id}");
@@ -178,7 +179,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             // No need to start combat, just hand over control
             if (StationedHordes.Count == 0)
             {
-                ChangeController(horde.player);
+                ChangeControllerRpc(horde.player);
                 StationHorde(horde);
                 return;
             }
