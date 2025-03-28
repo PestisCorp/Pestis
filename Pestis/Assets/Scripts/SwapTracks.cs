@@ -17,6 +17,7 @@ public class SwapTracks : MonoBehaviour
         if (tilemapObject != null)
         {
             this.tilemap = tilemapObject.GetComponent<Tilemap>();
+            StartCoroutine(SwapTrack());
         }
         else
         {
@@ -32,9 +33,10 @@ public class SwapTracks : MonoBehaviour
 
         while (true)
         {
+            while (InputHandler.Instance.LocalPlayer.selectedHorde) yield return null;
             Vector3Int pos = new Vector3Int(
-                (int)(InputHandler.Instance.LocalPlayer?.selectedHorde.GetCenter().x),
-                (int)(InputHandler.Instance.LocalPlayer?.selectedHorde.GetCenter().y),
+                (int)(InputHandler.Instance.LocalPlayer.selectedHorde.GetCenter().x),
+                (int)(InputHandler.Instance.LocalPlayer.selectedHorde.GetCenter().y),
                 0
             );
 
@@ -45,10 +47,10 @@ public class SwapTracks : MonoBehaviour
                 currentTrack = currentTile;
 
                 AudioClip newClip = null;
-                if (currentTile == typeof(GrassTile)) newClip = tracks[0];
-                else if (currentTile == typeof(TundraTile)) newClip = tracks[1];
-                else if (currentTile == typeof(DesertTile)) newClip = tracks[2];
-                else if (currentTile == typeof(StoneTile)) newClip = tracks[3];
+                if (currentTile == typeof(GrassTile)) newClip = tracks[1];
+                else if (currentTile == typeof(TundraTile)) newClip = tracks[0];
+                else if (currentTile == typeof(DesertTile)) newClip = tracks[1];
+                else if (currentTile == typeof(StoneTile)) newClip = tracks[0];
 
                 if (newClip != null && newClip != audioSource.clip)
                 {
@@ -56,10 +58,12 @@ public class SwapTracks : MonoBehaviour
                     audioSource.clip = newClip;
                     yield return StartCoroutine(FadeIn(audioSource, fadeDuration));
                 }
+                
             }
+            yield return new WaitForSeconds(secondsBeforeCheckTrackSwap);
 
-            yield return null;
         }
+        yield return null;
     }
 
     private IEnumerator FadeOut(AudioSource audio, float duration)
