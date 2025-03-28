@@ -72,7 +72,7 @@ namespace POI
         public override void FixedUpdateNetwork()
         {
             // Respawn human patrol if POI has not been controlled for a while
-            if (StationedHordes.Count == 0 && Runner.SimulationTime - TimeWhenPoiAbandoned > 500) 
+            if (StationedHordes.Count == 0 && Runner.SimulationTime - TimeWhenPoiAbandoned > 10f) 
             {
                 patrolController.UpdateHumanCountRpc(patrolController.startingHumanCount);
             }
