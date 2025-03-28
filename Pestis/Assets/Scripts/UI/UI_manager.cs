@@ -69,7 +69,7 @@ public class UI_Manager : MonoBehaviour
         if (objectives) objectives.SetActive(false);
         if (startMenu) objectives.SetActive(false);
         if (tutorialButton) tutorialButton.SetActive(false);
-
+        if (timer.parent) timer.parent.SetActive(false);
 
         _notificationText = notification.GetComponentInChildren<TMP_Text>();
         _notificationBackground = notification.GetComponentInChildren<Image>();

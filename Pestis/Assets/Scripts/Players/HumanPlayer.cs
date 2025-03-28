@@ -34,6 +34,8 @@ namespace Players
                 UI_manager.ResourceStatsEnable();
                 // Enable objective checklist upon loading in
                 UI_manager.ObjectiveChecklistEnable();
+                //enable reset
+                UI_manager.timer.parent.SetActive(true);
             }
         }
 
