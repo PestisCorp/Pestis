@@ -776,7 +776,7 @@ Count: {AliveRats}
             {
                 if (!Runner.TryFindBehaviour(hordeID, out HordeController horde))
                     throw new NullReferenceException("Couldn't find horde controller from ID");
-                ;
+                
                 if (horde.Id == hordeID) continue;
                 state.PassiveEvolutions["attack"][1] = Math.Max(horde.GetPopulationState().Damage * 0.8,
                     state.PassiveEvolutions["attack"][1]);
