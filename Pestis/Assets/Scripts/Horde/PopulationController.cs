@@ -69,7 +69,7 @@ namespace Horde
         // Weight used in probability of population growth
         // W > 1 if R > P
         // W = 1 if R == P
-        // W < 1 if R < P
+        // 0.3 < W < 1 if R < P
         private double ResourceWeightGrowth()
         {
             var w = 2.5;

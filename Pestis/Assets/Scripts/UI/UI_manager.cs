@@ -111,17 +111,24 @@ public class UI_Manager : MonoBehaviour
         {
             HordesListRefresh();
             var taggedObjects = GameObject.FindGameObjectsWithTag("UI_stats_text");
-            foreach (var obj in taggedObjects)
-                if (obj.name == "Info_own_stats")
-                {
-                    var horde = GetSelectedHorde();
-                    UpdateStats(obj, horde);
-                }
-            var toggles = attackPanel.GetComponentsInChildren<Toggle>();
-            foreach (var toggle in toggles)
+            if (infoPanel.activeSelf)
             {
-                var toggleText = toggle.GetComponentInChildren<TextMeshProUGUI>().text.Trim('\n');
-                if (toggle.isOn) GetSelectedHorde().SetCombatStrategy(toggleText);
+                foreach (var obj in taggedObjects)
+                    if (obj.name == "Info_own_stats")
+                    {
+                        var horde = GetSelectedHorde();
+                        UpdateStats(obj, horde);
+                    }
+            }
+
+            if (actionPanel.activeSelf)
+            {
+                var toggles = attackPanel.GetComponentsInChildren<Toggle>();
+                foreach (var toggle in toggles)
+                {
+                    var toggleText = toggle.GetComponentInChildren<TextMeshProUGUI>().text.Trim('\n');
+                    if (toggle.isOn) GetSelectedHorde().SetCombatStrategy(toggleText);
+                }
             }
         }
         
@@ -157,7 +164,7 @@ public class UI_Manager : MonoBehaviour
             var hordeButton = Instantiate(hordeButtonPrefab, hordesListContentParent.transform);
             var textBoxes = hordeButton.GetComponentsInChildren<TextMeshProUGUI>();
             textBoxes[0].text = horde.AliveRats.ToString();
-            textBoxes[1].text = horde.GetEvolutionState().AcquiredMutations.Count.ToString();
+            textBoxes[1].text = horde.GetComponent<EvolutionManager>().PointsAvailable.ToString();
             hordeButton.GetComponent<Button>().onClick.RemoveAllListeners();
             hordeButton.GetComponent<Button>().onClick.AddListener(delegate {Camera.main.GetComponent<Panner>().PanTo(horde);});
         }
@@ -201,12 +208,12 @@ public class UI_Manager : MonoBehaviour
             }
         }
 
-        if (actionPanel != null) actionPanel.SetActive(true);
+        if (actionPanel) actionPanel.SetActive(true);
     }
 
     public void ActionPanelDisable()
     {
-        if (actionPanel != null) actionPanel.SetActive(false);
+        if (actionPanel) actionPanel.SetActive(false);
         if (AbilityBars.Count > 0) AbilityToolbarDisable();
         SplitPanelDisable();
     }
@@ -216,7 +223,7 @@ public class UI_Manager : MonoBehaviour
     public void InfoPanelEnable()
     {
         ResetUI();
-        if (infoPanel != null)
+        if (infoPanel)
             infoPanel.SetActive(true);
 
         // Find all GameObjects with the tag "UI_stats_text"
@@ -252,7 +259,7 @@ public class UI_Manager : MonoBehaviour
     // Function to disable info panel
     public void InfoPanelDisable()
     {
-        if (infoPanel != null) infoPanel.SetActive(false);
+        if (infoPanel) infoPanel.SetActive(false);
     }
 
     //Pure toggle caused issue with reset UI order so changed to use disable and enable functions
@@ -268,13 +275,13 @@ public class UI_Manager : MonoBehaviour
     // Function to disable horde split panel
     public void SplitPanelDisable()
     {
-        if (splitPanel != null) splitPanel.SetActive(false);
+        if (splitPanel) splitPanel.SetActive(false);
     }
 
     // Function to enable horde split panel
     public void SplitPanelEnable()
     {
-        if (splitPanel != null) splitPanel.SetActive(true);
+        if (splitPanel) splitPanel.SetActive(true);
     }
 
     public void SplitPanelToggle()
