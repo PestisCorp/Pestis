@@ -7,6 +7,7 @@ public class BiomeEffects : MonoBehaviour
     public PopulationController pop;
     public HordeController horde;
     public Tilemap tilemap;
+    public BiomeTile currentBiome;
 
     void Start()
     {
@@ -29,6 +30,7 @@ public class BiomeEffects : MonoBehaviour
         if (tileBelow is BiomeTile biome)
         {
             biome.biomeEffect(pop, horde);
+            currentBiome = biome;
         }
     }
     // Update is called once per frame

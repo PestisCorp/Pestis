@@ -92,7 +92,16 @@ namespace Horde
         // Tapers off as population approaches PopMax
         private double Alpha(double weight, int population)
         {
-            return State.BirthRate * weight * ((double)PopMax / (population + PopMax));
+            var currentBiome = GetComponent<BiomeEffects>().currentBiome;
+            var resistance = currentBiome.name switch
+            {
+                "GrassTile" => State.GrassResistance,
+                "TundraTile" => State.TundraResistance,
+                "StoneTile" => State.StoneResistance,
+                "DesertTile" => State.DesertResistance,
+                _ => 1f
+            };
+            return State.BirthRate * weight * resistance * ((double)PopMax / (population + PopMax));
         }
 
         // Calculate probability of population decline
