@@ -181,7 +181,7 @@ public class GameManager : MonoBehaviour
         poiOffsetBuffer.SetData(gridOffsets);
 
         Application.targetFrameRate = 60;
-        QualitySettings.vSyncCount = 0;
+        QualitySettings.vSyncCount = 1;
         Debug.Log($"Async GPU support: {SystemInfo.supportsAsyncCompute}");
     }
 
