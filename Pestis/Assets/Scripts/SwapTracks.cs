@@ -30,17 +30,16 @@ public class SwapTracks : MonoBehaviour
         Type currentTrack = typeof(GrassTile);
         audioSource.clip = tracks[0];
         audioSource.Play();
-
+        Debug.Log(1);
         while (true)
         {
-            while (InputHandler.Instance.LocalPlayer.selectedHorde) yield return null;
+            while (!InputHandler.Instance.LocalPlayer.selectedHorde) yield return null;
 
             Vector3Int pos = new Vector3Int(
                 (int)(InputHandler.Instance.LocalPlayer.selectedHorde.GetCenter().x),
                 (int)(InputHandler.Instance.LocalPlayer.selectedHorde.GetCenter().y),
                 0
             );
-
             TileBase tileAtPos = tilemap.GetTile(pos);
 
             if (tileAtPos != null)  // Only proceed if the tile is not null
