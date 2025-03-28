@@ -34,37 +34,44 @@ public class SwapTracks : MonoBehaviour
         while (true)
         {
             while (InputHandler.Instance.LocalPlayer.selectedHorde) yield return null;
+
             Vector3Int pos = new Vector3Int(
                 (int)(InputHandler.Instance.LocalPlayer.selectedHorde.GetCenter().x),
                 (int)(InputHandler.Instance.LocalPlayer.selectedHorde.GetCenter().y),
                 0
             );
 
-            System.Type currentTile = tilemap.GetTile(pos)?.GetType();
+            TileBase tileAtPos = tilemap.GetTile(pos);
 
-            if (currentTile != null && currentTile != currentTrack)
+            if (tileAtPos != null)  // Only proceed if the tile is not null
             {
-                currentTrack = currentTile;
+                System.Type currentTile = tileAtPos.GetType();
 
-                AudioClip newClip = null;
-                if (currentTile == typeof(GrassTile)) newClip = tracks[1];
-                else if (currentTile == typeof(TundraTile)) newClip = tracks[0];
-                else if (currentTile == typeof(DesertTile)) newClip = tracks[1];
-                else if (currentTile == typeof(StoneTile)) newClip = tracks[0];
-
-                if (newClip != null && newClip != audioSource.clip)
+                if (currentTile != null && currentTile != currentTrack)
                 {
-                    yield return StartCoroutine(FadeOut(audioSource, fadeDuration));
-                    audioSource.clip = newClip;
-                    yield return StartCoroutine(FadeIn(audioSource, fadeDuration));
+                    currentTrack = currentTile;
+                    Debug.Log(currentTile.ToString());
+                    AudioClip newClip = null;
+
+                    if (currentTile == typeof(GrassTile)) newClip = tracks[1];
+                    else if (currentTile == typeof(TundraTile)) newClip = tracks[0];
+                    else if (currentTile == typeof(DesertTile)) newClip = tracks[1];
+                    else if (currentTile == typeof(StoneTile)) newClip = tracks[0];
+
+                    Debug.Log(newClip?.ToString()); // Check for null before calling ToString
+
+                    if (newClip != null && newClip != audioSource.clip)
+                    {
+                        yield return StartCoroutine(FadeOut(audioSource, fadeDuration));
+                        audioSource.clip = newClip;
+                        yield return StartCoroutine(FadeIn(audioSource, fadeDuration));
+                    }
                 }
-                
             }
             yield return new WaitForSeconds(secondsBeforeCheckTrackSwap);
-
         }
-        yield return null;
     }
+
 
     private IEnumerator FadeOut(AudioSource audio, float duration)
     {
