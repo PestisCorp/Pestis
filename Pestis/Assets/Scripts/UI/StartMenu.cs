@@ -21,7 +21,6 @@ namespace UI
             scene.AddSceneRef(SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex));
             args.Scene = scene;
             runner.StartGame(args);
-
             gameObject.SetActive(false);
         }
     }

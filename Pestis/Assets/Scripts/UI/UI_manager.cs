@@ -13,8 +13,7 @@ using Button = UnityEngine.UI.Button;
 using Color = UnityEngine.Color;
 using Image = UnityEngine.UI.Image;
 using Object = UnityEngine.Object;
-using Slider = UnityEngine.UI.Slider;
-using Toggle = UnityEngine.UI.Toggle;
+using Timer = Fusion.Timer;
 
 
 public class UI_Manager : MonoBehaviour
@@ -67,7 +66,8 @@ public class UI_Manager : MonoBehaviour
     private Image _notificationBackground;
     private TMP_Text _notificationText;
 
-
+    private Timer _hordeListRefreshClock;
+    
     private void Awake()
     {
         Instance = this;
@@ -83,7 +83,8 @@ public class UI_Manager : MonoBehaviour
         if (objectives) objectives.SetActive(false);
         if (startMenu) objectives.SetActive(false);
         if (tutorialButton) tutorialButton.SetActive(false);
-
+        if (hordesListPanel) hordesListPanel.SetActive(false);
+        
 
         _notificationText = notification.GetComponentInChildren<TMP_Text>();
         _notificationBackground = notification.GetComponentInChildren<Image>();
@@ -126,6 +127,11 @@ public class UI_Manager : MonoBehaviour
                 if (toggle.isOn) GetSelectedHorde().SetCombatStrategy(toggleText);
             }
         }
+
+        if (_hordeListRefreshClock.ElapsedInSeconds > 3)
+        {
+            HordesListRefresh();
+        }
         
     }
 
@@ -144,47 +150,26 @@ public class UI_Manager : MonoBehaviour
 
         if (actionPanel) ActionPanelDisable();
         
-        if (hordesListPanel) HordesListDisable();
 
         // Ignoring the state of the tool bar, ensuring the default buttons are visible
         var toolbarButtons = GameObject.FindGameObjectsWithTag("UI_button_action");
         foreach (var obj in toolbarButtons) obj.GetComponent<Image>().enabled = true;
     }
 
-    public void HordesListEnable()
+    public void HordesListRefresh()
     {
-        ResetUI();
-        if (hordesListPanel) hordesListPanel.SetActive(true);
-        if (!localPlayer) return;
+
         foreach (Transform child in hordesListContentParent) Destroy(child.gameObject);
-        int count = 1;
         foreach (var horde in localPlayer!.player.Hordes)
         {
             var hordeButton = Instantiate(hordeButtonPrefab, hordesListContentParent.transform);
-            var hordeName = count.ToString();
-            if (horde.isApparition) hordeName += " (Apparition)";
-            hordeButton.GetComponentInChildren<TMP_Text>().text = "Horde No.: " + hordeName + "\n" +
-                                                        "Population: " + horde.AliveRats + "\n" +
-                                                        "No. mutations: " + horde.GetEvolutionState().AcquiredMutations.Count;
+            var textBoxes = hordeButton.GetComponentsInChildren<TextMeshProUGUI>();
+            textBoxes[0].text = horde.AliveRats.ToString();
+            textBoxes[1].text = horde.GetEvolutionState().AcquiredMutations.Count.ToString();
             hordeButton.GetComponent<Button>().onClick.RemoveAllListeners();
             hordeButton.GetComponent<Button>().onClick.AddListener(delegate {Camera.main.GetComponent<Panner>().PanTo(horde);});
-            count++;
         }
-
-        StartCoroutine(RefreshHordeList());
-    }
-
-    IEnumerator RefreshHordeList()
-    {
-        yield return new WaitForSeconds(5);
-        if (!hordesListPanel.activeSelf) yield break;
-        HordesListDisable();
-        HordesListEnable();
-    }
-    
-    public void HordesListDisable()
-    {
-        if (hordesListPanel) hordesListPanel.SetActive(false);
+        _hordeListRefreshClock.Restart();
     }
     
     public void ActionPanelEnable()
