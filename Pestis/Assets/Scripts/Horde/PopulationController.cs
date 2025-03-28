@@ -38,7 +38,7 @@ namespace Horde
         private const int PopMax = 999999999;
 
         // The maximum change in a population per network tick
-        private const int MaxPopGrowth = 500;
+        private const int MaxPopGrowth = 50;
         public int initialPopulation = 1;
 
         private readonly Random _random = new();
@@ -244,12 +244,9 @@ namespace Horde
         public override void FixedUpdateNetwork()
         {
             // Suspend population simulation during combat or retreat to avoid interference
-            if (!_hordeController.InCombat && _hordeController.PopulationCooldown == 0 &&
-                _populationClock.ElapsedInMilliseconds > 50 && !_hordeController.isApparition) PopulationEvent();
-            _highestHealth = Mathf.Max(_hordeController.TotalHealth, _highestHealth);
-            if (!_hordeController.InCombat)
-                _hordeController.TotalHealth =
-                    Mathf.Max(_hordeController.TotalHealth, initialPopulation * State.HealthPerRat);
+            PopulationEvent();
+            PopulationEvent();
+            PopulationEvent();
         }
 
         public void SetDamage(float damage)
