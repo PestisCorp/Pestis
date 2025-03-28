@@ -338,7 +338,7 @@ namespace Combat
         {
             return Participators.Where(kvp => kvp.Key != player).SelectMany(kvp => kvp.Value.Hordes).Sum(hordeID =>
             {
-                Runner.TryFindBehaviour(hordeID, out HordeController horde);
+                var found = Runner.TryFindBehaviour(hordeID, out HordeController horde);
                 if (horde is null)
                     throw new NullReferenceException(
                         "Combat participant contained horde that couldn't be found by network runner");

@@ -27,7 +27,7 @@
         }
     },
     "Network": {
-        "ConnectionTimeout": 10.0,
+        "ConnectionTimeout": 30.0,
         "ConnectionShutdownTime": 1.0,
         "ReliableDataTransferModes": 3
     },
