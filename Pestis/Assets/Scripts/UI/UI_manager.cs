@@ -66,7 +66,7 @@ public class UI_Manager : MonoBehaviour
     private Image _notificationBackground;
     private TMP_Text _notificationText;
 
-    private Timer _hordeListRefreshClock;
+    private Timer _refreshClock;
     
     private void Awake()
     {
@@ -106,9 +106,10 @@ public class UI_Manager : MonoBehaviour
 
             if (localPlayer.player.Timer != null) timer.UpdateTimer(localPlayer.player.Timer);
         }
-
-        if (infoPanel.activeSelf)
+        
+        if (_refreshClock.ElapsedInSeconds > 3)
         {
+            HordesListRefresh();
             var taggedObjects = GameObject.FindGameObjectsWithTag("UI_stats_text");
             foreach (var obj in taggedObjects)
                 if (obj.name == "Info_own_stats")
@@ -116,21 +117,12 @@ public class UI_Manager : MonoBehaviour
                     var horde = GetSelectedHorde();
                     UpdateStats(obj, horde);
                 }
-        }
-
-        if (actionPanel.activeSelf)
-        {
             var toggles = attackPanel.GetComponentsInChildren<Toggle>();
             foreach (var toggle in toggles)
             {
                 var toggleText = toggle.GetComponentInChildren<TextMeshProUGUI>().text.Trim('\n');
                 if (toggle.isOn) GetSelectedHorde().SetCombatStrategy(toggleText);
             }
-        }
-
-        if (_hordeListRefreshClock.ElapsedInSeconds > 3)
-        {
-            HordesListRefresh();
         }
         
     }
@@ -169,7 +161,7 @@ public class UI_Manager : MonoBehaviour
             hordeButton.GetComponent<Button>().onClick.RemoveAllListeners();
             hordeButton.GetComponent<Button>().onClick.AddListener(delegate {Camera.main.GetComponent<Panner>().PanTo(horde);});
         }
-        _hordeListRefreshClock.Restart();
+        _refreshClock.Restart();
     }
     
     public void ActionPanelEnable()
@@ -340,19 +332,19 @@ public class UI_Manager : MonoBehaviour
     // • Avg. Weight: XXKg
     private void UpdateStats(GameObject statsText, HordeController horde)
     {
-        if (horde != null)
+        if (horde)
         {
             // Create string variables for the stats, with XX as default if no value is present
             var hordeState = horde.GetPopulationState();
             var population = horde.AliveRats.ToString();
             var attack = horde.GetPopulationState().Damage.ToString("F2");
             var defense = (1 / hordeState.DamageReduction).ToString("F2");
-            var health = horde.TotalHealth;
+            var health = horde.TotalHealth.ToString("N0");
 
-            var stats = "Population: " + population + "\n" +
-                        "Attack: " + attack + "\n" +
-                        "Defense: " + defense + "\n" +
-                        "Health: " + health;
+            var stats = population + "\n" +
+                        attack + "\n" +
+                        defense + "\n" +
+                        health;
             statsText.GetComponentInChildren<TextMeshProUGUI>().text = stats;
         }
         else
