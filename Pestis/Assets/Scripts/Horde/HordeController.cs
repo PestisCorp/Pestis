@@ -48,7 +48,6 @@ namespace Horde
     }
 
     public class HordeController : NetworkBehaviour
-
     {
         private static Dictionary<EmoteType, Sprite> EmoteSprites = new();
         [SerializeField] private Vector2 devToolsTargetLocation;
@@ -72,8 +71,6 @@ namespace Horde
         ///     Seconds until we can start simulating population again after combat.
         /// </summary>
         public float populationCooldown;
-
-        public GameObject ratPrefab;
 
         [SerializeField] private GameObject speechBubble;
 
@@ -258,7 +255,7 @@ namespace Horde
         private void OnDestroy()
         {
             player.Hordes.Remove(this);
-            Debug.Log($"HORDE {Object.Id}: Destroyed self");
+            Debug.Log("HORDE: Destroyed self");
         }
 
 #if UNITY_EDITOR
@@ -764,7 +761,7 @@ Count: {AliveRats}
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void EventWonCombatRpc(NetworkBehaviourId[] hordes)
+        public void EventWonCombatRpc(HordeState[] hordes)
         {
             Debug.Log($"We ({Object.Id}) won combat!");
 
@@ -772,21 +769,23 @@ Count: {AliveRats}
 
             var state = GetEvolutionState();
             var newMutations = new WeightedList<ActiveMutation>();
-            foreach (var hordeID in hordes)
+            foreach (var hordeState in hordes)
             {
-                if (!Runner.TryFindBehaviour(hordeID, out HordeController horde))
-                    throw new NullReferenceException("Couldn't find horde controller from ID");
-                
-                if (horde.Id == hordeID) continue;
-                state.PassiveEvolutions["attack"][1] = Math.Max(horde.GetPopulationState().Damage * 0.8,
+                if (player.Hordes.Any(horde => horde.Id.Object == hordeState.Horde)) continue;
+                state.PassiveEvolutions["attack"][1] = Math.Max(hordeState.Damage * 0.8,
                     state.PassiveEvolutions["attack"][1]);
-                state.PassiveEvolutions["health"][1] = Math.Max(horde.GetPopulationState().HealthPerRat * 0.8,
+                state.PassiveEvolutions["health"][1] = Math.Max(hordeState.HealthPerRat * 0.8,
                     state.PassiveEvolutions["health"][1]);
-                state.PassiveEvolutions["defense"][1] = Math.Max(horde.GetPopulationState().DamageReduction * 0.8,
+                state.PassiveEvolutions["defense"][1] = Math.Max(hordeState.DamageReduction * 0.8,
                     state.PassiveEvolutions["defense"][1]);
-                foreach (var mut in horde.GetEvolutionState().AcquiredMutations)
-                    if (state.ActiveMutations.Contains(mut))
-                        newMutations.Add(mut, 1);
+                foreach (var mut in hordeState.UnlockedMutations)
+                {
+                    // If horde has already unlocked the mutation, continue
+                    if (_evolutionManager.UnlockedMutationNames.Contains(mut)) continue;
+                    var mutation = state.AcquiredMutations.ToList().Find(x => x.Type == mut);
+
+                    newMutations.Add(mutation, 1);
+                }
             }
 
             if (newMutations.Count > 0)
