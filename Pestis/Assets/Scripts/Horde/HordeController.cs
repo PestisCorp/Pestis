@@ -677,7 +677,7 @@ Count: {AliveRats}
             _targetHorde = target;
             _combatStrategy = combatOption;
             AddSpeechBubbleRpc(EmoteType.Attack);
-            GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.CombatStarted, 1);
+            if (player.IsLocal) GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.CombatStarted, 1);
         }
 
         private IEnumerator ApplyStrategy(CombatOptions action)
