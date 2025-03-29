@@ -172,6 +172,11 @@ void MergedBehaviours(inout Boid boid)
         boid.vel += (closestEnemy - boid.pos) * (cohesionFactor * deltaTime * turnSpeed);
     }
 
+    if (neighbours == 0 && numBoids > 30) // Boid has become separated from the pack
+    {
+        boid.pos = boidsIn[numBoids / 2].pos;
+    }
+
 
     boid.vel += normalize(targetPos - boid.pos) * (targetFactor * deltaTime * turnSpeed);
     boid.vel += close * (separationFactor * deltaTime * turnSpeed);
