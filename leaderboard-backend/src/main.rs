@@ -39,10 +39,37 @@ struct Update {
 #[derive(Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, Debug)]
 struct PlayerID(u64);
 
+#[derive(Serialize, Deserialize, Debug, Clone)]
+struct Config {
+    players_per_room: usize,
+    max_bots_per_client: usize,
+}
+
+#[derive(Serialize, Debug)]
+struct Room {
+    name: String,
+    players: Vec<Player>,
+    /// The config that the room was created with
+    config: Config,
+}
+
+#[derive(Serialize, Debug)]
+struct State {
+    rooms: Vec<Room>,
+}
+
+#[derive(Serialize, Debug)]
+struct Info {
+    /// The config new rooms should be created with
+    config: Config,
+    state: State,
+}
+
 #[derive(Clone)]
 struct LeaderboardManager {
     players: Arc<RwLock<HashMap<String, Player>>>,
     history: Arc<RwLock<HashMap<String, Vec<Update>>>>,
+    info: Arc<RwLock<Info>>,
 }
 
 impl LeaderboardManager {
@@ -60,6 +87,13 @@ impl LeaderboardManager {
         LeaderboardManager {
             players: Arc::new(RwLock::new(HashMap::new())),
             history: Arc::new(RwLock::new(history)),
+            info: Arc::new(RwLock::new(Info {
+                config: Config {
+                    players_per_room: 100,
+                    max_bots_per_client: 25,
+                },
+                state: State { rooms: vec![] },
+            })),
         }
     }
 
@@ -144,6 +178,13 @@ impl LeaderboardManager {
         drop(history);
         let mut players = self.players.write().await;
         players.retain(|_, player| !to_remove.contains(&player.username));
+
+        drop(players);
+        let mut info = self.info.write().await;
+        for room in &mut info.state.rooms {
+            room.players
+                .retain(|player| !to_remove.contains(&player.username));
+        }
     }
 
     async fn save_to_file(&self) {
@@ -154,6 +195,43 @@ impl LeaderboardManager {
         let mut file = std::fs::File::create(filename).unwrap();
         let data = serde_json::to_string(&*history).unwrap();
         file.write_all(data.as_bytes()).unwrap();
+    }
+
+    /// Get a room name and config for a new player to join, or create a new room if none are available
+    async fn get_or_create_room(&self) -> (String, Config) {
+        let mut info = self.info.write().await;
+
+        for room in &info.state.rooms {
+            if room.players.len() < info.config.players_per_room {
+                return (room.name.clone(), room.config.clone());
+            }
+        }
+
+        let config = info.config.clone();
+
+        let room_name = format!("Room {}", info.state.rooms.len());
+        info.state.rooms.push(Room {
+            name: room_name.clone(),
+            players: vec![],
+            config: config.clone(),
+        });
+
+        (room_name, config)
+    }
+
+    /// Called by the client when they leave the game
+    async fn player_leave(&self, username: &str) {
+        let mut players = self.players.write().await;
+        players.remove(username);
+
+        // Drop lock
+        drop(players);
+
+        // Remove the player from all rooms
+        let mut info = self.info.write().await;
+        for room in &mut info.state.rooms {
+            room.players.retain(|player| player.username != username);
+        }
     }
 }
 
@@ -187,6 +265,12 @@ async fn get_alltime_leaderboard(
 async fn get_median_fps(manager: LeaderboardManager) -> Result<impl warp::Reply, warp::Rejection> {
     let fps = manager.median_fps().await;
     Ok(warp::reply::json(&fps))
+}
+
+/// Get the current c&c info: GET /api/info
+async fn get_info(manager: LeaderboardManager) -> Result<impl warp::Reply, warp::Rejection> {
+    let info = manager.info.read().await;
+    Ok(warp::reply::json(&*info))
 }
 
 async fn update_player(
@@ -269,11 +353,21 @@ async fn main() {
             async move { get_median_fps(manager).await }
         });
 
+    let manager_clone = manager.clone();
+    let info_handler = warp::get()
+        .and(warp::path("api"))
+        .and(warp::path("info"))
+        .and_then(move || {
+            let manager = manager_clone.clone();
+            async move { get_info(manager).await }
+        });
+
     let handler = join
         .or(leaderboard)
         .or(alltime_leaderboard)
         .or(update)
         .or(median_fps)
+        .or(info_handler)
         .with(warp::log("pestis::api"))
         .with(
             warp::cors()
