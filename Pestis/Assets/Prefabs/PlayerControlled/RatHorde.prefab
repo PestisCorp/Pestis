@@ -364,9 +364,9 @@ MonoBehaviour:
   isHedgehogged: 0
   ownIcon: {fileID: 0}
   player: {fileID: 0}
-  populationController: {fileID: 0}
+  populationController: {fileID: 4419380376764164480}
   populationCooldown: 0
-  speechBubble: {fileID: 3280453391582801240}
+  speechBubble: {fileID: 20215845809298793}
   targetLocation: {fileID: 0}
   _AliveRats:
     compressed: 0
@@ -914,7 +914,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4234608823859560160}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
