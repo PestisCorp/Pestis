@@ -60,6 +60,7 @@ namespace Horde
         private int _populationPeak;
 
         private List<double[]> _transitionMatrix;
+        private BiomeEffects _biomeEffects;
         public int initialPopulation = 5;
         public bool isAgriculturalist;
 
@@ -92,8 +93,12 @@ namespace Horde
         // Tapers off as population approaches PopMax
         private double Alpha(double weight, int population)
         {
-            var currentBiome = GetComponent<BiomeEffects>().currentBiome;
-            var resistance = currentBiome.name switch
+            var currentBiome = "";
+            if (_biomeEffects.currentBiome)
+            {
+                currentBiome = _biomeEffects.currentBiome.name;
+            }
+            var resistance = currentBiome switch
             {
                 "GrassTile" => State.GrassResistance,
                 "TundraTile" => State.TundraResistance,
@@ -101,7 +106,7 @@ namespace Horde
                 "DesertTile" => State.DesertResistance,
                 _ => 1f
             };
-            return State.BirthRate * weight * resistance * ((double)PopMax / (population + PopMax));
+            return State.BirthRate * weight * resistance  * ((double)PopMax / (population + PopMax));
         }
 
         // Calculate probability of population decline
@@ -190,6 +195,7 @@ namespace Horde
         public override void Spawned()
         {
             _hordeController = GetComponent<HordeController>();
+            _biomeEffects = _hordeController.GetComponent<BiomeEffects>();
             State.BirthRate = 0.01;
             State.DeathRate = 0.005;
 
