@@ -366,7 +366,7 @@ MonoBehaviour:
   player: {fileID: 0}
   populationController: {fileID: 4419380376764164480}
   populationCooldown: 0
-  speechBubble: {fileID: 20215845809298793}
+  speechBubble: {fileID: 3280453391582801240}
   targetLocation: {fileID: 0}
   _AliveRats:
     compressed: 0

@@ -8,6 +8,7 @@ using TMPro;
 using UI;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Color = UnityEngine.Color;
 using Image = UnityEngine.UI.Image;
@@ -67,7 +68,7 @@ public class UI_Manager : MonoBehaviour
     private TMP_Text _notificationText;
 
     private Timer _refreshClock;
-    
+
     private void Awake()
     {
         Instance = this;
@@ -84,7 +85,7 @@ public class UI_Manager : MonoBehaviour
         if (startMenu) objectives.SetActive(false);
         if (tutorialButton) tutorialButton.SetActive(false);
         if (hordesListPanel) hordesListPanel.SetActive(false);
-        
+
 
         _notificationText = notification.GetComponentInChildren<TMP_Text>();
         _notificationBackground = notification.GetComponentInChildren<Image>();
@@ -121,20 +122,18 @@ public class UI_Manager : MonoBehaviour
 
             timer.UpdateTimer(localPlayer.player.Timer);
         }
-        
+
         if (_refreshClock.ElapsedInSeconds > 3)
         {
             HordesListRefresh();
             var taggedObjects = GameObject.FindGameObjectsWithTag("UI_stats_text");
             if (infoPanel.activeSelf)
-            {
                 foreach (var obj in taggedObjects)
                     if (obj.name == "Info_own_stats")
                     {
                         var horde = GetSelectedHorde();
                         UpdateStats(obj, horde);
                     }
-            }
 
             if (actionPanel.activeSelf)
             {
@@ -162,7 +161,7 @@ public class UI_Manager : MonoBehaviour
         if (mutationViewer) MutationViewerDisable();
 
         if (actionPanel) ActionPanelDisable();
-        
+
 
         // Ignoring the state of the tool bar, ensuring the default buttons are visible
         var toolbarButtons = GameObject.FindGameObjectsWithTag("UI_button_action");
@@ -171,7 +170,6 @@ public class UI_Manager : MonoBehaviour
 
     public void HordesListRefresh()
     {
-
         foreach (Transform child in hordesListContentParent) Destroy(child.gameObject);
         foreach (var horde in localPlayer!.player.Hordes)
         {
@@ -181,12 +179,13 @@ public class UI_Manager : MonoBehaviour
             textBoxes[1].text = horde.GetComponent<EvolutionManager>().PointsAvailable.ToString();
             var button = hordeButton.GetComponent<Button>();
             button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(delegate {Camera.main.GetComponent<Panner>().PanTo(horde);});
+            button.onClick.AddListener(delegate { Camera.main.GetComponent<Panner>().PanTo(horde); });
             button.onClick.AddListener(delegate { localPlayer.SelectHorde(horde); });
         }
+
         _refreshClock.Restart();
     }
-    
+
     public void ActionPanelEnable()
     {
         ResetUI();
@@ -388,8 +387,6 @@ public class UI_Manager : MonoBehaviour
             mutationText.GetComponentInChildren<TextMeshProUGUI>().text = "No Genome found";
         else mutationText.GetComponentInChildren<TextMeshProUGUI>().text = "No Horde Selected";
     }
-
-    
 
 
     // Function to update the currently selected population
