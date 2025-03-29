@@ -12,6 +12,7 @@ using Objectives;
 using Players;
 using POI;
 using TMPro;
+using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -535,7 +536,22 @@ Count: {AliveRats}
 
                 GameManager.Instance.UIManager.AbilityBars[this].transform.localPosition = Vector3.zero;
             }
-            // Needed to spawn in rats from joined session
+
+            // If we joined a session where this horde is in combat, we need to make sure the combat has our boids in it!
+            if (CurrentCombatController)
+            {
+                var boids = new Boid[AliveRats];
+                for (var i = 0; i < AliveRats; i++)
+                {
+                    boids[i].pos = new float2(HordeBounds.center.x, HordeBounds.center.y);
+                    boids[i].vel = new float2(1.0f / (int)AliveRats, 1.0f / (int)AliveRats);
+                }
+
+                Boids.Start();
+                CurrentCombatController.boids.Start();
+                Boids.SetBoids(boids);
+                Boids.JoinCombat(CurrentCombatController.boids, this);
+            }
         }
 
 
@@ -855,7 +871,7 @@ Count: {AliveRats}
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void AddBoidsToCombatRpc(CombatController combat)
         {
-            Debug.Log($"HORDE {Object.Id} of {player.Username}: Joining boids to combat");
+            Debug.Log($"HORDE {Object.Id} of {player.Username}: Joining boids to combat {combat.Id}");
 
             if (combat == null) throw new Exception("Tried to add boids to non-existent combat");
             Boids.JoinCombat(combat.boids, this);

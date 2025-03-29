@@ -598,7 +598,7 @@ public class RatBoids : MonoBehaviour
     ///     Set my internal boids to some specific boids, used for transferring boids from one to another when splitting horde.
     /// </summary>
     /// <param name="newBoids"></param>
-    private void SetBoids(Boid[] newBoids)
+    public void SetBoids(Boid[] newBoids)
     {
         if (newBoids.Length >= boidBuffer.count) ResizeBuffers(newBoids.Length * 2);
         boidBuffer.SetData(newBoids, 0, 0, newBoids.Length);
