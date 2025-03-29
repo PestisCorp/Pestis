@@ -14,6 +14,7 @@ using Color = UnityEngine.Color;
 using Image = UnityEngine.UI.Image;
 using Object = UnityEngine.Object;
 using Timer = Fusion.Timer;
+using Toggle = UnityEngine.UI.Toggle;
 
 
 public class UI_Manager : MonoBehaviour
@@ -375,33 +376,7 @@ public class UI_Manager : MonoBehaviour
         else mutationText.GetComponentInChildren<TextMeshProUGUI>().text = "No Horde Selected";
     }
 
-    // Function to update the max population text of the attack horde size slider
-    // Both the text field and the slider max value will be updated
-    private void UpdateSliderMaxPop(GameObject maxPopText, HordeController horde)
-    {
-        //Get the slider with tag "Attack_slider"
-        var slider = GameObject.FindGameObjectWithTag("Attack_slider");
-
-        if (horde != null)
-        {
-            var population = horde.AliveRats;
-
-            //Change the max value of the slider to the population of the horde
-            slider.GetComponent<Slider>().maxValue = (uint)population;
-
-            maxPopText.GetComponentInChildren<TextMeshProUGUI>().text = population.ToString();
-        }
-        else
-        {
-            //Set default value to 100 if no horde is selected
-            slider.GetComponent<Slider>().maxValue = 100;
-            maxPopText.GetComponentInChildren<TextMeshProUGUI>().text = "100";
-        }
-
-        //Set the value of the slider to the half of the max value (rounding down for odd numbers)
-        slider.GetComponent<Slider>().value = slider.GetComponent<Slider>().maxValue / 2;
-        UpdateSelectedPopulation();
-    }
+    
 
 
     // Function to update the currently selected population

@@ -167,6 +167,7 @@ namespace Horde
                 text = "A horde's " + mutation + " has improved by " +
                        Math.Round(_evolutionaryState.PassiveEvolutions["evolution strength"][1] * 100 - 100, 2)
                            .ToString(CultureInfo.CurrentCulture) + "%.";
+            }
             if (_hordeController.player.Type == 0) GameManager.Instance.UIManager.AddNotification(text, Color.black);
             switch (mutation)
             {

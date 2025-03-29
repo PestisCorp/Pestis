@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Fusion;
+using Networking;
 using UnityEngine;
 using Random = System.Random;
 
@@ -73,26 +74,6 @@ namespace Horde
         // 0.3 < W < 1 if R < P
         private double ResourceWeightGrowth()
         {
-            var w = 2.5;
-            if (isAgriculturalist) w *= 1.2;
-            return Math.Max(1 + w *
-                (1.0 - Math.Exp(-(_hordeController.Player.CurrentCheese / (uint)_hordeController.AliveRats - 1))), 0.3);
-        }
-
-
-        // Weight used in probability of population decline
-        // W = 1 if R >= P
-        // W > 1 if R < P
-        private double ResourceWeightDecline()
-        {
-            if (_hordeController.player.CurrentCheese >= (uint)_hordeController.AliveRats) return 1.0;
-            return Math.Exp(1.0 - _hordeController.player.CurrentCheese / (uint)_hordeController.AliveRats);
-        }
-
-        // Calculate probability of population growth
-        // Tapers off as population approaches PopMax
-        private double Alpha(double weight, int population)
-        {
             var currentBiome = "";
             if (_biomeEffects.currentBiome)
             {
@@ -106,7 +87,28 @@ namespace Horde
                 "DesertTile" => State.DesertResistance,
                 _ => 1f
             };
-            return State.BirthRate * weight * resistance  * ((double)PopMax / (population + PopMax));
+            var w = 2.5 * resistance;
+            if (isAgriculturalist) w *= 1.2;
+            return Math.Max(1 + w *
+                (1.0 - Math.Exp(-(_hordeController.player.CurrentCheese / (uint)_hordeController.AliveRats - 1))), 0.3);
+        }
+
+
+        // Weight used in probability of population decline
+        // W = 1 if R >= P
+        // W > 1 if R < P
+        private double ResourceWeightDecline()
+        {
+            if (_hordeController.player.CurrentCheese >= (uint)_hordeController.AliveRats) return 1.0;
+            if (_hordeController.player.CurrentCheese == 0) return 10.0;
+            return Math.Exp(1.5 - _hordeController.player.CurrentCheese / (uint)_hordeController.AliveRats);
+        }
+
+        // Calculate probability of population growth
+        // Tapers off as population approaches PopMax
+        private double Alpha(double weight, int population)
+        {
+            return State.BirthRate * weight * ((double)PopMax / (population + PopMax));
         }
 
         // Calculate probability of population decline
@@ -211,7 +213,7 @@ namespace Horde
             State.DamageReductionMult = 1.0f;
             State.SepticMult = 1.0f;
 
-            _hordeController.TotalHealth = initialPopulation * State.HealthPerRat;
+            _hordeController.AliveRats = new IntPositive((uint)initialPopulation);
 
             _populationClock.Start();
 

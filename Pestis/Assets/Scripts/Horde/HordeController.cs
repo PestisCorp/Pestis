@@ -76,7 +76,6 @@ namespace Horde
         public float populationCooldown;
 
         [SerializeField] private GameObject speechBubble;
-        [SerializeField] private Image speechBubbleImage;
 
         /// <summary>
         ///     Location rats are trying to get to, synced across network
@@ -165,7 +164,7 @@ namespace Horde
         {
             _hordeCenter = transform.position;
             _camera = Camera.main;
-            _speechBubbleImage = speechBubble.GetComponent<Image>();
+            _speechBubbleImage = speechBubble.GetComponentInChildren<Image>();
             if (EmoteSprites.Count == 0)
                 EmoteSprites = new Dictionary<EmoteType, Sprite>
                 {
@@ -367,17 +366,17 @@ Count: {AliveRats}
         {
             if (_speechBubbles.Count == 0) yield break;
             _speechBubbleActive = true;
-            speechBubbleImage.enabled = true;
+            _speechBubbleImage.enabled = true;
             var type = _speechBubbles.Dequeue();
             _speechBubbleImage.sprite = EmoteSprites[type];
             yield return new WaitForSeconds(5f);
-            speechBubbleImage.sprite = null;
+            _speechBubbleImage.sprite = null;
             if (_speechBubbles.Count > 0)
                 StartCoroutine(ShowSpeechBubble());
             else
             {
                 _speechBubbleActive = false;
-                speechBubbleImage.enabled = false;
+                _speechBubbleImage.enabled = false;
             }
                 
             
@@ -522,10 +521,7 @@ Count: {AliveRats}
             hordeIcon = transform.Find("Canvas/PlayerName/HordeIcon").gameObject;
             var icon = hordeIcon.GetComponent<Image>();
 
-
-            speechBubble = transform.Find("Canvas/PlayerName/SpeechBubble").gameObject;
-            speechBubbleImage = speechBubble.GetComponentInChildren<Image>();
-            speechBubbleImage.enabled = false;
+            
 
             if (player.IsLocal)
             {
@@ -545,18 +541,18 @@ Count: {AliveRats}
             }
             if (CurrentCombatController)
             {
-                Boids.JoinCombat(CurrentCombatController.boids, this);
-            }
-                Boids.SetBoids(boids);
-                Boids.Start();
-                CurrentCombatController.boids.Start();
-
-                }
+                var boids = new Boid[AliveRats];
+                for (var i = 0; i < AliveRats; i++)
+                {
                     boids[i].pos = new float2(HordeBounds.center.x, HordeBounds.center.y);
                     boids[i].vel = new float2(1.0f / (int)AliveRats, 1.0f / (int)AliveRats);
-                {
-                for (var i = 0; i < AliveRats; i++)
-                var boids = new Boid[AliveRats];
+                }
+
+                Boids.Start();
+                CurrentCombatController.boids.Start();
+                Boids.SetBoids(boids);
+                Boids.JoinCombat(CurrentCombatController.boids, this);
+            }
         }
 
 
@@ -889,7 +885,7 @@ Count: {AliveRats}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void DestroyHordeRpc()
         {
-            Player.Hordes.Remove(this);
+            player.Hordes.Remove(this);
             GameManager.Instance.UIManager.AbilityBars.Remove(this);
             if (GetEvolutionState().AcquiredEffects.Contains("unlock_gods_mistake"))
                 foreach (var horde in player.Hordes)
