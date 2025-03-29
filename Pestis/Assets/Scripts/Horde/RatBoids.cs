@@ -423,8 +423,11 @@ public class RatBoids : MonoBehaviour
 
     private void OnDestroy()
     {
+        _boundsBuffer.Release();
         boidBuffer.Release();
         boidBufferOut.Release();
+        deadBoids.Release();
+        deadBoidsCountBuffer.Release();
         gridBuffer.Release();
         gridOffsetBuffer.Release();
         gridOffsetBufferIn.Release();

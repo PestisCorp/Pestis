@@ -338,8 +338,12 @@ namespace Combat
 
         private void OnDestroy()
         {
+            _boundsBuffer.Release();
             boidBuffer.Release();
             boidBufferOut.Release();
+            boidsToKill.Release();
+            deadBoids.Release();
+            deadBoidsCountBuffer.Release();
             gridBuffer.Release();
             gridOffsetBuffer.Release();
             gridOffsetBufferIn.Release();
