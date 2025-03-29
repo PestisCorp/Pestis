@@ -152,6 +152,10 @@ void MergedBehaviours(inout Boid boid, uint3 id)
         avgVel /= neighbours;
         boid.vel += (avgVel - boid.vel) * (alignmentFactor * velocityDeltaTime * turnSpeed);
     }
+    else if (numBoidsPrevious > 30) // Boid has become separated from the pack
+    {
+        boid.pos = boidsIn[numBoids / 2].pos;
+    }
 }
 
 void LimitSpeed(inout Boid boid)
