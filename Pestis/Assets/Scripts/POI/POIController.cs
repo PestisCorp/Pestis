@@ -91,7 +91,8 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         }
 #endif
 
-        public void ChangeController(Player player)
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void ChangeControllerRpc(Player player)
         {
             Debug.Log(
                 $"Changing POI Controller from {(ControlledBy ? ControlledBy.Object.Id : "None")} to {player.Object.Id}");
@@ -118,13 +119,13 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         {
             var flag = flagObject.GetComponent<Image>();
 
-            if (ControlledBy.IsLocal)
+            if (ControlledBy && ControlledBy.IsLocal)
             {
                 EmitCaptureEffect();
                 captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_owned");
                 flag.sprite = captureFlag;
             }
-            else
+            else if (ControlledBy)
             {
                 captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_enemy");
                 flag.sprite = captureFlag;
@@ -164,6 +165,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         {
             Collider = GetComponentInChildren<Collider2D>();
             _cheesePerTick = 0.3f;
+            UpdateFlag();
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -178,7 +180,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             // No need to start combat, just hand over control
             if (StationedHordes.Count == 0)
             {
-                ChangeController(horde.player);
+                ChangeControllerRpc(horde.player);
                 StationHorde(horde);
                 return;
             }

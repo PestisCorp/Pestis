@@ -12,11 +12,35 @@ using Random = System.Random;
 
 namespace Horde
 {
+    public enum ActiveMutationType
+    {
+        SepticBite,
+        Pestis,
+        SewerDwellers,
+        Fester,
+        Necrosis,
+        Poltergeist,
+        Haunt,
+        Apparition,
+        Mentat,
+        Abraxas,
+        Agriculturalist,
+        PriceOfWar,
+        WarHawk,
+        AnarchoSyndicalist,
+        MAD,
+        Eyeless,
+        BloodPocket,
+        GodsMistake,
+        Corpsebloom
+    }
+
     /// <summary>
     ///     Responsible for managing evolution of a Horde. Stores state and calculates potential mutations.
     /// </summary>
     public struct ActiveMutation : IEquatable<ActiveMutation>
     {
+        public ActiveMutationType Type { get; set; }
         public string MutationName { get; set; }
         public string MutationTag { get; set; }
         public int MutationWeight { get; set; }
@@ -46,6 +70,29 @@ namespace Horde
 
     public struct EvolutionaryState : IEquatable<EvolutionaryState>
     {
+        public static Dictionary<string, ActiveMutationType> MutationNames = new()
+        {
+            { "Septic bite", ActiveMutationType.SepticBite },
+            { "Pestis", ActiveMutationType.Pestis },
+            { "Sewer Dwellers", ActiveMutationType.SewerDwellers },
+            { "Fester", ActiveMutationType.Fester },
+            { "Necrosis", ActiveMutationType.Necrosis },
+            { "Poltergeist", ActiveMutationType.Poltergeist },
+            { "Haunt", ActiveMutationType.Haunt },
+            { "Apparition", ActiveMutationType.Apparition },
+            { "Mentat", ActiveMutationType.Mentat },
+            { "Abraxas", ActiveMutationType.Abraxas },
+            { "Agriculturalist", ActiveMutationType.Agriculturalist },
+            { "Price of War", ActiveMutationType.PriceOfWar },
+            { "War Hawk", ActiveMutationType.WarHawk },
+            { "Anarcho-syndicalist", ActiveMutationType.AnarchoSyndicalist },
+            { "MAD", ActiveMutationType.MAD },
+            { "Eyeless", ActiveMutationType.Eyeless },
+            { "Blood pocket", ActiveMutationType.BloodPocket },
+            { "God's Mistake", ActiveMutationType.GodsMistake },
+            { "Corpsebloom", ActiveMutationType.Corpsebloom }
+        };
+
         // "Evolutionary effect" : [Chance of acquisition, Effect on stats, Maximum effect]
         public Dictionary<string, double[]> PassiveEvolutions;
         public WeightedList<ActiveMutation> ActiveMutations;
@@ -103,6 +150,7 @@ namespace Horde
         private Timer _mutationClock;
         private PopulationController _populationController;
         private Timer _rareMutationClock;
+        public NetworkLinkedList<ActiveMutationType> UnlockedMutationNames;
 
 
         // Set the rat stats in the Population Controller

@@ -75,7 +75,7 @@ namespace Human
                 {
                     // This could technically break if somehow the authority for the patrol controller is different to the one for the POI
                     // But they should both be controlled by the master client
-                    poi.ChangeController(enemyHorde.player);
+                    poi.ChangeControllerRpc(enemyHorde.player);
                     enemyHorde.StationAtRpc(poi);
                     enemyHorde = null;
                     return;
