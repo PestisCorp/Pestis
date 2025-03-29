@@ -13,9 +13,9 @@ public class BiomeTile : TileBase
     public Sprite tile;
     public Color tilecolor = Color.white;
     public float speeedEffect = 0.5f;
-    public float damageEffect;
-    public float resistanceDamage;
-    public float bonusCheeseRatio;
+    public float damageEffect =0;
+    public float resistanceDamage = 0;
+    public float bonusCheeseRatio = 0.1f;
     public float resistanceSpeed = 1;
 
     public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)

@@ -13,6 +13,8 @@ using Players;
 using POI;
 using TMPro;
 using Unity.Mathematics;
+using UI;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -162,7 +164,7 @@ namespace Horde
         {
             _hordeCenter = transform.position;
             _camera = Camera.main;
-            _speechBubbleImage = speechBubble.GetComponent<Image>();
+            _speechBubbleImage = speechBubble.GetComponentInChildren<Image>();
             if (EmoteSprites.Count == 0)
                 EmoteSprites = new Dictionary<EmoteType, Sprite>
                 {
@@ -364,6 +366,7 @@ Count: {AliveRats}
         {
             if (_speechBubbles.Count == 0) yield break;
             _speechBubbleActive = true;
+            _speechBubbleImage.enabled = true;
             var type = _speechBubbles.Dequeue();
             _speechBubbleImage.sprite = EmoteSprites[type];
             yield return new WaitForSeconds(5f);
@@ -371,7 +374,12 @@ Count: {AliveRats}
             if (_speechBubbles.Count > 0)
                 StartCoroutine(ShowSpeechBubble());
             else
+            {
                 _speechBubbleActive = false;
+                _speechBubbleImage.enabled = false;
+            }
+                
+            
         }
 
         /// <summary>
@@ -507,37 +515,30 @@ Count: {AliveRats}
             _combatText = transform.Find("Canvas/PlayerName/Combat").gameObject;
 
             var text = _playerText.transform.Find("Border/Background/Text").GetComponent<TMP_Text>();
+            var textBackground = _playerText.transform.Find("Border/Background").GetComponent<Image>();
 
             text.text = player.Username;
             hordeIcon = transform.Find("Canvas/PlayerName/HordeIcon").gameObject;
             var icon = hordeIcon.GetComponent<Image>();
 
-
-            speechBubble = transform.Find("Canvas/PlayerName/SpeechBubble").gameObject;
+            
 
             if (player.IsLocal)
             {
                 var iconSprite = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_self");
-                text.color = Color.red;
+                textBackground.color = new Color(255, 215, 0, 255);
                 icon.sprite = iconSprite;
-            }
-            else
-            {
-                var iconSprite = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_enemy");
-
-                icon.sprite = iconSprite;
-            }
-
-            if (player.IsLocal && !isApparition)
-            {
                 GameManager.Instance.UIManager.AbilityBars[this] =
                     Instantiate(GameManager.Instance.UIManager.abilityToolbar,
                         GameManager.Instance.UIManager.abilityPanel.transform);
 
                 GameManager.Instance.UIManager.AbilityBars[this].transform.localPosition = Vector3.zero;
             }
-
-            // If we joined a session where this horde is in combat, we need to make sure the combat has our boids in it!
+            else
+            {
+                var iconSprite = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_enemy");
+                icon.sprite = iconSprite;
+            }
             if (CurrentCombatController)
             {
                 var boids = new Boid[AliveRats];
@@ -885,6 +886,7 @@ Count: {AliveRats}
         public void DestroyHordeRpc()
         {
             player.Hordes.Remove(this);
+            GameManager.Instance.UIManager.AbilityBars.Remove(this);
             if (GetEvolutionState().AcquiredEffects.Contains("unlock_gods_mistake"))
                 foreach (var horde in player.Hordes)
                 {

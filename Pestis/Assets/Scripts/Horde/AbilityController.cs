@@ -226,8 +226,6 @@ namespace Horde
                     Color.red);
                 return;
             }
-
-            GameManager.Instance.UIManager.HordesListEnable();
             Destroy(calledBy.GetComponent<Tooltip>().tooltipInstance);
             _hordeController.DestroyHordeRpc();
             foreach (var horde in _hordeController.player.Hordes)
