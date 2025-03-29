@@ -119,13 +119,13 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         {
             var flag = flagObject.GetComponent<Image>();
 
-            if (ControlledBy.IsLocal)
+            if (ControlledBy && ControlledBy.IsLocal)
             {
                 EmitCaptureEffect();
                 captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_owned");
                 flag.sprite = captureFlag;
             }
-            else
+            else if (ControlledBy)
             {
                 captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_enemy");
                 flag.sprite = captureFlag;
@@ -165,6 +165,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         {
             Collider = GetComponentInChildren<Collider2D>();
             _cheesePerTick = 0.3f;
+            UpdateFlag();
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
