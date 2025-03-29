@@ -31,9 +31,11 @@ namespace Players
         public GameObject hordePrefab;
 
 
-        [SerializeField] private float cheeseConsumptionRate = 0.001f; // k value
+        [SerializeField] public float cheeseConsumptionRate = 0.001f; // k value
 
         [DoNotSerialize] public double TotalDamageDealt;
+
+        public int aliveRats;
 
         [CanBeNull] private BotPlayer _botPlayer;
 
@@ -62,6 +64,11 @@ namespace Players
         public float CheesePerSecond => CheeseIncrementRate / Runner.DeltaTime;
 
         [Networked] public float FixedCheeseGain { get; private set; } = 0.03f;
+
+        private void FixedUpdate()
+        {
+            aliveRats = Hordes.Sum(horde => horde.AliveRats);
+        }
 
         private void OnDestroy()
         {
