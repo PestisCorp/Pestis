@@ -11,66 +11,73 @@ public class SwapTracks : MonoBehaviour
     public Tilemap tilemap;
     public float fadeDuration = 3f;
     public float secondsBeforeCheckTrackSwap = 8f;
+    private Type currentTrack;
+    private bool isFading = false;
     void Start()
     {
         GameObject tilemapObject = GameObject.FindGameObjectWithTag("tilemap");
         if (tilemapObject != null)
         {
             this.tilemap = tilemapObject.GetComponent<Tilemap>();
-            StartCoroutine(SwapTrack());
+            currentTrack = typeof(GrassTile);
+            audioSource.clip = tracks[0];
+            audioSource.Play();
+            InvokeRepeating(nameof(CheckTrackSwap), 0f, secondsBeforeCheckTrackSwap);
         }
         else
         {
             Debug.LogError("Tilemap not found in the scene!");
         }
     }
-
-    private IEnumerator SwapTrack()
+    void CheckTrackSwap()
     {
-        Type currentTrack = typeof(GrassTile);
-        audioSource.clip = tracks[0];
-        audioSource.Play();
-        Debug.Log(1);
-        while (true)
+        if (InputHandler.Instance.LocalPlayer.selectedHorde == null || isFading)
+            return;
+
+        Vector3Int pos = new Vector3Int(
+            (int)InputHandler.Instance.LocalPlayer.selectedHorde.GetCenter().x,
+            (int)InputHandler.Instance.LocalPlayer.selectedHorde.GetCenter().y,
+            0
+        );
+
+        TileBase tileAtPos = tilemap.GetTile(pos);
+
+        if (tileAtPos != null)
         {
-            while (!InputHandler.Instance.LocalPlayer.selectedHorde) yield return null;
+            System.Type currentTile = tileAtPos.GetType();
 
-            Vector3Int pos = new Vector3Int(
-                (int)(InputHandler.Instance.LocalPlayer.selectedHorde.GetCenter().x),
-                (int)(InputHandler.Instance.LocalPlayer.selectedHorde.GetCenter().y),
-                0
-            );
-            TileBase tileAtPos = tilemap.GetTile(pos);
-
-            if (tileAtPos != null)  // Only proceed if the tile is not null
+            if (currentTile != null && currentTile != currentTrack)
             {
-                System.Type currentTile = tileAtPos.GetType();
+                currentTrack = currentTile;
+                AudioClip newClip = GetClipForTile(currentTile);
 
-                if (currentTile != null && currentTile != currentTrack)
+                Debug.Log(newClip);
+                if (newClip != null && newClip != audioSource.clip)
                 {
-                    currentTrack = currentTile;
-                    Debug.Log(currentTile.ToString());
-                    AudioClip newClip = null;
-
-                    if (currentTile == typeof(GrassTile)) newClip = tracks[1];
-                    else if (currentTile == typeof(TundraTile)) newClip = tracks[0];
-                    else if (currentTile == typeof(DesertTile)) newClip = tracks[1];
-                    else if (currentTile == typeof(StoneTile)) newClip = tracks[0];
-
-                    Debug.Log(newClip?.ToString()); // Check for null before calling ToString
-
-                    if (newClip != null && newClip != audioSource.clip)
-                    {
-                        yield return StartCoroutine(FadeOut(audioSource, fadeDuration));
-                        audioSource.clip = newClip;
-                        yield return StartCoroutine(FadeIn(audioSource, fadeDuration));
-                    }
+                    StartCoroutine(SwapTrackCoroutine(newClip));
                 }
             }
-            yield return new WaitForSeconds(secondsBeforeCheckTrackSwap);
         }
     }
 
+    private IEnumerator SwapTrackCoroutine(AudioClip newClip)
+    {
+        isFading = true;
+        yield return StartCoroutine(FadeOut(audioSource, fadeDuration));
+        audioSource.clip = newClip;
+        yield return StartCoroutine(FadeIn(audioSource, fadeDuration));
+        isFading = false;
+    }
+
+    private AudioClip GetClipForTile(System.Type tileType)
+    {
+        if (tileType == typeof(GrassTile)) return tracks[1];
+        if (tileType == typeof(TundraTile)) return tracks[0];
+        if (tileType == typeof(DesertTile)) return tracks[1];
+        if (tileType == typeof(StoneTile)) return tracks[0];
+
+        return null;
+    }
 
     private IEnumerator FadeOut(AudioSource audio, float duration)
     {
