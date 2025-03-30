@@ -12,11 +12,35 @@ using Random = System.Random;
 
 namespace Horde
 {
+    public enum ActiveMutationType
+    {
+        SepticBite,
+        Pestis,
+        SewerDwellers,
+        Fester,
+        Necrosis,
+        Poltergeist,
+        Haunt,
+        Apparition,
+        Mentat,
+        Abraxas,
+        Agriculturalist,
+        PriceOfWar,
+        WarHawk,
+        AnarchoSyndicalist,
+        MAD,
+        Eyeless,
+        BloodPocket,
+        GodsMistake,
+        Corpsebloom
+    }
+
     /// <summary>
     ///     Responsible for managing evolution of a Horde. Stores state and calculates potential mutations.
     /// </summary>
     public struct ActiveMutation : IEquatable<ActiveMutation>
     {
+        public ActiveMutationType Type { get; set; }
         public string MutationName { get; set; }
         public string MutationTag { get; set; }
         public int MutationWeight { get; set; }
@@ -46,6 +70,29 @@ namespace Horde
 
     public struct EvolutionaryState : IEquatable<EvolutionaryState>
     {
+        public static Dictionary<string, ActiveMutationType> MutationNames = new()
+        {
+            { "Septic bite", ActiveMutationType.SepticBite },
+            { "Pestis", ActiveMutationType.Pestis },
+            { "Sewer Dwellers", ActiveMutationType.SewerDwellers },
+            { "Fester", ActiveMutationType.Fester },
+            { "Necrosis", ActiveMutationType.Necrosis },
+            { "Poltergeist", ActiveMutationType.Poltergeist },
+            { "Haunt", ActiveMutationType.Haunt },
+            { "Apparition", ActiveMutationType.Apparition },
+            { "Mentat", ActiveMutationType.Mentat },
+            { "Abraxas", ActiveMutationType.Abraxas },
+            { "Agriculturalist", ActiveMutationType.Agriculturalist },
+            { "Price of War", ActiveMutationType.PriceOfWar },
+            { "War Hawk", ActiveMutationType.WarHawk },
+            { "Anarcho-syndicalist", ActiveMutationType.AnarchoSyndicalist },
+            { "MAD", ActiveMutationType.MAD },
+            { "Eyeless", ActiveMutationType.Eyeless },
+            { "Blood pocket", ActiveMutationType.BloodPocket },
+            { "God's Mistake", ActiveMutationType.GodsMistake },
+            { "Corpsebloom", ActiveMutationType.Corpsebloom }
+        };
+
         // "Evolutionary effect" : [Chance of acquisition, Effect on stats, Maximum effect]
         public Dictionary<string, double[]> PassiveEvolutions;
         public WeightedList<ActiveMutation> ActiveMutations;
@@ -103,16 +150,24 @@ namespace Horde
         private Timer _mutationClock;
         private PopulationController _populationController;
         private Timer _rareMutationClock;
-
+        public NetworkLinkedList<ActiveMutationType> UnlockedMutationNames;
 
         // Set the rat stats in the Population Controller
         // Shows notification of mutation
         private void UpdateRatStats(string mutation)
         {
             var mutEffect = _evolutionaryState.PassiveEvolutions[mutation][1];
-            var text = "A horde's " + mutation + " has improved by " +
+            var text = "";
+            if (mutation.Contains("Resistance"))
+            {
+                text = "A horde is adapting to the " + mutation.Replace("Resistance", "").ToLower() + " biome";
+            }
+            else
+            {
+                text = "A horde's " + mutation + " has improved by " +
                        Math.Round(_evolutionaryState.PassiveEvolutions["evolution strength"][1] * 100 - 100, 2)
                            .ToString(CultureInfo.CurrentCulture) + "%.";
+            }
             if (_hordeController.player.Type == 0) GameManager.Instance.UIManager.AddNotification(text, Color.black);
             switch (mutation)
             {
@@ -145,19 +200,28 @@ namespace Horde
                 var mutation = ele.Key;
                 var p = _evolutionaryState.PassiveEvolutions[mutation][0];
                 var mutEffect = _evolutionaryState.PassiveEvolutions[mutation][1];
-                if (r < p && _evolutionaryState.PassiveEvolutions[mutation][2] > mutEffect)
+                var biome = _hordeController.GetComponent<BiomeEffects>().currentBiome.name;
+                switch (mutation)
                 {
-                    _evolutionaryState.PassiveEvolutions[mutation][0] = p * PredispositionStrength;
-                    if (mutation is "rare mutation rate" or "evolution rate")
-                        _evolutionaryState.PassiveEvolutions[mutation][1] =
-                            Math.Max(mutEffect / _evolutionaryState.PassiveEvolutions[mutation][1],
-                                _evolutionaryState.PassiveEvolutions[mutation][2]);
-                    else
-                        _evolutionaryState.PassiveEvolutions[mutation][1] = Math.Min(
-                            mutEffect * _evolutionaryState.PassiveEvolutions["evolution strength"][1],
-                            _evolutionaryState.PassiveEvolutions[mutation][2]);
-                    UpdateRatStats(mutation);
+                    case "TundraResistance" when biome != "TundraTile":
+                    case "GrassResistance" when biome != "GrassTile":
+                    case "StoneResistance" when biome != "StoneTile":
+                    case "DesertResistance" when biome != "DesertTile":
+                        continue;
                 }
+                
+                if (!(r < p) || !(_evolutionaryState.PassiveEvolutions[mutation][2] > mutEffect)) continue;
+                
+                _evolutionaryState.PassiveEvolutions[mutation][0] = p * PredispositionStrength;
+                if (mutation is "rare mutation rate" or "evolution rate")
+                    _evolutionaryState.PassiveEvolutions[mutation][1] =
+                        Math.Max(mutEffect / _evolutionaryState.PassiveEvolutions[mutation][1],
+                            _evolutionaryState.PassiveEvolutions[mutation][2]);
+                else
+                    _evolutionaryState.PassiveEvolutions[mutation][1] = Math.Min(
+                        mutEffect * _evolutionaryState.PassiveEvolutions["evolution strength"][1],
+                        _evolutionaryState.PassiveEvolutions[mutation][2]);
+                UpdateRatStats(mutation);
             }
         }
 
@@ -255,8 +319,6 @@ namespace Horde
                         out var tagCount)) count = tagCount + 1;
                 _evolutionaryState.ActiveMutations.SetWeight(_evolutionaryState.ActiveMutations[i],
                     count * _evolutionaryState.ActiveMutations[i].MutationWeight);
-                //GameManager.Instance.terrainMap.GetTile(_hordeController.GetBounds().center);
-                //var biome = BiomeClass.GetBiomeAtPosition(tilemap.WorldToCell(_hordeController.GetBounds().center)).template.name;
             }
         }
 
@@ -286,7 +348,7 @@ namespace Horde
                 new[] { 0.01, _populationController.GetState().BirthRate, 0.1 };
             //_evolutionaryState.PassiveEvolutions["resource consumption"] = new []{ 0.0005, _hordeController.Player.CheeseIncrementRate };
             // Need to change the default values for rate, and strength of evolutions to referring to values in PC.State (for horde split reasons)
-            _evolutionaryState.PassiveEvolutions["rare mutation rate"] = new[] { 0.01, 40, 20 };
+            _evolutionaryState.PassiveEvolutions["rare mutation rate"] = new[] { 0.01, 45, 20 };
         }
 
         private void CreateActiveEvolutions()

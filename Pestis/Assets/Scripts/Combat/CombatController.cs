@@ -11,6 +11,16 @@ using Bounds = Networking.Bounds;
 
 namespace Combat
 {
+    [Serializable]
+    public struct HordeState : INetworkStruct
+    {
+        public NetworkId Horde;
+        public float Damage;
+        public float HealthPerRat;
+        public float DamageReduction;
+        [Capacity(32)] [Networked] public NetworkLinkedList<ActiveMutationType> UnlockedMutations => default;
+    }
+
     public enum CombatState
     {
         NotStarted,
@@ -92,9 +102,8 @@ namespace Combat
 
         public CombatState state;
 
-        [Networked]
-        [Capacity(MaxParticipants)]
-        private NetworkLinkedList<NetworkBehaviourId> AllParticipants => default;
+
+        private readonly List<HordeState> _allParticipants = new();
 
         public int NumParticipators => Participators.Count;
 
@@ -184,7 +193,7 @@ namespace Combat
                 if (FightingOver && winner != FightingOver.ControlledBy)
                 {
                     Debug.Log($"Transferring POI Ownership to {winner.Object.StateAuthority}");
-                    FightingOver.ChangeController(winner);
+                    FightingOver.ChangeControllerRpc(winner);
 
                     foreach (var hordeID in winnerParticipant.Hordes)
                     {
@@ -211,6 +220,21 @@ namespace Combat
         }
 
 
+        private void AddHordeState(HordeController horde)
+        {
+            var hordeState = new HordeState
+            {
+                Horde = horde.Id.Object,
+                Damage = horde.GetPopulationState().Damage,
+                DamageReduction = horde.GetPopulationState().DamageReduction,
+                HealthPerRat = horde.GetPopulationState().HealthPerRat
+            };
+
+            foreach (var mutation in horde.GetEvolutionState().AcquiredMutations)
+                hordeState.UnlockedMutations.Add(mutation.Type);
+            _allParticipants.Add(hordeState);
+        }
+
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void AddHordeRpc(HordeController horde)
         {
@@ -221,7 +245,6 @@ namespace Combat
             {
                 Debug.Log($"COMBAT: Adding player {horde.player.Username}");
                 Participators.Add(horde.player, new CombatParticipant(horde));
-                AllParticipants.Add(horde.Id);
             }
             else // Player in combat, just add horde
             {
@@ -232,6 +255,8 @@ namespace Combat
                 // Update stored copy
                 Participators.Set(horde.player, participant);
             }
+
+            AddHordeState(horde);
 
             // Notify horde authority it has been added to combat
             horde.EventJoinedCombatRpc(this);
@@ -293,7 +318,7 @@ namespace Combat
                     horde.AddSpeechBubbleRpc(EmoteType.Victory);
                     if (horde.GetEvolutionState().AcquiredEffects.Contains("unlock_war_hawk"))
                         horde.GetComponent<AbilityController>().RefreshCooldownsRpc();
-                    horde.EventWonCombatRpc(AllParticipants.ToArray());
+                    horde.EventWonCombatRpc(_allParticipants.ToArray());
                     break;
             }
         }

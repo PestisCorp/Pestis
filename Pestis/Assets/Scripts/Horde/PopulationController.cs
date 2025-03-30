@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Fusion;
+using Networking;
 using UnityEngine;
 using Random = System.Random;
 
@@ -60,6 +61,7 @@ namespace Horde
         private int _populationPeak;
 
         private List<double[]> _transitionMatrix;
+        private BiomeEffects _biomeEffects;
         public int initialPopulation = 5;
         public bool isAgriculturalist;
 
@@ -69,13 +71,26 @@ namespace Horde
         // Weight used in probability of population growth
         // W > 1 if R > P
         // W = 1 if R == P
-        // W < 1 if R < P
+        // 0.3 < W < 1 if R < P
         private double ResourceWeightGrowth()
         {
-            var w = 2.5;
+            var currentBiome = "";
+            if (_biomeEffects.currentBiome)
+            {
+                currentBiome = _biomeEffects.currentBiome.name;
+            }
+            var resistance = currentBiome switch
+            {
+                "GrassTile" => State.GrassResistance,
+                "TundraTile" => State.TundraResistance,
+                "StoneTile" => State.StoneResistance,
+                "DesertTile" => State.DesertResistance,
+                _ => 1f
+            };
+            var w = 2.5 * resistance;
             if (isAgriculturalist) w *= 1.2;
-            return 1 + w *
-                (1.0 - Math.Exp(-(_hordeController.player.CurrentCheese / (uint)_hordeController.AliveRats - 1)));
+            return Math.Max(1 + w *
+                (1.0 - Math.Exp(-(_hordeController.player.CurrentCheese / (uint)_hordeController.AliveRats - 1))), 0.3);
         }
 
 
@@ -85,7 +100,8 @@ namespace Horde
         private double ResourceWeightDecline()
         {
             if (_hordeController.player.CurrentCheese >= (uint)_hordeController.AliveRats) return 1.0;
-            return Math.Exp(1.0 - _hordeController.player.CurrentCheese / (uint)_hordeController.AliveRats);
+            if (_hordeController.player.CurrentCheese == 0) return 10.0;
+            return Math.Exp(1.5 - _hordeController.player.CurrentCheese / (uint)_hordeController.AliveRats);
         }
 
         // Calculate probability of population growth
@@ -181,6 +197,7 @@ namespace Horde
         public override void Spawned()
         {
             _hordeController = GetComponent<HordeController>();
+            _biomeEffects = _hordeController.GetComponent<BiomeEffects>();
             State.BirthRate = 0.01;
             State.DeathRate = 0.005;
 
@@ -196,7 +213,7 @@ namespace Horde
             State.DamageReductionMult = 1.0f;
             State.SepticMult = 1.0f;
 
-            _hordeController.TotalHealth = initialPopulation * State.HealthPerRat;
+            _hordeController.AliveRats = new IntPositive((uint)initialPopulation);
 
             _populationClock.Start();
 

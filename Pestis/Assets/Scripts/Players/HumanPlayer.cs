@@ -34,6 +34,8 @@ namespace Players
                 UI_manager.ResourceStatsEnable();
                 // Enable objective checklist upon loading in
                 UI_manager.ObjectiveChecklistEnable();
+                UI_manager.hordesListPanel.SetActive(true);
+                UI_manager.HordesListRefresh();
             }
         }
 
@@ -49,7 +51,6 @@ namespace Players
                     selectedHorde?.Highlight();
                     if (selectedHorde.player.IsLocal)
                     {
-                        UI_manager.HordesListDisable();
                         UI_manager.InfoPanelEnable();
                     }
                 }
@@ -76,7 +77,6 @@ namespace Players
             UI_manager.MutationPopUpDisable();
             UI_manager.MutationViewerDisable();
             UI_manager.ActionPanelDisable();
-            UI_manager.HordesListEnable();
         }
 
         public void MoveHorde(Vector2 target)
