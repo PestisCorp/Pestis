@@ -251,12 +251,6 @@ namespace Horde
             _hordeCenter = HordeBounds.center;
         }
 
-        private void OnDestroy()
-        {
-            player.Hordes.Remove(this);
-            Debug.Log("HORDE: Destroyed self");
-        }
-
 #if UNITY_EDITOR
         public void OnDrawGizmos()
         {
@@ -288,6 +282,13 @@ Count: {AliveRats}
 
             TotalHealth = populationController.GetState().HealthPerRat * devToolsTotalRats;
             targetLocation.transform.position = devToolsTargetLocation;
+        }
+
+        public override void Despawned(NetworkRunner runner, bool hasState)
+        {
+            // If player's Network Object is null, it's been despawned too!
+            if (player.Object) player.Hordes.Remove(this);
+            Debug.Log("HORDE: Destroyed self");
         }
 
 

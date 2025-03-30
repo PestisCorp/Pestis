@@ -70,8 +70,9 @@ namespace Players
             aliveRats = Hordes.Sum(horde => horde.AliveRats);
         }
 
-        private void OnDestroy()
+        public override void Despawned(NetworkRunner runner, bool hasState)
         {
+            Debug.Log($"Player {(hasState ? Username : "unknown")} left");
             GameManager.Instance.Players.Remove(this);
         }
 
@@ -218,14 +219,13 @@ namespace Players
 
         public override void FixedUpdateNetwork()
         {
-            if (Hordes.Count == 0) throw new Exception("Player has no hordes!");
+            if (Hordes.Count == 0) throw new Exception($"Player {Username} has no hordes!");
 
             if (_leaderboardUpdateTimer.ExpiredOrNotRunning(Runner))
             {
                 _leaderboardUpdateTimer = TickTimer.CreateFromSeconds(Runner, 60);
                 StartCoroutine(UpdateStats());
             }
-
 
             // Consume cheese
             var totalRatsCount = Hordes.Select(horde => (int)horde.AliveRats).Sum();
@@ -254,6 +254,7 @@ namespace Players
         }
 
 
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void DestroyBotRpc()
         {
             if (Type != PlayerType.Bot) throw new Exception("Tried to destroy human player remotely!");
