@@ -28,6 +28,8 @@ public class InputHandler : MonoBehaviour
 
     private void Update()
     {
+        if (!LocalPlayer) return;
+
         var mouse = Mouse.current;
         
         var moveCam = _moveCamAction.ReadValue<Vector2>();
