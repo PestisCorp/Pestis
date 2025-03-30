@@ -37,6 +37,11 @@ namespace Networking
         /// Network ID of Player's NetworkObject
         public NetworkId PlayerId;
 
+        /// <summary>
+        ///     Whether the slot is in use or empty
+        /// </summary>
+        public NetworkBool InUse;
+
         public bool Equals(PlayerSlot other)
         {
             return PlayerRef.Equals(other.PlayerRef) && IsBot.Equals(other.IsBot) && PlayerId.Equals(other.PlayerId);
@@ -72,7 +77,9 @@ namespace Networking
 #if UNITY_EDITOR
         private const string APIEndpoint = "http://localhost:8081/api";
 #else
-        private const string APIEndpoint = "https://pestis.murraygrov.es/api";
+        //private const string APIEndpoint = "https://pestis.murraygrov.es/api";
+// TODO - Remove
+        private const string APIEndpoint = "http://localhost:8081/api";
 #endif
 
         public async void Start()
@@ -104,9 +111,11 @@ namespace Networking
 
         public void JoinGame(NetworkRunner runner)
         {
-            var args = new StartGameArgs();
-            args.GameMode = GameMode.Single;
-            args.SessionName = _room.Name;
+            var args = new StartGameArgs
+            {
+                GameMode = GameMode.Shared,
+                SessionName = _room.Name
+            };
             var scene = new NetworkSceneInfo();
             scene.AddSceneRef(SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex));
             args.Scene = scene;
@@ -116,14 +125,16 @@ namespace Networking
         /// <summary>
         ///     Called by Fusion when a player leaves
         /// </summary>
+        /// <param name="runner">The current runner</param>
         /// <param name="player"></param>
         public void PlayerLeft(NetworkRunner runner, PlayerRef player)
         {
             // Get all bots that belong to the player that left
             var botsNeedingStealing = Players.Select((slot, index) => new KeyValuePair<int, PlayerSlot>(index, slot))
-                .Where(kvp => kvp.Value.PlayerRef == player).ToList();
+                .Where(kvp => kvp.Value.PlayerRef == player && kvp.Value.InUse).ToList();
             // Get all clients still in game
-            var clients = Players.Select(slot => slot.PlayerRef).Distinct().Where(p => p != player).ToArray();
+            var clients = Players.Where(slot => slot.InUse).Select(slot => slot.PlayerRef).Distinct()
+                .Where(p => p != player).ToArray();
             // Loop over each client, assigning one bot at a time
             for (var i = 0; botsNeedingStealing.Count != 0; i = (i + 1) % clients.Length)
             {
@@ -149,10 +160,12 @@ namespace Networking
 
                 botsNeedingStealing.RemoveAt(botsNeedingStealing.Count - 1);
             }
+
+            // TODO - remove assigned bots in excess of maxBotsPerPlayer
         }
 
         /// Convert polar coordinates into Cartesian coordinates.
-        private void PolarToCartesian(float r, float theta,
+        private static void PolarToCartesian(float r, float theta,
             out float x, out float y)
         {
             x = (float)(r * Math.Cos(theta));
@@ -172,8 +185,7 @@ namespace Networking
                 dtheta *= 0.95f;
 
                 // Convert to Cartesian coordinates.
-                float x, y;
-                PolarToCartesian(r, theta, out x, out y);
+                PolarToCartesian(r, theta, out var x, out var y);
 
                 var point = new Vector2(x, y);
 
@@ -197,7 +209,7 @@ namespace Networking
 
             // Extract the indices of present numbers
             for (var i = 0; i < Players.Length; i++)
-                if (!Players[i].IsBot)
+                if (!Players[i].IsBot && Players[i].InUse)
                     presentNumbers.Add(i);
 
             // If no numbers exist, return 50 as the first placement
@@ -210,7 +222,7 @@ namespace Networking
 
             // Consider the implicit boundaries 0 and 100
             presentNumbers.Insert(0, 0);
-            presentNumbers.Add(_room.Config.PlayersPerRoom);
+            presentNumbers.Add(Math.Min(_room.Config.PlayersPerRoom, Players.Count(slot => slot.InUse)));
 
             var maxGap = 0;
             var bestIndex = -1;
@@ -240,13 +252,14 @@ namespace Networking
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        private void AddPlayerRpc(int playerSpawnIndex, NetworkId playerID, RpcInfo rpcInfo = default)
+        private void AddPlayerRpc(int playerSpawnIndex, NetworkId playerID, bool isBot, RpcInfo rpcInfo = default)
         {
             var player = new PlayerSlot
             {
                 PlayerRef = rpcInfo.Source,
-                IsBot = false,
-                PlayerId = playerID
+                IsBot = isBot,
+                PlayerId = playerID,
+                InUse = true
             };
             Players.Set(playerSpawnIndex, player);
         }
@@ -277,11 +290,11 @@ namespace Networking
         private void StealBots()
         {
             var numBots = Players.Count(slot => slot.IsBot);
-            var numClients = Players.Length - numBots + 1; // Plus one for ourselves
-            var botsPerClient = numBots / numClients;
 
             var clientRefs = Players.Select(slot => slot.PlayerRef).Distinct().Where(x => x != Runner.LocalPlayer)
                 .ToArray();
+
+            var botsPerClient = numBots / clientRefs.Length;
 
             var botsStolen = 0;
             for (var i = 0; botsStolen < botsPerClient; i = (i + 1) % clientRefs.Length)
@@ -304,10 +317,10 @@ namespace Networking
 
             var player = Runner.Spawn(playerPrefab, spawnPositions[spawnIndex]);
 
-            Camera.main.transform.position =
+            Camera.main!.transform.position =
                 new Vector3(spawnPositions[spawnIndex].x, spawnPositions[spawnIndex].y, -1.0f);
 
-            AddPlayerRpc(spawnIndex, player.Id);
+            AddPlayerRpc(spawnIndex, player.Id, false);
 
             if (!HasStateAuthority)
             {
@@ -317,11 +330,28 @@ namespace Networking
                 bot.DestroyBotRpc();
 
                 StealBots();
+
+                // TODO - Spawn new bots if required
+                var currentPlayers = Players.Count(slot => slot.InUse);
+                var neededPlayers = _room.Config.PlayersPerRoom - currentPlayers;
+                var botsToSpawn = Math.Min(neededPlayers, _room.Config.MaxBotsPerClient);
+
+                // Find empty slots to spawn the bots in
+                for (var i = 0; botsToSpawn != 0; i++)
+                {
+                    if (Players[i].InUse) continue;
+
+                    var newBot = Runner.Spawn(botPrefab, spawnPositions[i], Quaternion.identity);
+
+                    AddPlayerRpc(i, newBot.Id, true);
+                    botsToSpawn--;
+                }
+
                 return;
             }
 
             // Spawn necessary bots
-            for (var i = 0; i < _room.Config.PlayersPerRoom; i++)
+            for (var i = 0; i < _room.Config.MaxBotsPerClient; i++)
             {
                 if (i == spawnIndex) continue;
 
@@ -331,7 +361,8 @@ namespace Networking
                 {
                     IsBot = true,
                     PlayerRef = Runner.LocalPlayer,
-                    PlayerId = bot.Id
+                    PlayerId = bot.Id,
+                    InUse = true
                 };
                 Players.Set(i, slot);
             }

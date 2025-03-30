@@ -154,7 +154,7 @@ void MergedBehaviours(inout Boid boid, uint3 id)
     }
     else if (numBoidsPrevious > 30) // Boid has become separated from the pack
     {
-        //boid.pos = boidsIn[numBoids / 2].pos;
+        boid.pos = boidsIn[numBoids / 2].pos;
     }
 }
 
@@ -163,18 +163,6 @@ void LimitSpeed(inout Boid boid)
     float speed = length(boid.vel);
     float clampedSpeed = clamp(speed, minSpeed, maxSpeed);
     boid.vel *= clampedSpeed / speed;
-}
-
-void KeepInBounds(inout Boid boid)
-{
-    if (abs(boid.pos.x) > xBound)
-    {
-        boid.vel.x -= sign(boid.pos.x) * velocityDeltaTime * turnSpeed;
-    }
-    if (abs(boid.pos.y) > yBound)
-    {
-        boid.vel.y -= sign(boid.pos.y) * velocityDeltaTime * turnSpeed;
-    }
 }
 
 #pragma kernel UpdateBoidsVelocity // ID 0
@@ -225,7 +213,6 @@ void UpdateBoidsVelocity(uint3 id : SV_DispatchThreadID)
 
     MergedBehaviours(boid, id);
     LimitSpeed(boid);
-    KeepInBounds(boid);
 
     // Update positions
     boid.pos += boid.vel * positionDeltaTime;
