@@ -1,6 +1,7 @@
 // Population manager. Update birth and death rates here
 
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using Fusion;
@@ -100,8 +101,7 @@ namespace Horde
         private double ResourceWeightDecline()
         {
             if (_hordeController.player.CurrentCheese >= (uint)_hordeController.AliveRats) return 1.0;
-            if (_hordeController.player.CurrentCheese == 0) return 10.0;
-            return Math.Exp(1.5 - _hordeController.player.CurrentCheese / (uint)_hordeController.AliveRats);
+            return Math.Exp(2 - _hordeController.player.CurrentCheese / (uint)_hordeController.AliveRats);
         }
 
         // Calculate probability of population growth
@@ -114,7 +114,7 @@ namespace Horde
         // Calculate probability of population decline
         private double Beta(double weight, int population)
         {
-            return State.DeathRate * weight * ((double)PopMax / (population + PopMax));
+            return State.DeathRate * weight;
         }
 
         // Normalize rows of a matrix to be between 0 and 1.0
@@ -182,7 +182,7 @@ namespace Horde
                 row[MaxPopGrowth + i + 1] = alpha;
                 delta += alpha;
 
-                var beta = Beta(w, _populationPeak);
+                var beta = Beta(w, population);
                 row[MaxPopGrowth - i - 1] = beta;
                 delta += beta;
             }
@@ -198,8 +198,8 @@ namespace Horde
         {
             _hordeController = GetComponent<HordeController>();
             _biomeEffects = _hordeController.GetComponent<BiomeEffects>();
-            State.BirthRate = 0.01;
-            State.DeathRate = 0.005;
+            State.BirthRate = 0.1;
+            State.DeathRate = 0.05;
 
             State.HealthPerRat = 10.0f;
             State.Damage = 0.5f;
@@ -231,15 +231,23 @@ namespace Horde
             }
 
             // Lookup the relevant probabilities for the current population
-            var probabilities = _transitionMatrix[_hordeController.AliveRats - 1];
+            var probabilities = (double[])_transitionMatrix[_hordeController.AliveRats - 1].Clone();
             var growthWeight = ResourceWeightGrowth();
             var declineWeight = ResourceWeightDecline();
-            for (var i = 0; i < MaxPopGrowth * 2 + 1; i++)
+            if (_hordeController.player.CurrentCheese == 0)
             {
-                if (MaxPopGrowth < i) probabilities[i] *= growthWeight;
-
-                if (MaxPopGrowth > i) probabilities[i] *= declineWeight;
+                for (var i = MaxPopGrowth; i < probabilities.Length; i++)
+                {
+                    probabilities[i] = 0;
+                }
             }
+            else 
+                for (var i = 0; i < MaxPopGrowth * 2 + 1; i++)
+                {
+                    if (MaxPopGrowth < i) probabilities[i] *= growthWeight;
+
+                    if (MaxPopGrowth > i) probabilities[i] *= declineWeight;
+                }
 
             var ratio = 1.0 / probabilities.Sum();
             probabilities = probabilities.Select(o => o * ratio).ToArray();
@@ -256,7 +264,12 @@ namespace Horde
             var r = _random.NextDouble() * cumulative;
             var nextState = cdf.BinarySearch(r);
             if (nextState < 0) nextState = ~nextState;
-            _hordeController.TotalHealth = (nextState - MaxPopGrowth + _hordeController.AliveRats) * State.HealthPerRat;
+            _hordeController.AliveRats = new IntPositive((uint)(nextState - MaxPopGrowth + _hordeController.AliveRats));
+            if (_hordeController.player.IsLocal)
+            {
+                //using StreamWriter sw = File.AppendText("Assets/Resources/out.csv");
+                //sw.WriteLine(_hordeController.AliveRats + "," + _hordeController.player.CurrentCheese);
+            }
         }
 
         // Only executed on State Authority

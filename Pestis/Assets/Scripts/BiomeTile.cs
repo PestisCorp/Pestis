@@ -45,7 +45,7 @@ public class BiomeTile : TileBase
         var sigResistance = fastLogistic(resistance);
         //Debug.Log("default " +resistance+"sig " + sigResistance +"name " +horde.Player.Username + "effect "+ (damageEffect - (sigResistance * resistanceDamage)));
         horde.DealDamageRpc(damageEffect - sigResistance * resistanceDamage);
-        horde.player.AddCheeseRpc(bonusCheeseRatio * resistance);
+        //horde.player.AddCheeseRpc(bonusCheeseRatio * resistance);
         populationController.speedMult(speeedEffect + resistanceSpeed * sigResistance);
     }
 
