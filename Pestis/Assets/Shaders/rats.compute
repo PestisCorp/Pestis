@@ -154,7 +154,7 @@ void MergedBehaviours(inout Boid boid, uint3 id)
     }
     else if (numBoidsPrevious > 30) // Boid has become separated from the pack
     {
-        boid.pos = boidsIn[numBoids / 2].pos;
+        //boid.pos = boidsIn[numBoids / 2].pos;
     }
 }
 

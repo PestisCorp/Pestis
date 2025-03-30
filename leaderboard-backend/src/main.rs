@@ -45,12 +45,18 @@ struct Config {
     max_bots_per_client: usize,
 }
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Clone)]
 struct Room {
     name: String,
     players: Vec<Player>,
     /// The config that the room was created with
     config: Config,
+}
+
+#[derive(Serialize)]
+struct RoomResponse {
+    name: String,
+    config: Config
 }
 
 #[derive(Serialize, Debug)]
@@ -198,25 +204,32 @@ impl LeaderboardManager {
     }
 
     /// Get a room name and config for a new player to join, or create a new room if none are available
-    async fn get_or_create_room(&self) -> (String, Config) {
+    async fn get_or_create_room(&self) -> RoomResponse {
         let mut info = self.info.write().await;
 
         for room in &info.state.rooms {
             if room.players.len() < info.config.players_per_room {
-                return (room.name.clone(), room.config.clone());
+                return RoomResponse {
+                    name: room.name.clone(),
+                    config: room.config.clone()
+                }
             }
         }
 
         let config = info.config.clone();
 
         let room_name = format!("Room {}", info.state.rooms.len());
-        info.state.rooms.push(Room {
+        let room = Room {
             name: room_name.clone(),
             players: vec![],
             config: config.clone(),
-        });
+        };
+        info.state.rooms.push(room);
 
-        (room_name, config)
+        RoomResponse {
+            name: room_name.clone(),
+            config,
+        }
     }
 
     /// Called by the client when they leave the game
@@ -271,6 +284,15 @@ async fn get_median_fps(manager: LeaderboardManager) -> Result<impl warp::Reply,
 async fn get_info(manager: LeaderboardManager) -> Result<impl warp::Reply, warp::Rejection> {
     let info = manager.info.read().await;
     Ok(warp::reply::json(&*info))
+}
+
+/// Get a room name to join: GET /api/room
+async fn get_or_create_room(
+    manager: LeaderboardManager,
+) -> Result<impl warp::Reply, warp::Rejection> {
+    let room = manager.get_or_create_room().await;
+
+    Ok(warp::reply::json(&room))
 }
 
 async fn update_player(
@@ -362,12 +384,22 @@ async fn main() {
             async move { get_info(manager).await }
         });
 
+    let manager_clone = manager.clone();
+    let room_handler = warp::get()
+        .and(warp::path("api"))
+        .and(warp::path("room"))
+        .and_then(move || {
+            let manager = manager_clone.clone();
+            async move { get_or_create_room(manager).await }
+        });
+
     let handler = join
         .or(leaderboard)
         .or(alltime_leaderboard)
         .or(update)
         .or(median_fps)
         .or(info_handler)
+        .or(room_handler)
         .with(warp::log("pestis::api"))
         .with(
             warp::cors()

@@ -1,7 +1,7 @@
 using Fusion;
+using Networking;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace UI
@@ -15,12 +15,7 @@ namespace UI
         public void OnJoin()
         {
             GameManager.Instance.localUsername = usernameInput.text;
-            var args = new StartGameArgs();
-            args.GameMode = GameMode.Single;
-            var scene = new NetworkSceneInfo();
-            scene.AddSceneRef(SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex));
-            args.Scene = scene;
-            runner.StartGame(args);
+            SessionManager.Instance.JoinGame(runner);
             gameObject.SetActive(false);
         }
     }

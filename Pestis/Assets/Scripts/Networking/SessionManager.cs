@@ -2,12 +2,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Fusion;
+using Newtonsoft.Json;
 using Players;
 using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 namespace Networking
 {
+    [Serializable]
+    internal struct RoomConfig
+    {
+        [JsonProperty("players_per_room")] internal int PlayersPerRoom;
+
+        [JsonProperty("max_bots_per_client")] internal int MaxBotsPerClient;
+    }
+
+    [Serializable]
+    internal struct RoomResponse
+    {
+        [JsonProperty("name")] internal string Name;
+
+        [JsonProperty("config")] internal RoomConfig Config;
+    }
+
     public struct PlayerSlot : INetworkStruct, IEquatable<PlayerSlot>
     {
         /// Always set to the player who either controls the bot taking this slot, or takes up the slot themselves
@@ -36,7 +55,8 @@ namespace Networking
 
     public class SessionManager : NetworkBehaviour
     {
-        private const int TARGET_PLAYERS = 10;
+        private RoomResponse _room;
+
         public static SessionManager Instance;
 
         public GameObject botPrefab;
@@ -46,12 +66,51 @@ namespace Networking
         ///     Each element corresponds to one bot,
         /// </summary>
         [Networked]
-        [Capacity(TARGET_PLAYERS)]
+        [Capacity(100)]
         private NetworkArray<PlayerSlot> Players => default;
 
-        public void Start()
+#if UNITY_EDITOR
+        private const string APIEndpoint = "http://localhost:8081/api";
+#else
+        private const string APIEndpoint = "https://pestis.murraygrov.es/api";
+#endif
+
+        public async void Start()
         {
-            Debug.Log("Started session manager");
+            Instance = this;
+            try
+            {
+                var req = UnityWebRequest.Get($"{APIEndpoint}/room");
+                req.timeout = 5;
+                await req.SendWebRequest();
+
+                _room = JsonConvert.DeserializeObject<RoomResponse>(req.downloadHandler.text);
+                Debug.Log("Got room info");
+            }
+            catch (Exception e)
+            {
+                _room = new RoomResponse
+                {
+                    Name = "",
+                    Config = new RoomConfig
+                    {
+                        PlayersPerRoom = 50,
+                        MaxBotsPerClient = 25
+                    }
+                };
+                UnityEngine.Debug.LogWarning($"Failed to get room config: {e}");
+            }
+        }
+
+        public void JoinGame(NetworkRunner runner)
+        {
+            var args = new StartGameArgs();
+            args.GameMode = GameMode.Single;
+            args.SessionName = _room.Name;
+            var scene = new NetworkSceneInfo();
+            scene.AddSceneRef(SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex));
+            args.Scene = scene;
+            runner.StartGame(args);
         }
 
         /// <summary>
@@ -126,7 +185,7 @@ namespace Networking
 
                 spawnPositions.Add(point);
 
-                if (spawnPositions.Count == TARGET_PLAYERS) break;
+                if (spawnPositions.Count == _room.Config.PlayersPerRoom) break;
             }
 
             return spawnPositions;
@@ -145,13 +204,13 @@ namespace Networking
             if (presentNumbers.Count == 0)
             {
                 Debug.Log("No existing players");
-                return TARGET_PLAYERS / 2;
+                return _room.Config.PlayersPerRoom / 2;
             }
 
 
             // Consider the implicit boundaries 0 and 100
             presentNumbers.Insert(0, 0);
-            presentNumbers.Add(TARGET_PLAYERS);
+            presentNumbers.Add(_room.Config.PlayersPerRoom);
 
             var maxGap = 0;
             var bestIndex = -1;
@@ -174,7 +233,7 @@ namespace Networking
             {
                 Debug.LogError(
                     "Something went terribly wrong picking a spawn index for the new player. Failing over to spawning player in a random position.");
-                bestIndex = Random.Range(0, TARGET_PLAYERS);
+                bestIndex = Random.Range(0, _room.Config.PlayersPerRoom);
             }
 
             return bestIndex;
@@ -262,7 +321,7 @@ namespace Networking
             }
 
             // Spawn necessary bots
-            for (var i = 0; i < TARGET_PLAYERS; i++)
+            for (var i = 0; i < _room.Config.PlayersPerRoom; i++)
             {
                 if (i == spawnIndex) continue;
 
