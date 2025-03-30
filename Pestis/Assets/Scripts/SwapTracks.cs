@@ -9,8 +9,8 @@ public class SwapTracks : MonoBehaviour
     public AudioClip[] tracks;
     public AudioSource audioSource;
     public Tilemap tilemap;
-    public float fadeDuration = 3f;
-    public float secondsBeforeCheckTrackSwap = 8f;
+    public float fadeDuration = 1f;
+    public float secondsBeforeCheckTrackSwap = 10f;
     private Type currentTrack;
     private bool isFading = false;
     void Start()
@@ -23,6 +23,7 @@ public class SwapTracks : MonoBehaviour
             audioSource.clip = tracks[0];
             audioSource.Play();
             InvokeRepeating(nameof(CheckTrackSwap), 0f, secondsBeforeCheckTrackSwap);
+            
         }
         else
         {
@@ -34,14 +35,10 @@ public class SwapTracks : MonoBehaviour
         if (InputHandler.Instance.LocalPlayer.selectedHorde == null || isFading)
             return;
 
-        Vector3Int pos = new Vector3Int(
-            (int)InputHandler.Instance.LocalPlayer.selectedHorde.GetCenter().x,
-            (int)InputHandler.Instance.LocalPlayer.selectedHorde.GetCenter().y,
-            0
-        );
+        Vector3Int pos = tilemap.WorldToCell(InputHandler.Instance.LocalPlayer.selectedHorde.GetCenter());
 
         TileBase tileAtPos = tilemap.GetTile(pos);
-
+        Debug.Log(tileAtPos.ToString());
         if (tileAtPos != null)
         {
             System.Type currentTile = tileAtPos.GetType();
@@ -71,10 +68,10 @@ public class SwapTracks : MonoBehaviour
 
     private AudioClip GetClipForTile(System.Type tileType)
     {
-        if (tileType == typeof(GrassTile)) return tracks[1];
+        if (tileType == typeof(GrassTile)) return tracks[2];
         if (tileType == typeof(TundraTile)) return tracks[0];
         if (tileType == typeof(DesertTile)) return tracks[1];
-        if (tileType == typeof(StoneTile)) return tracks[0];
+        if (tileType == typeof(StoneTile)) return tracks[3];
 
         return null;
     }
