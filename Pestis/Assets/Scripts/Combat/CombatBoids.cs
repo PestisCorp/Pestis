@@ -251,6 +251,11 @@ namespace Combat
             // Clear indices
             gridShader.Dispatch(clearGridKernel, blocks, 1, 1);
 
+
+            gridShader.SetInt("numBoidsPrevious", _previousNumBoids.Values.Sum());
+            // Grid shader needs to be one iteration behind, for correct rearranging.
+            gridShader.SetInt("numBoids", numBoids.Values.Sum());
+
             // Populate grid
             gridShader.Dispatch(updateGridKernel, Mathf.CeilToInt(numBoids.Values.Sum() / blockSize), 1, 1);
 
@@ -293,10 +298,6 @@ namespace Combat
 
             boidShader.Dispatch(updateBoidsKernel, containedHordes.Count,
                 Mathf.CeilToInt(numBoids.Values.Sum() / blockSize), 1);
-
-            gridShader.SetInt("numBoidsPrevious", _previousNumBoids.Values.Sum());
-            // Grid shader needs to be one iteration behind, for correct rearranging.
-            gridShader.SetInt("numBoids", numBoids.Values.Sum());
 
             // Actually draw the boids
             Graphics.RenderPrimitives(rp, MeshTopology.Quads, numBoids.Values.Sum() * 4);
