@@ -37,7 +37,7 @@ namespace POI
 
         [Networked] [CanBeNull] public CombatController Combat { get; private set; }
 
-        [Networked] public float TimeWhenPoiAbandoned { get; set; }
+        [Networked] public float TimeWhenPoiAbandoned { get; private set; }
 
         public void Awake()
         {
@@ -72,7 +72,7 @@ namespace POI
         public override void FixedUpdateNetwork()
         {
             // Respawn human patrol if POI has not been controlled for a while
-            if (StationedHordes.Count == 0 && Runner.SimulationTime - TimeWhenPoiAbandoned > 10f) 
+            if (StationedHordes.Count == 0 && Runner.SimulationTime - TimeWhenPoiAbandoned > 10f)
             {
                 patrolController.UpdateHumanCountRpc(patrolController.startingHumanCount);
             }
