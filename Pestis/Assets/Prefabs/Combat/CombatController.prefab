@@ -228,9 +228,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   combatVFX:
   - {fileID: 5543545871943033559}
-  audioSource: {fileID: 8385901688155092200}
-  startCombatSound: {fileID: 8300000, guid: 4aba1fb5de6b0fa4dbac198519e3a814, type: 3}
-  endCombatSound: {fileID: 8300000, guid: 2eb7fb7c8c9f5294fb492350734d5e4f, type: 3}
   combatController: {fileID: 5918322506656264874}
 --- !u!1 &4744084016816452201
 GameObject:
@@ -5014,7 +5011,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fbe0f54f3ffbd5b21845e13e4b015337, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9873,7 +9870,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fbe0f54f3ffbd5b21845e13e4b015337, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

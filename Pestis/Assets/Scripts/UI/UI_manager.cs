@@ -8,7 +8,7 @@ using TMPro;
 using UI;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Color = UnityEngine.Color;
 using Image = UnityEngine.UI.Image;
@@ -49,12 +49,12 @@ public class UI_Manager : MonoBehaviour
     public GameObject mutationButtonTwo;
     public GameObject mutationButtonThree;
     public GameObject noPointsWarning;
-    
+
     public Transform abilityPanel;
 
     // References to the resource text fields
     public TextMeshProUGUI cheeseRateText;
-
+    [SerializeField] private Image cheeseRateBackground;
 
     // References to notification system objects
     public GameObject notification;
@@ -68,7 +68,7 @@ public class UI_Manager : MonoBehaviour
     private TMP_Text _notificationText;
 
     private Timer _refreshClock;
-    
+
     private void Awake()
     {
         Instance = this;
@@ -85,7 +85,7 @@ public class UI_Manager : MonoBehaviour
         if (startMenu) objectives.SetActive(false);
         if (tutorialButton) tutorialButton.SetActive(false);
         if (hordesListPanel) hordesListPanel.SetActive(false);
-        
+
 
         _notificationText = notification.GetComponentInChildren<TMP_Text>();
         _notificationBackground = notification.GetComponentInChildren<Image>();
@@ -99,28 +99,41 @@ public class UI_Manager : MonoBehaviour
             if (cheeseRateText)
             {
                 var cheeseRate = localPlayer!.player.CheesePerSecond;
-                cheeseRateText.text = (cheeseRate >= 0 ? "+" + cheeseRate.ToString("F2") : cheeseRate.ToString("F2")) +
-                                      "/s";
+
+                switch (cheeseRate)
+                {
+                    case <= 0 when localPlayer.player.CurrentCheese >
+                                   localPlayer.player.aliveRats * localPlayer.player.cheeseConsumptionRate * 2:
+                        cheeseRateText.text = "Your rats are going to starve soon, capture POIs!";
+                        cheeseRateBackground.color = new Color(0.945098f, 0.6042559f, 0.2627451f);
+                        break;
+                    case > 0:
+                        cheeseRateText.text = cheeseRate.ToString("F2") + " surplus";
+                        cheeseRateBackground.color = Color.white;
+                        break;
+                    default:
+                        cheeseRateText.text = "Your rats are starving, capture POIs!";
+                        cheeseRateBackground.color = new Color(0.9433962f, 0.2936341f, 0.262549f);
+                        break;
+                }
             }
 
-            if (localPlayer.player.Score != null) timer.UpdateScore(localPlayer.player.Score);
+            timer.UpdateScore(localPlayer.player.Score);
 
-            if (localPlayer.player.Timer != null) timer.UpdateTimer(localPlayer.player.Timer);
+            timer.UpdateTimer(localPlayer.player.Timer);
         }
-        
+
         if (_refreshClock.ElapsedInSeconds > 3)
         {
             HordesListRefresh();
             var taggedObjects = GameObject.FindGameObjectsWithTag("UI_stats_text");
             if (infoPanel.activeSelf)
-            {
                 foreach (var obj in taggedObjects)
                     if (obj.name == "Info_own_stats")
                     {
                         var horde = GetSelectedHorde();
                         UpdateStats(obj, horde);
                     }
-            }
 
             if (actionPanel.activeSelf)
             {
@@ -132,7 +145,6 @@ public class UI_Manager : MonoBehaviour
                 }
             }
         }
-        
     }
 
     // Function to reset all referenced canvases to their default states to prevent UI clutter
@@ -145,11 +157,11 @@ public class UI_Manager : MonoBehaviour
         if (splitPanel) splitPanel.SetActive(false);
 
         if (mutationPopUp) MutationPopUpDisable();
-        
+
         if (mutationViewer) MutationViewerDisable();
 
         if (actionPanel) ActionPanelDisable();
-        
+
 
         // Ignoring the state of the tool bar, ensuring the default buttons are visible
         var toolbarButtons = GameObject.FindGameObjectsWithTag("UI_button_action");
@@ -158,7 +170,6 @@ public class UI_Manager : MonoBehaviour
 
     public void HordesListRefresh()
     {
-
         foreach (Transform child in hordesListContentParent) Destroy(child.gameObject);
         foreach (var horde in localPlayer!.player.Hordes)
         {
@@ -168,12 +179,13 @@ public class UI_Manager : MonoBehaviour
             textBoxes[1].text = horde.GetComponent<EvolutionManager>().PointsAvailable.ToString();
             var button = hordeButton.GetComponent<Button>();
             button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(delegate {Camera.main.GetComponent<Panner>().PanTo(horde);});
+            button.onClick.AddListener(delegate { Camera.main.GetComponent<Panner>().PanTo(horde); });
             button.onClick.AddListener(delegate { localPlayer.SelectHorde(horde); });
         }
+
         _refreshClock.Restart();
     }
-    
+
     public void ActionPanelEnable()
     {
         ResetUI();
@@ -376,8 +388,6 @@ public class UI_Manager : MonoBehaviour
         else mutationText.GetComponentInChildren<TextMeshProUGUI>().text = "No Horde Selected";
     }
 
-    
-
 
     // Function to update the currently selected population
     public void UpdateSelectedPopulation()
@@ -437,21 +447,21 @@ public class UI_Manager : MonoBehaviour
         var evolutionManager = GetSelectedHorde().GetComponent<EvolutionManager>();
         GameObject.FindGameObjectWithTag("mutation_points").GetComponent<TextMeshProUGUI>().text =
             evolutionManager.PointsAvailable + "pts";
-        var buttons = new GameObject[] { mutationButtonOne, mutationButtonTwo, mutationButtonThree };
+        var buttons = new[] { mutationButtonOne, mutationButtonTwo, mutationButtonThree };
         if (evolutionManager.PointsAvailable == 0)
         {
             buttons[0].SetActive(false);
             buttons[1].SetActive(false);
             buttons[2].SetActive(false);
             noPointsWarning.SetActive(true);
-
         }
         else
         {
             buttons[0].SetActive(true);
             buttons[1].SetActive(true);
             buttons[2].SetActive(true);
-            if (GameObject.FindGameObjectWithTag("no_points")) GameObject.FindGameObjectWithTag("no_points").SetActive(false);
+            if (GameObject.FindGameObjectWithTag("no_points"))
+                GameObject.FindGameObjectWithTag("no_points").SetActive(false);
             var mutations = GetSelectedHorde().GetComponent<EvolutionManager>().RareEvolutionaryEvent();
             buttons[0].GetComponentInChildren<TMP_Text>().text = mutations.Item1.MutationName;
             buttons[0].GetComponent<Tooltip>().tooltipText = mutations.Item1.Tooltip;
@@ -606,6 +616,7 @@ public class UI_Manager : MonoBehaviour
                     btnImage.sprite = Resources.Load<Sprite>("UI_design/Mutations/corpsebloom_btn");
                     break;
             }
+
             var tooltip = button.GetComponent<Tooltip>();
             if (tooltip) tooltip.enabled = true;
             tooltip.tooltipText = mutation.Item2;

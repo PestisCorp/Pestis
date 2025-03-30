@@ -364,7 +364,7 @@ MonoBehaviour:
   isHedgehogged: 0
   ownIcon: {fileID: 0}
   player: {fileID: 0}
-  populationController: {fileID: 0}
+  populationController: {fileID: 4419380376764164480}
   populationCooldown: 0
   speechBubble: {fileID: 3280453391582801240}
   targetLocation: {fileID: 0}
@@ -510,7 +510,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7024703977245443517}
-  - component: {fileID: 2639721867894554855}
   m_Layer: 0
   m_Name: fx
   m_TagString: Untagged
@@ -533,21 +532,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3232489604842089083}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2639721867894554855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2386700459452885359}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c550dd30fccb0845a2c493260d222e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  combatVFX:
-  - {fileID: 0}
-  combatController: {fileID: 0}
 --- !u!1 &3280453391582801240
 GameObject:
   m_ObjectHideFlags: 0
@@ -914,7 +898,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4234608823859560160}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
