@@ -251,7 +251,6 @@ namespace Combat
             // Clear indices
             gridShader.Dispatch(clearGridKernel, blocks, 1, 1);
 
-
             gridShader.SetInt("numBoidsPrevious", _previousNumBoids.Values.Sum());
             // Grid shader needs to be one iteration behind, for correct rearranging.
             gridShader.SetInt("numBoids", numBoids.Values.Sum());
@@ -313,26 +312,31 @@ namespace Combat
             _boundsBuffer.GetData(_boundsArr, 0, 0, CombatController.MaxParticipants * 4);
             for (var horde = 0; horde < numBoids.Count; horde++)
             {
-                if (_boundsArr[horde * 4] == 1024.0f)
-                {
-                    hordeBounds[containedHordes[horde]] = new Bounds(TargetPos, Vector2.zero);
-                    continue;
-                }
+                // Haven't got proper bounds yet
+                if (_boundsArr[horde * 4] == 1024.0f) continue;
 
+                // Extract this horde's bounds from bounds array
                 var extents = new Vector2(_boundsArr[horde * 4 + 2] - _boundsArr[horde * 4 + 0],
                     _boundsArr[horde * 4 + 1] - _boundsArr[horde * 4 + 3]);
                 var center = new Vector2(extents.x / 2.0f + _boundsArr[horde * 4 + 0],
                     extents.y / 2.0f + _boundsArr[horde * 4 + 3]);
                 hordeBounds[containedHordes[horde]] = new Bounds(center, extents * 2);
+
+                // Re-initialise bounds before next calculation
                 _boundsArr[horde * 4 + 0] = 1024.0f;
                 _boundsArr[horde * 4 + 1] = -1024.0f;
                 _boundsArr[horde * 4 + 2] = -1024.0f;
                 _boundsArr[horde * 4 + 3] = 1024.0f;
             }
 
-            bounds = hordeBounds.First().Value;
-            foreach (var (_, hordeB) in hordeBounds) bounds.Encapsulate(hordeB);
+            // Calculate bounds for the combat as a whole
+            if (hordeBounds.Count != 0)
+            {
+                bounds = hordeBounds.First().Value;
+                foreach (var (_, hordeB) in hordeBounds) bounds.Encapsulate(hordeB);
+            }
 
+            // Dispatch next bounds calculation
             _boundsBuffer.SetData(_boundsArr, 0, 0, CombatController.MaxParticipants * 4);
             boidShader.Dispatch(updateBoundsKernel, Mathf.CeilToInt(numBoids.Values.Sum() / blockSize), 1, 1);
         }

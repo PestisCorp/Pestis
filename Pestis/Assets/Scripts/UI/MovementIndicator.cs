@@ -10,7 +10,7 @@ public class MovementIndicator : MonoBehaviour
 
     private void Start()
     {
-        if (controller.player.IsLocal) Invoke(nameof(Enable), 1);
+        if (controller.player.IsLocal) Invoke(nameof(Enable), 3);
     }
 
     private void FixedUpdate()

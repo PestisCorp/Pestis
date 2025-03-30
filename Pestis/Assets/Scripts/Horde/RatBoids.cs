@@ -129,7 +129,7 @@ public class RatBoids : MonoBehaviour
 
     public bool Local => hordeController.HasStateAuthority;
 
-    public Bounds Bounds { private set; get; }
+    public Bounds? Bounds { private set; get; }
 
     private float visualRangeSq => visualRange * visualRange;
     private float minDistanceSq => minDistance * minDistance;
@@ -368,10 +368,10 @@ public class RatBoids : MonoBehaviour
         boidShader.SetInt("numBoidsPrevious", previousNumBoids);
 
         // 0,0 case is overriden in the shader to use an approximate center
-        if (Bounds.size.sqrMagnitude == 0 || float.IsNaN(Bounds.center.x) || float.IsNaN(Bounds.center.y))
+        if (!Bounds.HasValue)
             boidShader.SetFloats("spawnPoint", 0, 0);
         else
-            boidShader.SetFloats("spawnPoint", Bounds.center.x + 0.01f, Bounds.center.y + 0.01f);
+            boidShader.SetFloats("spawnPoint", Bounds.Value.center.x + 0.01f, Bounds.Value.center.y + 0.01f);
 
         // Compute boid behaviours
         boidShader.Dispatch(updateBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
@@ -405,7 +405,7 @@ public class RatBoids : MonoBehaviour
 
         if (_boundsArr[0] == 1024.0f)
         {
-            Bounds = new Bounds(TargetPos, Vector2.zero);
+            Bounds = null;
             boidShader.Dispatch(updateBoundsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
             return;
         }

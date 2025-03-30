@@ -13,8 +13,6 @@ using Players;
 using POI;
 using TMPro;
 using Unity.Mathematics;
-using UI;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -221,7 +219,7 @@ namespace Horde
             {
                 if (AliveRats == 1)
                 {
-                    HordeBounds = Boids.Bounds;
+                    if (Boids.Bounds.HasValue) HordeBounds = Boids.Bounds.Value;
                 }
                 else if (AliveRats > 0) // Move horde center slowly to avoid jitter due to center rat changing
                 {
@@ -229,12 +227,10 @@ namespace Horde
                     {
                         if (CurrentCombatController!.boids.hordeBounds.TryGetValue(this, out var newBounds))
                             HordeBounds = newBounds;
-                        else
-                            HordeBounds = new Bounds(targetLocation.transform.position, Vector2.zero);
                     }
                     else
                     {
-                        HordeBounds = Boids.Bounds;
+                        if (Boids.Bounds.HasValue) HordeBounds = Boids.Bounds.Value;
                     }
                 }
                 else
@@ -372,14 +368,14 @@ Count: {AliveRats}
             yield return new WaitForSeconds(5f);
             _speechBubbleImage.sprite = null;
             if (_speechBubbles.Count > 0)
+            {
                 StartCoroutine(ShowSpeechBubble());
+            }
             else
             {
                 _speechBubbleActive = false;
                 _speechBubbleImage.enabled = false;
             }
-                
-            
         }
 
         /// <summary>
@@ -521,7 +517,6 @@ Count: {AliveRats}
             hordeIcon = transform.Find("Canvas/PlayerName/HordeIcon").gameObject;
             var icon = hordeIcon.GetComponent<Image>();
 
-            
 
             if (player.IsLocal)
             {
@@ -539,6 +534,7 @@ Count: {AliveRats}
                 var iconSprite = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_enemy");
                 icon.sprite = iconSprite;
             }
+
             if (CurrentCombatController)
             {
                 var boids = new Boid[AliveRats];
