@@ -14,7 +14,7 @@ namespace Players
         public bool IsLocal;
 
         public Player player;
-        
+
         private UI_Manager UI_manager;
 
         private void Awake()
@@ -34,41 +34,31 @@ namespace Players
                 UI_manager.ResourceStatsEnable();
                 // Enable objective checklist upon loading in
                 UI_manager.ObjectiveChecklistEnable();
-                //enable reset
                 UI_manager.timer.parent.SetActive(true);
+                UI_manager.hordesListPanel.SetActive(true);
+                UI_manager.HordesListRefresh();
             }
         }
 
         public void SelectHorde(HordeController horde)
         {
-            
-            if (horde.Player.IsLocal)
+            if (horde.player.IsLocal)
             {
                 if (horde.isApparition) return;
-                if (selectedHorde && selectedHorde != horde)
-                {
-                    selectedHorde.UnHighlight();
-                    selectedHorde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
-                    
-                }
+                if (selectedHorde && selectedHorde != horde) selectedHorde.UnHighlight();
                 if (selectedHorde != horde)
                 {
                     selectedHorde = horde;
                     selectedHorde?.Highlight();
-                    if (selectedHorde.Player.IsLocal)
+                    if (selectedHorde.player.IsLocal)
                     {
-                        if (selectedHorde.InCombat) selectedHorde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 1;
                         UI_manager.InfoPanelEnable();
                     }
-                     
                 }
             }
             else
             {
-                if (selectedEnemyHorde && selectedEnemyHorde != horde)
-                {
-                    selectedEnemyHorde.UnHighlight();
-                }
+                if (selectedEnemyHorde && selectedEnemyHorde != horde) selectedEnemyHorde.UnHighlight();
 
                 if (selectedEnemyHorde != horde)
                 {
@@ -82,11 +72,11 @@ namespace Players
         {
             selectedHorde?.UnHighlight();
             selectedEnemyHorde?.UnHighlight();
-            if (selectedHorde) selectedHorde.moraleAndFearInstance.GetComponent<CanvasGroup>().alpha = 0;
             selectedHorde = null;
             selectedEnemyHorde = null;
             UI_manager.InfoPanelDisable();
             UI_manager.MutationPopUpDisable();
+            UI_manager.MutationViewerDisable();
             UI_manager.ActionPanelDisable();
         }
 

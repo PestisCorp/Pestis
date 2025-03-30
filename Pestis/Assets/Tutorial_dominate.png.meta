@@ -1,0 +1,4108 @@
+fileFormatVersion: 2
+guid: da059be360a534d7e945759e31a9b748
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4326746659352258347
+    second: Tutorial_dominate_0
+  - first:
+      213: -7996811570758444989
+    second: Tutorial_dominate_1
+  - first:
+      213: -5204615950320610663
+    second: Tutorial_dominate_2
+  - first:
+      213: 4742799072871073386
+    second: Tutorial_dominate_3
+  - first:
+      213: -5112249784747634476
+    second: Tutorial_dominate_4
+  - first:
+      213: 8681093067125632532
+    second: Tutorial_dominate_5
+  - first:
+      213: 2092056006633520016
+    second: Tutorial_dominate_6
+  - first:
+      213: -2237787954546369962
+    second: Tutorial_dominate_7
+  - first:
+      213: 1366318834045134407
+    second: Tutorial_dominate_8
+  - first:
+      213: -2206308073406537437
+    second: Tutorial_dominate_9
+  - first:
+      213: 6887110401506024759
+    second: Tutorial_dominate_10
+  - first:
+      213: -5921527546700972025
+    second: Tutorial_dominate_11
+  - first:
+      213: -844597432078149439
+    second: Tutorial_dominate_12
+  - first:
+      213: -4586506474587729336
+    second: Tutorial_dominate_13
+  - first:
+      213: 3264689581454155725
+    second: Tutorial_dominate_14
+  - first:
+      213: -9219158019580172272
+    second: Tutorial_dominate_15
+  - first:
+      213: -7675851307256783691
+    second: Tutorial_dominate_16
+  - first:
+      213: 7651956392536989962
+    second: Tutorial_dominate_17
+  - first:
+      213: -7686455450340578714
+    second: Tutorial_dominate_18
+  - first:
+      213: 783837317982868337
+    second: Tutorial_dominate_19
+  - first:
+      213: -3393599565226373835
+    second: Tutorial_dominate_20
+  - first:
+      213: -4693466356875670558
+    second: Tutorial_dominate_21
+  - first:
+      213: -1351276077059418720
+    second: Tutorial_dominate_22
+  - first:
+      213: 3139658755197654872
+    second: Tutorial_dominate_23
+  - first:
+      213: -1709545011229572433
+    second: Tutorial_dominate_24
+  - first:
+      213: -8743851934777903446
+    second: Tutorial_dominate_25
+  - first:
+      213: 6177563757470244507
+    second: Tutorial_dominate_26
+  - first:
+      213: 3429248446828927084
+    second: Tutorial_dominate_27
+  - first:
+      213: -422265845788392582
+    second: Tutorial_dominate_28
+  - first:
+      213: -5694506799888899495
+    second: Tutorial_dominate_29
+  - first:
+      213: 186933891440979886
+    second: Tutorial_dominate_30
+  - first:
+      213: 7107279107742612627
+    second: Tutorial_dominate_31
+  - first:
+      213: 2663878548424473080
+    second: Tutorial_dominate_32
+  - first:
+      213: -2263817686026173432
+    second: Tutorial_dominate_33
+  - first:
+      213: 4446165303597804973
+    second: Tutorial_dominate_34
+  - first:
+      213: -7485687511630771535
+    second: Tutorial_dominate_35
+  - first:
+      213: 2457601012602387347
+    second: Tutorial_dominate_36
+  - first:
+      213: -2089878026153508541
+    second: Tutorial_dominate_37
+  - first:
+      213: -1115628922825962926
+    second: Tutorial_dominate_38
+  - first:
+      213: -239728769509888791
+    second: Tutorial_dominate_39
+  - first:
+      213: 7457763557830544784
+    second: Tutorial_dominate_40
+  - first:
+      213: 8409854963269525111
+    second: Tutorial_dominate_41
+  - first:
+      213: 3349636877113193316
+    second: Tutorial_dominate_42
+  - first:
+      213: 1114898869130445046
+    second: Tutorial_dominate_43
+  - first:
+      213: 8606641580431165279
+    second: Tutorial_dominate_44
+  - first:
+      213: 5629801968697146127
+    second: Tutorial_dominate_45
+  - first:
+      213: -5106027574209460413
+    second: Tutorial_dominate_46
+  - first:
+      213: -4979994466109353492
+    second: Tutorial_dominate_47
+  - first:
+      213: 8479932868476183390
+    second: Tutorial_dominate_48
+  - first:
+      213: -980984828404348260
+    second: Tutorial_dominate_49
+  - first:
+      213: 7746874698774970658
+    second: Tutorial_dominate_50
+  - first:
+      213: 216993265665324402
+    second: Tutorial_dominate_51
+  - first:
+      213: -3522223188286815578
+    second: Tutorial_dominate_52
+  - first:
+      213: -1704493757900985439
+    second: Tutorial_dominate_53
+  - first:
+      213: -8742579285197017017
+    second: Tutorial_dominate_54
+  - first:
+      213: 6919417497091188792
+    second: Tutorial_dominate_55
+  - first:
+      213: 2820724713534096481
+    second: Tutorial_dominate_56
+  - first:
+      213: -6071957942217025159
+    second: Tutorial_dominate_57
+  - first:
+      213: -1391852389326494495
+    second: Tutorial_dominate_58
+  - first:
+      213: 5676475197617885805
+    second: Tutorial_dominate_59
+  - first:
+      213: 2623818342233846289
+    second: Tutorial_dominate_60
+  - first:
+      213: 2476567273950190488
+    second: Tutorial_dominate_61
+  - first:
+      213: 4019637804228995421
+    second: Tutorial_dominate_62
+  - first:
+      213: 4630929886248299821
+    second: Tutorial_dominate_63
+  - first:
+      213: 9102008164968545266
+    second: Tutorial_dominate_64
+  - first:
+      213: 85469522815733474
+    second: Tutorial_dominate_65
+  - first:
+      213: -4815578147559712840
+    second: Tutorial_dominate_66
+  - first:
+      213: -6900646406678962323
+    second: Tutorial_dominate_67
+  - first:
+      213: -4571000453252361770
+    second: Tutorial_dominate_68
+  - first:
+      213: 380444151448503193
+    second: Tutorial_dominate_69
+  - first:
+      213: -3150371625308936816
+    second: Tutorial_dominate_70
+  - first:
+      213: 3830888864860447124
+    second: Tutorial_dominate_71
+  - first:
+      213: -8281340292653435338
+    second: Tutorial_dominate_72
+  - first:
+      213: 1062387468622371242
+    second: Tutorial_dominate_73
+  - first:
+      213: 2590493260109975375
+    second: Tutorial_dominate_74
+  - first:
+      213: 1047778830171790414
+    second: Tutorial_dominate_75
+  - first:
+      213: -5003153748331374979
+    second: Tutorial_dominate_76
+  - first:
+      213: 6524389430102495282
+    second: Tutorial_dominate_77
+  - first:
+      213: -123158713842416601
+    second: Tutorial_dominate_78
+  - first:
+      213: -6465962566013040741
+    second: Tutorial_dominate_79
+  - first:
+      213: 4897568890075411715
+    second: Tutorial_dominate_80
+  - first:
+      213: 5502446991165515483
+    second: Tutorial_dominate_81
+  - first:
+      213: 3320210249523969838
+    second: Tutorial_dominate_82
+  - first:
+      213: -4514305240373739597
+    second: Tutorial_dominate_83
+  - first:
+      213: 7238204280426648363
+    second: Tutorial_dominate_84
+  - first:
+      213: 8172724165315267761
+    second: Tutorial_dominate_85
+  - first:
+      213: -1768813641748396561
+    second: Tutorial_dominate_86
+  - first:
+      213: 8114060186250911968
+    second: Tutorial_dominate_87
+  - first:
+      213: 778812667349441377
+    second: Tutorial_dominate_88
+  - first:
+      213: -9071149437873410327
+    second: Tutorial_dominate_89
+  - first:
+      213: -7413891705166494582
+    second: Tutorial_dominate_90
+  - first:
+      213: 8250648234831585027
+    second: Tutorial_dominate_91
+  - first:
+      213: -5816418535392472894
+    second: Tutorial_dominate_92
+  - first:
+      213: 750949634793787793
+    second: Tutorial_dominate_93
+  - first:
+      213: -8663112393507525267
+    second: Tutorial_dominate_94
+  - first:
+      213: -9054668445408692971
+    second: Tutorial_dominate_95
+  - first:
+      213: -4341839036682681776
+    second: Tutorial_dominate_96
+  - first:
+      213: 5958069470936312367
+    second: Tutorial_dominate_97
+  - first:
+      213: 3379434938685476690
+    second: Tutorial_dominate_98
+  - first:
+      213: -5412250387785364
+    second: Tutorial_dominate_99
+  - first:
+      213: -5225257813955446666
+    second: Tutorial_dominate_100
+  - first:
+      213: 6645955319866021575
+    second: Tutorial_dominate_101
+  - first:
+      213: -7429376612707681561
+    second: Tutorial_dominate_102
+  - first:
+      213: 5426535221491808342
+    second: Tutorial_dominate_103
+  - first:
+      213: 8299898602120155842
+    second: Tutorial_dominate_104
+  - first:
+      213: 7284499635015563293
+    second: Tutorial_dominate_105
+  - first:
+      213: -4413457388239955982
+    second: Tutorial_dominate_106
+  - first:
+      213: -7086841682987241919
+    second: Tutorial_dominate_107
+  - first:
+      213: -1845069399562161152
+    second: Tutorial_dominate_108
+  - first:
+      213: 4135785242251907509
+    second: Tutorial_dominate_109
+  - first:
+      213: 1018330463467167956
+    second: Tutorial_dominate_110
+  - first:
+      213: -2777908152750617296
+    second: Tutorial_dominate_111
+  - first:
+      213: 1693749629173324909
+    second: Tutorial_dominate_112
+  - first:
+      213: -6839810934015146774
+    second: Tutorial_dominate_113
+  - first:
+      213: -8368154106571974624
+    second: Tutorial_dominate_114
+  - first:
+      213: -2625203430254723322
+    second: Tutorial_dominate_115
+  - first:
+      213: 7349613298496660055
+    second: Tutorial_dominate_116
+  - first:
+      213: -5218063171230010116
+    second: Tutorial_dominate_117
+  - first:
+      213: -3402524052402326518
+    second: Tutorial_dominate_118
+  - first:
+      213: -2769716525246834522
+    second: Tutorial_dominate_119
+  - first:
+      213: 7893162785469044531
+    second: Tutorial_dominate_120
+  - first:
+      213: 8316186089890417842
+    second: Tutorial_dominate_121
+  - first:
+      213: -5472833640873114996
+    second: Tutorial_dominate_122
+  - first:
+      213: -5164483623817190621
+    second: Tutorial_dominate_123
+  - first:
+      213: 456538063796826954
+    second: Tutorial_dominate_124
+  - first:
+      213: 8352312936729238805
+    second: Tutorial_dominate_125
+  - first:
+      213: -1911660672850778491
+    second: Tutorial_dominate_126
+  - first:
+      213: -2189343450588318377
+    second: Tutorial_dominate_127
+  - first:
+      213: 8723160853276999599
+    second: Tutorial_dominate_128
+  - first:
+      213: -2158487375671302122
+    second: Tutorial_dominate_129
+  - first:
+      213: -2824972343467095636
+    second: Tutorial_dominate_130
+  - first:
+      213: 2566259699184343363
+    second: Tutorial_dominate_131
+  - first:
+      213: 8430732785302244588
+    second: Tutorial_dominate_132
+  - first:
+      213: -8108912330154134383
+    second: Tutorial_dominate_133
+  - first:
+      213: 9027563611812900178
+    second: Tutorial_dominate_134
+  - first:
+      213: 1711443796926809855
+    second: Tutorial_dominate_135
+  - first:
+      213: 3378791587313047032
+    second: Tutorial_dominate_136
+  - first:
+      213: -8487880750971512692
+    second: Tutorial_dominate_137
+  - first:
+      213: -2234237272259116086
+    second: Tutorial_dominate_138
+  - first:
+      213: 445114795534125764
+    second: Tutorial_dominate_139
+  - first:
+      213: -3899385688149351026
+    second: Tutorial_dominate_140
+  - first:
+      213: 6796735106935086681
+    second: Tutorial_dominate_141
+  - first:
+      213: 4601923583609483994
+    second: Tutorial_dominate_142
+  - first:
+      213: -5690782876670461370
+    second: Tutorial_dominate_143
+  - first:
+      213: -3170256871009139623
+    second: Tutorial_dominate_144
+  - first:
+      213: -1842061740318029798
+    second: Tutorial_dominate_145
+  - first:
+      213: -5114978007009625861
+    second: Tutorial_dominate_146
+  - first:
+      213: 6116150263900861575
+    second: Tutorial_dominate_147
+  - first:
+      213: 3270505668719630004
+    second: Tutorial_dominate_148
+  - first:
+      213: 6506811921425749338
+    second: Tutorial_dominate_149
+  - first:
+      213: -6650072190049514210
+    second: Tutorial_dominate_150
+  - first:
+      213: 3694001716189754217
+    second: Tutorial_dominate_151
+  - first:
+      213: -6819409517733184138
+    second: Tutorial_dominate_152
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Tutorial_dominate_0
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 2232
+        width: 113
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b27accf9921bb0c30800000000000000
+      internalID: 4326746659352258347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_1
+      rect:
+        serializedVersion: 2
+        x: 1084
+        y: 2232
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 348953dce3e950190800000000000000
+      internalID: -7996811570758444989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_2
+      rect:
+        serializedVersion: 2
+        x: 1217
+        y: 2232
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 992dec05e5d75c7b0800000000000000
+      internalID: -5204615950320610663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_3
+      rect:
+        serializedVersion: 2
+        x: 1494
+        y: 2232
+        width: 91
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a66488bd0aec1d140800000000000000
+      internalID: 4742799072871073386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_4
+      rect:
+        serializedVersion: 2
+        x: 1616
+        y: 2232
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d0dc0918e3ad09b0800000000000000
+      internalID: -5112249784747634476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_5
+      rect:
+        serializedVersion: 2
+        x: 1882
+        y: 2210
+        width: 113
+        height: 135
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41e21207620797870800000000000000
+      internalID: 8681093067125632532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_6
+      rect:
+        serializedVersion: 2
+        x: 2026
+        y: 2232
+        width: 90
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09bfc959ad9780d10800000000000000
+      internalID: 2092056006633520016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_7
+      rect:
+        serializedVersion: 2
+        x: 2148
+        y: 2232
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65a9d9e26b7c1f0e0800000000000000
+      internalID: -2237787954546369962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_8
+      rect:
+        serializedVersion: 2
+        x: 2281
+        y: 2210
+        width: 113
+        height: 135
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 746af219db326f210800000000000000
+      internalID: 1366318834045134407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_9
+      rect:
+        serializedVersion: 2
+        x: 2458
+        y: 2320
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 321e68b2f7e9161e0800000000000000
+      internalID: -2206308073406537437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_10
+      rect:
+        serializedVersion: 2
+        x: 2458
+        y: 2232
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73d1aa2bb6ee39f50800000000000000
+      internalID: 6887110401506024759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_11
+      rect:
+        serializedVersion: 2
+        x: 1429
+        y: 2040
+        width: 69
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 700c233e11282dda0800000000000000
+      internalID: -5921527546700972025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_12
+      rect:
+        serializedVersion: 2
+        x: 1689
+        y: 2120
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c856c24c136744f0800000000000000
+      internalID: -844597432078149439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_13
+      rect:
+        serializedVersion: 2
+        x: 1916
+        y: 2040
+        width: 55
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8425b2669a47950c0800000000000000
+      internalID: -4586506474587729336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_14
+      rect:
+        serializedVersion: 2
+        x: 1509
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dcf5e7490e18e4d20800000000000000
+      internalID: 3264689581454155725
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_15
+      rect:
+        serializedVersion: 2
+        x: 1589
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 018eaba50a8fe0080800000000000000
+      internalID: -9219158019580172272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_16
+      rect:
+        serializedVersion: 2
+        x: 1675
+        y: 2040
+        width: 56
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5bcdd3a87e5e97590800000000000000
+      internalID: -7675851307256783691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_17
+      rect:
+        serializedVersion: 2
+        x: 1749
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0162f51cc5313a60800000000000000
+      internalID: 7651956392536989962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_18
+      rect:
+        serializedVersion: 2
+        x: 1829
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 66aa5941e79345590800000000000000
+      internalID: -7686455450340578714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_19
+      rect:
+        serializedVersion: 2
+        x: 1989
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 173501443efb0ea00800000000000000
+      internalID: 783837317982868337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_20
+      rect:
+        serializedVersion: 2
+        x: 724
+        y: 1759
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53d03ccec2387e0d0800000000000000
+      internalID: -3393599565226373835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_21
+      rect:
+        serializedVersion: 2
+        x: 859
+        y: 1819
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ebcd2927357ddeb0800000000000000
+      internalID: -4693466356875670558
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_22
+      rect:
+        serializedVersion: 2
+        x: 969
+        y: 1759
+        width: 42
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a5d369319d4f3de0800000000000000
+      internalID: -1351276077059418720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_23
+      rect:
+        serializedVersion: 2
+        x: 2309
+        y: 1759
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8575083d00f429b20800000000000000
+      internalID: 3139658755197654872
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_24
+      rect:
+        serializedVersion: 2
+        x: 2489
+        y: 1759
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa2ce1eaed97648e0800000000000000
+      internalID: -1709545011229572433
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_25
+      rect:
+        serializedVersion: 2
+        x: 2669
+        y: 1759
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa673f20ef897a680800000000000000
+      internalID: -8743851934777903446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_26
+      rect:
+        serializedVersion: 2
+        x: 2909
+        y: 1759
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9e575dd18d1bb550800000000000000
+      internalID: 6177563757470244507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_27
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 1759
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c685ccf1b43279f20800000000000000
+      internalID: 3429248446828927084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_28
+      rect:
+        serializedVersion: 2
+        x: 849
+        y: 1759
+        width: 42
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a73c005537fc32af0800000000000000
+      internalID: -422265845788392582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_29
+      rect:
+        serializedVersion: 2
+        x: 904
+        y: 1759
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 952639d7c3c09f0b0800000000000000
+      internalID: -5694506799888899495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_30
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 1759
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eaf22d3426f189200800000000000000
+      internalID: 186933891440979886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_31
+      rect:
+        serializedVersion: 2
+        x: 2369
+        y: 1759
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39cbd8841b022a260800000000000000
+      internalID: 7107279107742612627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_32
+      rect:
+        serializedVersion: 2
+        x: 2429
+        y: 1759
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f9bf9b0d6ff7f420800000000000000
+      internalID: 2663878548424473080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_33
+      rect:
+        serializedVersion: 2
+        x: 2549
+        y: 1759
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 804c92c0fcd4590e0800000000000000
+      internalID: -2263817686026173432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_34
+      rect:
+        serializedVersion: 2
+        x: 2609
+        y: 1759
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dad2d9d69c3f3bd30800000000000000
+      internalID: 4446165303597804973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_35
+      rect:
+        serializedVersion: 2
+        x: 2729
+        y: 1759
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ba8ba97ede7d1890800000000000000
+      internalID: -7485687511630771535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_36
+      rect:
+        serializedVersion: 2
+        x: 2789
+        y: 1759
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39b3ecb99172b1220800000000000000
+      internalID: 2457601012602387347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_37
+      rect:
+        serializedVersion: 2
+        x: 2849
+        y: 1759
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 341c93302034ff2e0800000000000000
+      internalID: -2089878026153508541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_38
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 1615
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25a8ec1d76d7480f0800000000000000
+      internalID: -1115628922825962926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_39
+      rect:
+        serializedVersion: 2
+        x: 677
+        y: 1663
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ecebea44ff4cacf0800000000000000
+      internalID: -239728769509888791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_40
+      rect:
+        serializedVersion: 2
+        x: 763
+        y: 1615
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09dc753617c4f7760800000000000000
+      internalID: 7457763557830544784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_41
+      rect:
+        serializedVersion: 2
+        x: 904
+        y: 1615
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77e5c32288ec5b470800000000000000
+      internalID: 8409854963269525111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_42
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 1615
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46371ea1efc4c7e20800000000000000
+      internalID: 3349636877113193316
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_43
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 1615
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f0410f4d9ae87f00800000000000000
+      internalID: 1114898869130445046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_44
+      rect:
+        serializedVersion: 2
+        x: 477
+        y: 1615
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f57c4bedaeee07770800000000000000
+      internalID: 8606641580431165279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_45
+      rect:
+        serializedVersion: 2
+        x: 571
+        y: 1607
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0bfcf30013112e40800000000000000
+      internalID: 5629801968697146127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_46
+      rect:
+        serializedVersion: 2
+        x: 618
+        y: 1615
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34745e169feb329b0800000000000000
+      internalID: -5106027574209460413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_47
+      rect:
+        serializedVersion: 2
+        x: 669
+        y: 1615
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce114201b6183eab0800000000000000
+      internalID: -4979994466109353492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_48
+      rect:
+        serializedVersion: 2
+        x: 712
+        y: 1615
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e53aea8e306cea570800000000000000
+      internalID: 8479932868476183390
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_49
+      rect:
+        serializedVersion: 2
+        x: 806
+        y: 1615
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9a49ecfe77d262f0800000000000000
+      internalID: -980984828404348260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_50
+      rect:
+        serializedVersion: 2
+        x: 947
+        y: 1615
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22181fb6e7d628b60800000000000000
+      internalID: 7746874698774970658
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_51
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 1615
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27532a6b93ae20300800000000000000
+      internalID: 216993265665324402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_52
+      rect:
+        serializedVersion: 2
+        x: 1057
+        y: 1647
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a2458afbac8e1fc0800000000000000
+      internalID: -3522223188286815578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_53
+      rect:
+        serializedVersion: 2
+        x: 2054
+        y: 1603
+        width: 41
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1abe07e35fb6858e0800000000000000
+      internalID: -1704493757900985439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_54
+      rect:
+        serializedVersion: 2
+        x: 2101
+        y: 1603
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 740b425d57e1ca680800000000000000
+      internalID: -8742579285197017017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_55
+      rect:
+        serializedVersion: 2
+        x: 2246
+        y: 1603
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8382ebe8d85b60060800000000000000
+      internalID: 6919417497091188792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_56
+      rect:
+        serializedVersion: 2
+        x: 2383
+        y: 1603
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1648d5f9e2a352720800000000000000
+      internalID: 2820724713534096481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_57
+      rect:
+        serializedVersion: 2
+        x: 2571
+        y: 1603
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 979da031c621cbba0800000000000000
+      internalID: -6071957942217025159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_58
+      rect:
+        serializedVersion: 2
+        x: 2759
+        y: 1603
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e46a6250a52face0800000000000000
+      internalID: -1391852389326494495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_59
+      rect:
+        serializedVersion: 2
+        x: 3041
+        y: 1603
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d625452fd14e6ce40800000000000000
+      internalID: 5676475197617885805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_60
+      rect:
+        serializedVersion: 2
+        x: 1057
+        y: 1615
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 112b00471eca96420800000000000000
+      internalID: 2623818342233846289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_61
+      rect:
+        serializedVersion: 2
+        x: 2148
+        y: 1603
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89b982270d88e5220800000000000000
+      internalID: 2476567273950190488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_62
+      rect:
+        serializedVersion: 2
+        x: 2289
+        y: 1603
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d59ecc6394f98c730800000000000000
+      internalID: 4019637804228995421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_63
+      rect:
+        serializedVersion: 2
+        x: 2336
+        y: 1603
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2de191223e544040800000000000000
+      internalID: 4630929886248299821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_64
+      rect:
+        serializedVersion: 2
+        x: 2430
+        y: 1603
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2fbb7a79334d05e70800000000000000
+      internalID: 9102008164968545266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_65
+      rect:
+        serializedVersion: 2
+        x: 2477
+        y: 1603
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2eecd820416af2100800000000000000
+      internalID: 85469522815733474
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_66
+      rect:
+        serializedVersion: 2
+        x: 2618
+        y: 1603
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b7d1965031ab2db0800000000000000
+      internalID: -4815578147559712840
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_67
+      rect:
+        serializedVersion: 2
+        x: 2665
+        y: 1603
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6f135187aafb30a0800000000000000
+      internalID: -6900646406678962323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_68
+      rect:
+        serializedVersion: 2
+        x: 2712
+        y: 1603
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d15eb35e4b8090c0800000000000000
+      internalID: -4571000453252361770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_69
+      rect:
+        serializedVersion: 2
+        x: 2853
+        y: 1603
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99386f7a0fb974500800000000000000
+      internalID: 380444151448503193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_70
+      rect:
+        serializedVersion: 2
+        x: 2900
+        y: 1603
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 095adfab2b1a744d0800000000000000
+      internalID: -3150371625308936816
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_71
+      rect:
+        serializedVersion: 2
+        x: 2947
+        y: 1603
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 491a10c202d0a2530800000000000000
+      internalID: 3830888864860447124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_72
+      rect:
+        serializedVersion: 2
+        x: 3088
+        y: 1603
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 636334851e4c21d80800000000000000
+      internalID: -8281340292653435338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_73
+      rect:
+        serializedVersion: 2
+        x: 2113
+        y: 1579
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa9101126cb5ebe00800000000000000
+      internalID: 1062387468622371242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_74
+      rect:
+        serializedVersion: 2
+        x: 2289
+        y: 1531
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4f06e125e743f320800000000000000
+      internalID: 2590493260109975375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_75
+      rect:
+        serializedVersion: 2
+        x: 2528
+        y: 1531
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4c509f6b457a8e00800000000000000
+      internalID: 1047778830171790414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_76
+      rect:
+        serializedVersion: 2
+        x: 2571
+        y: 1531
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d765b0a7c2a319ab0800000000000000
+      internalID: -5003153748331374979
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_77
+      rect:
+        serializedVersion: 2
+        x: 2712
+        y: 1531
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23092957e994b8a50800000000000000
+      internalID: 6524389430102495282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_78
+      rect:
+        serializedVersion: 2
+        x: 2771
+        y: 1579
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 724cd626dc37a4ef0800000000000000
+      internalID: -123158713842416601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_79
+      rect:
+        serializedVersion: 2
+        x: 2054
+        y: 1531
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b97c1d9ed494446a0800000000000000
+      internalID: -6465962566013040741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_80
+      rect:
+        serializedVersion: 2
+        x: 2105
+        y: 1531
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 305f2f305f8a7f340800000000000000
+      internalID: 4897568890075411715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_81
+      rect:
+        serializedVersion: 2
+        x: 2148
+        y: 1531
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd666df926e9c5c40800000000000000
+      internalID: 5502446991165515483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_82
+      rect:
+        serializedVersion: 2
+        x: 2195
+        y: 1531
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2fbc7671a1c31e20800000000000000
+      internalID: 3320210249523969838
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_83
+      rect:
+        serializedVersion: 2
+        x: 2242
+        y: 1531
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bfb6db3d47f951c0800000000000000
+      internalID: -4514305240373739597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_84
+      rect:
+        serializedVersion: 2
+        x: 2383
+        y: 1531
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b23da828174437460800000000000000
+      internalID: 7238204280426648363
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_85
+      rect:
+        serializedVersion: 2
+        x: 2430
+        y: 1531
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bc0ed0d3595b6170800000000000000
+      internalID: 8172724165315267761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_86
+      rect:
+        serializedVersion: 2
+        x: 2618
+        y: 1531
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe5c8b94d59e377e0800000000000000
+      internalID: -1768813641748396561
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_87
+      rect:
+        serializedVersion: 2
+        x: 2763
+        y: 1531
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e020afcfbeea9070800000000000000
+      internalID: 8114060186250911968
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_88
+      rect:
+        serializedVersion: 2
+        x: 2806
+        y: 1523
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16b10ff9ef5eeca00800000000000000
+      internalID: 778812667349441377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_89
+      rect:
+        serializedVersion: 2
+        x: 2900
+        y: 1531
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ee2213b5adcc1280800000000000000
+      internalID: -9071149437873410327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_90
+      rect:
+        serializedVersion: 2
+        x: 2947
+        y: 1531
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a84065e46c09c1990800000000000000
+      internalID: -7413891705166494582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_91
+      rect:
+        serializedVersion: 2
+        x: 2994
+        y: 1531
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30f17d31bd0308270800000000000000
+      internalID: 8250648234831585027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_92
+      rect:
+        serializedVersion: 2
+        x: 3041
+        y: 1531
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c01fe4a82ee74fa0800000000000000
+      internalID: -5816418535392472894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_93
+      rect:
+        serializedVersion: 2
+        x: 3088
+        y: 1531
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 191d712d6b8eb6a00800000000000000
+      internalID: 750949634793787793
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_94
+      rect:
+        serializedVersion: 2
+        x: 3135
+        y: 1531
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6d23bf5d2176c780800000000000000
+      internalID: -8663112393507525267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_95
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 1447
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 515f978c50b575280800000000000000
+      internalID: -9054668445408692971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_96
+      rect:
+        serializedVersion: 2
+        x: 589
+        y: 1447
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 052ca927660beb3c0800000000000000
+      internalID: -4341839036682681776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_97
+      rect:
+        serializedVersion: 2
+        x: 789
+        y: 1495
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2a224add905fa250800000000000000
+      internalID: 5958069470936312367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_98
+      rect:
+        serializedVersion: 2
+        x: 354
+        y: 1471
+        width: 41
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25f44e5fb2a26ee20800000000000000
+      internalID: 3379434938685476690
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_99
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 1447
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6953324695cceff0800000000000000
+      internalID: -5412250387785364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_100
+      rect:
+        serializedVersion: 2
+        x: 542
+        y: 1447
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 678f95be3b72c77b0800000000000000
+      internalID: -5225257813955446666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_101
+      rect:
+        serializedVersion: 2
+        x: 636
+        y: 1447
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c65bb1d62d2b3c50800000000000000
+      internalID: 6645955319866021575
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_102
+      rect:
+        serializedVersion: 2
+        x: 730
+        y: 1447
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7eab6f0555d85e890800000000000000
+      internalID: -7429376612707681561
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_103
+      rect:
+        serializedVersion: 2
+        x: 781
+        y: 1447
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6583a2e680dee4b40800000000000000
+      internalID: 5426535221491808342
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_104
+      rect:
+        serializedVersion: 2
+        x: 824
+        y: 1447
+        width: 41
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c2122bcdc92f2370800000000000000
+      internalID: 8299898602120155842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_105
+      rect:
+        serializedVersion: 2
+        x: 871
+        y: 1447
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d18b097b2ddb71560800000000000000
+      internalID: 7284499635015563293
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_106
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 1375
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f752ae83ef30c2c0800000000000000
+      internalID: -4413457388239955982
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_107
+      rect:
+        serializedVersion: 2
+        x: 546
+        y: 1375
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14e2d1a790b76ad90800000000000000
+      internalID: -7086841682987241919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_108
+      rect:
+        serializedVersion: 2
+        x: 687
+        y: 1375
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 004772d182ff466e0800000000000000
+      internalID: -1845069399562161152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_109
+      rect:
+        serializedVersion: 2
+        x: 742
+        y: 1423
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b15ab7f3c2456930800000000000000
+      internalID: 4135785242251907509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_110
+      rect:
+        serializedVersion: 2
+        x: 781
+        y: 1375
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d06be24926d12e00800000000000000
+      internalID: 1018330463467167956
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_111
+      rect:
+        serializedVersion: 2
+        x: 828
+        y: 1375
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03d43a8c043e279d0800000000000000
+      internalID: -2777908152750617296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_112
+      rect:
+        serializedVersion: 2
+        x: 918
+        y: 1375
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6c53595058618710800000000000000
+      internalID: 1693749629173324909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_113
+      rect:
+        serializedVersion: 2
+        x: 354
+        y: 1399
+        width: 41
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae4c133c13c1411a0800000000000000
+      internalID: -6839810934015146774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_114
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 1375
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0281d0c2d285edb80800000000000000
+      internalID: -8368154106571974624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_115
+      rect:
+        serializedVersion: 2
+        x: 589
+        y: 1375
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60fb78c9367619bd0800000000000000
+      internalID: -2625203430254723322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_116
+      rect:
+        serializedVersion: 2
+        x: 734
+        y: 1375
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7526165ea521ff560800000000000000
+      internalID: 7349613298496660055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_117
+      rect:
+        serializedVersion: 2
+        x: 871
+        y: 1375
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf479473137b597b0800000000000000
+      internalID: -5218063171230010116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_118
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 1303
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0436d4d66ec7c0d0800000000000000
+      internalID: -3402524052402326518
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_119
+      rect:
+        serializedVersion: 2
+        x: 507
+        y: 1351
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a81220be7dff89d0800000000000000
+      internalID: -2769716525246834522
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_120
+      rect:
+        serializedVersion: 2
+        x: 546
+        y: 1303
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 337173ecbb52a8d60800000000000000
+      internalID: 7893162785469044531
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_121
+      rect:
+        serializedVersion: 2
+        x: 875
+        y: 1303
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2bc86fd0037096370800000000000000
+      internalID: 8316186089890417842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_122
+      rect:
+        serializedVersion: 2
+        x: 1016
+        y: 1303
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8243f8ccc69c04b0800000000000000
+      internalID: -5472833640873114996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_123
+      rect:
+        serializedVersion: 2
+        x: 1063
+        y: 1303
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 323ed0ab1811458b0800000000000000
+      internalID: -5164483623817190621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_124
+      rect:
+        serializedVersion: 2
+        x: 1153
+        y: 1303
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a43fd0f33f2f55600800000000000000
+      internalID: 456538063796826954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_125
+      rect:
+        serializedVersion: 2
+        x: 354
+        y: 1327
+        width: 41
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51d55ae0d5069e370800000000000000
+      internalID: 8352312936729238805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_126
+      rect:
+        serializedVersion: 2
+        x: 499
+        y: 1303
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58625a71fba6875e0800000000000000
+      internalID: -1911660672850778491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_127
+      rect:
+        serializedVersion: 2
+        x: 589
+        y: 1303
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 755fa583bb3ed91e0800000000000000
+      internalID: -2189343450588318377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_128
+      rect:
+        serializedVersion: 2
+        x: 636
+        y: 1303
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: faf3b2a2494ee0970800000000000000
+      internalID: 8723160853276999599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_129
+      rect:
+        serializedVersion: 2
+        x: 730
+        y: 1303
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61862f00b238b02e0800000000000000
+      internalID: -2158487375671302122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_130
+      rect:
+        serializedVersion: 2
+        x: 777
+        y: 1303
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca94757fe9eabc8d0800000000000000
+      internalID: -2824972343467095636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_131
+      rect:
+        serializedVersion: 2
+        x: 824
+        y: 1303
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 349984b899f2d9320800000000000000
+      internalID: 2566259699184343363
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_132
+      rect:
+        serializedVersion: 2
+        x: 918
+        y: 1303
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cec0e20eccafff470800000000000000
+      internalID: 8430732785302244588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_133
+      rect:
+        serializedVersion: 2
+        x: 965
+        y: 1303
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 194b066d23b577f80800000000000000
+      internalID: -8108912330154134383
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_134
+      rect:
+        serializedVersion: 2
+        x: 1106
+        y: 1303
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25da95d5649584d70800000000000000
+      internalID: 9027563611812900178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_135
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 1231
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff64ed0d01540c710800000000000000
+      internalID: 1711443796926809855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_136
+      rect:
+        serializedVersion: 2
+        x: 554
+        y: 1279
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f55fdb0c01e3ee20800000000000000
+      internalID: 3378791587313047032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_137
+      rect:
+        serializedVersion: 2
+        x: 875
+        y: 1231
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c88977e7d6df43a80800000000000000
+      internalID: -8487880750971512692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_138
+      rect:
+        serializedVersion: 2
+        x: 969
+        y: 1231
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac3ce03d9056ef0e0800000000000000
+      internalID: -2234237272259116086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_139
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 1279
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ca05185c8d5d2600800000000000000
+      internalID: 445114795534125764
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_140
+      rect:
+        serializedVersion: 2
+        x: 354
+        y: 1255
+        width: 41
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e85ad9f506992e9c0800000000000000
+      internalID: -3899385688149351026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_141
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 1231
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95eda41b19ad25e50800000000000000
+      internalID: 6796735106935086681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_142
+      rect:
+        serializedVersion: 2
+        x: 546
+        y: 1231
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad239840e115ddf30800000000000000
+      internalID: 4601923583609483994
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_143
+      rect:
+        serializedVersion: 2
+        x: 589
+        y: 1223
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64a7e2eef174601b0800000000000000
+      internalID: -5690782876670461370
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_144
+      rect:
+        serializedVersion: 2
+        x: 636
+        y: 1231
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95442cc2c2cf004d0800000000000000
+      internalID: -3170256871009139623
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_145
+      rect:
+        serializedVersion: 2
+        x: 683
+        y: 1231
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a18810a5b9eaf66e0800000000000000
+      internalID: -1842061740318029798
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_146
+      rect:
+        serializedVersion: 2
+        x: 777
+        y: 1231
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf8714a5a92f309b0800000000000000
+      internalID: -5114978007009625861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_147
+      rect:
+        serializedVersion: 2
+        x: 824
+        y: 1231
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 784f8b0a24ee0e450800000000000000
+      internalID: 6116150263900861575
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_148
+      rect:
+        serializedVersion: 2
+        x: 918
+        y: 1231
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b65febe39b236d20800000000000000
+      internalID: 3270505668719630004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_149
+      rect:
+        serializedVersion: 2
+        x: 1016
+        y: 1231
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a55dbdcc7f6dc4a50800000000000000
+      internalID: 6506811921425749338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_150
+      rect:
+        serializedVersion: 2
+        x: 1059
+        y: 1231
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1d0565a39236b3a0800000000000000
+      internalID: -6650072190049514210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_151
+      rect:
+        serializedVersion: 2
+        x: 1106
+        y: 1231
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9637c2d3dfab34330800000000000000
+      internalID: 3694001716189754217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_dominate_152
+      rect:
+        serializedVersion: 2
+        x: 1153
+        y: 1231
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67d7895ac279c51a0800000000000000
+      internalID: -6819409517733184138
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Tutorial_dominate_0: 4326746659352258347
+      Tutorial_dominate_1: -7996811570758444989
+      Tutorial_dominate_10: 6887110401506024759
+      Tutorial_dominate_100: -5225257813955446666
+      Tutorial_dominate_101: 6645955319866021575
+      Tutorial_dominate_102: -7429376612707681561
+      Tutorial_dominate_103: 5426535221491808342
+      Tutorial_dominate_104: 8299898602120155842
+      Tutorial_dominate_105: 7284499635015563293
+      Tutorial_dominate_106: -4413457388239955982
+      Tutorial_dominate_107: -7086841682987241919
+      Tutorial_dominate_108: -1845069399562161152
+      Tutorial_dominate_109: 4135785242251907509
+      Tutorial_dominate_11: -5921527546700972025
+      Tutorial_dominate_110: 1018330463467167956
+      Tutorial_dominate_111: -2777908152750617296
+      Tutorial_dominate_112: 1693749629173324909
+      Tutorial_dominate_113: -6839810934015146774
+      Tutorial_dominate_114: -8368154106571974624
+      Tutorial_dominate_115: -2625203430254723322
+      Tutorial_dominate_116: 7349613298496660055
+      Tutorial_dominate_117: -5218063171230010116
+      Tutorial_dominate_118: -3402524052402326518
+      Tutorial_dominate_119: -2769716525246834522
+      Tutorial_dominate_12: -844597432078149439
+      Tutorial_dominate_120: 7893162785469044531
+      Tutorial_dominate_121: 8316186089890417842
+      Tutorial_dominate_122: -5472833640873114996
+      Tutorial_dominate_123: -5164483623817190621
+      Tutorial_dominate_124: 456538063796826954
+      Tutorial_dominate_125: 8352312936729238805
+      Tutorial_dominate_126: -1911660672850778491
+      Tutorial_dominate_127: -2189343450588318377
+      Tutorial_dominate_128: 8723160853276999599
+      Tutorial_dominate_129: -2158487375671302122
+      Tutorial_dominate_13: -4586506474587729336
+      Tutorial_dominate_130: -2824972343467095636
+      Tutorial_dominate_131: 2566259699184343363
+      Tutorial_dominate_132: 8430732785302244588
+      Tutorial_dominate_133: -8108912330154134383
+      Tutorial_dominate_134: 9027563611812900178
+      Tutorial_dominate_135: 1711443796926809855
+      Tutorial_dominate_136: 3378791587313047032
+      Tutorial_dominate_137: -8487880750971512692
+      Tutorial_dominate_138: -2234237272259116086
+      Tutorial_dominate_139: 445114795534125764
+      Tutorial_dominate_14: 3264689581454155725
+      Tutorial_dominate_140: -3899385688149351026
+      Tutorial_dominate_141: 6796735106935086681
+      Tutorial_dominate_142: 4601923583609483994
+      Tutorial_dominate_143: -5690782876670461370
+      Tutorial_dominate_144: -3170256871009139623
+      Tutorial_dominate_145: -1842061740318029798
+      Tutorial_dominate_146: -5114978007009625861
+      Tutorial_dominate_147: 6116150263900861575
+      Tutorial_dominate_148: 3270505668719630004
+      Tutorial_dominate_149: 6506811921425749338
+      Tutorial_dominate_15: -9219158019580172272
+      Tutorial_dominate_150: -6650072190049514210
+      Tutorial_dominate_151: 3694001716189754217
+      Tutorial_dominate_152: -6819409517733184138
+      Tutorial_dominate_16: -7675851307256783691
+      Tutorial_dominate_17: 7651956392536989962
+      Tutorial_dominate_18: -7686455450340578714
+      Tutorial_dominate_19: 783837317982868337
+      Tutorial_dominate_2: -5204615950320610663
+      Tutorial_dominate_20: -3393599565226373835
+      Tutorial_dominate_21: -4693466356875670558
+      Tutorial_dominate_22: -1351276077059418720
+      Tutorial_dominate_23: 3139658755197654872
+      Tutorial_dominate_24: -1709545011229572433
+      Tutorial_dominate_25: -8743851934777903446
+      Tutorial_dominate_26: 6177563757470244507
+      Tutorial_dominate_27: 3429248446828927084
+      Tutorial_dominate_28: -422265845788392582
+      Tutorial_dominate_29: -5694506799888899495
+      Tutorial_dominate_3: 4742799072871073386
+      Tutorial_dominate_30: 186933891440979886
+      Tutorial_dominate_31: 7107279107742612627
+      Tutorial_dominate_32: 2663878548424473080
+      Tutorial_dominate_33: -2263817686026173432
+      Tutorial_dominate_34: 4446165303597804973
+      Tutorial_dominate_35: -7485687511630771535
+      Tutorial_dominate_36: 2457601012602387347
+      Tutorial_dominate_37: -2089878026153508541
+      Tutorial_dominate_38: -1115628922825962926
+      Tutorial_dominate_39: -239728769509888791
+      Tutorial_dominate_4: -5112249784747634476
+      Tutorial_dominate_40: 7457763557830544784
+      Tutorial_dominate_41: 8409854963269525111
+      Tutorial_dominate_42: 3349636877113193316
+      Tutorial_dominate_43: 1114898869130445046
+      Tutorial_dominate_44: 8606641580431165279
+      Tutorial_dominate_45: 5629801968697146127
+      Tutorial_dominate_46: -5106027574209460413
+      Tutorial_dominate_47: -4979994466109353492
+      Tutorial_dominate_48: 8479932868476183390
+      Tutorial_dominate_49: -980984828404348260
+      Tutorial_dominate_5: 8681093067125632532
+      Tutorial_dominate_50: 7746874698774970658
+      Tutorial_dominate_51: 216993265665324402
+      Tutorial_dominate_52: -3522223188286815578
+      Tutorial_dominate_53: -1704493757900985439
+      Tutorial_dominate_54: -8742579285197017017
+      Tutorial_dominate_55: 6919417497091188792
+      Tutorial_dominate_56: 2820724713534096481
+      Tutorial_dominate_57: -6071957942217025159
+      Tutorial_dominate_58: -1391852389326494495
+      Tutorial_dominate_59: 5676475197617885805
+      Tutorial_dominate_6: 2092056006633520016
+      Tutorial_dominate_60: 2623818342233846289
+      Tutorial_dominate_61: 2476567273950190488
+      Tutorial_dominate_62: 4019637804228995421
+      Tutorial_dominate_63: 4630929886248299821
+      Tutorial_dominate_64: 9102008164968545266
+      Tutorial_dominate_65: 85469522815733474
+      Tutorial_dominate_66: -4815578147559712840
+      Tutorial_dominate_67: -6900646406678962323
+      Tutorial_dominate_68: -4571000453252361770
+      Tutorial_dominate_69: 380444151448503193
+      Tutorial_dominate_7: -2237787954546369962
+      Tutorial_dominate_70: -3150371625308936816
+      Tutorial_dominate_71: 3830888864860447124
+      Tutorial_dominate_72: -8281340292653435338
+      Tutorial_dominate_73: 1062387468622371242
+      Tutorial_dominate_74: 2590493260109975375
+      Tutorial_dominate_75: 1047778830171790414
+      Tutorial_dominate_76: -5003153748331374979
+      Tutorial_dominate_77: 6524389430102495282
+      Tutorial_dominate_78: -123158713842416601
+      Tutorial_dominate_79: -6465962566013040741
+      Tutorial_dominate_8: 1366318834045134407
+      Tutorial_dominate_80: 4897568890075411715
+      Tutorial_dominate_81: 5502446991165515483
+      Tutorial_dominate_82: 3320210249523969838
+      Tutorial_dominate_83: -4514305240373739597
+      Tutorial_dominate_84: 7238204280426648363
+      Tutorial_dominate_85: 8172724165315267761
+      Tutorial_dominate_86: -1768813641748396561
+      Tutorial_dominate_87: 8114060186250911968
+      Tutorial_dominate_88: 778812667349441377
+      Tutorial_dominate_89: -9071149437873410327
+      Tutorial_dominate_9: -2206308073406537437
+      Tutorial_dominate_90: -7413891705166494582
+      Tutorial_dominate_91: 8250648234831585027
+      Tutorial_dominate_92: -5816418535392472894
+      Tutorial_dominate_93: 750949634793787793
+      Tutorial_dominate_94: -8663112393507525267
+      Tutorial_dominate_95: -9054668445408692971
+      Tutorial_dominate_96: -4341839036682681776
+      Tutorial_dominate_97: 5958069470936312367
+      Tutorial_dominate_98: 3379434938685476690
+      Tutorial_dominate_99: -5412250387785364
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

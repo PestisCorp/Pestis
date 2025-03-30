@@ -5,6 +5,7 @@ using System.Linq;
 using Fusion;
 using Horde;
 using JetBrains.Annotations;
+using Networking;
 using POI;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -30,9 +31,11 @@ namespace Players
         public GameObject hordePrefab;
 
 
-        [SerializeField] private float cheeseConsumptionRate = 0.001f; // k value
+        [SerializeField] public float cheeseConsumptionRate = 0.001f; // k value
 
         [DoNotSerialize] public double TotalDamageDealt;
+
+        public int aliveRats;
 
         [CanBeNull] private BotPlayer _botPlayer;
 
@@ -44,7 +47,7 @@ namespace Players
 
         [Networked] [Capacity(32)] public NetworkLinkedList<HordeController> Hordes { get; } = default;
 
-        [Networked] [Capacity(64)] public NetworkLinkedList<POIController> ControlledPOIs { get; } = default;
+        [Networked] [Capacity(64)] public NetworkLinkedList<PoiController> ControlledPOIs { get; } = default;
 
         [Networked] public string Username { get; private set; }
 
@@ -61,6 +64,11 @@ namespace Players
         public float CheesePerSecond => CheeseIncrementRate / Runner.DeltaTime;
 
         [Networked] public float FixedCheeseGain { get; private set; } = 0.03f;
+
+        private void FixedUpdate()
+        {
+            aliveRats = Hordes.Sum(horde => horde.AliveRats);
+        }
 
         private void OnDestroy()
         {
@@ -190,7 +198,7 @@ namespace Players
                     hordes = Hordes.Select(horde => new HordeUpdate
                     {
                         id = horde.Object.Id.Raw,
-                        rats = (ulong)horde.AliveRats
+                        rats = horde.AliveRats
                     }).ToArray(),
                     pois = ControlledPOIs.Select(poi => new POIUpdate
                     {
@@ -220,7 +228,7 @@ namespace Players
 
 
             // Consume cheese
-            var totalRatsCount = Hordes.Select(horde => horde.AliveRats).Sum();
+            var totalRatsCount = Hordes.Select(horde => (int)horde.AliveRats).Sum();
 
             // Cheese consumption formula
             var cheeseConsumed = cheeseConsumptionRate * totalRatsCount;
@@ -257,7 +265,7 @@ namespace Players
         {
             if (!HasStateAuthority) throw new Exception("Only State Authority can split a horde");
 
-            var newRats = (int)(toSplit.TotalHealth * splitPercentage / toSplit.GetPopulationState().HealthPerRat);
+            var newRats = (int)((uint)toSplit.AliveRats * splitPercentage);
 
             var totalHealth = toSplit.TotalHealth;
             var populationState = toSplit.GetPopulationState();
@@ -270,13 +278,13 @@ namespace Players
                         // Ensure new horde spawns in at current location
                         NO.transform.position = toSplit.GetBounds().center;
                         var horde = NO.GetComponent<HordeController>();
-                        horde.TotalHealth = totalHealth * splitPercentage;
                         horde.SetPopulationState(populationState);
                         horde.SetPopulationInit(newRats);
+                        horde.AliveRats = new IntPositive((uint)newRats);
                     })
                 .GetComponent<HordeController>();
             toSplit.SplitBoidsRpc(newHorde, newRats, toSplit.AliveRats);
-            toSplit.TotalHealth = totalHealth * (1.0f - splitPercentage);
+            toSplit.AliveRats = new IntPositive(Convert.ToUInt32((uint)toSplit.AliveRats * (1.0f - splitPercentage)));
             newHorde.SetEvolutionaryState(evolutionaryState.DeepCopy());
 
             // Move two hordes slightly apart

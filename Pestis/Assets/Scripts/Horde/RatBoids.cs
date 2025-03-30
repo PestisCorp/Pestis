@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Combat;
 using Horde;
-using MoreLinq.Extensions;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -70,12 +70,12 @@ public class RatBoids : MonoBehaviour
 
     public int numBoids;
 
-    public bool local;
-
     private float[] _boundsArr;
     private ComputeBuffer _boundsBuffer;
 
     private bool _started;
+
+    private float _timeSinceVelUpdate;
 
     private bool _waitingForBounds;
     private int blocks;
@@ -116,7 +116,7 @@ public class RatBoids : MonoBehaviour
     private Vector2[] triangleVerts;
     private float turnSpeed;
 
-    private int updateBoidsKernel, generateBoidsKernel, updateBoundsKernel;
+    private int updateBoidsKernel, generateBoidsKernel, updateBoundsKernel, updatePositionsKernel;
 
     private int updateGridKernel,
         clearGridKernel,
@@ -127,7 +127,9 @@ public class RatBoids : MonoBehaviour
 
     private float xBound, yBound;
 
-    public Bounds Bounds { private set; get; }
+    public bool Local => hordeController.HasStateAuthority;
+
+    public Bounds? Bounds { private set; get; }
 
     private float visualRangeSq => visualRange * visualRange;
     private float minDistanceSq => minDistance * minDistance;
@@ -153,7 +155,8 @@ public class RatBoids : MonoBehaviour
         gridShader = Instantiate(gridShader);
 
         // Get kernel IDs
-        updateBoidsKernel = boidShader.FindKernel("UpdateBoids");
+        updateBoidsKernel = boidShader.FindKernel("UpdateBoidsVelocity");
+        updatePositionsKernel = boidShader.FindKernel("UpdateBoidsPositions");
         updateBoundsKernel = boidShader.FindKernel("UpdateBounds");
         updateGridKernel = gridShader.FindKernel("UpdateGrid");
         clearGridKernel = gridShader.FindKernel("ClearGrid");
@@ -250,7 +253,7 @@ public class RatBoids : MonoBehaviour
         var horde = gameObject.GetComponentInParent<HordeController>();
         if (horde)
         {
-            boidShader.SetInt("player", unchecked((int)horde.Player.Id.Object.Raw));
+            boidShader.SetInt("player", unchecked((int)horde.player.Id.Object.Raw));
             boidShader.SetInt("horde", unchecked((int)horde.Id.Object.Raw));
         }
         else
@@ -270,6 +273,47 @@ public class RatBoids : MonoBehaviour
     {
         if (AliveRats == 0 || paused) return;
 
+        _timeSinceVelUpdate += Time.deltaTime;
+
+        boidShader.SetFloat("positionDeltaTime", Time.deltaTime);
+        if (hordeController.Id.Object.Raw % GameManager.Instance.recoverPerfLevel !=
+            GameManager.Instance.currentPerfBucket && numBoids != 0)
+        {
+            // Clear indices
+            gridShader.Dispatch(clearGridKernel, blocks, 1, 1);
+
+            // Populate grid
+            gridShader.Dispatch(updateGridKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
+
+            // Generate Offsets (Prefix Sum)
+            // Offsets in each block
+            gridShader.Dispatch(prefixSumKernel, blocks, 1, 1);
+
+            // Offsets for sums of blocks
+            var swapInner = false;
+            for (var d = 1; d < blocks; d *= 2)
+            {
+                gridShader.SetBuffer(sumBlocksKernel, "gridSumsBufferIn", swapInner ? gridSumsBuffer : gridSumsBuffer2);
+                gridShader.SetBuffer(sumBlocksKernel, "gridSumsBuffer", swapInner ? gridSumsBuffer2 : gridSumsBuffer);
+                gridShader.SetInt("d", d);
+                gridShader.Dispatch(sumBlocksKernel, Mathf.CeilToInt(blocks / blockSize), 1, 1);
+                swapInner = !swapInner;
+            }
+
+            // Apply offsets of sums to each block
+            gridShader.SetBuffer(addSumsKernel, "gridSumsBufferIn", swapInner ? gridSumsBuffer : gridSumsBuffer2);
+            gridShader.Dispatch(addSumsKernel, blocks, 1, 1);
+
+            // Rearrange boids
+            gridShader.Dispatch(rearrangeBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
+
+            boidShader.Dispatch(updatePositionsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
+            // Actually draw the boids
+            Graphics.RenderPrimitives(rp, MeshTopology.Quads, numBoids * 4);
+            Graphics.RenderPrimitives(rpDead, MeshTopology.Quads, deadBoidsCount * 4);
+            return;
+        }
+
         previousNumBoids = numBoids;
         var newNumBoids = AliveRats;
 
@@ -278,13 +322,13 @@ public class RatBoids : MonoBehaviour
             // Don't exceed dead boids buffer
             deadBoidsCount = Math.Min(deadBoidsCount + numBoids - newNumBoids, deadBoids.count);
 
-
         if (boidBuffer.count < newNumBoids) ResizeBuffers(newNumBoids * 2);
 
         // Increase separation force the bigger the horde is.
         boidShader.SetFloat("separationFactor", separationFactor);
 
-        boidShader.SetFloat("deltaTime", Time.deltaTime);
+        boidShader.SetFloat("velocityDeltaTime", _timeSinceVelUpdate);
+        _timeSinceVelUpdate = 0;
         // If I don't add something to it, the first time the shader accesses it in the shader it is NaN !?
         boidShader.SetFloats("targetPos", TargetPos.x, TargetPos.y);
         boidShader.SetFloat("targetPosX", TargetPos.x + 0.01f);
@@ -324,10 +368,10 @@ public class RatBoids : MonoBehaviour
         boidShader.SetInt("numBoidsPrevious", previousNumBoids);
 
         // 0,0 case is overriden in the shader to use an approximate center
-        if (Bounds.size.sqrMagnitude == 0 || float.IsNaN(Bounds.center.x) || float.IsNaN(Bounds.center.y))
+        if (!Bounds.HasValue)
             boidShader.SetFloats("spawnPoint", 0, 0);
         else
-            boidShader.SetFloats("spawnPoint", Bounds.center.x + 0.01f, Bounds.center.y + 0.01f);
+            boidShader.SetFloats("spawnPoint", Bounds.Value.center.x + 0.01f, Bounds.Value.center.y + 0.01f);
 
         // Compute boid behaviours
         boidShader.Dispatch(updateBoidsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
@@ -344,7 +388,8 @@ public class RatBoids : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!local) return;
+        if (!Local || hordeController.Id.Object.Raw % GameManager.Instance.recoverPerfLevel !=
+            GameManager.Instance.currentPerfBucket) return;
 
         if (numBoids == 0 || paused || !_started)
         {
@@ -357,9 +402,17 @@ public class RatBoids : MonoBehaviour
         }
 
         _boundsBuffer.GetData(_boundsArr, 0, 0, 4);
-        var extents = new Vector2(_boundsArr[2] - _boundsArr[0], _boundsArr[1] - _boundsArr[3]);
-        var center = new Vector2(extents.x / 2.0f + _boundsArr[0], extents.y / 2.0f + _boundsArr[3]);
-        Bounds = new Bounds(center, extents);
+
+        if (_boundsArr[0] == 1024.0f)
+        {
+            Bounds = null;
+            boidShader.Dispatch(updateBoundsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
+            return;
+        }
+
+        var size = new Vector2(_boundsArr[2] - _boundsArr[0], _boundsArr[1] - _boundsArr[3]);
+        var center = new Vector2(size.x / 2.0f + _boundsArr[0], size.y / 2.0f + _boundsArr[3]);
+        Bounds = new Bounds(center, size * 2);
         _boundsArr[0] = 1024.0f;
         _boundsArr[1] = -1024.0f;
         _boundsArr[2] = -1024.0f;
@@ -370,8 +423,11 @@ public class RatBoids : MonoBehaviour
 
     private void OnDestroy()
     {
+        _boundsBuffer.Release();
         boidBuffer.Release();
         boidBufferOut.Release();
+        deadBoids.Release();
+        deadBoidsCountBuffer.Release();
         gridBuffer.Release();
         gridOffsetBuffer.Release();
         gridOffsetBufferIn.Release();
@@ -384,6 +440,8 @@ public class RatBoids : MonoBehaviour
     {
         boidShader.SetBuffer(updateBoidsKernel, "boidsIn", boidBufferOut);
         boidShader.SetBuffer(updateBoidsKernel, "boidsOut", boidBuffer);
+        boidShader.SetBuffer(updatePositionsKernel, "boidsIn", boidBufferOut);
+        boidShader.SetBuffer(updatePositionsKernel, "boidsOut", boidBuffer);
         boidShader.SetBuffer(updateBoidsKernel, "deadBoids", deadBoids);
         rp.matProps.SetBuffer("boids", boidBuffer);
         rp.matProps.SetBuffer("_Positions", trianglePositions);
@@ -512,112 +570,13 @@ public class RatBoids : MonoBehaviour
 
 
     /// <summary>
-    ///     EXPENSIVE, should only be used by HordeController to update bounds each frame, otherwise you should get the bounds
-    ///     from the HordeController.
-    /// </summary>
-    /// <returns>Bounds encapsulating all rats in the horde</returns>
-    public Bounds GetBounds()
-    {
-        if (numBoids == 0) return new Bounds(TargetPos, Vector3.zero);
-
-        gridOffsetBuffer.GetData(offsetsTempArr, 0, 0, gridDimX * gridDimY);
-
-        var bottomLeft = Vector2.positiveInfinity;
-
-        // Find first non-empty row from bottom
-        for (var y = 0; y < gridDimY; y++)
-        {
-            var rowBoids = offsetsTempArr[(y + 1) * gridDimX - 1] - offsetsTempArr[y * gridDimX];
-            if (rowBoids == 0) continue;
-
-            // Setting boids (when we split a horde) messes up the offsets for one iteration
-            if (rowBoids > 4244857296) return new Bounds(TargetPos, Vector3.zero);
-
-            boidBufferOut.GetData(tempBoidsArr, 0, Convert.ToInt32(offsetsTempArr[y * gridDimX]),
-                Convert.ToInt32(rowBoids));
-
-            bottomLeft.y = tempBoidsArr.Slice(0, Convert.ToInt32(rowBoids)).Minima(boid => boid.pos.y).First().pos.y;
-            break;
-        }
-
-        // Find first non-empty column from left
-        for (var x = 0; x < gridDimX; x++)
-        {
-            var empty = true;
-
-            for (var y = 0; y < gridDimY; y++)
-            {
-                var cellBoids = offsetsTempArr[y * gridDimX + x] - (y == 0 ? 0 : offsetsTempArr[y * gridDimX + x - 1]);
-                if (cellBoids == 0) continue;
-
-                empty = false;
-
-                boidBufferOut.GetData(tempBoidsArr, 0,
-                    Convert.ToInt32(y == 0 ? 0 : offsetsTempArr[y * gridDimX + x - 1]),
-                    Convert.ToInt32(cellBoids));
-
-                bottomLeft.x = Mathf.Min(bottomLeft.x,
-                    tempBoidsArr.Slice(0, Convert.ToInt32(cellBoids)).Minima(boid => boid.pos.x).First().pos.x);
-            }
-
-            // Break once we've processed the first non-empty row
-            if (!empty) break;
-        }
-
-        var topRight = Vector2.negativeInfinity;
-
-        // Find first non-empty row from top
-        for (var y = gridDimY - 1; y >= 0; y--)
-        {
-            var rowBoids = offsetsTempArr[(y + 1) * gridDimX - 1] - offsetsTempArr[y * gridDimX];
-            if (rowBoids == 0) continue;
-
-            boidBufferOut.GetData(tempBoidsArr, 0, Convert.ToInt32(offsetsTempArr[y * gridDimX]),
-                Convert.ToInt32(rowBoids));
-
-            topRight.y = tempBoidsArr.Slice(0, Convert.ToInt32(rowBoids)).Maxima(boid => boid.pos.y).First().pos.y;
-            break;
-        }
-
-        // Find first non-empty column from right
-        for (var x = gridDimX - 1; x >= 0; x--)
-        {
-            var empty = true;
-
-            for (var y = 0; y < gridDimY; y++)
-            {
-                var cellBoids = offsetsTempArr[y * gridDimX + x] - (y == 0 ? 0 : offsetsTempArr[y * gridDimX + x - 1]);
-                if (cellBoids == 0) continue;
-
-                empty = false;
-
-                boidBufferOut.GetData(tempBoidsArr, 0,
-                    Convert.ToInt32(y == 0 ? 0 : offsetsTempArr[y * gridDimX + x - 1]),
-                    Convert.ToInt32(cellBoids));
-
-                topRight.x = Mathf.Max(topRight.x,
-                    tempBoidsArr.Slice(0, Convert.ToInt32(cellBoids)).Maxima(boid => boid.pos.x).First().pos.x);
-            }
-
-            // Break once we've processed the first non-empty row
-            if (!empty) break;
-        }
-
-        var center = bottomLeft + (topRight - bottomLeft) / 2.0f;
-        var size = topRight - bottomLeft;
-
-        Bounds = new Bounds(center, size);
-        return Bounds;
-    }
-
-    /// <summary>
     ///     Get my boids back from a combat controller.
     /// </summary>
     /// <param name="combat">Combat controller that is currently controlling my boids</param>
     /// <param name="myHorde">The horde that owns me</param>
     public void GetBoidsBack(CombatController combat, HordeController myHorde)
     {
-        combat.boids.RemoveBoids(boidBuffer, boidBufferOut, deadBoids, deadBoidsCountBuffer, ref deadBoidsCount,
+        combat.boids.RetrieveBoids(boidBuffer, boidBufferOut, deadBoids, deadBoidsCountBuffer, ref deadBoidsCount,
             myHorde);
         paused = false;
     }
@@ -642,7 +601,7 @@ public class RatBoids : MonoBehaviour
     ///     Set my internal boids to some specific boids, used for transferring boids from one to another when splitting horde.
     /// </summary>
     /// <param name="newBoids"></param>
-    private void SetBoids(Boid[] newBoids)
+    public void SetBoids(Boid[] newBoids)
     {
         if (newBoids.Length >= boidBuffer.count) ResizeBuffers(newBoids.Length * 2);
         boidBuffer.SetData(newBoids, 0, 0, newBoids.Length);
@@ -690,11 +649,5 @@ public class RatBoids : MonoBehaviour
 
         boidBuffer.SetData(tempBoidsArr, 0, 0, numBoids);
         boidBufferOut.SetData(tempBoidsArr, 0, 0, numBoids);
-
-        var panner = FindFirstObjectByType<Panner>();
-        panner.target.x = newHordeCenter.x;
-        panner.target.y = newHordeCenter.y;
-        panner.target.z = -1;
-        panner.shouldPan = true;
     }
 }

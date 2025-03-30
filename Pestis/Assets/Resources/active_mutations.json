@@ -58,7 +58,7 @@
 		"MutationTag": "psionic",
 		"MutationWeight": 10,
 		"Effects": ["unlock_haunt"],
-		"Tooltip": "When a rat you control dies, traumatise your enemies.",
+		"Tooltip": "Gain damage reduction when your rats die in combat.",
 		"MutationUse": "defensive",
 		"IsAbility": false
 	},
@@ -93,10 +93,10 @@
 		"MutationName": "Agriculturalist",
 		"MutationTag": "diplomacy",
 		"MutationWeight": 10,
-		"Effects": ["Farmer"],
-		"Tooltip": "Resource output on grass tiles increases by 20%.",
+		"Effects": ["unlock_farmer"],
+		"Tooltip": "Resource surplus massively increases birth rate.",
 		"MutationUse": "utility",
-		"IsAbility": true
+		"IsAbility": false
 	},
 	{
 		"MutationName": "Price of War",
@@ -115,5 +115,59 @@
 		"Tooltip": "Your ability cooldowns refresh on combat victory.",
 		"MutationUse": "offensive",
 		"IsAbility": false
+	},
+	{
+		"MutationName": "Anarcho-syndicalist",
+		"MutationTag": "diplomacy",
+		"MutationWeight": 10,
+		"Effects": ["unlock_syndicalism"],
+		"Tooltip": "Organise! Stats increased based on number of hordes controlled.",
+		"MutationUse": "utility",
+		"IsAbility": false
+	},
+	{
+		"MutationName": "MAD",
+		"MutationTag": "diplomacy",
+		"MutationWeight": 10,
+		"Effects": ["unlock_mad"],
+		"Tooltip": "Kill 80% of all nearby horde populations, including hordes you control. 10 second birth cooldown.",
+		"MutationUse": "offensive",
+		"IsAbility": true
+	},
+	{
+		"MutationName": "Eyeless",
+		"MutationTag": "mutant",
+		"MutationWeight": 10,
+		"Effects": ["unlock_eyeless"],
+		"Tooltip": "Your rats can miss attacks, but also have a chance to dodge them. Chance is doubled if you have Mentat.",
+		"MutationUse": "defensive",
+		"IsAbility": false
+	},
+	{
+		"MutationName": "Blood pocket",
+		"MutationTag": "mutant",
+		"MutationWeight": 10,
+		"Effects": ["unlock_blood_pocket"],
+		"Tooltip": "On damage taken, chance of blood explosion that hurts attacker.",
+		"MutationUse": "Offensive",
+		"IsAbility": false
+	},
+	{
+		"MutationName": "God's Mistake",
+		"MutationTag": "mutant",
+		"MutationWeight": 10,
+		"Effects": ["unlock_gods_mistake"],
+		"Tooltip": "On death, grant friendly hordes a mutation point.",
+		"MutationUse": "utility",
+		"IsAbility": false
+	},
+	{
+		"MutationName": "Corpsebloom",
+		"MutationTag": "mutant",
+		"MutationWeight": 10,
+		"Effects": ["unlock_corpsebloom"],
+		"Tooltip": "Sacrifice this horde. 50% birth rate boost to other owned hordes. Out of combat only.",
+		"MutationUse": "utility",
+		"IsAbility": true
 	}
 ]

@@ -9,8 +9,8 @@ namespace UI
     {
         private static readonly List<Objective> allObjectives = new()
         {
-            new Objective(ObjectiveTrigger.CombatStarted, "Fight a horde", 1),
             new Objective(ObjectiveTrigger.POICaptured, "Capture a POI", 1),
+            new Objective(ObjectiveTrigger.CombatStarted, "Fight a horde", 1),
             new Objective(ObjectiveTrigger.HordeSplit, "Split your horde", 1),
             new Objective(ObjectiveTrigger.BattleWon, "Win {0}/{1} battles", 10)
         };

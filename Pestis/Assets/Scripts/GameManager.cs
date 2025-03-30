@@ -13,6 +13,12 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+public enum SoundEffectType
+{
+    BattleStart,
+    BattleEnd
+}
+
 /// <summary>
 ///     Responsible for managing the game as a whole. Calls out to other managers to control their behaviour.
 /// </summary>
@@ -24,14 +30,27 @@ public class GameManager : MonoBehaviour
     public Tilemap terrainMap;
     public List<Player> Players;
     public UI_Manager UIManager;
+
+    [SerializeField] private AudioSource audioSource;
+
     /// <summary>
     ///     All POIs in the game, in no particular order
     /// </summary>
-    public POIController[] pois;
+    public PoiController[] pois;
 
     public TMP_Text fpsText;
     public TMP_Text boidText;
     public float currentFps;
+
+    /// <summary>
+    ///     Increase the worse performance is to decrease frequency of some updates. Must not be zero, lowest is 1.
+    /// </summary>
+    public int recoverPerfLevel = 1;
+
+    /// <summary>
+    ///     Which perf bucket should currently be running
+    /// </summary>
+    public int currentPerfBucket;
 
     public float poiGridCellSize = 5;
     public int poiGridDimX;
@@ -47,6 +66,8 @@ public class GameManager : MonoBehaviour
     public List<HordeController> AllHordes;
 
     private readonly float[] fpsWindow = new float[60];
+
+    private Dictionary<SoundEffectType, AudioClip> _soundEffects;
 
     public Human.BoidPoi[] BoidPois;
 
@@ -82,7 +103,13 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        pois = FindObjectsByType<POIController>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        _soundEffects = new Dictionary<SoundEffectType, AudioClip>
+        {
+            { SoundEffectType.BattleStart, Resources.Load<AudioClip>("SFX/Event_raidhorn4") },
+            { SoundEffectType.BattleEnd, Resources.Load<AudioClip>("SFX/Vote_started") }
+        };
+
+        pois = FindObjectsByType<PoiController>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
 
         terrainMap.CompressBounds();
         poiGridDimX =
@@ -90,12 +117,12 @@ public class GameManager : MonoBehaviour
         poiGridDimY =
             (int)Math.Ceiling(terrainMap.transform.localScale.y * terrainMap.localBounds.size.y / poiGridCellSize);
 
-        var poiGrid = new List<POIController>[poiGridDimY * poiGridDimX];
+        var poiGrid = new List<PoiController>[poiGridDimY * poiGridDimX];
         var grid = new List<BoidPoi>[poiGridDimX * poiGridDimY];
         for (var i = 0; i < poiGridDimX * poiGridDimY; i++)
         {
             grid[i] = new List<BoidPoi>();
-            poiGrid[i] = new List<POIController>();
+            poiGrid[i] = new List<PoiController>();
         }
 
         BoidPois = new Human.BoidPoi[pois.Length];
@@ -154,7 +181,8 @@ public class GameManager : MonoBehaviour
         poiOffsetBuffer.SetData(gridOffsets);
 
         Application.targetFrameRate = 60;
-        QualitySettings.vSyncCount = 0;
+        QualitySettings.vSyncCount = 1;
+        Debug.Log($"Async GPU support: {SystemInfo.supportsAsyncCompute}");
     }
 
     private void Update()
@@ -166,6 +194,13 @@ public class GameManager : MonoBehaviour
             fpsIndex++;
 
         currentFps = 60.0f / fpsWindow.Sum();
+
+        var instantaneousFPS = Mathf.FloorToInt(1.0f / Time.unscaledDeltaTime);
+        if (instantaneousFPS >= 30)
+            recoverPerfLevel = 1;
+        else
+            recoverPerfLevel = 30 - instantaneousFPS;
+
 #if UNITY_EDITOR
         fpsText.text = $"FPS: {currentFps}";
         boidText.text = $"Boids: {Players.Sum(player => player.Hordes.Sum(horde => horde.AliveRats))}";
@@ -174,7 +209,16 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        medianHordeHealth = AllHordes.Select(horde => horde.TotalHealth).Median();
         AllHordes = Players.SelectMany(player => player.Hordes).ToList();
+        medianHordeHealth = AllHordes.Select(horde => horde.TotalHealth).Median();
+
+        currentPerfBucket = Players.Count != 0 ? Players[0].Runner.Tick % recoverPerfLevel : 0;
+    }
+
+    public void PlaySfx(SoundEffectType type)
+    {
+        audioSource.Stop();
+        audioSource.clip = _soundEffects[type];
+        audioSource.Play();
     }
 }
