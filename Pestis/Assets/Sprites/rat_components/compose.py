@@ -94,7 +94,7 @@ def generate_combinations(baseList, featureDict, direction):
                     combined = base.copy()
                     for component in variant_combination:
                         combined.paste(component, (0,0), component)
-                    combined.save(f"out/{direction}/rat_{direction}_{j}", "png")
+                    combined.save(f"out/{direction}/rat_{direction}_{j}.png", "png")
                     j += 1
 
 # Now generate for every direction
