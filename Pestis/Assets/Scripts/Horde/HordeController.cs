@@ -288,7 +288,8 @@ Count: {AliveRats}
         {
             // If player's Network Object is null, it's been despawned too!
             if (player.Object) player.Hordes.Remove(this);
-            Debug.Log("HORDE: Destroyed self");
+            if (CurrentCombatController) CurrentCombatController.PlayerLeftRpc(player.usernameOffline);
+            Debug.Log($"HORDE: Destroyed self, hasState: {hasState}");
         }
 
 
@@ -314,7 +315,13 @@ Count: {AliveRats}
                 }
 
                 var enemyHordes =
-                    CurrentCombatController!.boids.containedHordes.Where(horde => horde.player != player).ToArray();
+                    CurrentCombatController!.boids.containedHordes.Select(id =>
+                    {
+                        if (!Runner.TryFindBehaviour<HordeController>(id, out var horde))
+                            throw new NullReferenceException("Couldn't find horde from combat");
+
+                        return horde;
+                    }).Where(horde => horde.player != player).ToArray();
 
                 foreach (var enemy in enemyHordes)
                 {
@@ -600,7 +607,7 @@ Count: {AliveRats}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void RetreatRpc()
         {
-            Debug.Log("Retreating!");
+            Debug.Log($"HORDE {Object.Id}: Told to retreat!");
 
             CurrentCombatController = null;
             _attackingPatrol = null;
@@ -902,9 +909,16 @@ Count: {AliveRats}
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void RetrieveBoidsFromCombatRpc(CombatController combat)
         {
-            Debug.Log($"HORDE of {player.Username}: Removing boids from combat");
+            Debug.Log($"HORDE of {player.Username}: Retrieving boids from combat");
             Boids.GetBoidsBack(combat, this);
             _combatText.SetActive(false);
+        }
+
+        public void CombatDespawned()
+        {
+            if (!HasStateAuthority) throw new Exception("Tried to call combat despawned but not state authority");
+
+            CurrentCombatController = null;
         }
 
         /// <summary>

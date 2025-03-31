@@ -71,7 +71,6 @@ namespace Combat
         [Capacity(5)]
         public NetworkArray<float> HordeStartingHealth => default;
 
-
         public CombatParticipant(HordeController hordeController)
         {
             Hordes.Add(hordeController.Id);
@@ -144,6 +143,47 @@ namespace Combat
             Gizmos.DrawWireCube(Bounds.center, Bounds.size);
         }
 #endif
+
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void PlayerLeftRpc(string username, RpcInfo rpcInfo = default)
+        {
+            Debug.Log($"COMBAT: Player left during combat: {username}");
+
+            if (Participators.All(kvp => kvp.Key.Username != username)) return;
+
+            var participant = Participators.First(kvp => kvp.Key.Username == username);
+            var hordes = participant.Value.Hordes.ToArray();
+            foreach (var hordeId in hordes)
+            {
+                if (!Runner.TryFindBehaviour<HordeController>(hordeId, out var horde))
+                    throw new NullReferenceException("Couldn't find horde controller to remove it");
+                RemoveHorde(horde, LeaveReason.LeftGame);
+            }
+        }
+
+        /// <summary>
+        ///     Remove local hordes from combat if the combat controller left game
+        /// </summary>
+        /// <param name="runner"></param>
+        /// <param name="hasState"></param>
+        /// <exception cref="NullReferenceException"></exception>
+        public override void Despawned(NetworkRunner runner, bool hasState)
+        {
+            Debug.Log("COMBAT: Despawned");
+            if (state == CombatState.Finished) return;
+
+            var localClients = Participators.Where(kvp => kvp.Key.HasStateAuthority);
+            foreach (var kvp in localClients)
+            foreach (var hordeId in kvp.Value.Hordes)
+            {
+                if (!Runner.TryFindBehaviour<HordeController>(hordeId, out var horde))
+                    throw new NullReferenceException("Failed to get local horde to nullify combat");
+
+                horde.RetrieveBoidsFromCombatRpc(this);
+                horde.CombatDespawned();
+                Debug.Log("COMBAT: Removed local horde from combat because the controller left");
+            }
+        }
 
         public void SetFightingOver(PoiController poi)
         {
@@ -273,8 +313,9 @@ namespace Combat
         }
 
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-        private void RemoveHordeBoidsRpc(HordeController horde)
+        private void RemoveHordeBoidsRpc(NetworkBehaviourId horde)
         {
+            Debug.Log("COMBAT: Removing boids");
             boids.RemoveBoids(horde);
         }
 
@@ -292,9 +333,6 @@ namespace Combat
                 Participators.Set(horde.player, copy);
             }
 
-            if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredEffects
-                .Contains("unlock_septic_bite")) horde.GetComponent<PopulationController>().SetSepticMultRpc(1.0f);
-
             Debug.Log($"COMBAT: Removing horde {horde.Id} for {reason}");
 
             switch (reason)
@@ -304,13 +342,18 @@ namespace Combat
                     horde.RetrieveBoidsFromCombatRpc(this);
                     horde.AddSpeechBubbleRpc(EmoteType.CombatLoss);
                     horde.RetreatRpc();
+
+
+                    if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredEffects
+                        .Contains("unlock_septic_bite"))
+                        horde.GetComponent<PopulationController>().SetSepticMultRpc(1.0f);
                     break;
                 case LeaveReason.Died:
                     horde.DestroyHordeRpc();
-                    RemoveHordeBoidsRpc(horde);
+                    RemoveHordeBoidsRpc(horde.Id);
                     break;
                 case LeaveReason.LeftGame:
-                    RemoveHordeBoidsRpc(horde);
+                    RemoveHordeBoidsRpc(horde.Id);
                     break;
 
                 case LeaveReason.WonCombat:
@@ -318,6 +361,10 @@ namespace Combat
                     horde.AddSpeechBubbleRpc(EmoteType.Victory);
                     if (horde.GetEvolutionState().AcquiredEffects.Contains("unlock_war_hawk"))
                         horde.GetComponent<AbilityController>().RefreshCooldownsRpc();
+
+                    if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredEffects
+                        .Contains("unlock_septic_bite"))
+                        horde.GetComponent<PopulationController>().SetSepticMultRpc(1.0f);
                     horde.EventWonCombatRpc(_allParticipants.ToArray());
                     break;
             }
@@ -337,6 +384,7 @@ namespace Combat
         public override void Spawned()
         {
             if (HasStateAuthority) boids.local = true;
+            boids.Runner = Runner;
             boids.Start();
             fxManager.enabled = true;
         }

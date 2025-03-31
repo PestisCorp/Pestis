@@ -20,8 +20,8 @@ namespace POI
         public PatrolController patrolController;
 
         public uint boidPoisIndex;
+        private Camera _camera;
         private float _cheesePerTick;
-        private Camera camera;
 
         private Sprite captureFlag;
         private GameObject flagObject;
@@ -103,6 +103,13 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             }
         }
 #endif
+
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void RemoveControllerRpc()
+        {
+            ControlledBy = null;
+            StationedHordes.Clear();
+        }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void ChangeControllerRpc(Player player)

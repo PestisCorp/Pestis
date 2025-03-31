@@ -37,6 +37,8 @@ namespace Players
 
         public int aliveRats;
 
+        public string usernameOffline;
+
         [CanBeNull] private BotPlayer _botPlayer;
 
         [CanBeNull] private HumanPlayer _humanPlayer;
@@ -74,6 +76,7 @@ namespace Players
         {
             Debug.Log($"Player {(hasState ? Username : "unknown")} left");
             GameManager.Instance.Players.Remove(this);
+            foreach (var poi in ControlledPOIs) poi.RemoveControllerRpc();
         }
 
         public int GetHordeCount()
@@ -107,6 +110,8 @@ namespace Players
 
                 Username = $"Bot {Object.Id.Raw}";
             }
+
+            usernameOffline = Username;
 
             StartCoroutine(JoinStats());
             CurrentCheese = 50.0f;

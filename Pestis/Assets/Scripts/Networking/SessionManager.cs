@@ -98,7 +98,7 @@ namespace Networking
             {
                 _room = new RoomResponse
                 {
-                    Name = "",
+                    Name = "Fallback Room",
                     Config = new RoomConfig
                     {
                         PlayersPerRoom = 50,
@@ -161,7 +161,20 @@ namespace Networking
                 botsNeedingStealing.RemoveAt(botsNeedingStealing.Count - 1);
             }
 
-            // TODO - remove assigned bots in excess of maxBotsPerPlayer
+            var botsOnThisClient =
+                Players.Count(slot => slot.InUse && slot.PlayerRef == Runner.LocalPlayer && slot.IsBot);
+
+            var numBotsToRemove = botsOnThisClient - _room.Config.MaxBotsPerClient;
+            if (numBotsToRemove <= 0) return;
+
+            var ourBots = Players.Select((slot, i) => new KeyValuePair<int, PlayerSlot>(i, slot)).Where(kvp =>
+                kvp.Value.InUse && kvp.Value.PlayerRef == Runner.LocalPlayer && kvp.Value.IsBot).ToArray();
+            for (; numBotsToRemove > 0; numBotsToRemove--)
+            {
+                MarkSlotUnusedRpc(ourBots[numBotsToRemove].Key);
+                if (Runner.TryFindObject(ourBots[numBotsToRemove].Value.PlayerId, out var botObj))
+                    botObj.GetComponent<Player>().DestroyBotRpc();
+            }
         }
 
         /// Convert polar coordinates into Cartesian coordinates.
@@ -234,19 +247,17 @@ namespace Networking
                 var end = presentNumbers[i + 1];
                 var gap = end - start;
 
-                if (gap > maxGap)
-                {
-                    maxGap = gap;
-                    bestIndex = start + gap / 2; // Midpoint of the gap
-                }
+                if (gap <= maxGap) continue;
+
+                maxGap = gap;
+                bestIndex = start + gap / 2; // Midpoint of the gap
             }
 
-            if (bestIndex == -1)
-            {
-                Debug.LogError(
-                    "Something went terribly wrong picking a spawn index for the new player. Failing over to spawning player in a random position.");
-                bestIndex = Random.Range(0, _room.Config.PlayersPerRoom);
-            }
+            if (bestIndex != -1) return bestIndex;
+
+            Debug.LogError(
+                "Something went terribly wrong picking a spawn index for the new player. Failing over to spawning player in a random position.");
+            bestIndex = Random.Range(0, _room.Config.PlayersPerRoom);
 
             return bestIndex;
         }
@@ -264,10 +275,19 @@ namespace Networking
             Players.Set(playerSpawnIndex, player);
         }
 
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         private void SetSlotOwnerRpc(int playerIndex, RpcInfo info = default)
         {
             var slot = Players[playerIndex];
             slot.PlayerRef = info.Source;
+            Players.Set(playerIndex, slot);
+        }
+
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        private void MarkSlotUnusedRpc(int playerIndex)
+        {
+            var slot = Players[playerIndex];
+            slot.InUse = false;
             Players.Set(playerIndex, slot);
         }
 
@@ -289,18 +309,20 @@ namespace Networking
 
         private void StealBots()
         {
-            var numBots = Players.Count(slot => slot.IsBot);
+            var numBots = Players.Count(slot => slot.IsBot && slot.InUse);
 
-            var clientRefs = Players.Select(slot => slot.PlayerRef).Distinct().Where(x => x != Runner.LocalPlayer)
-                .ToArray();
+            var botsByClient = Players.Select((slot, i) => new KeyValuePair<int, PlayerSlot>(i, slot)).Where(slot =>
+                    slot.Value.InUse && slot.Value.IsBot && slot.Value.PlayerRef != Runner.LocalPlayer)
+                .GroupBy(kvp => kvp.Value.PlayerRef).Select(group => group.ToList()).ToArray();
 
-            var botsPerClient = numBots / clientRefs.Length;
+            var botsPerClient = numBots / botsByClient.Length;
 
-            var botsStolen = 0;
-            for (var i = 0; botsStolen < botsPerClient; i = (i + 1) % clientRefs.Length)
+            // Bots this client already owns
+            var botsStolen = Players.Count(slot => slot.IsBot && slot.PlayerRef == Runner.LocalPlayer && slot.InUse);
+            for (var i = 0; botsStolen < botsPerClient; i = (i + 1) % botsByClient.Length)
             {
-                var index = Array.FindIndex(Players.ToArray(), slot => slot.PlayerRef == clientRefs[i] && slot.IsBot);
-                StealBot(index);
+                StealBot(botsByClient[i].Last().Key);
+                botsByClient[i].RemoveAt(botsByClient[i].Count - 1);
                 botsStolen++;
             }
         }
@@ -329,9 +351,7 @@ namespace Networking
                 var bot = botObj.GetComponent<Player>();
                 bot.DestroyBotRpc();
 
-                StealBots();
 
-                // TODO - Spawn new bots if required
                 var currentPlayers = Players.Count(slot => slot.InUse);
                 var neededPlayers = _room.Config.PlayersPerRoom - currentPlayers;
                 var botsToSpawn = Math.Min(neededPlayers, _room.Config.MaxBotsPerClient);
@@ -346,6 +366,8 @@ namespace Networking
                     AddPlayerRpc(i, newBot.Id, true);
                     botsToSpawn--;
                 }
+
+                StealBots();
 
                 return;
             }
