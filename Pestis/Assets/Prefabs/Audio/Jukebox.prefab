@@ -175,10 +175,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tracks:
-  - {fileID: 8300000, guid: dba0c72c80ecb4447a46f0fe9f892d6c, type: 3}
+  - {fileID: 8300000, guid: a8fc367a8a623af4bb3d517af48cc643, type: 3}
+  - {fileID: 8300000, guid: 813d38fa5375c34408b26076488a6d20, type: 3}
   - {fileID: 8300000, guid: 597dc9eaa035d8046bd11f3f5ec4878a, type: 3}
-  - {fileID: 8300000, guid: dba0c72c80ecb4447a46f0fe9f892d6c, type: 3}
-  - {fileID: 8300000, guid: dba0c72c80ecb4447a46f0fe9f892d6c, type: 3}
+  - {fileID: 8300000, guid: f699b01ea40899c488d74d712419fb02, type: 3}
   audioSource: {fileID: 7323416379080234585}
   tilemap: {fileID: 0}
   fadeDuration: 1
