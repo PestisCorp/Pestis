@@ -638,6 +638,7 @@ public class RatBoids : MonoBehaviour
         var downSprite = Resources.Load<Sprite>("Rats/Down/rat_Down_" + spriteID);
         
         boidMat = new Material(boidMat);
+        
         boidMat.SetTexture(RatUp, upSprite.texture);
         boidMat.SetTexture(RatUpLeft, upLeftSprite.texture);
         boidMat.SetTexture(RatLeft, leftSprite.texture);
@@ -646,6 +647,13 @@ public class RatBoids : MonoBehaviour
         boidMat.SetTexture(RatRight, rightSprite.texture);
         boidMat.SetTexture(RatUpRight, upRightSprite.texture);
         boidMat.SetTexture(RatDownRight, downRightSprite.texture);
+        boidMat.mainTextureScale = new Vector2(0.5f, 0.5f);
+    }
+
+    public Sprite GetSpriteFromMat()
+    {
+        var tex = boidMat.GetTexture(RatRight) as Texture2D;
+        return Sprite.Create(tex, new Rect(0, 0, tex!.width, tex.height), new Vector2(0.5f, 0.5f));
     }
 
     /// <summary>

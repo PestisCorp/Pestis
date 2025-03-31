@@ -2,11 +2,11 @@ using UnityEditor;
 using UnityEngine;
 using System.IO;
 
-namespace Tools
+namespace Editor
 {
     public class SpriteImporter : EditorWindow
     {
-        private string _spritePath = "Assets/Sprites/rat_components/out";
+        private string _spritePath = "Assets/Resources/Rats/";
 
         [MenuItem("Tools/Import Sprites")]
         public static void ShowWindow()
@@ -49,7 +49,10 @@ namespace Tools
                     wrapMode = TextureWrapMode.Clamp,
                     filterMode = FilterMode.Point,
                     spritePixelsPerUnit = 64,
-                    aniso = 1
+                    aniso = 1,
+                    alphaIsTransparency = true,
+                    sRGBTexture = true,
+                    mipmapEnabled = false
                 };
                 importer.SetTextureSettings(settings);
                 importer.spriteImportMode = SpriteImportMode.Multiple;
