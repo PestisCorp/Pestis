@@ -86,7 +86,7 @@ public class UI_Manager : MonoBehaviour
         if (tutorialButton) tutorialButton.SetActive(false);
         if (timer.parent) timer.parent.SetActive(false);
         if (hordesListPanel) hordesListPanel.SetActive(false);
-
+        if (timer.parent) timer.parent.SetActive(false);
         _notificationText = notification.GetComponentInChildren<TMP_Text>();
         _notificationBackground = notification.GetComponentInChildren<Image>();
     }
@@ -161,7 +161,7 @@ public class UI_Manager : MonoBehaviour
         if (mutationViewer) MutationViewerDisable();
 
         if (actionPanel) ActionPanelDisable();
-
+       
 
         // Ignoring the state of the tool bar, ensuring the default buttons are visible
         var toolbarButtons = GameObject.FindGameObjectsWithTag("UI_button_action");
