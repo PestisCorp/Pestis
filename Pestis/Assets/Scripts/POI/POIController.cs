@@ -37,7 +37,7 @@ namespace POI
 
         [Networked] [CanBeNull] public CombatController Combat { get; private set; }
         
-        [Networked] public float TimeWhenPoiAbandoned { get; private set; }
+        private float TimeWhenPoiAbandoned { get; set; }
 
         public void Awake()
         {
