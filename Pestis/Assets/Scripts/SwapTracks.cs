@@ -68,9 +68,9 @@ public class SwapTracks : MonoBehaviour
 
     private AudioClip GetClipForTile(System.Type tileType)
     {
-        if (tileType == typeof(GrassTile)) return tracks[2];
-        if (tileType == typeof(TundraTile)) return tracks[0];
-        if (tileType == typeof(DesertTile)) return tracks[1];
+        if (tileType == typeof(GrassTile)) return tracks[0];
+        if (tileType == typeof(TundraTile)) return tracks[1];
+        if (tileType == typeof(DesertTile)) return tracks[2];
         if (tileType == typeof(StoneTile)) return tracks[3];
 
         return null;
