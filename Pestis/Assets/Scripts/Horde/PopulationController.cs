@@ -234,21 +234,12 @@ namespace Horde
             var probabilities = (double[])_transitionMatrix[_hordeController.AliveRats - 1].Clone();
             var growthWeight = ResourceWeightGrowth();
             var declineWeight = ResourceWeightDecline();
-            if (_hordeController.player.CurrentCheese == 0)
+            for (var i = 0; i < MaxPopGrowth * 2 + 1; i++)
             {
-                for (var i = MaxPopGrowth; i < probabilities.Length; i++)
-                {
-                    probabilities[i] = 0;
-                }
+                if (MaxPopGrowth < i) probabilities[i] *= growthWeight;
+
+                if (MaxPopGrowth > i) probabilities[i] *= declineWeight;
             }
-            else 
-                for (var i = 0; i < MaxPopGrowth * 2 + 1; i++)
-                {
-                    if (MaxPopGrowth < i) probabilities[i] *= growthWeight;
-
-                    if (MaxPopGrowth > i) probabilities[i] *= declineWeight;
-                }
-
             var ratio = 1.0 / probabilities.Sum();
             probabilities = probabilities.Select(o => o * ratio).ToArray();
             // Use a CDF for doing a weighted sample of the transition states
@@ -265,11 +256,6 @@ namespace Horde
             var nextState = cdf.BinarySearch(r);
             if (nextState < 0) nextState = ~nextState;
             _hordeController.AliveRats = new IntPositive((uint)(nextState - MaxPopGrowth + _hordeController.AliveRats));
-            if (_hordeController.player.IsLocal)
-            {
-                //using StreamWriter sw = File.AppendText("Assets/Resources/out.csv");
-                //sw.WriteLine(_hordeController.AliveRats + "," + _hordeController.player.CurrentCheese);
-            }
         }
 
         // Only executed on State Authority
