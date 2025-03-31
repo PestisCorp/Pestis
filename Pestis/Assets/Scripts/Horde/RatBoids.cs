@@ -43,6 +43,15 @@ public class RatBoids : MonoBehaviour
     /// </summary>
     private static readonly int INITIAL_BOID_MEMORY_ALLOCATION = 2048;
 
+    private static readonly int RatLeft = Shader.PropertyToID("_RatLeft");
+    private static readonly int RatUp = Shader.PropertyToID("_RatUp");
+    private static readonly int RatUpLeft = Shader.PropertyToID("_RatUpLeft");
+    private static readonly int RatDownLeft = Shader.PropertyToID("_RatDownLeft");
+    private static readonly int RatDown = Shader.PropertyToID("_RatDown");
+    private static readonly int RatRight = Shader.PropertyToID("_RatRight");
+    private static readonly int RatUpRight = Shader.PropertyToID("_RatUpRight");
+    private static readonly int RatDownRight = Shader.PropertyToID("_RatDownRight");
+
     [Header("Settings")] [SerializeField] private float maxSpeed = 2;
 
     [SerializeField] private float edgeMargin = .5f;
@@ -597,7 +606,11 @@ public class RatBoids : MonoBehaviour
         combatBoids.AddBoids(boidBufferOut, numBoids, myHorde);
         combatBoids.TargetPos = TargetPos;
     }
-
+    /// <summary>
+    ///     Need to flip the up-left, left, and down-left sprites to their right equivalents.
+    /// </summary>
+    /// <param name="original">The sprite to be flipped</param>
+    /// <returns>The flipped original sprite</returns>
     private static Sprite FlipSprite(Sprite original)
     {
         var originalTex = original.texture;
@@ -609,6 +622,9 @@ public class RatBoids : MonoBehaviour
         return flippedSprite;
     }
     
+    /// <summary>
+    ///  Set a new material for these boids
+    /// </summary>
     public void SetBoidsMat()
     {
         var spriteID = Random.Range(0, 599);
@@ -622,14 +638,14 @@ public class RatBoids : MonoBehaviour
         var downSprite = Resources.Load<Sprite>("Rats/Down/rat_Down_" + spriteID);
         
         boidMat = new Material(boidMat);
-        boidMat.SetTexture("_RatUp", upSprite.texture);
-        boidMat.SetTexture("_RatUpLeft", upLeftSprite.texture);
-        boidMat.SetTexture("_RatLeft", leftSprite.texture);
-        boidMat.SetTexture("_RatDownLeft", downLeftSprite.texture);
-        boidMat.SetTexture("_RatDown", downSprite.texture);
-        boidMat.SetTexture("_RatRight", rightSprite.texture);
-        boidMat.SetTexture("_RatUpRight", upRightSprite.texture);
-        boidMat.SetTexture("_RatDownRight", downRightSprite.texture);
+        boidMat.SetTexture(RatUp, upSprite.texture);
+        boidMat.SetTexture(RatUpLeft, upLeftSprite.texture);
+        boidMat.SetTexture(RatLeft, leftSprite.texture);
+        boidMat.SetTexture(RatDownLeft, downLeftSprite.texture);
+        boidMat.SetTexture(RatDown, downSprite.texture);
+        boidMat.SetTexture(RatRight, rightSprite.texture);
+        boidMat.SetTexture(RatUpRight, upRightSprite.texture);
+        boidMat.SetTexture(RatDownRight, downRightSprite.texture);
     }
 
     /// <summary>
