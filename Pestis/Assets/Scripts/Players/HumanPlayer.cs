@@ -34,6 +34,7 @@ namespace Players
                 UI_manager.ResourceStatsEnable();
                 // Enable objective checklist upon loading in
                 UI_manager.ObjectiveChecklistEnable();
+                UI_manager.timer.parent.SetActive(true);
                 UI_manager.hordesListPanel.SetActive(true);
                 UI_manager.HordesListRefresh();
             }
