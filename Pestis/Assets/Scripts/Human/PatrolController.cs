@@ -26,7 +26,7 @@ namespace Human
         private HordeController enemyHorde;
 
         public int HumanCount => (int)(CurrentHumanHealth / healthPerHuman); // Networked human count
-
+        
         // We store total health as a Networked field so that all players see the same value
         [Networked]
         [OnChangedRender(nameof(AdjustHumanCount))]
@@ -53,7 +53,7 @@ namespace Human
         {
             CurrentHumanHealth = newCount * healthPerHuman; // Updates across all clients
         }
-
+        
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void DealDamageRpc(float damage)
         {

@@ -72,10 +72,11 @@ namespace POI
         public override void FixedUpdateNetwork()
         {
             // Respawn human patrol if POI has not been controlled for a while
-            if (ControlledBy && patrolController.HumanCount == 0 && StationedHordes.Count == 0 &&
-                Runner.RemoteRenderTime - TimeWhenPoiAbandoned > 15f)
+            if (patrolController.HumanCount == 0 && StationedHordes.Count == 0 &&
+                Runner.RemoteRenderTime - TimeWhenPoiAbandoned > 100f)
             {
-                patrolController.UpdateHumanCountRpc(1000);
+                patrolController.UpdateHumanCountRpc(patrolController.startingHumanCount);
+                ControlledBy = null;
             }
         }
 
@@ -140,6 +141,11 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             else if (ControlledBy)
             {
                 captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_enemy");
+                flag.sprite = captureFlag;
+            }
+            else
+            {
+                captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_uncaptured");
                 flag.sprite = captureFlag;
             }
         }
