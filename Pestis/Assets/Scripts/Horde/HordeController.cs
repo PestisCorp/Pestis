@@ -495,7 +495,6 @@ Count: {AliveRats}
             Boids = GetComponentInChildren<RatBoids>();
             player.Hordes.Add(this);
             _combatStrategy = "Frontal Assault";
-
             _selectionLightTerrain = transform.Find("SelectionLightTerrain").gameObject.GetComponent<Light2D>();
             _selectionLightPoi = transform.Find("SelectionLightPOI").gameObject.GetComponent<Light2D>();
             if (!player.IsLocal)
@@ -534,7 +533,7 @@ Count: {AliveRats}
                 var iconSprite = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_enemy");
                 icon.sprite = iconSprite;
             }
-
+            Boids.SetBoidsMat();
             if (CurrentCombatController)
             {
                 var boids = new Boid[AliveRats];

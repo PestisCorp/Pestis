@@ -6,6 +6,7 @@ using Horde;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Random = UnityEngine.Random;
 
 public struct Boid
 {
@@ -595,6 +596,40 @@ public class RatBoids : MonoBehaviour
         deadBoidsCountBuffer.SetData(count, 0, 0, 1);
         combatBoids.AddBoids(boidBufferOut, numBoids, myHorde);
         combatBoids.TargetPos = TargetPos;
+    }
+
+    private static Sprite FlipSprite(Sprite original)
+    {
+        var originalTex = original.texture;
+
+        
+        var flippedSprite = Sprite.Create(originalTex, original.rect, new Vector2(0.5f, 0.5f), original.pixelsPerUnit);
+        flippedSprite.texture.wrapMode = TextureWrapMode.Mirror;
+
+        return flippedSprite;
+    }
+    
+    public void SetBoidsMat()
+    {
+        var spriteID = Random.Range(0, 599);
+        var upSprite = Resources.Load<Sprite>("Rats/Top/rat_Top_" + spriteID);
+        var upLeftSprite = Resources.Load<Sprite>("Rats/UpLeft/rat_UpLeft_" + spriteID);
+        var upRightSprite = FlipSprite(upLeftSprite);
+        var leftSprite = Resources.Load<Sprite>("Rats/Left/rat_Left_" + spriteID);
+        var rightSprite = FlipSprite(leftSprite);
+        var downLeftSprite = Resources.Load<Sprite>("Rats/DownLeft/rat_DownLeft_" + spriteID);
+        var downRightSprite = FlipSprite(downLeftSprite);
+        var downSprite = Resources.Load<Sprite>("Rats/Down/rat_Down_" + spriteID);
+        
+        boidMat = new Material(boidMat);
+        boidMat.SetTexture("_RatUp", upSprite.texture);
+        boidMat.SetTexture("_RatUpLeft", upLeftSprite.texture);
+        boidMat.SetTexture("_RatLeft", leftSprite.texture);
+        boidMat.SetTexture("_RatDownLeft", downLeftSprite.texture);
+        boidMat.SetTexture("_RatDown", downSprite.texture);
+        boidMat.SetTexture("_RatRight", rightSprite.texture);
+        boidMat.SetTexture("_RatUpRight", upRightSprite.texture);
+        boidMat.SetTexture("_RatDownRight", downRightSprite.texture);
     }
 
     /// <summary>
