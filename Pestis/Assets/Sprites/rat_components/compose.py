@@ -104,7 +104,7 @@ def generate_combinations(baseList, featureDict, direction):
                     for component in variant_combination:
                         combined.paste(component, (0,0), component)
                     combined = combined.crop((32, 32, 96, 96))
-                    combined.save(f"out/{direction}/rat_{direction}_{j}.png", "png")
+                    combined.save(f"../../Resources/Poop/{direction}/rat_{direction}_{j}.png", "png")
                     j += 1
 
 # Now generate for every direction

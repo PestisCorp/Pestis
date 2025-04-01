@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 01e92f15c97da6ae9945ecca03cbdead
+guid: 2990bf2c4ccb81c4c9080d0dc4261aaa
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -103,8 +103,8 @@ TextureImporter:
       name: rat_UpLeft_516_0
       rect:
         serializedVersion: 2
-        x: 48
-        y: 45
+        x: 16
+        y: 13
         width: 39
         height: 35
       alignment: 0
