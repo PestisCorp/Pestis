@@ -537,6 +537,7 @@ Count: {AliveRats}
             if (CurrentCombatController)
             {
                 var boids = new Boid[AliveRats];
+                
                 for (var i = 0; i < AliveRats; i++)
                 {
                     boids[i].pos = new float2(HordeBounds.center.x, HordeBounds.center.y);

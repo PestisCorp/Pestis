@@ -52,7 +52,8 @@ namespace Editor
                     aniso = 1,
                     alphaIsTransparency = true,
                     sRGBTexture = true,
-                    mipmapEnabled = false
+                    mipmapEnabled = false,
+                    readable = true,
                 };
                 importer.SetTextureSettings(settings);
                 importer.spriteImportMode = SpriteImportMode.Multiple;

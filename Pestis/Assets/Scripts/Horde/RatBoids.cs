@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using Combat;
 using Horde;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Random = UnityEngine.Random;
@@ -647,15 +648,19 @@ public class RatBoids : MonoBehaviour
         boidMat.SetTexture(RatRight, rightSprite.texture);
         boidMat.SetTexture(RatUpRight, upRightSprite.texture);
         boidMat.SetTexture(RatDownRight, downRightSprite.texture);
-        boidMat.mainTextureScale = new Vector2(0.5f, 0.5f);
     }
 
+    public Material GetMaterial()
+    {
+        return boidMat;
+    }
+    
     public Sprite GetSpriteFromMat()
     {
         var tex = boidMat.GetTexture(RatRight) as Texture2D;
         return Sprite.Create(tex, new Rect(0, 0, tex!.width, tex.height), new Vector2(0.5f, 0.5f));
     }
-
+    
     /// <summary>
     ///     Set my internal boids to some specific boids, used for transferring boids from one to another when splitting horde.
     /// </summary>

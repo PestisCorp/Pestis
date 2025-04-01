@@ -35,6 +35,7 @@ namespace Combat
         [SerializeField] private Material boidMat;
         [SerializeField] private Material deadBoidMat;
 
+
         public Vector2 TargetPos;
 
         public bool paused;
@@ -482,6 +483,9 @@ namespace Combat
         }
 
 
+
+
+
         /// <summary>
         ///     Add new boids to myself (I am a combat boids controller)
         /// </summary>
@@ -511,7 +515,65 @@ namespace Combat
             _previousNumBoids.Add(boidsHorde, newBoidsCount);
             numBoids.Add(boidsHorde, newBoidsCount);
             containedHordes.Add(boidsHorde);
-
+            
+            var upTextureArray = new Texture2DArray(64, 64, containedHordes.Count, TextureFormat.ARGB32, false);
+            var upRightTextureArray = new Texture2DArray(64, 64, containedHordes.Count, TextureFormat.ARGB32, false);
+            var upLeftTextureArray = new Texture2DArray(64, 64, containedHordes.Count, TextureFormat.ARGB32, false);
+            var leftTextureArray = new Texture2DArray(64, 64, containedHordes.Count, TextureFormat.ARGB32, false);
+            var rightTextureArray = new Texture2DArray(64, 64, containedHordes.Count, TextureFormat.ARGB32, false);
+            var downLeftTextureArray = new Texture2DArray(64, 64, containedHordes.Count, TextureFormat.ARGB32, false);
+            var downRightTextureArray = new Texture2DArray(64, 64, containedHordes.Count, TextureFormat.ARGB32, false);
+            var downTextureArray = new Texture2DArray(64, 64, containedHordes.Count, TextureFormat.ARGB32, false);
+            var material = boidsHorde.Boids.GetMaterial();
+            for (int i = 0; i < containedHordes.Count; i++)
+            {
+                var upTex = material.GetTexture("_RatUp") as Texture2D;
+                var upTexColours = upTex.GetPixels();
+                upTextureArray.SetPixels(upTexColours, i);
+                
+                var upRightTex = material.GetTexture("_RatUpRight") as Texture2D;
+                var upRightTexColours = upRightTex.GetPixels();
+                upRightTextureArray.SetPixels(upRightTexColours, i);
+                
+                var upLeftTex = material.GetTexture("_RatUpLeft") as Texture2D;
+                var upLeftTexColours = upLeftTex.GetPixels();
+                upLeftTextureArray.SetPixels(upLeftTexColours, i);
+                
+                var leftTex = material.GetTexture("_RatLeft") as Texture2D;
+                var leftTexColours = leftTex.GetPixels();
+                leftTextureArray.SetPixels(leftTexColours, i);
+                
+                var downTex = material.GetTexture("_RatDown") as Texture2D;
+                var downTexColours = downTex.GetPixels();
+                downTextureArray.SetPixels(downTexColours, i);
+                
+                var downRightTex = material.GetTexture("_RatDownRight") as Texture2D;
+                var downRightTexColours = downRightTex.GetPixels();
+                downRightTextureArray.SetPixels(downRightTexColours, i);
+                
+                var downLeftTex = material.GetTexture("_RatDownLeft") as Texture2D;
+                var downLeftTexColours = downLeftTex.GetPixels();
+                downLeftTextureArray.SetPixels(downLeftTexColours, i);
+            }
+            
+            upTextureArray.Apply();
+            upRightTextureArray.Apply();
+            upLeftTextureArray.Apply();
+            leftTextureArray.Apply();
+            rightTextureArray.Apply();
+            downLeftTextureArray.Apply();
+            downRightTextureArray.Apply();
+            downTextureArray.Apply();
+            
+            boidMat.SetTexture("_RatUpArr", upTextureArray);
+            boidMat.SetTexture("_RatUpRightArr", upRightTextureArray);
+            boidMat.SetTexture("_RatUpLeftArr", upLeftTextureArray);
+            boidMat.SetTexture("_RatLeftArr", leftTextureArray);
+            boidMat.SetTexture("_RatRightArr", rightTextureArray);
+            boidMat.SetTexture("_RatDownLeftArr", downLeftTextureArray);
+            boidMat.SetTexture("_RatDownRightArr", downRightTextureArray);
+            boidMat.SetTexture("_RatDownArr", downTextureArray);
+            
             boidShader.SetInt("numBoids", numBoids.Values.Sum());
             _justAddedBoids = true;
         }
