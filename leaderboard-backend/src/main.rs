@@ -51,12 +51,13 @@ struct Room {
     players: Vec<Player>,
     /// The config that the room was created with
     config: Config,
+    active: bool,
 }
 
 #[derive(Serialize)]
 struct RoomResponse {
     name: String,
-    config: Config
+    config: Config,
 }
 
 #[derive(Serialize, Debug)]
@@ -71,11 +72,24 @@ struct Info {
     state: State,
 }
 
+#[derive(Serialize, Clone)]
+enum CommandType {
+    Restart,
+}
+
+#[derive(Serialize, Clone)]
+struct Command {
+    command_type: CommandType,
+    room: String,
+    nonce: usize,
+}
+
 #[derive(Clone)]
 struct LeaderboardManager {
     players: Arc<RwLock<HashMap<String, Player>>>,
     history: Arc<RwLock<HashMap<String, Vec<Update>>>>,
     info: Arc<RwLock<Info>>,
+    commands: Arc<RwLock<Vec<Command>>>,
 }
 
 impl LeaderboardManager {
@@ -100,6 +114,7 @@ impl LeaderboardManager {
                 },
                 state: State { rooms: vec![] },
             })),
+            commands: Arc::new(RwLock::new(Vec::new())),
         }
     }
 
@@ -208,11 +223,11 @@ impl LeaderboardManager {
         let mut info = self.info.write().await;
 
         for room in &info.state.rooms {
-            if room.players.len() < info.config.players_per_room {
+            if room.players.len() < info.config.players_per_room && room.active {
                 return RoomResponse {
                     name: room.name.clone(),
-                    config: room.config.clone()
-                }
+                    config: room.config.clone(),
+                };
             }
         }
 
@@ -223,6 +238,7 @@ impl LeaderboardManager {
             name: room_name.clone(),
             players: vec![],
             config: config.clone(),
+            active: true,
         };
         info.state.rooms.push(room);
 
@@ -245,6 +261,46 @@ impl LeaderboardManager {
         for room in &mut info.state.rooms {
             room.players.retain(|player| player.username != username);
         }
+    }
+
+    async fn restart_room(&self, room_name: String) -> bool {
+        let mut commands = self.commands.write().await;
+        let nonce = commands.len();
+        commands.push(Command {
+            command_type: CommandType::Restart,
+            room: room_name.clone(),
+            nonce,
+        });
+
+        drop(commands);
+
+        // Deactivate the room
+        let mut info = self.info.write().await;
+        for room in &mut info.state.rooms {
+            if room.name == room_name {
+                room.active = false;
+                return true;
+            }
+        }
+
+        false
+    }
+
+    async fn get_commands_for_room(&self, room: String, last_received_nonce: i64) -> Vec<Command> {
+        let commands = self.commands.read().await;
+        commands
+            .iter()
+            .filter(|command| {
+                (command.room == room)
+                    & (last_received_nonce == -1 || command.nonce > last_received_nonce as usize)
+            })
+            .map(|command| command.clone())
+            .collect()
+    }
+
+    async fn get_rooms(&self) -> Vec<Room> {
+        let info = self.info.read().await;
+        info.state.rooms.clone()
     }
 }
 
@@ -293,6 +349,46 @@ async fn get_or_create_room(
     let room = manager.get_or_create_room().await;
 
     Ok(warp::reply::json(&room))
+}
+
+/// Restart a room: POST /api/restart {room: String}
+async fn restart_room(
+    room: String,
+    manager: LeaderboardManager,
+) -> Result<impl warp::Reply, warp::Rejection> {
+    let res = manager.restart_room(room).await;
+    Ok(warp::reply::with_status(
+        res.to_string(),
+        warp::http::StatusCode::OK,
+    ))
+}
+
+/// Get commands for a room: GET /api/commands {room: String, last_received_nonce: usize}
+/// Returns a list of commands that have been issued since the last received nonce
+async fn get_commands_for_room(
+    room: String,
+    last_received_nonce: i64,
+    manager: LeaderboardManager,
+) -> Result<impl warp::Reply, warp::Rejection> {
+    let commands = manager
+        .get_commands_for_room(room, last_received_nonce)
+        .await;
+    Ok(warp::reply::json(&commands))
+}
+
+/// List all rooms: GET /api/rooms
+async fn get_rooms(manager: LeaderboardManager) -> Result<impl warp::Reply, warp::Rejection> {
+    let rooms = manager.get_rooms().await;
+    Ok(warp::reply::json(&rooms))
+}
+
+/// Notify that the client has left the game: POST /api/leave {username: String}
+async fn leave(
+    username: String,
+    manager: LeaderboardManager,
+) -> Result<impl warp::Reply, warp::Rejection> {
+    manager.player_leave(&username).await;
+    Ok(warp::reply::with_status("ok", warp::http::StatusCode::OK))
 }
 
 async fn update_player(
@@ -393,6 +489,53 @@ async fn main() {
             async move { get_or_create_room(manager).await }
         });
 
+    let manager_clone = manager.clone();
+    let restart = warp::post()
+        .and(warp::path("api"))
+        .and(warp::path("restart"))
+        .and(warp::body::json())
+        .and_then(move |body: serde_json::Value| {
+            let room = body["room"].as_str().unwrap().to_string();
+            let manager = manager_clone.clone();
+            async move { restart_room(room, manager).await }
+        });
+
+    let manager_clone = manager.clone();
+    let get_commands =
+        warp::get()
+            .and(warp::path("api"))
+            .and(warp::path("commands"))
+            .and(warp::body::json())
+            .and_then(move |body: serde_json::Value| {
+                let room = body.get("room").unwrap().as_str().unwrap().to_string();
+                let last_received_nonce =
+                    body.get("last_received_nonce").unwrap().as_i64().unwrap();
+                let manager = manager_clone.clone();
+                async move {
+                    get_commands_for_room(room, last_received_nonce, manager).await
+                }
+            });
+
+    let manager_clone = manager.clone();
+    let leave = warp::post()
+        .and(warp::path("api"))
+        .and(warp::path("leave"))
+        .and(warp::body::json())
+        .and_then(move |body: serde_json::Value| {
+            let username = body["username"].as_str().unwrap().to_string();
+            let manager = manager_clone.clone();
+            async move { leave(username, manager).await }
+        });
+
+    let manager_clone = manager.clone();
+    let rooms = warp::get()
+        .and(warp::path("api"))
+        .and(warp::path("rooms"))
+        .and_then(move || {
+            let manager = manager_clone.clone();
+            async move { get_rooms(manager).await }
+        });
+
     let handler = join
         .or(leaderboard)
         .or(alltime_leaderboard)
@@ -400,6 +543,10 @@ async fn main() {
         .or(median_fps)
         .or(info_handler)
         .or(room_handler)
+        .or(restart)
+        .or(get_commands)
+        .or(leave)
+        .or(rooms)
         .with(warp::log("pestis::api"))
         .with(
             warp::cors()

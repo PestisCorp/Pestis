@@ -1,9 +1,12 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Fusion;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Players;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -74,6 +77,8 @@ namespace Networking
         [Capacity(100)]
         private NetworkArray<PlayerSlot> Players => default;
 
+        [SerializeField] private TMP_Text roomNameText;
+
 #if UNITY_EDITOR
         private const string APIEndpoint = "http://localhost:8081/api";
 #else
@@ -107,6 +112,8 @@ namespace Networking
                 };
                 UnityEngine.Debug.LogWarning($"Failed to get room config: {e}");
             }
+
+            roomNameText.text = _room.Name;
         }
 
         public void JoinGame(NetworkRunner runner)
@@ -331,6 +338,8 @@ namespace Networking
         {
             Instance = this;
 
+            StartCoroutine(WatchForCommands());
+
             var spawnPositions = CalcSpawnPositions();
 
             var spawnIndex = FindNewIndex();
@@ -388,6 +397,73 @@ namespace Networking
                 };
                 Players.Set(i, slot);
             }
+        }
+
+        private int _lastReceivedCommandNonce = -1;
+
+        private struct GetCommandsRequest
+        {
+            [JsonProperty("room")] internal string Room;
+            [JsonProperty("last_received_nonce")] internal int LastReceivedNonce;
+        }
+
+        private enum CommandType
+        {
+            Restart
+        }
+
+        private struct Command
+        {
+            [JsonConverter(typeof(StringEnumConverter))] [JsonProperty("command_type")]
+            internal CommandType CommandType;
+
+            [JsonProperty("nonce")] internal int Nonce;
+        }
+
+        private IEnumerator WatchForCommands()
+        {
+            while (true)
+            {
+                var body = new GetCommandsRequest
+                {
+                    Room = _room.Name,
+                    LastReceivedNonce = _lastReceivedCommandNonce
+                };
+
+                var uwr = UnityWebRequest.Put($"{APIEndpoint}/commands", JsonConvert.SerializeObject(body));
+                uwr.method = "GET";
+                uwr.SetRequestHeader("Content-Type", "application/json");
+                yield return uwr.SendWebRequest();
+
+                var alreadyRestarted = false;
+
+                var commands = JsonConvert.DeserializeObject<List<Command>>(uwr.downloadHandler.text);
+                foreach (var command in commands)
+                {
+                    Debug.Log(
+                        $"SESSION MANAGER: Received new command {command.CommandType} with nonce {command.Nonce}");
+                    _lastReceivedCommandNonce = command.Nonce;
+                    switch (command.CommandType)
+                    {
+                        case CommandType.Restart when !alreadyRestarted:
+                            alreadyRestarted = true;
+                            // TODO
+                            break;
+
+                        case CommandType.Restart:
+                            Debug.Log("Received command to restart, but already restarting");
+                            break;
+
+                        default:
+                            Debug.Log($"Received unknown command: {command.CommandType}");
+                            break;
+                    }
+                }
+
+                // Wait 30 seconds before checking for new commands
+                yield return new WaitForSecondsRealtime(30);
+            }
+            // ReSharper disable once IteratorNeverReturns
         }
     }
 }
