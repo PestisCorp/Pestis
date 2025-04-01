@@ -48,17 +48,18 @@ public class InputHandler : MonoBehaviour
         // Map should not zoom if we are hovering over a UI element since we are using scroll boxes
         if (scroll.y != 0 && !EventSystem.current.IsPointerOverGameObject())
         {
-            Vector2 oldTarget = _mainCamera.ScreenToWorldPoint(mouse.position.ReadValue());
-            // _mainCamera.orthographicSize = Mathf.Clamp(_mainCamera.orthographicSize - scroll.y, 1, 50);
             if (scroll.y < 0)
                 _pixelPerfectCamera.assetsPPU /= 2;
             else
                 _pixelPerfectCamera.assetsPPU *= 2;
             _pixelPerfectCamera.assetsPPU = math.clamp(_pixelPerfectCamera.assetsPPU, 16, 128);
-
-            Vector2 newTarget = _mainCamera.ScreenToWorldPoint(mouse.position.ReadValue());
-
-            _mainCamera.transform.Translate(oldTarget - newTarget);
+            
+            if (_pixelPerfectCamera.assetsPPU > 16 && _pixelPerfectCamera.assetsPPU < 128)
+            {
+                Vector3 mousePositionInWorld = _mainCamera.ScreenToWorldPoint(mouse.position.ReadValue());
+                mousePositionInWorld.z = -1;
+                _mainCamera.transform.position = Vector3.MoveTowards(_mainCamera.transform.position, mousePositionInWorld, 100f);
+            }
         }
 
         if (mouse.middleButton.isPressed)
