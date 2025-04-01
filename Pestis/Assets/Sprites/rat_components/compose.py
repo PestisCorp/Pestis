@@ -1,3 +1,4 @@
+#!/bin/python3
 from PIL import Image
 from itertools import combinations, product
 import os
@@ -21,8 +22,12 @@ features = ["Bandage", "Components", "hats", "Pickles"]
 for feature in features:
     featureDir = os.fsencode(feature)
     for featureTypeDir in os.listdir(featureDir):
+        if b".meta" in featureTypeDir:
+            continue
         subtypeName = feature + "/" + os.fsdecode(featureTypeDir)
         for subtype in os.listdir(os.fsencode(subtypeName)):
+            if b".meta" in subtype:
+                continue
             featureName = os.fsdecode(subtype)
             path = subtypeName + "/" + featureName
             if "top" in featureName.lower():
@@ -62,8 +67,12 @@ for feature in features:
 
 # Load all the base rats and put into direction lists
 for baseTypeDir in os.listdir(baseDir):
+    if b".meta" in baseTypeDir:
+        continue
     typeName = "Base" + "/" + os.fsdecode(baseTypeDir)
     for base in os.listdir(os.fsencode(typeName)):
+        if b".meta" in base:
+            continue
         baseName = os.fsdecode(base)
         path = typeName + "/" + baseName
         if "top" in baseName.lower():
@@ -94,6 +103,7 @@ def generate_combinations(baseList, featureDict, direction):
                     combined = base.copy()
                     for component in variant_combination:
                         combined.paste(component, (0,0), component)
+                    combined = combined.crop((32, 32, 96, 96))
                     combined.save(f"out/{direction}/rat_{direction}_{j}.png", "png")
                     j += 1
 

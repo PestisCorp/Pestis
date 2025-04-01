@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Pickle Left_0: -9206415036194602977
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
