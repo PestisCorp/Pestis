@@ -615,10 +615,24 @@ public class RatBoids : MonoBehaviour
     private static Sprite FlipSprite(Sprite original)
     {
         var originalTex = original.texture;
-
+        var flippedTex = new Texture2D(originalTex.width, originalTex.height);
         
-        var flippedSprite = Sprite.Create(originalTex, original.rect, new Vector2(0.5f, 0.5f), original.pixelsPerUnit);
-        flippedSprite.texture.wrapMode = TextureWrapMode.Mirror;
+        for (var y = 0; y < originalTex.height; y++)
+        {
+            for (var x = 0; x < originalTex.width; x++)
+            {
+                flippedTex.SetPixel(originalTex.width - x - 1, y, originalTex.GetPixel(x, y));
+            }
+        }
+
+        flippedTex.Apply(); 
+        
+        var flippedSprite = Sprite.Create(
+            flippedTex, 
+            original.rect, 
+            new Vector2(0.5f, 0.5f), 
+            original.pixelsPerUnit
+        );
 
         return flippedSprite;
     }

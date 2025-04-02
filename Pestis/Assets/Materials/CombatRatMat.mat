@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: CombatRatMat
-  m_Shader: {fileID: 4800000, guid: 83f8d438c858433b908d410feacac1be, type: 3}
+  m_Shader: {fileID: 4800000, guid: dee002619ee4459baf8a570ee5cd2f68, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -16,7 +16,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3002
+  m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -43,32 +43,64 @@ Material:
         m_Texture: {fileID: 2800000, guid: 53915f2755433bfea97543fe46b4947f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _RatDownArr:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _RatDownLeft:
         m_Texture: {fileID: 2800000, guid: 908dfad257058cb51945d061fdf22aba, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RatDownLeftArr:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RatDownRight:
         m_Texture: {fileID: 2800000, guid: 235ce98fca96cc1e8940d1d93fc1b772, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _RatDownRightArr:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _RatLeft:
         m_Texture: {fileID: 2800000, guid: b7af2c926e771cba2899b8ed4aa98e12, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RatLeftArr:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RatRight:
         m_Texture: {fileID: 2800000, guid: 0cda7cf1997991fb1ba48dd345ac0885, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _RatRightArr:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _RatUp:
         m_Texture: {fileID: 2800000, guid: 925cb0a7ea03dd906ac7da6fd4ad128a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RatUpArr:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RatUpLeft:
         m_Texture: {fileID: 2800000, guid: de0672c87896f9c6eb06a41f82f3f175, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _RatUpLeftArr:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _RatUpRight:
         m_Texture: {fileID: -8328923581568760697, guid: 32f50929797bf4c0d91b86e7ca2cdbae, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RatUpRightArr:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
