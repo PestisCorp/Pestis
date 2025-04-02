@@ -1,0 +1,6318 @@
+fileFormatVersion: 2
+guid: 4034a0f6c05b24dc184d1ea6f86bea73
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2373993821091244342
+    second: Tutorial_controls_0
+  - first:
+      213: 7044975459558608637
+    second: Tutorial_controls_1
+  - first:
+      213: -1624116021257797535
+    second: Tutorial_controls_2
+  - first:
+      213: 5030199467178323529
+    second: Tutorial_controls_3
+  - first:
+      213: -5049796868283594584
+    second: Tutorial_controls_4
+  - first:
+      213: 1158874605648615280
+    second: Tutorial_controls_5
+  - first:
+      213: 72236205117941983
+    second: Tutorial_controls_6
+  - first:
+      213: 1518781917625789621
+    second: Tutorial_controls_7
+  - first:
+      213: -6198562496625658957
+    second: Tutorial_controls_8
+  - first:
+      213: -5706625481260336790
+    second: Tutorial_controls_9
+  - first:
+      213: -1171089049903705343
+    second: Tutorial_controls_10
+  - first:
+      213: -988597743501140332
+    second: Tutorial_controls_11
+  - first:
+      213: -6904081153899178447
+    second: Tutorial_controls_12
+  - first:
+      213: -3877810623256014920
+    second: Tutorial_controls_13
+  - first:
+      213: -4261791423478837764
+    second: Tutorial_controls_14
+  - first:
+      213: -5378565741407466758
+    second: Tutorial_controls_15
+  - first:
+      213: -3085603312201282668
+    second: Tutorial_controls_16
+  - first:
+      213: 6510485283583100853
+    second: Tutorial_controls_17
+  - first:
+      213: -1503644871512697124
+    second: Tutorial_controls_18
+  - first:
+      213: 1194287336266114701
+    second: Tutorial_controls_19
+  - first:
+      213: -6667308327807765668
+    second: Tutorial_controls_20
+  - first:
+      213: -9193491009360087290
+    second: Tutorial_controls_21
+  - first:
+      213: -2924717350830031898
+    second: Tutorial_controls_22
+  - first:
+      213: -1649161739838732895
+    second: Tutorial_controls_23
+  - first:
+      213: 1681307445209433855
+    second: Tutorial_controls_24
+  - first:
+      213: 5838763824418957335
+    second: Tutorial_controls_25
+  - first:
+      213: 8051870886141312988
+    second: Tutorial_controls_26
+  - first:
+      213: 2763658448233317997
+    second: Tutorial_controls_27
+  - first:
+      213: -6536692942868709978
+    second: Tutorial_controls_28
+  - first:
+      213: 7861649595607349751
+    second: Tutorial_controls_29
+  - first:
+      213: -5988414669427774666
+    second: Tutorial_controls_30
+  - first:
+      213: 6268358577242731842
+    second: Tutorial_controls_31
+  - first:
+      213: 189964051837540509
+    second: Tutorial_controls_32
+  - first:
+      213: -423569208325036159
+    second: Tutorial_controls_33
+  - first:
+      213: -6684377008449672913
+    second: Tutorial_controls_34
+  - first:
+      213: -2888407182234076828
+    second: Tutorial_controls_35
+  - first:
+      213: -3799760363110597730
+    second: Tutorial_controls_36
+  - first:
+      213: -1515007741293381800
+    second: Tutorial_controls_37
+  - first:
+      213: 7914599665859049264
+    second: Tutorial_controls_38
+  - first:
+      213: -1157020134853072555
+    second: Tutorial_controls_39
+  - first:
+      213: 8677349737089342179
+    second: Tutorial_controls_40
+  - first:
+      213: 6938163841540671106
+    second: Tutorial_controls_41
+  - first:
+      213: 7887938908842922441
+    second: Tutorial_controls_42
+  - first:
+      213: -8530946875574891195
+    second: Tutorial_controls_43
+  - first:
+      213: 5689800716132127907
+    second: Tutorial_controls_44
+  - first:
+      213: -3191227759453705525
+    second: Tutorial_controls_45
+  - first:
+      213: -845375123285861605
+    second: Tutorial_controls_46
+  - first:
+      213: -4908254824858144048
+    second: Tutorial_controls_47
+  - first:
+      213: -559081355914617995
+    second: Tutorial_controls_48
+  - first:
+      213: -7739844267121031597
+    second: Tutorial_controls_49
+  - first:
+      213: -3194041360641431646
+    second: Tutorial_controls_50
+  - first:
+      213: -1948716039247864139
+    second: Tutorial_controls_51
+  - first:
+      213: -821268446352043238
+    second: Tutorial_controls_52
+  - first:
+      213: 9104888311946208042
+    second: Tutorial_controls_53
+  - first:
+      213: 5007871532039786263
+    second: Tutorial_controls_54
+  - first:
+      213: 3556649413884662843
+    second: Tutorial_controls_55
+  - first:
+      213: -922480706160064746
+    second: Tutorial_controls_56
+  - first:
+      213: -4781054292287427502
+    second: Tutorial_controls_57
+  - first:
+      213: -2764572051424139521
+    second: Tutorial_controls_58
+  - first:
+      213: 9200837536923315595
+    second: Tutorial_controls_59
+  - first:
+      213: -3446396048029985731
+    second: Tutorial_controls_60
+  - first:
+      213: 2672282548600402077
+    second: Tutorial_controls_61
+  - first:
+      213: 1234878227745586931
+    second: Tutorial_controls_62
+  - first:
+      213: 1862968179344304782
+    second: Tutorial_controls_63
+  - first:
+      213: -806741783908452884
+    second: Tutorial_controls_64
+  - first:
+      213: 3872588321344570261
+    second: Tutorial_controls_65
+  - first:
+      213: 1232600064545523097
+    second: Tutorial_controls_66
+  - first:
+      213: -3108946682806106263
+    second: Tutorial_controls_67
+  - first:
+      213: -3407599985322173359
+    second: Tutorial_controls_68
+  - first:
+      213: -36795683652034244
+    second: Tutorial_controls_69
+  - first:
+      213: -104063087039350393
+    second: Tutorial_controls_70
+  - first:
+      213: 4320326067344650188
+    second: Tutorial_controls_71
+  - first:
+      213: -6126843471128527386
+    second: Tutorial_controls_72
+  - first:
+      213: 1694563649569613470
+    second: Tutorial_controls_73
+  - first:
+      213: 156740384032460102
+    second: Tutorial_controls_74
+  - first:
+      213: -9046090706189556575
+    second: Tutorial_controls_75
+  - first:
+      213: -4800517109944666475
+    second: Tutorial_controls_76
+  - first:
+      213: 2932389933387344597
+    second: Tutorial_controls_77
+  - first:
+      213: 1437486102013032985
+    second: Tutorial_controls_78
+  - first:
+      213: 2846547776603186829
+    second: Tutorial_controls_79
+  - first:
+      213: 3656194054766218078
+    second: Tutorial_controls_80
+  - first:
+      213: 742060565081845920
+    second: Tutorial_controls_81
+  - first:
+      213: 8078918803595987570
+    second: Tutorial_controls_82
+  - first:
+      213: -3398560917175353058
+    second: Tutorial_controls_83
+  - first:
+      213: -4516540256077688065
+    second: Tutorial_controls_84
+  - first:
+      213: -2176849753856809396
+    second: Tutorial_controls_85
+  - first:
+      213: -6255109257650713859
+    second: Tutorial_controls_86
+  - first:
+      213: -212518887450489482
+    second: Tutorial_controls_87
+  - first:
+      213: -4239200012714143917
+    second: Tutorial_controls_88
+  - first:
+      213: -2970446774322596089
+    second: Tutorial_controls_89
+  - first:
+      213: 6605755546393427529
+    second: Tutorial_controls_90
+  - first:
+      213: 6803509729957986541
+    second: Tutorial_controls_91
+  - first:
+      213: -7328646889659894153
+    second: Tutorial_controls_92
+  - first:
+      213: 7394409387973347822
+    second: Tutorial_controls_93
+  - first:
+      213: -5463625929492738004
+    second: Tutorial_controls_94
+  - first:
+      213: -8125651903636638929
+    second: Tutorial_controls_95
+  - first:
+      213: 5065109375206844063
+    second: Tutorial_controls_96
+  - first:
+      213: 1209473095334725618
+    second: Tutorial_controls_97
+  - first:
+      213: -2881058880535177453
+    second: Tutorial_controls_98
+  - first:
+      213: 3763740981101047342
+    second: Tutorial_controls_99
+  - first:
+      213: -1024747156152428918
+    second: Tutorial_controls_100
+  - first:
+      213: 3895044223355590530
+    second: Tutorial_controls_101
+  - first:
+      213: -8858772794648870077
+    second: Tutorial_controls_102
+  - first:
+      213: -3270293260934250622
+    second: Tutorial_controls_103
+  - first:
+      213: 3018753804680930171
+    second: Tutorial_controls_104
+  - first:
+      213: 1442468725948778361
+    second: Tutorial_controls_105
+  - first:
+      213: 6744818558021643264
+    second: Tutorial_controls_106
+  - first:
+      213: 4949970776472482288
+    second: Tutorial_controls_107
+  - first:
+      213: 1738210078448450739
+    second: Tutorial_controls_108
+  - first:
+      213: -3709300720640649690
+    second: Tutorial_controls_109
+  - first:
+      213: 3430117746237280243
+    second: Tutorial_controls_110
+  - first:
+      213: -747740193508627561
+    second: Tutorial_controls_111
+  - first:
+      213: 688821916311321025
+    second: Tutorial_controls_112
+  - first:
+      213: -3726084469689485334
+    second: Tutorial_controls_113
+  - first:
+      213: 1089329348076455446
+    second: Tutorial_controls_114
+  - first:
+      213: 4649832239377361272
+    second: Tutorial_controls_115
+  - first:
+      213: -5340954621988224208
+    second: Tutorial_controls_116
+  - first:
+      213: -1988755712805564649
+    second: Tutorial_controls_117
+  - first:
+      213: 7504251575203781689
+    second: Tutorial_controls_118
+  - first:
+      213: 4940607192397731939
+    second: Tutorial_controls_119
+  - first:
+      213: -7894685736539584248
+    second: Tutorial_controls_120
+  - first:
+      213: -4673952302728312216
+    second: Tutorial_controls_121
+  - first:
+      213: 3731600230012887586
+    second: Tutorial_controls_122
+  - first:
+      213: 858721267718758259
+    second: Tutorial_controls_123
+  - first:
+      213: 8923963278520204152
+    second: Tutorial_controls_124
+  - first:
+      213: 1249161452368644412
+    second: Tutorial_controls_125
+  - first:
+      213: -4142011680746228208
+    second: Tutorial_controls_126
+  - first:
+      213: -6422154558796790991
+    second: Tutorial_controls_127
+  - first:
+      213: -1902285596986377584
+    second: Tutorial_controls_128
+  - first:
+      213: 1127940899516074744
+    second: Tutorial_controls_129
+  - first:
+      213: -7562090582711755160
+    second: Tutorial_controls_130
+  - first:
+      213: 6158141603389353939
+    second: Tutorial_controls_131
+  - first:
+      213: 8335413614102767344
+    second: Tutorial_controls_132
+  - first:
+      213: 4625417520651348182
+    second: Tutorial_controls_133
+  - first:
+      213: -6804914025917235924
+    second: Tutorial_controls_134
+  - first:
+      213: -7910309181310327612
+    second: Tutorial_controls_135
+  - first:
+      213: -4250218976441726687
+    second: Tutorial_controls_136
+  - first:
+      213: -7027716292224573422
+    second: Tutorial_controls_137
+  - first:
+      213: -7915731368233912871
+    second: Tutorial_controls_138
+  - first:
+      213: 2735211065253117665
+    second: Tutorial_controls_139
+  - first:
+      213: 3801368857683122584
+    second: Tutorial_controls_140
+  - first:
+      213: 3735219445779615460
+    second: Tutorial_controls_141
+  - first:
+      213: -646505721990238789
+    second: Tutorial_controls_142
+  - first:
+      213: 3564851916387054941
+    second: Tutorial_controls_143
+  - first:
+      213: 5688883416997354686
+    second: Tutorial_controls_144
+  - first:
+      213: -940430330147685459
+    second: Tutorial_controls_145
+  - first:
+      213: 2556885781344080590
+    second: Tutorial_controls_146
+  - first:
+      213: 3382033808677495039
+    second: Tutorial_controls_147
+  - first:
+      213: 2369381245585224057
+    second: Tutorial_controls_148
+  - first:
+      213: -2598257726478105476
+    second: Tutorial_controls_149
+  - first:
+      213: -7250696857450460456
+    second: Tutorial_controls_150
+  - first:
+      213: -1957950626062968620
+    second: Tutorial_controls_151
+  - first:
+      213: 1424382831999928716
+    second: Tutorial_controls_152
+  - first:
+      213: 6736080642467744238
+    second: Tutorial_controls_153
+  - first:
+      213: -8881299776360774313
+    second: Tutorial_controls_154
+  - first:
+      213: 5887503242313682735
+    second: Tutorial_controls_155
+  - first:
+      213: 4318657201860973409
+    second: Tutorial_controls_156
+  - first:
+      213: -7064315879400587602
+    second: Tutorial_controls_157
+  - first:
+      213: -5983438907321032464
+    second: Tutorial_controls_158
+  - first:
+      213: -1216298129951221080
+    second: Tutorial_controls_159
+  - first:
+      213: -3610013636158667343
+    second: Tutorial_controls_160
+  - first:
+      213: 3200892945328049976
+    second: Tutorial_controls_161
+  - first:
+      213: -3982605111250014442
+    second: Tutorial_controls_162
+  - first:
+      213: 3494358822113917451
+    second: Tutorial_controls_163
+  - first:
+      213: 6379415938276218419
+    second: Tutorial_controls_164
+  - first:
+      213: 6884342532317993195
+    second: Tutorial_controls_165
+  - first:
+      213: -2563865341373865455
+    second: Tutorial_controls_166
+  - first:
+      213: 1976338532868127920
+    second: Tutorial_controls_167
+  - first:
+      213: 6340821384229558032
+    second: Tutorial_controls_168
+  - first:
+      213: 2985209375680967579
+    second: Tutorial_controls_169
+  - first:
+      213: 8150012452100516542
+    second: Tutorial_controls_170
+  - first:
+      213: -4903675386735183193
+    second: Tutorial_controls_171
+  - first:
+      213: -3100818739734445905
+    second: Tutorial_controls_172
+  - first:
+      213: 3593912529469030701
+    second: Tutorial_controls_173
+  - first:
+      213: -6847339800205065186
+    second: Tutorial_controls_174
+  - first:
+      213: -2814017590003590892
+    second: Tutorial_controls_175
+  - first:
+      213: -8526248933716208462
+    second: Tutorial_controls_176
+  - first:
+      213: 5970441003347445712
+    second: Tutorial_controls_177
+  - first:
+      213: 8980054203713899817
+    second: Tutorial_controls_178
+  - first:
+      213: -1827007560052656205
+    second: Tutorial_controls_179
+  - first:
+      213: -5342179410758719257
+    second: Tutorial_controls_180
+  - first:
+      213: -4716403852623455443
+    second: Tutorial_controls_181
+  - first:
+      213: 1372482643569111811
+    second: Tutorial_controls_182
+  - first:
+      213: 8606687777524012878
+    second: Tutorial_controls_183
+  - first:
+      213: -7545790779125834124
+    second: Tutorial_controls_184
+  - first:
+      213: 4901750507945011194
+    second: Tutorial_controls_185
+  - first:
+      213: 5331992658440919290
+    second: Tutorial_controls_186
+  - first:
+      213: 1095046486145095532
+    second: Tutorial_controls_187
+  - first:
+      213: -4479784607161257662
+    second: Tutorial_controls_188
+  - first:
+      213: -1222255920209915056
+    second: Tutorial_controls_189
+  - first:
+      213: -1396367296708601557
+    second: Tutorial_controls_190
+  - first:
+      213: 1785942155823364925
+    second: Tutorial_controls_191
+  - first:
+      213: 2148928619649276318
+    second: Tutorial_controls_192
+  - first:
+      213: -6592654962851608635
+    second: Tutorial_controls_193
+  - first:
+      213: -1390968461228922503
+    second: Tutorial_controls_194
+  - first:
+      213: 1297289488266505073
+    second: Tutorial_controls_195
+  - first:
+      213: 7671704354801854254
+    second: Tutorial_controls_196
+  - first:
+      213: -760757111734660845
+    second: Tutorial_controls_197
+  - first:
+      213: -3737325231547037419
+    second: Tutorial_controls_198
+  - first:
+      213: 9209820446298712110
+    second: Tutorial_controls_199
+  - first:
+      213: 2478060943255563557
+    second: Tutorial_controls_200
+  - first:
+      213: -1070527586264291500
+    second: Tutorial_controls_201
+  - first:
+      213: 848295510249106033
+    second: Tutorial_controls_202
+  - first:
+      213: -7434457457756683682
+    second: Tutorial_controls_203
+  - first:
+      213: 9006382851179562365
+    second: Tutorial_controls_204
+  - first:
+      213: 8152140245300117463
+    second: Tutorial_controls_205
+  - first:
+      213: 8063450598085625568
+    second: Tutorial_controls_206
+  - first:
+      213: 3862599663175072269
+    second: Tutorial_controls_207
+  - first:
+      213: -3570515726847228841
+    second: Tutorial_controls_208
+  - first:
+      213: 7334440350019780868
+    second: Tutorial_controls_209
+  - first:
+      213: 4033068318540121943
+    second: Tutorial_controls_210
+  - first:
+      213: -3004262243987886407
+    second: Tutorial_controls_211
+  - first:
+      213: 6415009251241223172
+    second: Tutorial_controls_212
+  - first:
+      213: -7421900970493756085
+    second: Tutorial_controls_213
+  - first:
+      213: 5418283789840514973
+    second: Tutorial_controls_214
+  - first:
+      213: 6302943218903227158
+    second: Tutorial_controls_215
+  - first:
+      213: -5721230373083223466
+    second: Tutorial_controls_216
+  - first:
+      213: 3305861510436815249
+    second: Tutorial_controls_217
+  - first:
+      213: 1865819751671783166
+    second: Tutorial_controls_218
+  - first:
+      213: -6329348553395263699
+    second: Tutorial_controls_219
+  - first:
+      213: 1968702596356971227
+    second: Tutorial_controls_220
+  - first:
+      213: 4000095410052410005
+    second: Tutorial_controls_221
+  - first:
+      213: 5215371306568583171
+    second: Tutorial_controls_222
+  - first:
+      213: 6998484810297160950
+    second: Tutorial_controls_223
+  - first:
+      213: -8410680913747628284
+    second: Tutorial_controls_224
+  - first:
+      213: 4694602776841046281
+    second: Tutorial_controls_225
+  - first:
+      213: -5663851129124248076
+    second: Tutorial_controls_226
+  - first:
+      213: -9221017102903659119
+    second: Tutorial_controls_227
+  - first:
+      213: 8706870135375136443
+    second: Tutorial_controls_228
+  - first:
+      213: 4990584429860255202
+    second: Tutorial_controls_229
+  - first:
+      213: -8151112059668874201
+    second: Tutorial_controls_230
+  - first:
+      213: -2390012455446425856
+    second: Tutorial_controls_231
+  - first:
+      213: -1950324815772681477
+    second: Tutorial_controls_232
+  - first:
+      213: -121957472953802984
+    second: Tutorial_controls_233
+  - first:
+      213: -5898872909323529093
+    second: Tutorial_controls_234
+  - first:
+      213: 4752038201296432906
+    second: Tutorial_controls_235
+  - first:
+      213: -1458738257812697969
+    second: Tutorial_controls_236
+  - first:
+      213: -8289822987881338305
+    second: Tutorial_controls_237
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Tutorial_controls_0
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 2240
+        width: 113
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac652ea9231ed0fd0800000000000000
+      internalID: -2373993821091244342
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_1
+      rect:
+        serializedVersion: 2
+        x: 1084
+        y: 2240
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dfec556cad7c4c160800000000000000
+      internalID: 7044975459558608637
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_2
+      rect:
+        serializedVersion: 2
+        x: 1217
+        y: 2240
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16088e6651bf579e0800000000000000
+      internalID: -1624116021257797535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_3
+      rect:
+        serializedVersion: 2
+        x: 1494
+        y: 2240
+        width: 91
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94ee586a3cbdec540800000000000000
+      internalID: 5030199467178323529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_4
+      rect:
+        serializedVersion: 2
+        x: 1616
+        y: 2240
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a88316d0848be9b0800000000000000
+      internalID: -5049796868283594584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_5
+      rect:
+        serializedVersion: 2
+        x: 1882
+        y: 2218
+        width: 113
+        height: 135
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07718e85056251010800000000000000
+      internalID: 1158874605648615280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_6
+      rect:
+        serializedVersion: 2
+        x: 2026
+        y: 2240
+        width: 90
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd82af12272a00100800000000000000
+      internalID: 72236205117941983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_7
+      rect:
+        serializedVersion: 2
+        x: 2148
+        y: 2240
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5bc2f537b1cc31510800000000000000
+      internalID: 1518781917625789621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_8
+      rect:
+        serializedVersion: 2
+        x: 2281
+        y: 2218
+        width: 113
+        height: 135
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b3b19e20484af9a0800000000000000
+      internalID: -6198562496625658957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_9
+      rect:
+        serializedVersion: 2
+        x: 2458
+        y: 2328
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a69f84b1c5efdc0b0800000000000000
+      internalID: -5706625481260336790
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_10
+      rect:
+        serializedVersion: 2
+        x: 2458
+        y: 2240
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 103d32cb6b47fbfe0800000000000000
+      internalID: -1171089049903705343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_11
+      rect:
+        serializedVersion: 2
+        x: 1429
+        y: 2040
+        width: 69
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49e9cd0179bc742f0800000000000000
+      internalID: -988597743501140332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_12
+      rect:
+        serializedVersion: 2
+        x: 1509
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 136de5915c6cf20a0800000000000000
+      internalID: -6904081153899178447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_13
+      rect:
+        serializedVersion: 2
+        x: 1589
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8bfc69e98cf3f2ac0800000000000000
+      internalID: -3877810623256014920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_14
+      rect:
+        serializedVersion: 2
+        x: 1676
+        y: 2040
+        width: 55
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfdccb0c7431bd4c0800000000000000
+      internalID: -4261791423478837764
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_15
+      rect:
+        serializedVersion: 2
+        x: 1749
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: afa825e74fe7b55b0800000000000000
+      internalID: -5378565741407466758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_16
+      rect:
+        serializedVersion: 2
+        x: 1829
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49b4972c22cbd25d0800000000000000
+      internalID: -3085603312201282668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_17
+      rect:
+        serializedVersion: 2
+        x: 1915
+        y: 2040
+        width: 56
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b701631fd3e95a50800000000000000
+      internalID: 6510485283583100853
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_18
+      rect:
+        serializedVersion: 2
+        x: 1989
+        y: 2040
+        width: 69
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd6d52db4faf12be0800000000000000
+      internalID: -1503644871512697124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_19
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 1751
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d86a3e53106f29010800000000000000
+      internalID: 1194287336266114701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_20
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 1751
+        width: 42
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c53b3099666f873a0800000000000000
+      internalID: -6667308327807765668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_21
+      rect:
+        serializedVersion: 2
+        x: 372
+        y: 1751
+        width: 42
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 607385dd2a82a6080800000000000000
+      internalID: -9193491009360087290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_22
+      rect:
+        serializedVersion: 2
+        x: 487
+        y: 1751
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ebba53b0115967d0800000000000000
+      internalID: -2924717350830031898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_23
+      rect:
+        serializedVersion: 2
+        x: 667
+        y: 1751
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a54fbf92200d19e0800000000000000
+      internalID: -1649161739838732895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_24
+      rect:
+        serializedVersion: 2
+        x: 1001
+        y: 1747
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff68de5a634355710800000000000000
+      internalID: 1681307445209433855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_25
+      rect:
+        serializedVersion: 2
+        x: 1301
+        y: 1747
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 718a4e163c4770150800000000000000
+      internalID: 5838763824418957335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_26
+      rect:
+        serializedVersion: 2
+        x: 1481
+        y: 1747
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cdf33c909edfdbf60800000000000000
+      internalID: 8051870886141312988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_27
+      rect:
+        serializedVersion: 2
+        x: 1858
+        y: 1758
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d66447757bc7a5620800000000000000
+      internalID: 2763658448233317997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_28
+      rect:
+        serializedVersion: 2
+        x: 1933
+        y: 1818
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6adf18eb6600945a0800000000000000
+      internalID: -6536692942868709978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_29
+      rect:
+        serializedVersion: 2
+        x: 2038
+        y: 1758
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f9f4c687a03a1d60800000000000000
+      internalID: 7861649595607349751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_30
+      rect:
+        serializedVersion: 2
+        x: 2103
+        y: 1758
+        width: 42
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63be40d0690e4eca0800000000000000
+      internalID: -5988414669427774666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_31
+      rect:
+        serializedVersion: 2
+        x: 2218
+        y: 1758
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24573513aeeadf650800000000000000
+      internalID: 6268358577242731842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_32
+      rect:
+        serializedVersion: 2
+        x: 2398
+        y: 1758
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d98ded57c43e2a200800000000000000
+      internalID: 189964051837540509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_33
+      rect:
+        serializedVersion: 2
+        x: 2770
+        y: 1763
+        width: 52
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1872ef79c0e2f1af0800000000000000
+      internalID: -423569208325036159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_34
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 1751
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f29a192b6825c33a0800000000000000
+      internalID: -6684377008449672913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_35
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 1751
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4693040a8f05ae7d0800000000000000
+      internalID: -2888407182234076828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_36
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 1751
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9bfe2de41a844bc0800000000000000
+      internalID: -3799760363110597730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_37
+      rect:
+        serializedVersion: 2
+        x: 547
+        y: 1751
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 857bd347c7c99fae0800000000000000
+      internalID: -1515007741293381800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_38
+      rect:
+        serializedVersion: 2
+        x: 607
+        y: 1751
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03734f6767e46dd60800000000000000
+      internalID: 7914599665859049264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_39
+      rect:
+        serializedVersion: 2
+        x: 727
+        y: 1751
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 559ab18415071ffe0800000000000000
+      internalID: -1157020134853072555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_40
+      rect:
+        serializedVersion: 2
+        x: 1061
+        y: 1747
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ea1a0f7c932c6870800000000000000
+      internalID: 8677349737089342179
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_41
+      rect:
+        serializedVersion: 2
+        x: 1121
+        y: 1747
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 286cd70014f494060800000000000000
+      internalID: 6938163841540671106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_42
+      rect:
+        serializedVersion: 2
+        x: 1181
+        y: 1747
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c1909f35a6977d60800000000000000
+      internalID: 7887938908842922441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_43
+      rect:
+        serializedVersion: 2
+        x: 1361
+        y: 1747
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54d41abf30dfb9980800000000000000
+      internalID: -8530946875574891195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_44
+      rect:
+        serializedVersion: 2
+        x: 1421
+        y: 1747
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a491dffa9b36fe40800000000000000
+      internalID: 5689800716132127907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_45
+      rect:
+        serializedVersion: 2
+        x: 1541
+        y: 1747
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bca6568b24b76b3d0800000000000000
+      internalID: -3191227759453705525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_46
+      rect:
+        serializedVersion: 2
+        x: 1923
+        y: 1758
+        width: 42
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b1b189aedcf9444f0800000000000000
+      internalID: -845375123285861605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_47
+      rect:
+        serializedVersion: 2
+        x: 1978
+        y: 1748
+        width: 52
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d2bb39ed3062ebb0800000000000000
+      internalID: -4908254824858144048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_48
+      rect:
+        serializedVersion: 2
+        x: 2278
+        y: 1758
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57b5a2c087ebd38f0800000000000000
+      internalID: -559081355914617995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_49
+      rect:
+        serializedVersion: 2
+        x: 2338
+        y: 1758
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 356486185ac869490800000000000000
+      internalID: -7739844267121031597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_50
+      rect:
+        serializedVersion: 2
+        x: 2458
+        y: 1758
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a7ef052e4c7ca3d0800000000000000
+      internalID: -3194041360641431646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_51
+      rect:
+        serializedVersion: 2
+        x: 2830
+        y: 1763
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5be56884615c4f4e0800000000000000
+      internalID: -1948716039247864139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_52
+      rect:
+        serializedVersion: 2
+        x: 2890
+        y: 1763
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1313f503b44a94f0800000000000000
+      internalID: -821268446352043238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_53
+      rect:
+        serializedVersion: 2
+        x: 3010
+        y: 1763
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a23e8211eaf0b5e70800000000000000
+      internalID: 9104888311946208042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_54
+      rect:
+        serializedVersion: 2
+        x: 3070
+        y: 1763
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71fc50420a88f7540800000000000000
+      internalID: 5007871532039786263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_55
+      rect:
+        serializedVersion: 2
+        x: 3130
+        y: 1763
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3452394cc1cb5130800000000000000
+      internalID: 3556649413884662843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_56
+      rect:
+        serializedVersion: 2
+        x: 3190
+        y: 1763
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6178d2d6fa0b233f0800000000000000
+      internalID: -922480706160064746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_57
+      rect:
+        serializedVersion: 2
+        x: 3250
+        y: 1763
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25ce958c37846adb0800000000000000
+      internalID: -4781054292287427502
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_58
+      rect:
+        serializedVersion: 2
+        x: 3310
+        y: 1763
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff624e6dd5442a9d0800000000000000
+      internalID: -2764572051424139521
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_59
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 1594
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8de460edf0ffaf70800000000000000
+      internalID: 9200837536923315595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_60
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 1594
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d34dcd9dd01fb20d0800000000000000
+      internalID: -3446396048029985731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_61
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 1594
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d907dc0d1dad51520800000000000000
+      internalID: 2672282548600402077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_62
+      rect:
+        serializedVersion: 2
+        x: 325
+        y: 1594
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3feb3a9943b232110800000000000000
+      internalID: 1234878227745586931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_63
+      rect:
+        serializedVersion: 2
+        x: 380
+        y: 1642
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8a6cad40b79ad910800000000000000
+      internalID: 1862968179344304782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_64
+      rect:
+        serializedVersion: 2
+        x: 466
+        y: 1594
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce5fba03f90edc4f0800000000000000
+      internalID: -806741783908452884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_65
+      rect:
+        serializedVersion: 2
+        x: 874
+        y: 1589
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 593c1177f823eb530800000000000000
+      internalID: 3872588321344570261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_66
+      rect:
+        serializedVersion: 2
+        x: 933
+        y: 1637
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9950c556a331b1110800000000000000
+      internalID: 1232600064545523097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_67
+      rect:
+        serializedVersion: 2
+        x: 1015
+        y: 1589
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 96786b1c67dcad4d0800000000000000
+      internalID: -3108946682806106263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_68
+      rect:
+        serializedVersion: 2
+        x: 1066
+        y: 1589
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15cde3a1ed5c5b0d0800000000000000
+      internalID: -3407599985322173359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_69
+      rect:
+        serializedVersion: 2
+        x: 1207
+        y: 1589
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3127aa45864d7ff0800000000000000
+      internalID: -36795683652034244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_70
+      rect:
+        serializedVersion: 2
+        x: 1262
+        y: 1637
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 789f9c67c2b4e8ef0800000000000000
+      internalID: -104063087039350393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_71
+      rect:
+        serializedVersion: 2
+        x: 1348
+        y: 1589
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ccf20fd0ba1e4fb30800000000000000
+      internalID: 4320326067344650188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_72
+      rect:
+        serializedVersion: 2
+        x: 1442
+        y: 1589
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ed76fc035419faa0800000000000000
+      internalID: -6126843471128527386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_73
+      rect:
+        serializedVersion: 2
+        x: 1835
+        y: 1587
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e96e2ed39ac448710800000000000000
+      internalID: 1694563649569613470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_74
+      rect:
+        serializedVersion: 2
+        x: 1894
+        y: 1635
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64d86308c8adc2200800000000000000
+      internalID: 156740384032460102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_75
+      rect:
+        serializedVersion: 2
+        x: 1976
+        y: 1587
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a4eb935e64d57280800000000000000
+      internalID: -9046090706189556575
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_76
+      rect:
+        serializedVersion: 2
+        x: 2027
+        y: 1587
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 596309b6f13216db0800000000000000
+      internalID: -4800517109944666475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_77
+      rect:
+        serializedVersion: 2
+        x: 2168
+        y: 1587
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5daeb72ab11f1b820800000000000000
+      internalID: 2932389933387344597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_78
+      rect:
+        serializedVersion: 2
+        x: 2223
+        y: 1635
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91a3c006ef9f2f310800000000000000
+      internalID: 1437486102013032985
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_79
+      rect:
+        serializedVersion: 2
+        x: 2309
+        y: 1587
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d866c940f18f08720800000000000000
+      internalID: 2846547776603186829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_80
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 1594
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5b4c381f196db230800000000000000
+      internalID: 3656194054766218078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_81
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 1618
+        width: 41
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a0778ff6245c4a00800000000000000
+      internalID: 742060565081845920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_82
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 1594
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27a009119d51e1070800000000000000
+      internalID: 8078918803595987570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_83
+      rect:
+        serializedVersion: 2
+        x: 372
+        y: 1594
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e11cc382ad2e5d0d0800000000000000
+      internalID: -3398560917175353058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_84
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 1594
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff2dcb611960251c0800000000000000
+      internalID: -4516540256077688065
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_85
+      rect:
+        serializedVersion: 2
+        x: 556
+        y: 1586
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c46e7fbaea64ac1e0800000000000000
+      internalID: -2176849753856809396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_86
+      rect:
+        serializedVersion: 2
+        x: 603
+        y: 1594
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dfac87a65436139a0800000000000000
+      internalID: -6255109257650713859
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_87
+      rect:
+        serializedVersion: 2
+        x: 650
+        y: 1594
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67dc375a23bfc0df0800000000000000
+      internalID: -212518887450489482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_88
+      rect:
+        serializedVersion: 2
+        x: 697
+        y: 1594
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35f87567c065b25c0800000000000000
+      internalID: -4239200012714143917
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_89
+      rect:
+        serializedVersion: 2
+        x: 925
+        y: 1589
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 707fb48956ad6c6d0800000000000000
+      internalID: -2970446774322596089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_90
+      rect:
+        serializedVersion: 2
+        x: 968
+        y: 1581
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94eb8dfabab5cab50800000000000000
+      internalID: 6605755546393427529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_91
+      rect:
+        serializedVersion: 2
+        x: 1156
+        y: 1589
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de04f088d0cea6e50800000000000000
+      internalID: 6803509729957986541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_92
+      rect:
+        serializedVersion: 2
+        x: 1254
+        y: 1589
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 776fc819b7a6b4a90800000000000000
+      internalID: -7328646889659894153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_93
+      rect:
+        serializedVersion: 2
+        x: 1297
+        y: 1589
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee907fd39283e9660800000000000000
+      internalID: 7394409387973347822
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_94
+      rect:
+        serializedVersion: 2
+        x: 1485
+        y: 1589
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c20d8f62a2d4d24b0800000000000000
+      internalID: -5463625929492738004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_95
+      rect:
+        serializedVersion: 2
+        x: 1886
+        y: 1587
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f23f24b25a2eb3f80800000000000000
+      internalID: -8125651903636638929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_96
+      rect:
+        serializedVersion: 2
+        x: 1929
+        y: 1579
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9664b10422ea4640800000000000000
+      internalID: 5065109375206844063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_97
+      rect:
+        serializedVersion: 2
+        x: 2070
+        y: 1611
+        width: 41
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f781d44f59e8c010800000000000000
+      internalID: 1209473095334725618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_98
+      rect:
+        serializedVersion: 2
+        x: 2117
+        y: 1587
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31757b0763c6408d0800000000000000
+      internalID: -2881058880535177453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_99
+      rect:
+        serializedVersion: 2
+        x: 2215
+        y: 1587
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2eab1d2b7e7b3430800000000000000
+      internalID: 3763740981101047342
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_100
+      rect:
+        serializedVersion: 2
+        x: 2258
+        y: 1587
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8651fc04ed57c1f0800000000000000
+      internalID: -1024747156152428918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_101
+      rect:
+        serializedVersion: 2
+        x: 2695
+        y: 1574
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2871c85951afd0630800000000000000
+      internalID: 3895044223355590530
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_102
+      rect:
+        serializedVersion: 2
+        x: 2883
+        y: 1574
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3434f0d34115f0580800000000000000
+      internalID: -8858772794648870077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_103
+      rect:
+        serializedVersion: 2
+        x: 2930
+        y: 1574
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28ff8ae1b959d92d0800000000000000
+      internalID: -3270293260934250622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_104
+      rect:
+        serializedVersion: 2
+        x: 2977
+        y: 1574
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b73ad506794c4e920800000000000000
+      internalID: 3018753804680930171
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_105
+      rect:
+        serializedVersion: 2
+        x: 3024
+        y: 1574
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97789c9e9ada40410800000000000000
+      internalID: 1442468725948778361
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_106
+      rect:
+        serializedVersion: 2
+        x: 3212
+        y: 1574
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00ca7513eb86a9d50800000000000000
+      internalID: 6744818558021643264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_107
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 1522
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f1f434f134d1b440800000000000000
+      internalID: 4949970776472482288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_108
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 1522
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bc7cee5bdc5f1810800000000000000
+      internalID: 1738210078448450739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_109
+      rect:
+        serializedVersion: 2
+        x: 325
+        y: 1522
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6261d15b5aae58cc0800000000000000
+      internalID: -3709300720640649690
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_110
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 1522
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ff8c3aaae93a9f20800000000000000
+      internalID: 3430117746237280243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_111
+      rect:
+        serializedVersion: 2
+        x: 701
+        y: 1522
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79be2a5714e7f95f0800000000000000
+      internalID: -747740193508627561
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_112
+      rect:
+        serializedVersion: 2
+        x: 1207
+        y: 1517
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c97d3322ef2f8900800000000000000
+      internalID: 688821916311321025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_113
+      rect:
+        serializedVersion: 2
+        x: 1348
+        y: 1517
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae7fe0d9ae94a4cc0800000000000000
+      internalID: -3726084469689485334
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_114
+      rect:
+        serializedVersion: 2
+        x: 1438
+        y: 1517
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 616418345431e1f00800000000000000
+      internalID: 1089329348076455446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_115
+      rect:
+        serializedVersion: 2
+        x: 2742
+        y: 1574
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8792f3d29c5878040800000000000000
+      internalID: 4649832239377361272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_116
+      rect:
+        serializedVersion: 2
+        x: 2789
+        y: 1574
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03349e2a11e11e5b0800000000000000
+      internalID: -5340954621988224208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_117
+      rect:
+        serializedVersion: 2
+        x: 3118
+        y: 1574
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71f023157358664e0800000000000000
+      internalID: -1988755712805564649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_118
+      rect:
+        serializedVersion: 2
+        x: 3165
+        y: 1574
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93cdf256c05742860800000000000000
+      internalID: 7504251575203781689
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_119
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 1522
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3685b95a010909440800000000000000
+      internalID: 4940607192397731939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_120
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 1522
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80907348621707290800000000000000
+      internalID: -7894685736539584248
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_121
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 1522
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86a82c2f429c22fb0800000000000000
+      internalID: -4673952302728312216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_122
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 1522
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2222fa963ae49c330800000000000000
+      internalID: 3731600230012887586
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_123
+      rect:
+        serializedVersion: 2
+        x: 462
+        y: 1522
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37f137b717acaeb00800000000000000
+      internalID: 858721267718758259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_124
+      rect:
+        serializedVersion: 2
+        x: 509
+        y: 1522
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87bb3d4125948db70800000000000000
+      internalID: 8923963278520204152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_125
+      rect:
+        serializedVersion: 2
+        x: 603
+        y: 1522
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c394b8bf8b9e55110800000000000000
+      internalID: 1249161452368644412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_126
+      rect:
+        serializedVersion: 2
+        x: 650
+        y: 1522
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0163a99525e9486c0800000000000000
+      internalID: -4142011680746228208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_127
+      rect:
+        serializedVersion: 2
+        x: 2035
+        y: 1563
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 133034e647cefd6a0800000000000000
+      internalID: -6422154558796790991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_128
+      rect:
+        serializedVersion: 2
+        x: 2215
+        y: 1515
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09af84a0459b995e0800000000000000
+      internalID: -1902285596986377584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_129
+      rect:
+        serializedVersion: 2
+        x: 874
+        y: 1517
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8fa4a43a54047af00800000000000000
+      internalID: 1127940899516074744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_130
+      rect:
+        serializedVersion: 2
+        x: 921
+        y: 1517
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86e93224eae0e0790800000000000000
+      internalID: -7562090582711755160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_131
+      rect:
+        serializedVersion: 2
+        x: 968
+        y: 1517
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3dfa39a392d167550800000000000000
+      internalID: 6158141603389353939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_132
+      rect:
+        serializedVersion: 2
+        x: 1015
+        y: 1517
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f6ec84e4865da370800000000000000
+      internalID: 8335413614102767344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_133
+      rect:
+        serializedVersion: 2
+        x: 1109
+        y: 1517
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d8aa408ab8c03040800000000000000
+      internalID: 4625417520651348182
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_134
+      rect:
+        serializedVersion: 2
+        x: 1156
+        y: 1517
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2d31265fb61091a0800000000000000
+      internalID: -6804914025917235924
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_135
+      rect:
+        serializedVersion: 2
+        x: 1250
+        y: 1517
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c4ac70d5bfe83290800000000000000
+      internalID: -7910309181310327612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_136
+      rect:
+        serializedVersion: 2
+        x: 1297
+        y: 1517
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 129019b0c503405c0800000000000000
+      internalID: -4250218976441726687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_137
+      rect:
+        serializedVersion: 2
+        x: 1391
+        y: 1517
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 210aab34449887e90800000000000000
+      internalID: -7027716292224573422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_138
+      rect:
+        serializedVersion: 2
+        x: 1835
+        y: 1515
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d5300b824ca52290800000000000000
+      internalID: -7915731368233912871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_139
+      rect:
+        serializedVersion: 2
+        x: 1882
+        y: 1515
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ee312ad8fb65f520800000000000000
+      internalID: 2735211065253117665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_140
+      rect:
+        serializedVersion: 2
+        x: 1929
+        y: 1515
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8995f66e5dc21c430800000000000000
+      internalID: 3801368857683122584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_141
+      rect:
+        serializedVersion: 2
+        x: 1976
+        y: 1515
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ee43dfbb4a26d330800000000000000
+      internalID: 3735219445779615460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_142
+      rect:
+        serializedVersion: 2
+        x: 2027
+        y: 1515
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbda38f98762707f0800000000000000
+      internalID: -646505721990238789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_143
+      rect:
+        serializedVersion: 2
+        x: 2070
+        y: 1515
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d55fe193ee5e87130800000000000000
+      internalID: 3564851916387054941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_144
+      rect:
+        serializedVersion: 2
+        x: 2117
+        y: 1515
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ebcdcb6a359f2fe40800000000000000
+      internalID: 5688883416997354686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_145
+      rect:
+        serializedVersion: 2
+        x: 2258
+        y: 1515
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dab3b8be89be2f2f0800000000000000
+      internalID: -940430330147685459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_146
+      rect:
+        serializedVersion: 2
+        x: 2695
+        y: 1502
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec2d2483212eb7320800000000000000
+      internalID: 2556885781344080590
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_147
+      rect:
+        serializedVersion: 2
+        x: 2742
+        y: 1502
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff0659884d56fee20800000000000000
+      internalID: 3382033808677495039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_148
+      rect:
+        serializedVersion: 2
+        x: 2789
+        y: 1502
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 971749870bbb1e020800000000000000
+      internalID: 2369381245585224057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_149
+      rect:
+        serializedVersion: 2
+        x: 2836
+        y: 1502
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c74cb5a2d5221fbd0800000000000000
+      internalID: -2598257726478105476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_150
+      rect:
+        serializedVersion: 2
+        x: 2883
+        y: 1502
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8dacf9dbf99506b90800000000000000
+      internalID: -7250696857450460456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_151
+      rect:
+        serializedVersion: 2
+        x: 2981
+        y: 1502
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d853cd7746f3d4e0800000000000000
+      internalID: -1957950626062968620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_152
+      rect:
+        serializedVersion: 2
+        x: 3024
+        y: 1502
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c89458593ac64c310800000000000000
+      internalID: 1424382831999928716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_153
+      rect:
+        serializedVersion: 2
+        x: 3071
+        y: 1494
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee9cca0b7ad5b7d50800000000000000
+      internalID: 6736080642467744238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_154
+      rect:
+        serializedVersion: 2
+        x: 3118
+        y: 1502
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 755824698e84fb480800000000000000
+      internalID: -8881299776360774313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_155
+      rect:
+        serializedVersion: 2
+        x: 3212
+        y: 1502
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2f411c610d94b150800000000000000
+      internalID: 5887503242313682735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_156
+      rect:
+        serializedVersion: 2
+        x: 3259
+        y: 1502
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1631b9708d3feeb30800000000000000
+      internalID: 4318657201860973409
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_157
+      rect:
+        serializedVersion: 2
+        x: 874
+        y: 1445
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eae3d23d22286fd90800000000000000
+      internalID: -7064315879400587602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_158
+      rect:
+        serializedVersion: 2
+        x: 1015
+        y: 1445
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f0e0e1f30e86fca0800000000000000
+      internalID: -5983438907321032464
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_159
+      rect:
+        serializedVersion: 2
+        x: 1886
+        y: 1443
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8aa19478b47de1fe0800000000000000
+      internalID: -1216298129951221080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_160
+      rect:
+        serializedVersion: 2
+        x: 1933
+        y: 1443
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b5427e79b7a6edc0800000000000000
+      internalID: -3610013636158667343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_161
+      rect:
+        serializedVersion: 2
+        x: 2074
+        y: 1443
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83f055abc2bdb6c20800000000000000
+      internalID: 3200892945328049976
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_162
+      rect:
+        serializedVersion: 2
+        x: 2223
+        y: 1491
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61fa94780c1fab8c0800000000000000
+      internalID: -3982605111250014442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_163
+      rect:
+        serializedVersion: 2
+        x: 2262
+        y: 1443
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0a3ad5b5d47e7030800000000000000
+      internalID: 3494358822113917451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_164
+      rect:
+        serializedVersion: 2
+        x: 2305
+        y: 1443
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3365b6b0ffc388850800000000000000
+      internalID: 6379415938276218419
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_165
+      rect:
+        serializedVersion: 2
+        x: 921
+        y: 1445
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be85deeee091a8f50800000000000000
+      internalID: 6884342532317993195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_166
+      rect:
+        serializedVersion: 2
+        x: 968
+        y: 1445
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 112a9735e025b6cd0800000000000000
+      internalID: -2563865341373865455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_167
+      rect:
+        serializedVersion: 2
+        x: 1062
+        y: 1445
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0bc758fac6d5d6b10800000000000000
+      internalID: 1976338532868127920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_168
+      rect:
+        serializedVersion: 2
+        x: 1835
+        y: 1443
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 017143f247f1ff750800000000000000
+      internalID: 6340821384229558032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_169
+      rect:
+        serializedVersion: 2
+        x: 1976
+        y: 1443
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9331a16c189d6920800000000000000
+      internalID: 2985209375680967579
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_170
+      rect:
+        serializedVersion: 2
+        x: 2023
+        y: 1443
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eba26720529aa1170800000000000000
+      internalID: 8150012452100516542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_171
+      rect:
+        serializedVersion: 2
+        x: 2164
+        y: 1443
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7aab2df6735a2fbb0800000000000000
+      internalID: -4903675386735183193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_172
+      rect:
+        serializedVersion: 2
+        x: 2215
+        y: 1443
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa00149f8cda7f4d0800000000000000
+      internalID: -3100818739734445905
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_173
+      rect:
+        serializedVersion: 2
+        x: 2683
+        y: 1387
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d21c3d8776420e130800000000000000
+      internalID: 3593912529469030701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_174
+      rect:
+        serializedVersion: 2
+        x: 2977
+        y: 1435
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1402600bbc59f0a0800000000000000
+      internalID: -6847339800205065186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_175
+      rect:
+        serializedVersion: 2
+        x: 3016
+        y: 1387
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 419922449e992f8d0800000000000000
+      internalID: -2814017590003590892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_176
+      rect:
+        serializedVersion: 2
+        x: 3059
+        y: 1387
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b4da4fc4cdaca980800000000000000
+      internalID: -8526248933716208462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_177
+      rect:
+        serializedVersion: 2
+        x: 3345
+        y: 1387
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d783f4b5744bd250800000000000000
+      internalID: 5970441003347445712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_178
+      rect:
+        serializedVersion: 2
+        x: 3392
+        y: 1387
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92dce1c48bf8f9c70800000000000000
+      internalID: 8980054203713899817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_179
+      rect:
+        serializedVersion: 2
+        x: 1835
+        y: 1371
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b7bb15dd4a25a6e0800000000000000
+      internalID: -1827007560052656205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_180
+      rect:
+        serializedVersion: 2
+        x: 1882
+        y: 1371
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e822574124ccd5b0800000000000000
+      internalID: -5342179410758719257
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_181
+      rect:
+        serializedVersion: 2
+        x: 1933
+        y: 1371
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2b58134fa7fb8eb0800000000000000
+      internalID: -4716403852623455443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_182
+      rect:
+        serializedVersion: 2
+        x: 1976
+        y: 1371
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 303735e41b90c0310800000000000000
+      internalID: 1372482643569111811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_183
+      rect:
+        serializedVersion: 2
+        x: 2023
+        y: 1371
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e47d308fee8117770800000000000000
+      internalID: 8606687777524012878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_184
+      rect:
+        serializedVersion: 2
+        x: 2074
+        y: 1371
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47e59c40447f74790800000000000000
+      internalID: -7545790779125834124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_185
+      rect:
+        serializedVersion: 2
+        x: 2117
+        y: 1371
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af727abcd14860440800000000000000
+      internalID: 4901750507945011194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_186
+      rect:
+        serializedVersion: 2
+        x: 2164
+        y: 1371
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af89c5f921b0ff940800000000000000
+      internalID: 5331992658440919290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_187
+      rect:
+        serializedVersion: 2
+        x: 2258
+        y: 1371
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c67d7333af2623f00800000000000000
+      internalID: 1095046486145095532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_188
+      rect:
+        serializedVersion: 2
+        x: 2305
+        y: 1371
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 241f3eb72ab94d1c0800000000000000
+      internalID: -4479784607161257662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_189
+      rect:
+        serializedVersion: 2
+        x: 2352
+        y: 1371
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 053154367bca90fe0800000000000000
+      internalID: -1222255920209915056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_190
+      rect:
+        serializedVersion: 2
+        x: 2399
+        y: 1371
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2916b7875b1f9ce0800000000000000
+      internalID: -1396367296708601557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_191
+      rect:
+        serializedVersion: 2
+        x: 2446
+        y: 1371
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3b3f3bade0f8c810800000000000000
+      internalID: 1785942155823364925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_192
+      rect:
+        serializedVersion: 2
+        x: 2730
+        y: 1387
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e999ddda13782dd10800000000000000
+      internalID: 2148928619649276318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_193
+      rect:
+        serializedVersion: 2
+        x: 2777
+        y: 1387
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c7838c9d3f2284a0800000000000000
+      internalID: -6592654962851608635
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_194
+      rect:
+        serializedVersion: 2
+        x: 2824
+        y: 1379
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 979adaedd8942bce0800000000000000
+      internalID: -1390968461228922503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_195
+      rect:
+        serializedVersion: 2
+        x: 2918
+        y: 1387
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17b29fe8ae5e00210800000000000000
+      internalID: 1297289488266505073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_196
+      rect:
+        serializedVersion: 2
+        x: 2969
+        y: 1387
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2728c9d67e577a60800000000000000
+      internalID: 7671704354801854254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_197
+      rect:
+        serializedVersion: 2
+        x: 3153
+        y: 1387
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31114b2007f3175f0800000000000000
+      internalID: -760757111734660845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_198
+      rect:
+        serializedVersion: 2
+        x: 3200
+        y: 1387
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 519c88bc08a522cc0800000000000000
+      internalID: -3737325231547037419
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_199
+      rect:
+        serializedVersion: 2
+        x: 3247
+        y: 1387
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e28a3c276eadfcf70800000000000000
+      internalID: 9209820446298712110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_200
+      rect:
+        serializedVersion: 2
+        x: 3294
+        y: 1387
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52d648e6c47d36220800000000000000
+      internalID: 2478060943255563557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_201
+      rect:
+        serializedVersion: 2
+        x: 2683
+        y: 1315
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 457e57a05d8b421f0800000000000000
+      internalID: -1070527586264291500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_202
+      rect:
+        serializedVersion: 2
+        x: 2730
+        y: 1315
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17ae4f8a540c5cb00800000000000000
+      internalID: 848295510249106033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_203
+      rect:
+        serializedVersion: 2
+        x: 2777
+        y: 1315
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e52c8a4e45083d890800000000000000
+      internalID: -7434457457756683682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_204
+      rect:
+        serializedVersion: 2
+        x: 2824
+        y: 1315
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d754abb3c791dfc70800000000000000
+      internalID: 9006382851179562365
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_205
+      rect:
+        serializedVersion: 2
+        x: 2875
+        y: 1315
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7df77487c58322170800000000000000
+      internalID: 8152140245300117463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_206
+      rect:
+        serializedVersion: 2
+        x: 2965
+        y: 1315
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e60ec2d89127ef60800000000000000
+      internalID: 8063450598085625568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_207
+      rect:
+        serializedVersion: 2
+        x: 3012
+        y: 1315
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0af711cde5ba9530800000000000000
+      internalID: 3862599663175072269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_208
+      rect:
+        serializedVersion: 2
+        x: 3063
+        y: 1315
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75443542ddaf27ec0800000000000000
+      internalID: -3570515726847228841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_209
+      rect:
+        serializedVersion: 2
+        x: 3106
+        y: 1315
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 401883983aa29c560800000000000000
+      internalID: 7334440350019780868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_210
+      rect:
+        serializedVersion: 2
+        x: 1831
+        y: 1255
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7574771844658f730800000000000000
+      internalID: 4033068318540121943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_211
+      rect:
+        serializedVersion: 2
+        x: 1890
+        y: 1303
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9beebf60867be46d0800000000000000
+      internalID: -3004262243987886407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_212
+      rect:
+        serializedVersion: 2
+        x: 1972
+        y: 1255
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 404e3130de0b60950800000000000000
+      internalID: 6415009251241223172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_213
+      rect:
+        serializedVersion: 2
+        x: 2023
+        y: 1255
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4db797e36c100990800000000000000
+      internalID: -7421900970493756085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_214
+      rect:
+        serializedVersion: 2
+        x: 2164
+        y: 1255
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9f73b9466c913b40800000000000000
+      internalID: 5418283789840514973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_215
+      rect:
+        serializedVersion: 2
+        x: 2219
+        y: 1303
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61b1f22967d887750800000000000000
+      internalID: 6302943218903227158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_216
+      rect:
+        serializedVersion: 2
+        x: 2305
+        y: 1255
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65ae23eb94b1a90b0800000000000000
+      internalID: -5721230373083223466
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_217
+      rect:
+        serializedVersion: 2
+        x: 1882
+        y: 1255
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 191093e4787c0ed20800000000000000
+      internalID: 3305861510436815249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_218
+      rect:
+        serializedVersion: 2
+        x: 1925
+        y: 1247
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efedd49bd29b4e910800000000000000
+      internalID: 1865819751671783166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_219
+      rect:
+        serializedVersion: 2
+        x: 2066
+        y: 1279
+        width: 41
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d272e376603a928a0800000000000000
+      internalID: -6329348553395263699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_220
+      rect:
+        serializedVersion: 2
+        x: 2113
+        y: 1255
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bda1f3ca49c325b10800000000000000
+      internalID: 1968702596356971227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_221
+      rect:
+        serializedVersion: 2
+        x: 2211
+        y: 1255
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59a28dff491338730800000000000000
+      internalID: 4000095410052410005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_222
+      rect:
+        serializedVersion: 2
+        x: 2254
+        y: 1255
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30809c33298b06840800000000000000
+      internalID: 5215371306568583171
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_223
+      rect:
+        serializedVersion: 2
+        x: 1890
+        y: 1231
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f4babbfadc9f1160800000000000000
+      internalID: 6998484810297160950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_224
+      rect:
+        serializedVersion: 2
+        x: 1929
+        y: 1183
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40f2ae84542474b80800000000000000
+      internalID: -8410680913747628284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_225
+      rect:
+        serializedVersion: 2
+        x: 2117
+        y: 1183
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9094c2b3a54962140800000000000000
+      internalID: 4694602776841046281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_226
+      rect:
+        serializedVersion: 2
+        x: 1831
+        y: 1183
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f5aadb0865f561b0800000000000000
+      internalID: -5663851129124248076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_227
+      rect:
+        serializedVersion: 2
+        x: 1882
+        y: 1183
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19530a9cccd580080800000000000000
+      internalID: -9221017102903659119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_228
+      rect:
+        serializedVersion: 2
+        x: 1972
+        y: 1183
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb60e74d14405d870800000000000000
+      internalID: 8706870135375136443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_229
+      rect:
+        serializedVersion: 2
+        x: 2019
+        y: 1183
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e57a63091e124540800000000000000
+      internalID: 4990584429860255202
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_230
+      rect:
+        serializedVersion: 2
+        x: 2160
+        y: 1183
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72cb807a4ce61ee80800000000000000
+      internalID: -8151112059668874201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_231
+      rect:
+        serializedVersion: 2
+        x: 1831
+        y: 1111
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00f4b58a558f4ded0800000000000000
+      internalID: -2390012455446425856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_232
+      rect:
+        serializedVersion: 2
+        x: 1878
+        y: 1111
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bfa7d3fc9ed0fe4e0800000000000000
+      internalID: -1950324815772681477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_233
+      rect:
+        serializedVersion: 2
+        x: 1925
+        y: 1103
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 81f52e21358be4ef0800000000000000
+      internalID: -121957472953802984
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_234
+      rect:
+        serializedVersion: 2
+        x: 1976
+        y: 1111
+        width: 34
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b749890b75ef22ea0800000000000000
+      internalID: -5898872909323529093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_235
+      rect:
+        serializedVersion: 2
+        x: 2019
+        y: 1111
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0f2c531191a2f140800000000000000
+      internalID: 4752038201296432906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_236
+      rect:
+        serializedVersion: 2
+        x: 2066
+        y: 1111
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8c4dc2884581cbe0800000000000000
+      internalID: -1458738257812697969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_controls_237
+      rect:
+        serializedVersion: 2
+        x: 2113
+        y: 1111
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3a2774f9e1a4fc80800000000000000
+      internalID: -8289822987881338305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Tutorial_controls_0: -2373993821091244342
+      Tutorial_controls_1: 7044975459558608637
+      Tutorial_controls_10: -1171089049903705343
+      Tutorial_controls_100: -1024747156152428918
+      Tutorial_controls_101: 3895044223355590530
+      Tutorial_controls_102: -8858772794648870077
+      Tutorial_controls_103: -3270293260934250622
+      Tutorial_controls_104: 3018753804680930171
+      Tutorial_controls_105: 1442468725948778361
+      Tutorial_controls_106: 6744818558021643264
+      Tutorial_controls_107: 4949970776472482288
+      Tutorial_controls_108: 1738210078448450739
+      Tutorial_controls_109: -3709300720640649690
+      Tutorial_controls_11: -988597743501140332
+      Tutorial_controls_110: 3430117746237280243
+      Tutorial_controls_111: -747740193508627561
+      Tutorial_controls_112: 688821916311321025
+      Tutorial_controls_113: -3726084469689485334
+      Tutorial_controls_114: 1089329348076455446
+      Tutorial_controls_115: 4649832239377361272
+      Tutorial_controls_116: -5340954621988224208
+      Tutorial_controls_117: -1988755712805564649
+      Tutorial_controls_118: 7504251575203781689
+      Tutorial_controls_119: 4940607192397731939
+      Tutorial_controls_12: -6904081153899178447
+      Tutorial_controls_120: -7894685736539584248
+      Tutorial_controls_121: -4673952302728312216
+      Tutorial_controls_122: 3731600230012887586
+      Tutorial_controls_123: 858721267718758259
+      Tutorial_controls_124: 8923963278520204152
+      Tutorial_controls_125: 1249161452368644412
+      Tutorial_controls_126: -4142011680746228208
+      Tutorial_controls_127: -6422154558796790991
+      Tutorial_controls_128: -1902285596986377584
+      Tutorial_controls_129: 1127940899516074744
+      Tutorial_controls_13: -3877810623256014920
+      Tutorial_controls_130: -7562090582711755160
+      Tutorial_controls_131: 6158141603389353939
+      Tutorial_controls_132: 8335413614102767344
+      Tutorial_controls_133: 4625417520651348182
+      Tutorial_controls_134: -6804914025917235924
+      Tutorial_controls_135: -7910309181310327612
+      Tutorial_controls_136: -4250218976441726687
+      Tutorial_controls_137: -7027716292224573422
+      Tutorial_controls_138: -7915731368233912871
+      Tutorial_controls_139: 2735211065253117665
+      Tutorial_controls_14: -4261791423478837764
+      Tutorial_controls_140: 3801368857683122584
+      Tutorial_controls_141: 3735219445779615460
+      Tutorial_controls_142: -646505721990238789
+      Tutorial_controls_143: 3564851916387054941
+      Tutorial_controls_144: 5688883416997354686
+      Tutorial_controls_145: -940430330147685459
+      Tutorial_controls_146: 2556885781344080590
+      Tutorial_controls_147: 3382033808677495039
+      Tutorial_controls_148: 2369381245585224057
+      Tutorial_controls_149: -2598257726478105476
+      Tutorial_controls_15: -5378565741407466758
+      Tutorial_controls_150: -7250696857450460456
+      Tutorial_controls_151: -1957950626062968620
+      Tutorial_controls_152: 1424382831999928716
+      Tutorial_controls_153: 6736080642467744238
+      Tutorial_controls_154: -8881299776360774313
+      Tutorial_controls_155: 5887503242313682735
+      Tutorial_controls_156: 4318657201860973409
+      Tutorial_controls_157: -7064315879400587602
+      Tutorial_controls_158: -5983438907321032464
+      Tutorial_controls_159: -1216298129951221080
+      Tutorial_controls_16: -3085603312201282668
+      Tutorial_controls_160: -3610013636158667343
+      Tutorial_controls_161: 3200892945328049976
+      Tutorial_controls_162: -3982605111250014442
+      Tutorial_controls_163: 3494358822113917451
+      Tutorial_controls_164: 6379415938276218419
+      Tutorial_controls_165: 6884342532317993195
+      Tutorial_controls_166: -2563865341373865455
+      Tutorial_controls_167: 1976338532868127920
+      Tutorial_controls_168: 6340821384229558032
+      Tutorial_controls_169: 2985209375680967579
+      Tutorial_controls_17: 6510485283583100853
+      Tutorial_controls_170: 8150012452100516542
+      Tutorial_controls_171: -4903675386735183193
+      Tutorial_controls_172: -3100818739734445905
+      Tutorial_controls_173: 3593912529469030701
+      Tutorial_controls_174: -6847339800205065186
+      Tutorial_controls_175: -2814017590003590892
+      Tutorial_controls_176: -8526248933716208462
+      Tutorial_controls_177: 5970441003347445712
+      Tutorial_controls_178: 8980054203713899817
+      Tutorial_controls_179: -1827007560052656205
+      Tutorial_controls_18: -1503644871512697124
+      Tutorial_controls_180: -5342179410758719257
+      Tutorial_controls_181: -4716403852623455443
+      Tutorial_controls_182: 1372482643569111811
+      Tutorial_controls_183: 8606687777524012878
+      Tutorial_controls_184: -7545790779125834124
+      Tutorial_controls_185: 4901750507945011194
+      Tutorial_controls_186: 5331992658440919290
+      Tutorial_controls_187: 1095046486145095532
+      Tutorial_controls_188: -4479784607161257662
+      Tutorial_controls_189: -1222255920209915056
+      Tutorial_controls_19: 1194287336266114701
+      Tutorial_controls_190: -1396367296708601557
+      Tutorial_controls_191: 1785942155823364925
+      Tutorial_controls_192: 2148928619649276318
+      Tutorial_controls_193: -6592654962851608635
+      Tutorial_controls_194: -1390968461228922503
+      Tutorial_controls_195: 1297289488266505073
+      Tutorial_controls_196: 7671704354801854254
+      Tutorial_controls_197: -760757111734660845
+      Tutorial_controls_198: -3737325231547037419
+      Tutorial_controls_199: 9209820446298712110
+      Tutorial_controls_2: -1624116021257797535
+      Tutorial_controls_20: -6667308327807765668
+      Tutorial_controls_200: 2478060943255563557
+      Tutorial_controls_201: -1070527586264291500
+      Tutorial_controls_202: 848295510249106033
+      Tutorial_controls_203: -7434457457756683682
+      Tutorial_controls_204: 9006382851179562365
+      Tutorial_controls_205: 8152140245300117463
+      Tutorial_controls_206: 8063450598085625568
+      Tutorial_controls_207: 3862599663175072269
+      Tutorial_controls_208: -3570515726847228841
+      Tutorial_controls_209: 7334440350019780868
+      Tutorial_controls_21: -9193491009360087290
+      Tutorial_controls_210: 4033068318540121943
+      Tutorial_controls_211: -3004262243987886407
+      Tutorial_controls_212: 6415009251241223172
+      Tutorial_controls_213: -7421900970493756085
+      Tutorial_controls_214: 5418283789840514973
+      Tutorial_controls_215: 6302943218903227158
+      Tutorial_controls_216: -5721230373083223466
+      Tutorial_controls_217: 3305861510436815249
+      Tutorial_controls_218: 1865819751671783166
+      Tutorial_controls_219: -6329348553395263699
+      Tutorial_controls_22: -2924717350830031898
+      Tutorial_controls_220: 1968702596356971227
+      Tutorial_controls_221: 4000095410052410005
+      Tutorial_controls_222: 5215371306568583171
+      Tutorial_controls_223: 6998484810297160950
+      Tutorial_controls_224: -8410680913747628284
+      Tutorial_controls_225: 4694602776841046281
+      Tutorial_controls_226: -5663851129124248076
+      Tutorial_controls_227: -9221017102903659119
+      Tutorial_controls_228: 8706870135375136443
+      Tutorial_controls_229: 4990584429860255202
+      Tutorial_controls_23: -1649161739838732895
+      Tutorial_controls_230: -8151112059668874201
+      Tutorial_controls_231: -2390012455446425856
+      Tutorial_controls_232: -1950324815772681477
+      Tutorial_controls_233: -121957472953802984
+      Tutorial_controls_234: -5898872909323529093
+      Tutorial_controls_235: 4752038201296432906
+      Tutorial_controls_236: -1458738257812697969
+      Tutorial_controls_237: -8289822987881338305
+      Tutorial_controls_24: 1681307445209433855
+      Tutorial_controls_25: 5838763824418957335
+      Tutorial_controls_26: 8051870886141312988
+      Tutorial_controls_27: 2763658448233317997
+      Tutorial_controls_28: -6536692942868709978
+      Tutorial_controls_29: 7861649595607349751
+      Tutorial_controls_3: 5030199467178323529
+      Tutorial_controls_30: -5988414669427774666
+      Tutorial_controls_31: 6268358577242731842
+      Tutorial_controls_32: 189964051837540509
+      Tutorial_controls_33: -423569208325036159
+      Tutorial_controls_34: -6684377008449672913
+      Tutorial_controls_35: -2888407182234076828
+      Tutorial_controls_36: -3799760363110597730
+      Tutorial_controls_37: -1515007741293381800
+      Tutorial_controls_38: 7914599665859049264
+      Tutorial_controls_39: -1157020134853072555
+      Tutorial_controls_4: -5049796868283594584
+      Tutorial_controls_40: 8677349737089342179
+      Tutorial_controls_41: 6938163841540671106
+      Tutorial_controls_42: 7887938908842922441
+      Tutorial_controls_43: -8530946875574891195
+      Tutorial_controls_44: 5689800716132127907
+      Tutorial_controls_45: -3191227759453705525
+      Tutorial_controls_46: -845375123285861605
+      Tutorial_controls_47: -4908254824858144048
+      Tutorial_controls_48: -559081355914617995
+      Tutorial_controls_49: -7739844267121031597
+      Tutorial_controls_5: 1158874605648615280
+      Tutorial_controls_50: -3194041360641431646
+      Tutorial_controls_51: -1948716039247864139
+      Tutorial_controls_52: -821268446352043238
+      Tutorial_controls_53: 9104888311946208042
+      Tutorial_controls_54: 5007871532039786263
+      Tutorial_controls_55: 3556649413884662843
+      Tutorial_controls_56: -922480706160064746
+      Tutorial_controls_57: -4781054292287427502
+      Tutorial_controls_58: -2764572051424139521
+      Tutorial_controls_59: 9200837536923315595
+      Tutorial_controls_6: 72236205117941983
+      Tutorial_controls_60: -3446396048029985731
+      Tutorial_controls_61: 2672282548600402077
+      Tutorial_controls_62: 1234878227745586931
+      Tutorial_controls_63: 1862968179344304782
+      Tutorial_controls_64: -806741783908452884
+      Tutorial_controls_65: 3872588321344570261
+      Tutorial_controls_66: 1232600064545523097
+      Tutorial_controls_67: -3108946682806106263
+      Tutorial_controls_68: -3407599985322173359
+      Tutorial_controls_69: -36795683652034244
+      Tutorial_controls_7: 1518781917625789621
+      Tutorial_controls_70: -104063087039350393
+      Tutorial_controls_71: 4320326067344650188
+      Tutorial_controls_72: -6126843471128527386
+      Tutorial_controls_73: 1694563649569613470
+      Tutorial_controls_74: 156740384032460102
+      Tutorial_controls_75: -9046090706189556575
+      Tutorial_controls_76: -4800517109944666475
+      Tutorial_controls_77: 2932389933387344597
+      Tutorial_controls_78: 1437486102013032985
+      Tutorial_controls_79: 2846547776603186829
+      Tutorial_controls_8: -6198562496625658957
+      Tutorial_controls_80: 3656194054766218078
+      Tutorial_controls_81: 742060565081845920
+      Tutorial_controls_82: 8078918803595987570
+      Tutorial_controls_83: -3398560917175353058
+      Tutorial_controls_84: -4516540256077688065
+      Tutorial_controls_85: -2176849753856809396
+      Tutorial_controls_86: -6255109257650713859
+      Tutorial_controls_87: -212518887450489482
+      Tutorial_controls_88: -4239200012714143917
+      Tutorial_controls_89: -2970446774322596089
+      Tutorial_controls_9: -5706625481260336790
+      Tutorial_controls_90: 6605755546393427529
+      Tutorial_controls_91: 6803509729957986541
+      Tutorial_controls_92: -7328646889659894153
+      Tutorial_controls_93: 7394409387973347822
+      Tutorial_controls_94: -5463625929492738004
+      Tutorial_controls_95: -8125651903636638929
+      Tutorial_controls_96: 5065109375206844063
+      Tutorial_controls_97: 1209473095334725618
+      Tutorial_controls_98: -2881058880535177453
+      Tutorial_controls_99: 3763740981101047342
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

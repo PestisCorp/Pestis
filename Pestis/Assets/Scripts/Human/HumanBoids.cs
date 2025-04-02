@@ -239,7 +239,7 @@ namespace Human
             var horde = gameObject.GetComponentInParent<HordeController>();
             if (horde)
             {
-                boidShader.SetInt("player", unchecked((int)horde.Player.Id.Object.Raw));
+                boidShader.SetInt("player", unchecked((int)horde.player.Id.Object.Raw));
                 boidShader.SetInt("horde", unchecked((int)horde.Id.Object.Raw));
             }
             else

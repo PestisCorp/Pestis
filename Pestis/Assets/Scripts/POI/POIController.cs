@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Combat;
 using Fusion;
 using Horde;
 using Human;
@@ -12,7 +13,7 @@ using UnityEngine.UI;
 
 namespace POI
 {
-    public class POIController : NetworkBehaviour
+    public class PoiController : NetworkBehaviour
     {
         public ParticleSystem[] captureEffect;
 
@@ -35,6 +36,8 @@ namespace POI
         [Networked] [Capacity(4)] public NetworkLinkedList<HordeController> StationedHordes { get; } = default;
 
         [Networked] [CanBeNull] public CombatController Combat { get; private set; }
+        
+        private float TimeWhenPoiAbandoned { get; set; }
 
         public void Awake()
         {
@@ -66,6 +69,17 @@ namespace POI
             }
         }
 
+        public override void FixedUpdateNetwork()
+        {
+            // Respawn human patrol if POI has not been controlled for a while
+            if (patrolController.HumanCount == 0 && StationedHordes.Count == 0 &&
+                Runner.RemoteRenderTime - TimeWhenPoiAbandoned > 100f)
+            {
+                patrolController.UpdateHumanCountRpc(patrolController.startingHumanCount);
+                ControlledBy = null;
+            }
+        }
+
 #if UNITY_EDITOR
         [DrawGizmo(GizmoType.Selected ^ GizmoType.NonSelected)]
         public void OnDrawGizmos()
@@ -90,7 +104,8 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         }
 #endif
 
-        public void ChangeController(Player player)
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void ChangeControllerRpc(Player player)
         {
             Debug.Log(
                 $"Changing POI Controller from {(ControlledBy ? ControlledBy.Object.Id : "None")} to {player.Object.Id}");
@@ -117,15 +132,20 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         {
             var flag = flagObject.GetComponent<Image>();
 
-            if (ControlledBy.IsLocal)
+            if (ControlledBy && ControlledBy.IsLocal)
             {
                 EmitCaptureEffect();
                 captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_owned");
                 flag.sprite = captureFlag;
             }
-            else
+            else if (ControlledBy)
             {
                 captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_enemy");
+                flag.sprite = captureFlag;
+            }
+            else
+            {
+                captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_uncaptured");
                 flag.sprite = captureFlag;
             }
         }
@@ -157,18 +177,23 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         public void UnStationHordeRpc(HordeController horde, RpcInfo rpcInfo = default)
         {
             StationedHordes.Remove(horde);
+            if (StationedHordes.Count == 0)
+            {
+                TimeWhenPoiAbandoned = Runner.SimulationTime;
+            }
         }
 
         public override void Spawned()
         {
             Collider = GetComponentInChildren<Collider2D>();
             _cheesePerTick = 0.3f;
+            UpdateFlag();
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void AttackRpc(HordeController horde)
         {
-            if (ControlledBy == horde.Player)
+            if (ControlledBy == horde.player)
             {
                 StationHorde(horde);
                 return;
@@ -177,7 +202,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             // No need to start combat, just hand over control
             if (StationedHordes.Count == 0)
             {
-                ChangeController(horde.Player);
+                ChangeControllerRpc(horde.player);
                 StationHorde(horde);
                 return;
             }
@@ -187,11 +212,11 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             {
                 Debug.Log("Changing POI Combat Controller");
                 Combat = Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
-                Combat!.SetFightingOverRpc(this);
-                foreach (var defender in StationedHordes) Combat.AddHordeRpc(defender, false);
+                Combat!.SetFightingOver(this);
+                foreach (var defender in StationedHordes) Combat.AddHordeRpc(defender);
             }
 
-            Combat.AddHordeRpc(horde, true);
+            Combat.AddHordeRpc(horde);
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]

@@ -14,6 +14,7 @@ public class TimerToScoreLock : MonoBehaviour
     public Button resetButton;
     public GameObject resetButtonUI;
     public GameObject prefab;
+    public GameObject parent;
     public void UpdateScore(ulong ScoreToDisplay)
     {
         scoreText.text = ScoreToDisplay.ToString() + " pts";

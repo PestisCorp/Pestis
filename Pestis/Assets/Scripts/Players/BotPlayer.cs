@@ -92,7 +92,7 @@ namespace Players
                 // If nearest horde is too close, either attack or run away
                 if (distFromHordeEdgeToClosestHorde < territorialDistance)
                 {
-                    var closestHordeIsFriendly = closestHorde.Player == myHorde.Player;
+                    var closestHordeIsFriendly = closestHorde.player == myHorde.player;
                     var attack = !closestHordeIsFriendly;
                     if (!closestHordeIsFriendly) // If we can attack this horde, let's calculate a desirability
                     {
@@ -130,7 +130,7 @@ namespace Players
                 // OFFENSIVE ACTIONS
 
                 // OFFENSIVE ACTIONS - POI TARGETING
-                Dictionary<POIController, float> poiDesirabilities = new();
+                Dictionary<PoiController, float> poiDesirabilities = new();
                 foreach (var poi in allPoi)
                 {
                     if (poi.ControlledBy == player) continue;
@@ -165,7 +165,7 @@ namespace Players
                 Dictionary<HordeController, float> hordeDesirabilities = new();
                 foreach (var kvp in hordesByDistance)
                 {
-                    if (kvp.Item1.Player == player) return;
+                    if (kvp.Item1.player == player) return;
 
                     // Skip Horde if too far away
                     var sqrDistance = kvp.Item2;
@@ -231,7 +231,7 @@ namespace Players
 
             // If less than 60 seconds since the horde has been in combat,
             // reduce desirability by a nice curve that heavily discourages early re-engagement, but reduces effects closer to 60
-            if (Time.time - myHorde.lastInCombat < 60)
+            if (Time.time - myHorde.LastInCombat < 60)
                 //desirability += Mathf.Cos((Time.time - myHorde.lastInCombat) / 20.0f + 3.14f) / 3.0f - 0.35f;
                 return 0;
 

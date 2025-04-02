@@ -8,7 +8,7 @@ namespace Human
 {
     public class PatrolController : NetworkBehaviour
     {
-        [SerializeField] private POIController poi; // POI reference (van)
+        [SerializeField] private PoiController poi; // POI reference (van)
 
         // Each human's base health
         [SerializeField] private float healthPerHuman = 5f;
@@ -26,7 +26,7 @@ namespace Human
         private HordeController enemyHorde;
 
         public int HumanCount => (int)(CurrentHumanHealth / healthPerHuman); // Networked human count
-
+        
         // We store total health as a Networked field so that all players see the same value
         [Networked]
         [OnChangedRender(nameof(AdjustHumanCount))]
@@ -53,7 +53,7 @@ namespace Human
         {
             CurrentHumanHealth = newCount * healthPerHuman; // Updates across all clients
         }
-
+        
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void DealDamageRpc(float damage)
         {
@@ -75,7 +75,7 @@ namespace Human
                 {
                     // This could technically break if somehow the authority for the patrol controller is different to the one for the POI
                     // But they should both be controlled by the master client
-                    poi.ChangeController(enemyHorde.Player);
+                    poi.ChangeControllerRpc(enemyHorde.player);
                     enemyHorde.StationAtRpc(poi);
                     enemyHorde = null;
                     return;
