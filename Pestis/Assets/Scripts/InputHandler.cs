@@ -1,3 +1,4 @@
+using System;
 using Horde;
 using JetBrains.Annotations;
 using Players;
@@ -22,24 +23,23 @@ public class InputHandler : MonoBehaviour
 
     private InputAction _moveCamAction;
     private PixelPerfectCamera _pixelPerfectCamera;
+    private Vector2? _oldCameraPos;
 
     private void Awake()
     {
         Instance = this;
         _mainCamera = Camera.main;
-        _pixelPerfectCamera = _mainCamera.GetComponent<PixelPerfectCamera>();
-        _pixelPerfectCamera.refResolutionY = Screen.height;
-        _pixelPerfectCamera.refResolutionX = Screen.width;
         _maxX = Screen.width * 4;
         _aspectRatio = (float)Screen.height / Screen.width;
         _moveCamAction = InputSystem.actions.FindAction("Navigate");
         _cameraZoom = InputSystem.actions.FindAction("ScrollWheel");
+        _oldCameraPos = null;
     }
 
     private void Update()
     {
         var mouse = Mouse.current;
-
+        
         var moveCam = _moveCamAction.ReadValue<Vector2>();
 
         _mainCamera.transform.Translate(moveCam * (0.01f * _mainCamera.orthographicSize));
@@ -49,16 +49,18 @@ public class InputHandler : MonoBehaviour
         if (scroll.y != 0 && !EventSystem.current.IsPointerOverGameObject())
         {
             Vector2 oldTarget = _mainCamera.ScreenToWorldPoint(mouse.position.ReadValue());
-            // _mainCamera.orthographicSize = Mathf.Clamp(_mainCamera.orthographicSize - scroll.y, 1, 50);
+
             if (scroll.y < 0)
-                _pixelPerfectCamera.assetsPPU /= 2;
+                _mainCamera.orthographicSize *= 2;
             else
-                _pixelPerfectCamera.assetsPPU *= 2;
-            _pixelPerfectCamera.assetsPPU = math.clamp(_pixelPerfectCamera.assetsPPU, 16, 128);
+                _mainCamera.orthographicSize /= 2;
+            _mainCamera.orthographicSize = math.clamp(_mainCamera.orthographicSize, 1, 32);
 
-            Vector2 newTarget = _mainCamera.ScreenToWorldPoint(mouse.position.ReadValue());
-
-            _mainCamera.transform.Translate(oldTarget - newTarget);
+            if (scroll.y > 0)
+            {
+                Vector2 newTarget = _mainCamera.ScreenToWorldPoint(mouse.position.ReadValue());
+                _mainCamera.transform.Translate(oldTarget - newTarget);
+            }
         }
 
         if (mouse.middleButton.isPressed)
