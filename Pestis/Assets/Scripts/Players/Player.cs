@@ -278,6 +278,7 @@ namespace Players
         {
             if (Type != PlayerType.Bot) throw new Exception("Tried to destroy human player remotely!");
 
+            Debug.Log($"PLAYER {Username}: Destroyed bot (self)");
             Runner.Despawn(Object);
         }
 

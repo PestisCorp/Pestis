@@ -207,7 +207,10 @@ namespace Combat
             }
 
             foreach (var horde in hordesToRemove)
-                RemoveHorde(horde, horde.player.Hordes.Count == 1 ? LeaveReason.ForceRetreat : LeaveReason.Died);
+                RemoveHorde(horde,
+                    horde.player.Hordes.Count == 1 && horde.player.Type == PlayerType.Human
+                        ? LeaveReason.ForceRetreat
+                        : LeaveReason.Died);
 
             if (Participators.Count > 1) return;
 
@@ -349,8 +352,8 @@ namespace Combat
                         horde.GetComponent<PopulationController>().SetSepticMultRpc(1.0f);
                     break;
                 case LeaveReason.Died:
-                    horde.DestroyHordeRpc();
                     RemoveHordeBoidsRpc(horde.Id);
+                    horde.DestroyHordeRpc();
                     break;
                 case LeaveReason.LeftGame:
                     RemoveHordeBoidsRpc(horde.Id);

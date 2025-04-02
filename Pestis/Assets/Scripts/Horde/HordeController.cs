@@ -889,6 +889,12 @@ Count: {AliveRats}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void DestroyHordeRpc()
         {
+            if (player.Hordes.Count == 1 && player.Type == PlayerType.Bot)
+            {
+                player.DestroyBotRpc();
+                return;
+            }
+
             player.Hordes.Remove(this);
             GameManager.Instance.UIManager.AbilityBars.Remove(this);
             if (GetEvolutionState().AcquiredEffects.Contains("unlock_gods_mistake"))
