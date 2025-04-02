@@ -66,7 +66,6 @@ namespace Map
             {
                 biome.template.FeatureGeneration(Map.tilemap, biome, Map.poi);
                 biome.template.FeatureGeneration(Map.tilemap, biome, Map.poi);
-                biome.template.FeatureGeneration(Map.tilemap, biome, Map.poi);
             }
         }
 
