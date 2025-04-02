@@ -22,8 +22,6 @@ public class InputHandler : MonoBehaviour
     private int _maxX;
 
     private InputAction _moveCamAction;
-    private PixelPerfectCamera _pixelPerfectCamera;
-    private Vector2? _oldCameraPos;
 
     private void Awake()
     {
@@ -33,7 +31,6 @@ public class InputHandler : MonoBehaviour
         _aspectRatio = (float)Screen.height / Screen.width;
         _moveCamAction = InputSystem.actions.FindAction("Navigate");
         _cameraZoom = InputSystem.actions.FindAction("ScrollWheel");
-        _oldCameraPos = null;
     }
 
     private void Update()
