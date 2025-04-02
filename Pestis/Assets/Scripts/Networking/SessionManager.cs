@@ -129,6 +129,18 @@ namespace Networking
             runner.StartGame(args);
         }
 
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void BotLeftRpc(NetworkId bot)
+        {
+            for (var i = 0; i < Players.Length; i++)
+                if (Players[i].PlayerId == bot)
+                {
+                    var temp = Players[i];
+                    temp.InUse = false;
+                    Players.Set(i, temp);
+                }
+        }
+
         /// <summary>
         ///     Called by Fusion when a player leaves
         /// </summary>

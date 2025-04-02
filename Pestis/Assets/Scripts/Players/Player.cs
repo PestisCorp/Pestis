@@ -82,6 +82,15 @@ namespace Players
             Debug.Log($"Player {(hasState ? Username : "unknown")} left");
             GameManager.Instance.Players.Remove(this);
             foreach (var poi in ControlledPOIs) poi.RemoveControllerRpc();
+
+            if (Object)
+            {
+                if (Type == PlayerType.Bot) SessionManager.Instance.BotLeftRpc(Object.Id);
+            }
+            else
+            {
+                Debug.LogWarning("Player despawned, but we don't have access to their Network Object to do cleanup!");
+            }
         }
 
         public int GetHordeCount()
