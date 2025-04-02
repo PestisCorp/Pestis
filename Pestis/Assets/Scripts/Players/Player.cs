@@ -69,7 +69,12 @@ namespace Players
 
         private void FixedUpdate()
         {
-            aliveRats = Hordes.Sum(horde => horde.AliveRats);
+            var newSum = 0;
+            // LinQ/ForEach use enumerators which allocate memory
+            // ReSharper disable once ForCanBeConvertedToForeach
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            for (var i = 0; i < Hordes.Count; i++) newSum += Hordes[i].AliveRats;
+            aliveRats = newSum;
         }
 
         public override void Despawned(NetworkRunner runner, bool hasState)

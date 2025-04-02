@@ -444,6 +444,12 @@ namespace Networking
                 var alreadyRestarted = false;
 
                 var commands = JsonConvert.DeserializeObject<List<Command>>(uwr.downloadHandler.text);
+                if (commands == null)
+                {
+                    yield return new WaitForSecondsRealtime(30);
+                    continue;
+                }
+
                 foreach (var command in commands)
                 {
                     Debug.Log(

@@ -116,7 +116,7 @@ namespace Players
 
                 // MANAGEMENT ACTIONS
 
-                if (myHorde.TotalHealth > 3 * GameManager.Instance.medianHordeHealth &&
+                if (myHorde.TotalHealth > 3 * GameManager.Instance.meanHordeHealth &&
                     myHorde.TotalHealth / myHorde.GetPopulationState().HealthPerRat > 10)
                 {
                     player.SplitHorde(myHorde, 0.5f);

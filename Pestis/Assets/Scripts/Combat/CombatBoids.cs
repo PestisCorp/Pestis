@@ -346,8 +346,22 @@ namespace Combat
             // Calculate bounds for the combat as a whole
             if (hordeBounds.Count != 0)
             {
-                bounds = hordeBounds.First().Value;
-                foreach (var (_, hordeB) in hordeBounds) bounds.Encapsulate(hordeB);
+                var foundValue = false;
+                // For loop to avoid allocs
+                // ReSharper disable once ForCanBeConvertedToForeach
+                for (var i = 0; i < containedHordes.Count; i++)
+                {
+                    if (!hordeBounds.ContainsKey(containedHordes[i])) continue;
+                    if (foundValue)
+                    {
+                        bounds.Encapsulate(hordeBounds[containedHordes[i]]);
+                    }
+                    else
+                    {
+                        foundValue = true;
+                        bounds = hordeBounds[containedHordes[i]];
+                    }
+                }
             }
 
             // Dispatch next bounds calculation

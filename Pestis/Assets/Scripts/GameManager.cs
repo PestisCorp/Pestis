@@ -4,7 +4,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Horde;
 using Map;
-using MathNet.Numerics.Statistics;
 using Objectives;
 using Players;
 using POI;
@@ -59,9 +58,9 @@ public class GameManager : MonoBehaviour
     public string localUsername;
 
     /// <summary>
-    ///     The median health of all the hordes in game, calculated each fixed update
+    ///     The mean health of all the hordes in game, calculated each fixed update
     /// </summary>
-    public float medianHordeHealth;
+    public float meanHordeHealth;
 
     public List<HordeController> AllHordes;
 
@@ -209,8 +208,19 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        AllHordes = Players.SelectMany(player => player.Hordes).ToList();
-        medianHordeHealth = AllHordes.Select(horde => horde.TotalHealth).Median();
+        // Done as for loops to avoid alloc
+        float sum = 0;
+        var numHordes = 0;
+        // ReSharper disable once ForCanBeConvertedToForeach
+        for (var player = 0; player < Players.Count; player++)
+            // ReSharper disable once ForCanBeConvertedToForeach
+        for (var horde = 0; horde < Players[player].Hordes.Count; horde++)
+        {
+            sum += Players[player].Hordes[horde].TotalHealth;
+            numHordes++;
+        }
+
+        meanHordeHealth = sum / numHordes;
 
         currentPerfBucket = Players.Count != 0 ? Players[0].Runner.Tick % recoverPerfLevel : 0;
     }
