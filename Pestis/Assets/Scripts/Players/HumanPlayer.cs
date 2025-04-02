@@ -38,6 +38,7 @@ namespace Players
                 UI_manager.hordesListPanel.SetActive(true);
                 UI_manager.HordesListRefresh();
                 UI_manager.timer.parent.SetActive(true);
+                StartCoroutine(UI_manager.showReset());
             }
         }
 

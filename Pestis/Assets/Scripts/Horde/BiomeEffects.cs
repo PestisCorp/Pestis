@@ -24,7 +24,7 @@ public class BiomeEffects : MonoBehaviour
     
     void DetectTileBeneath()
     {
-        Vector3Int playerCell = tilemap.WorldToCell(transform.position);
+        Vector3Int playerCell = tilemap.WorldToCell(horde.GetBounds().center);
         TileBase tileBelow = tilemap.GetTile(playerCell);
 
         if (tileBelow is BiomeTile biome)

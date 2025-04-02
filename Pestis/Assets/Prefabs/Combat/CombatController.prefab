@@ -95,7 +95,7 @@ MonoBehaviour:
   targetFactor: 1
   boidShader: {fileID: 7200000, guid: a84fc26fdda44fa8946142e0f9fa2867, type: 3}
   gridShader: {fileID: 7200000, guid: 09b3d2d9369c4b7dab8d97a7e83f5eaf, type: 3}
-  boidMat: {fileID: 2100000, guid: 14e523a1206d6077695982ee0599c60b, type: 2}
+  boidMat: {fileID: 2100000, guid: 27507e2cad784b26aae8564b36e46ae3, type: 2}
   deadBoidMat: {fileID: 2100000, guid: 5f6be8f0d010ed2ca8a5dda610fa09ee, type: 2}
   TargetPos: {x: 0, y: 0}
   paused: 0

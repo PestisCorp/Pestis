@@ -68,7 +68,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RatUpRight:
-        m_Texture: {fileID: 2800000, guid: e2d1880e9e38cc77eb05325dd83db6b7, type: 3}
+        m_Texture: {fileID: -8328923581568760697, guid: 32f50929797bf4c0d91b86e7ca2cdbae, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
