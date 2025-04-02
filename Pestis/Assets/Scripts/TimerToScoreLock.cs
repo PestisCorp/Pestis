@@ -1,16 +1,23 @@
+using Fusion;
+using Players;
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using static Unity.Collections.Unicode;
 
 public class TimerToScoreLock : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     public TMPro.TMP_Text timerText;
     public TMPro.TMP_Text scoreText;
+    public Button resetButton;
+    public GameObject resetButtonUI;
+    public GameObject parent;
     public void UpdateScore(ulong ScoreToDisplay)
     {
-
-        scoreText.text = ScoreToDisplay.ToString();
+        scoreText.text = ScoreToDisplay.ToString() + " pts";
     }
-
     public void UpdateTimer(int timeToDisplay)
     {
 
@@ -18,4 +25,13 @@ public class TimerToScoreLock : MonoBehaviour
         int seconds = Mathf.FloorToInt(timeToDisplay % 60);
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
+
+    public static void reset(GameObject[] destroy)
+    {
+        foreach (GameObject go in destroy) {GameObject.Destroy(go);}
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+    }
+
+
 }

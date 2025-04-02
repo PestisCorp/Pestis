@@ -218,16 +218,22 @@ void InitBoids(uint3 id: SV_DispatchThreadID)
 [numthreads(blockSize, 1, 1)]
 void UpdateBoids(uint3 id : SV_DispatchThreadID)
 {
-    if (id.x >= numBoids || boidsIn[id.x].dead)
+    Boid boid = boidsIn[id.x];
+
+    if (id.x >= numBoids || boid.dead)
     {
-        if (boidsIn[id.x].dead)
+        if (boid.dead)
         {
-            boidsOut[id.x] = boidsIn[id.x];
+            BoidPoi poi = pois[boid.poi];
+            if (boid.poiBoid < poi.numBoids)
+            {
+                boid.dead = false;
+            }
+            boidsOut[id.x] = boid;
         }
         return;
     }
 
-    Boid boid = boidsIn[id.x];
 
     MergedBehaviours(boid, id);
     LimitSpeed(boid);
