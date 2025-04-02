@@ -1,5 +1,25 @@
 @import 'tailwindcss';
 
+@font-face {
+    font-family: Monocraft;
+    font-style: normal;
+    font-weight: normal;
+    font-display: swap;
+    src: url("/Monocraft-01.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: Monocraft;
+    font-style: normal;
+    font-weight: bold;
+    font-display: swap;
+    src: url("/Monocraft-Bold-05.ttf") format("truetype");
+}
+
+@theme {
+    --font-sans: "Monocraft", "sans-serif";
+}
+
 @layer components {
     .leaderboard-column {
         flex: 1;
