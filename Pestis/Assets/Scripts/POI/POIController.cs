@@ -36,6 +36,8 @@ namespace POI
         [Networked] [Capacity(4)] public NetworkLinkedList<HordeController> StationedHordes { get; } = default;
 
         [Networked] [CanBeNull] public CombatController Combat { get; private set; }
+        
+        private float TimeWhenPoiAbandoned { get; set; }
 
         public void Awake()
         {
@@ -64,6 +66,17 @@ namespace POI
                 var flag = flagObject.AddComponent<Image>();
                 captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_uncaptured");
                 flag.sprite = captureFlag;
+            }
+        }
+
+        public override void FixedUpdateNetwork()
+        {
+            // Respawn human patrol if POI has not been controlled for a while
+            if (patrolController.HumanCount == 0 && StationedHordes.Count == 0 &&
+                Runner.RemoteRenderTime - TimeWhenPoiAbandoned > 100f)
+            {
+                patrolController.UpdateHumanCountRpc(patrolController.startingHumanCount);
+                ControlledBy = null;
             }
         }
 
@@ -130,6 +143,11 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
                 captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_enemy");
                 flag.sprite = captureFlag;
             }
+            else
+            {
+                captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_uncaptured");
+                flag.sprite = captureFlag;
+            }
         }
 
         public void EmitCaptureEffect()
@@ -159,6 +177,10 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         public void UnStationHordeRpc(HordeController horde, RpcInfo rpcInfo = default)
         {
             StationedHordes.Remove(horde);
+            if (StationedHordes.Count == 0)
+            {
+                TimeWhenPoiAbandoned = Runner.SimulationTime;
+            }
         }
 
         public override void Spawned()
