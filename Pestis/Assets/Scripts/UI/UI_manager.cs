@@ -47,7 +47,7 @@ public class UI_Manager : MonoBehaviour
     public GameObject hordesListPanel;
     public Transform hordesListContentParent;
     public GameObject hordeButtonPrefab;
-
+    public GameObject mugshotImage;
     public GameObject mutationButtonOne;
     public GameObject mutationButtonTwo;
     public GameObject mutationButtonThree;
@@ -274,6 +274,8 @@ public class UI_Manager : MonoBehaviour
 
         // Find all GameObjects with the tag "UI_mutations_text"
         var taggedObjects2 = GameObject.FindGameObjectsWithTag("UI_mutations_text");
+
+        mugshotImage.GetComponent<Image>().sprite = GetSelectedHorde().Boids.GetSpriteFromMat();
 
         // Loop through and find the one specific to the info panel with name "Info_mutations"
         foreach (var obj in taggedObjects2)
