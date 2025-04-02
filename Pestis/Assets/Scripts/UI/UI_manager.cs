@@ -360,13 +360,7 @@ public class UI_Manager : MonoBehaviour
     {
         return inputHandler?.GetComponent<InputHandler>()?.LocalPlayer?.selectedHorde;
     }
-
-    // Function to retrieve the selected enemy horde and return it
-    private HordeController GetSelectedEnemyHorde()
-    {
-        return inputHandler?.GetComponent<InputHandler>()?.LocalPlayer?.selectedEnemyHorde;
-    }
-
+    
     // Function to update the stats text field of the passed game object
     // Using the template:
     // • Population: XX

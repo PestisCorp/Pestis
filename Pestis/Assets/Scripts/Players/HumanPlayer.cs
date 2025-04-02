@@ -8,7 +8,6 @@ namespace Players
     public class HumanPlayer : MonoBehaviour
     {
         [CanBeNull] public HordeController selectedHorde;
-        [CanBeNull] public HordeController selectedEnemyHorde;
 
         // Whether this HumanPlayer is the one being controlled by the player on this machine.
         public bool IsLocal;
@@ -44,38 +43,22 @@ namespace Players
 
         public void SelectHorde(HordeController horde)
         {
-            if (horde.player.IsLocal)
+            if (!horde.player.IsLocal) return;
+            if (horde.isApparition) return;
+            if (selectedHorde && selectedHorde != horde) selectedHorde.UnHighlight();
+            if (selectedHorde == horde) return;
+            selectedHorde = horde;
+            selectedHorde?.Highlight();
+            if (selectedHorde.player.IsLocal)
             {
-                if (horde.isApparition) return;
-                if (selectedHorde && selectedHorde != horde) selectedHorde.UnHighlight();
-                if (selectedHorde != horde)
-                {
-                    selectedHorde = horde;
-                    selectedHorde?.Highlight();
-                    if (selectedHorde.player.IsLocal)
-                    {
-                        UI_manager.InfoPanelEnable();
-                    }
-                }
-            }
-            else
-            {
-                if (selectedEnemyHorde && selectedEnemyHorde != horde) selectedEnemyHorde.UnHighlight();
-
-                if (selectedEnemyHorde != horde)
-                {
-                    selectedEnemyHorde = horde;
-                    selectedEnemyHorde?.Highlight();
-                }
+                UI_manager.InfoPanelEnable();
             }
         }
 
         public void DeselectHorde()
         {
             selectedHorde?.UnHighlight();
-            selectedEnemyHorde?.UnHighlight();
             selectedHorde = null;
-            selectedEnemyHorde = null;
             UI_manager.InfoPanelDisable();
             UI_manager.MutationPopUpDisable();
             UI_manager.MutationViewerDisable();
