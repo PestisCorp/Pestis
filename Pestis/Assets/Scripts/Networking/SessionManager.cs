@@ -314,18 +314,24 @@ namespace Networking
             }
         }
 
-        private void StealBots()
+        /// <summary>
+        ///     Steal bots from other clients to spread bot load out
+        /// </summary>
+        /// <param name="numSpawned">The number of bots the client has spawned in itself</param>
+        private void StealBots(int numSpawned)
         {
-            var numBots = Players.Count(slot => slot.IsBot && slot.InUse);
+            var numBots = Players.Count(slot => slot.IsBot && slot.InUse && slot.PlayerRef != Runner.LocalPlayer) +
+                          numSpawned;
 
             var botsByClient = Players.Select((slot, i) => new KeyValuePair<int, PlayerSlot>(i, slot)).Where(slot =>
                     slot.Value.InUse && slot.Value.IsBot && slot.Value.PlayerRef != Runner.LocalPlayer)
                 .GroupBy(kvp => kvp.Value.PlayerRef).Select(group => group.ToList()).ToArray();
 
-            var botsPerClient = numBots / botsByClient.Length;
+            // +1 to include self
+            var botsPerClient = numBots / (botsByClient.Length + 1);
 
             // Bots this client already owns
-            var botsStolen = Players.Count(slot => slot.IsBot && slot.PlayerRef == Runner.LocalPlayer && slot.InUse);
+            var botsStolen = numSpawned;
             for (var i = 0; botsStolen < botsPerClient; i = (i + 1) % botsByClient.Length)
             {
                 StealBot(botsByClient[i].Last().Key);
@@ -376,7 +382,7 @@ namespace Networking
                     botsToSpawn--;
                 }
 
-                StealBots();
+                StealBots(Math.Min(neededPlayers, _room.Config.MaxBotsPerClient));
 
                 return;
             }
