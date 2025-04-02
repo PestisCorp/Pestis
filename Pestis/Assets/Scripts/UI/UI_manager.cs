@@ -154,7 +154,7 @@ public class UI_Manager : MonoBehaviour
 
     //automatically shows reset once timer is 0
 
-    private IEnumerator showReset()
+    public IEnumerator showReset()
     {
         timer.resetButtonUI.SetActive(false);
         Debug.Log("set false");
