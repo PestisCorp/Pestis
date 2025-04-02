@@ -13,7 +13,6 @@ public class TimerToScoreLock : MonoBehaviour
     public TMPro.TMP_Text scoreText;
     public Button resetButton;
     public GameObject resetButtonUI;
-    public GameObject prefab;
     public GameObject parent;
     public void UpdateScore(ulong ScoreToDisplay)
     {
