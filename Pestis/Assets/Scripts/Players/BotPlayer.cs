@@ -102,7 +102,7 @@ namespace Players
 
                     if (attack)
                     {
-                        myHorde.AttackHorde(closestHorde, "");
+                        myHorde.AttackHorde(closestHorde);
                         return;
                     }
 
@@ -185,7 +185,7 @@ namespace Players
                     if (Random.Range(0.0f, 1.0f) < mostDesirable.Value)
                     {
                         Debug.Log("Offensive attack");
-                        myHorde.AttackHorde(mostDesirable.Key, "");
+                        myHorde.AttackHorde(mostDesirable.Key);
                         AggressionUncapped = 0.0f;
                         return;
                     }

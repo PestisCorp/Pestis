@@ -470,8 +470,7 @@ Count: {AliveRats}
                 player.RemoveCheeseRpc(player.CurrentCheese * 0.1f);
                 _targetHorde.player.AddCheeseRpc(player.CurrentCheese * 0.1f);
             }
-
-            _combatStrategy = null;
+            
             _targetHorde = null;
         }
 
@@ -667,7 +666,7 @@ Count: {AliveRats}
             targetLocation.Teleport(poi.transform.position);
         }
 
-        public void AttackHorde(HordeController target, string combatOption)
+        public void AttackHorde(HordeController target)
         {
             // Don't fight if we're below 10 rats
             if (TotalHealth < 10 * populationController.GetState().HealthPerRat) return;
@@ -693,7 +692,6 @@ Count: {AliveRats}
 
             targetLocation.Teleport(target.HordeBounds.center);
             _targetHorde = target;
-            _combatStrategy = combatOption;
             AddSpeechBubbleRpc(EmoteType.Attack);
             if (player.IsLocal) GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.CombatStarted, 1);
         }
