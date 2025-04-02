@@ -114,7 +114,7 @@ public class BiomeClass : ScriptableObject
             }
 
             //2: Place other POIs in a circle around the city
-            PlacePoisInCircle(cityWorldPos, circlePoiCount, avgRadius, radiusVariation, minPoiDistance, FeatureList,
+            PlacePoisInCircle(cityWorldPos, circlePoiCount, avgRadius, radiusVariation, minPoiDistance, FeatureList, map,
                 parent.transform);
         }
     }
@@ -131,7 +131,7 @@ public class BiomeClass : ScriptableObject
         float averageRadius, // The typical distance from the city
         float radiusSpread, // How much the radius can vary
         float minDistance, // Minimum distance between POIs
-        GameObject[] poiPrefabs,
+        GameObject[] poiPrefabs, Tilemap map,
         Transform parent
     )
     {
@@ -160,15 +160,23 @@ public class BiomeClass : ScriptableObject
 
                 // Check if this spawnPos is too close to any already placed POI
                 bool tooClose = false;
-                foreach (var existingPos in placedPositions)
+
+                Vector3Int cellPosition = map.WorldToCell(spawnPos); // Convert world to tilemap cell position
+                if (!map.HasTile(cellPosition))
                 {
-                    if (Vector3.Distance(spawnPos, existingPos) < minDistance)
+                    tooClose = true;
+                }
+                else
+                {
+                    foreach (var existingPos in placedPositions)
                     {
-                        tooClose = true;
-                        break;
+                        if (Vector3.Distance(spawnPos, existingPos) < minDistance)
+                        {
+                            tooClose = true;
+                            break;
+                        }
                     }
                 }
-
                 // If not too close, place the POI here
                 if (!tooClose)
                 {
