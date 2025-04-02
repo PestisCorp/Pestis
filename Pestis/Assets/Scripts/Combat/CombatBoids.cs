@@ -523,39 +523,41 @@ namespace Combat
             var downTextureArray = new Texture2DArray(64, 64, containedHordes.Count, TextureFormat.ARGB32, false);
             for (var i = 0; i < containedHordes.Count; i++)
             {
+                var id = hordeIDs[containedHordes[i]];
+
                 var material = containedHordes[i].Boids.GetMaterial();
                 var upTex = material.GetTexture("_RatUp") as Texture2D;
                 var upTexColours = upTex.GetPixels();
-                upTextureArray.SetPixels(upTexColours, i);
+                upTextureArray.SetPixels(upTexColours, id);
 
                 var rightTex = material.GetTexture("_RatRight") as Texture2D;
                 var righTexColours = rightTex.GetPixels();
-                rightTextureArray.SetPixels(righTexColours, i);
+                rightTextureArray.SetPixels(righTexColours, id);
 
 
                 var upRightTex = material.GetTexture("_RatUpRight") as Texture2D;
                 var upRightTexColours = upRightTex.GetPixels();
-                upRightTextureArray.SetPixels(upRightTexColours, i);
+                upRightTextureArray.SetPixels(upRightTexColours, id);
 
                 var upLeftTex = material.GetTexture("_RatUpLeft") as Texture2D;
                 var upLeftTexColours = upLeftTex.GetPixels();
-                upLeftTextureArray.SetPixels(upLeftTexColours, i);
+                upLeftTextureArray.SetPixels(upLeftTexColours, id);
 
                 var leftTex = material.GetTexture("_RatLeft") as Texture2D;
                 var leftTexColours = leftTex.GetPixels();
-                leftTextureArray.SetPixels(leftTexColours, i);
+                leftTextureArray.SetPixels(leftTexColours, id);
 
                 var downTex = material.GetTexture("_RatDown") as Texture2D;
                 var downTexColours = downTex.GetPixels();
-                downTextureArray.SetPixels(downTexColours, i);
+                downTextureArray.SetPixels(downTexColours, id);
 
                 var downRightTex = material.GetTexture("_RatDownRight") as Texture2D;
                 var downRightTexColours = downRightTex.GetPixels();
-                downRightTextureArray.SetPixels(downRightTexColours, i);
+                downRightTextureArray.SetPixels(downRightTexColours, id);
 
                 var downLeftTex = material.GetTexture("_RatDownLeft") as Texture2D;
                 var downLeftTexColours = downLeftTex.GetPixels();
-                downLeftTextureArray.SetPixels(downLeftTexColours, i);
+                downLeftTextureArray.SetPixels(downLeftTexColours, id);
             }
 
             upTextureArray.Apply();
@@ -567,14 +569,17 @@ namespace Combat
             downRightTextureArray.Apply();
             downTextureArray.Apply();
 
-            boidMat.SetTexture("_RatUpArr", upTextureArray);
-            boidMat.SetTexture("_RatUpRightArr", upRightTextureArray);
-            boidMat.SetTexture("_RatUpLeftArr", upLeftTextureArray);
-            boidMat.SetTexture("_RatLeftArr", leftTextureArray);
-            boidMat.SetTexture("_RatRightArr", rightTextureArray);
-            boidMat.SetTexture("_RatDownLeftArr", downLeftTextureArray);
-            boidMat.SetTexture("_RatDownRightArr", downRightTextureArray);
-            boidMat.SetTexture("_RatDownArr", downTextureArray);
+            var newMat = new Material(boidMat);
+            newMat.SetTexture("_RatUpArr", upTextureArray);
+            newMat.SetTexture("_RatUpRightArr", upRightTextureArray);
+            newMat.SetTexture("_RatUpLeftArr", upLeftTextureArray);
+            newMat.SetTexture("_RatLeftArr", leftTextureArray);
+            newMat.SetTexture("_RatRightArr", rightTextureArray);
+            newMat.SetTexture("_RatDownLeftArr", downLeftTextureArray);
+            newMat.SetTexture("_RatDownRightArr", downRightTextureArray);
+            newMat.SetTexture("_RatDownArr", downTextureArray);
+
+            rp.material = newMat;
 
             boidShader.SetInt("numBoids", numBoids.Values.Sum());
             _justAddedBoids = true;
