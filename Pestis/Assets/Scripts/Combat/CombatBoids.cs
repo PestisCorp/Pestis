@@ -35,7 +35,7 @@ namespace Combat
         [SerializeField] private ComputeShader gridShader;
         [SerializeField] private Material boidMat;
         [SerializeField] private Material deadBoidMat;
-        
+
 
         public Vector2 TargetPos;
 
@@ -221,7 +221,6 @@ namespace Combat
 
             boidShader.SetInt("player", -1);
             boidShader.SetInt("horde", -1);
-            
 
 
             AttachBuffers();
@@ -552,7 +551,10 @@ namespace Combat
             {
                 var id = hordeIDs[containedHordes[i]];
 
-                var material = containedHordes[i].Boids.GetMaterial();
+                if (!Runner.TryFindBehaviour<HordeController>(containedHordes[i], out var horde))
+                    Debug.LogWarning($"Failed to find horde {containedHordes[i]} to get texture");
+
+                var material = horde.Boids.GetMaterial();
                 var upTex = material.GetTexture("_RatUp") as Texture2D;
                 var upTexColours = upTex.GetPixels();
                 upTextureArray.SetPixels(upTexColours, id);
