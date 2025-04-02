@@ -1,4 +1,3 @@
-using System;
 using Horde;
 using JetBrains.Annotations;
 using Players;
@@ -7,19 +6,15 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering.Universal;
 
 public class InputHandler : MonoBehaviour
 {
     public static InputHandler Instance;
 
     [CanBeNull] public HumanPlayer LocalPlayer;
-    public UI_Manager UIManager;
-    private float _aspectRatio;
     private InputAction _cameraZoom;
 
     private Camera _mainCamera;
-    private int _maxX;
 
     private InputAction _moveCamAction;
 
@@ -27,8 +22,6 @@ public class InputHandler : MonoBehaviour
     {
         Instance = this;
         _mainCamera = Camera.main;
-        _maxX = Screen.width * 4;
-        _aspectRatio = (float)Screen.height / Screen.width;
         _moveCamAction = InputSystem.actions.FindAction("Navigate");
         _cameraZoom = InputSystem.actions.FindAction("ScrollWheel");
     }
