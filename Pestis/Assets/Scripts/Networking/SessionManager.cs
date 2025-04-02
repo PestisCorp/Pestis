@@ -471,7 +471,7 @@ namespace Networking
                     {
                         case CommandType.Restart when !alreadyRestarted:
                             alreadyRestarted = true;
-                            // TODO
+                            TimerToScoreLock.reset(UI_Manager.Instance.destroy);
                             break;
 
                         case CommandType.Restart:
