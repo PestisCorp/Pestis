@@ -4,8 +4,10 @@ using System.Runtime.InteropServices;
 using Combat;
 using Horde;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Random = UnityEngine.Random;
 
 public struct Boid
 {
@@ -41,6 +43,15 @@ public class RatBoids : MonoBehaviour
     ///     How many boids to account for in initial memory allocations
     /// </summary>
     private static readonly int INITIAL_BOID_MEMORY_ALLOCATION = 2048;
+
+    private static readonly int RatLeft = Shader.PropertyToID("_RatLeft");
+    private static readonly int RatUp = Shader.PropertyToID("_RatUp");
+    private static readonly int RatUpLeft = Shader.PropertyToID("_RatUpLeft");
+    private static readonly int RatDownLeft = Shader.PropertyToID("_RatDownLeft");
+    private static readonly int RatDown = Shader.PropertyToID("_RatDown");
+    private static readonly int RatRight = Shader.PropertyToID("_RatRight");
+    private static readonly int RatUpRight = Shader.PropertyToID("_RatUpRight");
+    private static readonly int RatDownRight = Shader.PropertyToID("_RatDownRight");
 
     [Header("Settings")] [SerializeField] private float maxSpeed = 2;
 
@@ -596,7 +607,74 @@ public class RatBoids : MonoBehaviour
         combatBoids.AddBoids(boidBufferOut, numBoids, myHorde);
         combatBoids.TargetPos = TargetPos;
     }
+    /// <summary>
+    ///     Need to flip the up-left, left, and down-left sprites to their right equivalents.
+    /// </summary>
+    /// <param name="original">The sprite to be flipped</param>
+    /// <returns>The flipped original sprite</returns>
+    private static Sprite FlipSprite(Sprite original)
+    {
+        var originalTex = original.texture;
+        var flippedTex = new Texture2D(originalTex.width, originalTex.height);
+        
+        for (var y = 0; y < originalTex.height; y++)
+        {
+            for (var x = 0; x < originalTex.width; x++)
+            {
+                flippedTex.SetPixel(originalTex.width - x - 1, y, originalTex.GetPixel(x, y));
+            }
+        }
 
+        flippedTex.Apply(); 
+        
+        var flippedSprite = Sprite.Create(
+            flippedTex, 
+            original.rect, 
+            new Vector2(0.5f, 0.5f), 
+            original.pixelsPerUnit
+        );
+
+        return flippedSprite;
+    }
+    
+    /// <summary>
+    ///  Set a new material for these boids
+    /// </summary>
+    public void SetBoidsMat()
+    {
+        var spriteID = Random.Range(0, 599);
+        var upSprite = Resources.Load<Sprite>("Rats/Top/rat_Top_" + spriteID);
+        var upLeftSprite = Resources.Load<Sprite>("Rats/UpLeft/rat_UpLeft_" + spriteID);
+        var upRightSprite = FlipSprite(upLeftSprite);
+        var leftSprite = Resources.Load<Sprite>("Rats/Left/rat_Left_" + spriteID);
+        var rightSprite = FlipSprite(leftSprite);
+        var downLeftSprite = Resources.Load<Sprite>("Rats/DownLeft/rat_DownLeft_" + spriteID);
+        var downRightSprite = FlipSprite(downLeftSprite);
+        var downSprite = Resources.Load<Sprite>("Rats/Down/rat_Down_" + spriteID);
+        
+        boidMat = new Material(boidMat);
+        
+        boidMat.SetTexture(RatUp, upSprite.texture);
+        boidMat.SetTexture(RatUpLeft, upLeftSprite.texture);
+        boidMat.SetTexture(RatLeft, leftSprite.texture);
+        boidMat.SetTexture(RatDownLeft, downLeftSprite.texture);
+        boidMat.SetTexture(RatDown, downSprite.texture);
+        boidMat.SetTexture(RatRight, rightSprite.texture);
+        boidMat.SetTexture(RatUpRight, upRightSprite.texture);
+        boidMat.SetTexture(RatDownRight, downRightSprite.texture);
+    }
+
+    public Material GetMaterial()
+    {
+        return boidMat;
+    }
+    
+    public Sprite GetSpriteFromMat()
+    {
+        var tex = boidMat.GetTexture(RatRight) as Texture2D;
+        return Sprite.Create(tex, new Rect(0, 0, tex!.width, tex.height), new Vector2(0.5f, 0.5f));
+    }
+    
     /// <summary>
     ///     Set my internal boids to some specific boids, used for transferring boids from one to another when splitting horde.
     /// </summary>

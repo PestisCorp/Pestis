@@ -23,6 +23,7 @@ TagManager:
   - tilemap
   - mutation_bg
   - no_points
+  - rat_mugshot
   layers:
   - Default
   - TransparentFX
