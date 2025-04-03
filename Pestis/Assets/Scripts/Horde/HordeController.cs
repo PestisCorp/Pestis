@@ -506,11 +506,13 @@ Count: {AliveRats}
 
             targetLocation = transform.Find("TargetLocation").gameObject.GetComponent<NetworkTransform>();
 
+            Canvas canvas = transform.Find("Canvas").gameObject.GetComponent<Canvas>();
             _playerText = transform.Find("Canvas/PlayerName").gameObject;
             _combatText = transform.Find("Canvas/PlayerName/Combat").gameObject;
 
             var text = _playerText.transform.Find("Border/Background/Text").GetComponent<TMP_Text>();
             var textBackground = _playerText.transform.Find("Border/Background").GetComponent<Image>();
+            var textSize = _playerText.transform.Find("Border/Background/Text").GetComponent<Transform>();
 
             text.text = player.Username;
             hordeIcon = transform.Find("Canvas/PlayerName/HordeIcon").gameObject;
@@ -519,9 +521,16 @@ Count: {AliveRats}
 
             if (player.IsLocal)
             {
+                canvas.sortingOrder = 0;
+                
                 var iconSprite = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_self");
-                textBackground.color = new Color(255, 215, 0, 255);
                 icon.sprite = iconSprite;
+                icon.color = new Color(1f, 1f, 1f);
+                hordeIcon.transform.localScale = new Vector3(1f, 1f, 1f);
+
+                textBackground.color = new Color(0.9137255f, 0.7568628f, 0.4666667f);
+                textSize.localScale = new Vector3(1f, 1f, 1f);
+                
                 GameManager.Instance.UIManager.AbilityBars[this] =
                     Instantiate(GameManager.Instance.UIManager.abilityToolbar,
                         GameManager.Instance.UIManager.abilityPanel.transform);
@@ -530,9 +539,17 @@ Count: {AliveRats}
             }
             else
             {
+                canvas.sortingOrder = -1;
+                
                 var iconSprite = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_enemy");
                 icon.sprite = iconSprite;
+                icon.color = new Color(0.85f, 0.85f, 0.85f);
+                hordeIcon.transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
+                
+                textBackground.color = new Color(0.6f, 0f, 0f);
+                textSize.localScale = new Vector3(0.85f, 0.85f, 0.85f);
             }
+            
             Boids.SetBoidsMat();
             if (CurrentCombatController)
             {
