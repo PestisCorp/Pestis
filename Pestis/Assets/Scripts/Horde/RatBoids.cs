@@ -4,6 +4,8 @@ using System.Runtime.InteropServices;
 using Combat;
 using Horde;
 using Unity.Mathematics;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Random = UnityEngine.Random;
@@ -636,10 +638,10 @@ public class RatBoids : MonoBehaviour
     private static Sprite FlipSprite(Sprite original)
     {
         var originalTex = original.texture;
-        var flippedTex = new Texture2D(originalTex.width, originalTex.height)
+        var flippedTex = new Texture2D(originalTex.width, originalTex.height, originalTex.format, false)
         {
             filterMode = originalTex.filterMode,
-            wrapMode = originalTex.wrapMode
+            wrapMode = originalTex.wrapMode,
         };
         for (var y = 0; y < originalTex.height; y++)
         for (var x = 0; x < originalTex.width; x++)
@@ -656,7 +658,7 @@ public class RatBoids : MonoBehaviour
             new Vector2(0.5f, 0.5f),
             original.pixelsPerUnit
         );
-
+    
         return flippedSprite;
     }
 
@@ -694,7 +696,7 @@ public class RatBoids : MonoBehaviour
 
     public Sprite GetSpriteFromMat()
     {
-        var tex = boidMat.GetTexture(RatRight) as Texture2D;
+        var tex = boidMat.GetTexture(RatLeft) as Texture2D;
         return Sprite.Create(tex, new Rect(0, 0, tex!.width, tex.height), new Vector2(0.5f, 0.5f));
     }
 

@@ -5,14 +5,25 @@ using Fusion;
 using Horde;
 using Human;
 using JetBrains.Annotations;
+using Networking;
 using Objectives;
 using Players;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace POI
 {
+    public enum POIType
+    {
+        Farm,
+        Lab,
+        City,
+        Camp,
+        Van
+    }
+    
     public class PoiController : NetworkBehaviour
     {
         public ParticleSystem[] captureEffect;
@@ -29,15 +40,35 @@ namespace POI
 
         public Collider2D Collider { get; private set; }
 
+        public Player ControlledBy
+        {
+            get
+            {
+                try
+                {
+                    var bla = ControlledByNetworked.Id;
+                    return ControlledByNetworked;
+                }
+                catch (Exception e) // Previous controller doesn't exist anymore
+                {
+                    ControlledByNetworked = null;
+                    return null;
+                }
+            }
+            private set => ControlledByNetworked = value;
+        }
+
         [Networked]
         [OnChangedRender(nameof(UpdateFlag))]
-        public Player ControlledBy { get; private set; }
+        private Player ControlledByNetworked { get; set; }
 
         [Networked] [Capacity(4)] public NetworkLinkedList<HordeController> StationedHordes { get; } = default;
 
         [Networked] [CanBeNull] public CombatController Combat { get; private set; }
-        
+
         private float TimeWhenPoiAbandoned { get; set; }
+        
+        private POIType _poiType;
 
         public void Awake()
         {
@@ -67,16 +98,25 @@ namespace POI
                 captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_uncaptured");
                 flag.sprite = captureFlag;
             }
-        }
 
-        public override void FixedUpdateNetwork()
-        {
-            // Respawn human patrol if POI has not been controlled for a while
-            if (patrolController.HumanCount == 0 && StationedHordes.Count == 0 &&
-                Runner.RemoteRenderTime - TimeWhenPoiAbandoned > 100f)
+            if (name.Contains("Lab"))
             {
-                patrolController.UpdateHumanCountRpc(patrolController.startingHumanCount);
-                ControlledBy = null;
+                _poiType = POIType.Lab;
+            }
+
+            if (name.Contains("City"))
+            {
+                _poiType = POIType.City;
+            }
+
+            if (name.Contains("Camp"))
+            {
+                _poiType = POIType.Camp;
+            }
+
+            if (name.Contains("Van"))
+            {
+                _poiType = POIType.Van;
             }
         }
 
@@ -103,6 +143,17 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             }
         }
 #endif
+
+        public override void FixedUpdateNetwork()
+        {
+            // Respawn human patrol if POI has not been controlled for a while
+            if (patrolController.HumanCount == 0 && StationedHordes.Count == 0 &&
+                Runner.RemoteRenderTime - TimeWhenPoiAbandoned > 100f)
+            {
+                patrolController.UpdateHumanCountRpc(patrolController.startingHumanCount);
+                ControlledBy = null;
+            }
+        }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void RemoveControllerRpc()
@@ -132,7 +183,30 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             Debug.Log($"Fixed cheese rate is {_cheesePerTick}");
             ControlledBy.IncrementCheeseIncrementRateRpc(_cheesePerTick);
             StationedHordes.Clear();
+            switch (_poiType)
+            {
+                case POIType.City:
+                    foreach (var horde in player.Hordes)
+                    {
+                        horde.AliveRats = new IntPositive((uint)((uint)horde.AliveRats * 1.1));
+                    }
+                    GameManager.Instance.UIManager.AddNotification("City captured. Population increased", Color.black);
+                    break;
+                case POIType.Lab:
+                    foreach (var horde in player.Hordes)
+                    {
+                        horde.GetComponent<EvolutionManager>().PointsAvailable += 1;
+                        horde.AddSpeechBubbleRpc(EmoteType.Evolution);
+                    }
+                    GameManager.Instance.UIManager.AddNotification("Lab captured. Mutation points acquired.", Color.black);
+                    break;
+                case POIType.Farm:
+                    player.AddCheeseRpc(100);
+                    GameManager.Instance.UIManager.AddNotification("Farm captured. Food package acquired.", Color.black);
+                    break;
+            }
             if (player.IsLocal) GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.POICaptured, 1);
+            if (player.IsLocal) GameManager.Instance.PlaySfx(SoundEffectType.POICapture);
         }
 
         private void UpdateFlag()
@@ -184,10 +258,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         public void UnStationHordeRpc(HordeController horde, RpcInfo rpcInfo = default)
         {
             StationedHordes.Remove(horde);
-            if (StationedHordes.Count == 0)
-            {
-                TimeWhenPoiAbandoned = Runner.SimulationTime;
-            }
+            if (StationedHordes.Count == 0) TimeWhenPoiAbandoned = Runner.SimulationTime;
         }
 
         public override void Spawned()

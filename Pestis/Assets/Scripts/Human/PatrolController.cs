@@ -67,6 +67,11 @@ namespace Human
             enemyHorde = attacker;
         }
 
+        public float GetCurrentHumanHealth()
+        {
+            return CurrentHumanHealth;
+        }
+        
         public override void FixedUpdateNetwork()
         {
             if (enemyHorde)

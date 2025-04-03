@@ -15,7 +15,10 @@ using UnityEngine.Tilemaps;
 public enum SoundEffectType
 {
     BattleStart,
-    BattleEnd
+    BattleLoss,
+    BattleWin,
+    POICapture,
+    HumanScream
 }
 
 /// <summary>
@@ -104,8 +107,11 @@ public class GameManager : MonoBehaviour
 
         _soundEffects = new Dictionary<SoundEffectType, AudioClip>
         {
-            { SoundEffectType.BattleStart, Resources.Load<AudioClip>("SFX/Event_raidhorn4") },
-            { SoundEffectType.BattleEnd, Resources.Load<AudioClip>("SFX/Vote_started") }
+            { SoundEffectType.BattleStart, Resources.Load<AudioClip>("SFX/Combat Start 1") },
+            { SoundEffectType.BattleLoss, Resources.Load<AudioClip>("SFX/Combat Loss  1") },
+            { SoundEffectType.BattleWin, Resources.Load<AudioClip>("SFX/Combat Victory 1") },
+            { SoundEffectType.POICapture, Resources.Load<AudioClip>("SFX/Imporant Location captured") },
+            { SoundEffectType.HumanScream , Resources.Load<AudioClip>("SFX/Human Grunts Scared v4")}
         };
 
         pois = FindObjectsByType<PoiController>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
@@ -231,7 +237,7 @@ public class GameManager : MonoBehaviour
         // Crop end of list when hordes removed so we don't realloc a new list
         if (numHordes < AllHordes.Count)
         {
-            AllHordes.RemoveRange(numHordes, AllHordes.Count - 1);
+            AllHordes.RemoveRange(numHordes, AllHordes.Count - numHordes);
         }
         
         meanHordeHealth = sum / numHordes;

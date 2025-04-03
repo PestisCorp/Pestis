@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 5567642281979761609}
   m_Layer: 5
   m_Name: rat_img
-  m_TagString: Untagged
+  m_TagString: rat_img
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -245,8 +245,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 21, y: 11}
-  m_SizeDelta: {x: 30, y: 15}
+  m_AnchoredPosition: {x: 16.1, y: 11}
+  m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7945961069411865904
 CanvasRenderer:

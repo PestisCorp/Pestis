@@ -196,14 +196,17 @@ public class UI_Manager : MonoBehaviour
         foreach (Transform child in hordesListContentParent) Destroy(child.gameObject);
         foreach (var horde in localPlayer!.player.Hordes)
         {
+            if (horde.isApparition) continue;
             var hordeButton = Instantiate(hordeButtonPrefab, hordesListContentParent.transform);
             var textBoxes = hordeButton.GetComponentsInChildren<TextMeshProUGUI>();
             textBoxes[0].text = horde.AliveRats.ToString();
-            textBoxes[1].text = horde.GetComponent<EvolutionManager>().PointsAvailable.ToString();
+            textBoxes[1].text = horde.GetComponent<EvolutionManager>().PointsAvailable.ToString() + " pts";
             var button = hordeButton.GetComponent<Button>();
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(delegate { Camera.main.GetComponent<Panner>().PanTo(horde); });
             button.onClick.AddListener(delegate { localPlayer.SelectHorde(horde); });
+            var image = GetComponentsInChildrenWithTag<Image, GameObject>(hordeButton, "rat_img")[0];
+            image.sprite = horde.Boids.GetSpriteFromMat();
         }
 
         _refreshClock.Restart();
