@@ -40,14 +40,32 @@ namespace POI
 
         public Collider2D Collider { get; private set; }
 
+        public Player ControlledBy
+        {
+            get
+            {
+                try
+                {
+                    var bla = ControlledByNetworked.Id;
+                    return ControlledByNetworked;
+                }
+                catch (Exception e) // Previous controller doesn't exist anymore
+                {
+                    ControlledByNetworked = null;
+                    return null;
+                }
+            }
+            private set => ControlledByNetworked = value;
+        }
+
         [Networked]
         [OnChangedRender(nameof(UpdateFlag))]
-        public Player ControlledBy { get; private set; }
+        private Player ControlledByNetworked { get; set; }
 
         [Networked] [Capacity(4)] public NetworkLinkedList<HordeController> StationedHordes { get; } = default;
 
         [Networked] [CanBeNull] public CombatController Combat { get; private set; }
-        
+
         private float TimeWhenPoiAbandoned { get; set; }
         
         private POIType _poiType;
@@ -102,17 +120,6 @@ namespace POI
             }
         }
 
-        public override void FixedUpdateNetwork()
-        {
-            // Respawn human patrol if POI has not been controlled for a while
-            if (patrolController.HumanCount == 0 && StationedHordes.Count == 0 &&
-                Runner.RemoteRenderTime - TimeWhenPoiAbandoned > 100f)
-            {
-                patrolController.UpdateHumanCountRpc(patrolController.startingHumanCount);
-                ControlledBy = null;
-            }
-        }
-
 #if UNITY_EDITOR
         [DrawGizmo(GizmoType.Selected ^ GizmoType.NonSelected)]
         public void OnDrawGizmos()
@@ -136,6 +143,17 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             }
         }
 #endif
+
+        public override void FixedUpdateNetwork()
+        {
+            // Respawn human patrol if POI has not been controlled for a while
+            if (patrolController.HumanCount == 0 && StationedHordes.Count == 0 &&
+                Runner.RemoteRenderTime - TimeWhenPoiAbandoned > 100f)
+            {
+                patrolController.UpdateHumanCountRpc(patrolController.startingHumanCount);
+                ControlledBy = null;
+            }
+        }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void RemoveControllerRpc()
@@ -240,10 +258,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         public void UnStationHordeRpc(HordeController horde, RpcInfo rpcInfo = default)
         {
             StationedHordes.Remove(horde);
-            if (StationedHordes.Count == 0)
-            {
-                TimeWhenPoiAbandoned = Runner.SimulationTime;
-            }
+            if (StationedHordes.Count == 0) TimeWhenPoiAbandoned = Runner.SimulationTime;
         }
 
         public override void Spawned()

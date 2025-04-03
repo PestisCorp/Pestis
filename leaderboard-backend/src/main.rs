@@ -111,7 +111,7 @@ impl LeaderboardManager {
             info: Arc::new(RwLock::new(Info {
                 config: Config {
                     players_per_room: 100,
-                    max_bots_per_client: 25,
+                    max_bots_per_client: 10,
                 },
                 state: State { rooms: vec![] },
             })),
@@ -204,8 +204,7 @@ impl LeaderboardManager {
         drop(players);
         let mut info = self.info.write().await;
         for room in &mut info.state.rooms {
-            room.players
-                .retain(|player| !to_remove.contains(&player));
+            room.players.retain(|player| !to_remove.contains(&player));
         }
     }
 
@@ -424,7 +423,10 @@ async fn update_player(
                 .any(|player| *player == update.player.username)
             {
                 room.players.push(update.player.username.clone());
-                debug!("Added player {} to room {}", update.player.username, room.name);
+                debug!(
+                    "Added player {} to room {}",
+                    update.player.username, room.name
+                );
             }
             break;
         }
