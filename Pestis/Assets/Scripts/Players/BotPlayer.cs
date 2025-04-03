@@ -27,7 +27,7 @@ namespace Players
         /// <summary>
         ///     Multiplier to current `aggressionUncapped`, makes a horde more likely to take offensive action at all times
         /// </summary>
-        public float BaseAggression { get; private set; } = 5.0f;
+        public float BaseAggression { get; private set; } = 50.0f;
 
         /// <summary>
         ///     Arbitrary float, starts at 0.0, and increases over time - increasing desire to take offensive action. Reset to zero

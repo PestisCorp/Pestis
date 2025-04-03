@@ -79,7 +79,10 @@ namespace Players
 
         public override void Despawned(NetworkRunner runner, bool hasState)
         {
+            
             Debug.Log($"Player {(hasState ? Username : "unknown")} left");
+
+            foreach (var horde in Hordes) Destroy(horde);
             GameManager.Instance.Players.Remove(this);
             foreach (var poi in ControlledPOIs) poi.RemoveControllerRpc();
 

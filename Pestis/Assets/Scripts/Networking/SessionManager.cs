@@ -147,7 +147,7 @@ namespace Networking
         {
             // Get all bots that belong to the player that left
             var botsNeedingStealing = Players.Select((slot, index) => new KeyValuePair<int, PlayerSlot>(index, slot))
-                .Where(kvp => kvp.Value.PlayerRef == player && kvp.Value.InUse).ToList();
+                .Where(kvp => kvp.Value.PlayerRef == player && kvp.Value.InUse && kvp.Value.IsBot).ToList();
             // Get all clients still in game
             var clients = Players.Where(slot => slot.InUse).Select(slot => slot.PlayerRef).Distinct()
                 .Where(p => p != player).ToArray();
