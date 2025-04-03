@@ -6,7 +6,6 @@ using Combat;
 using Fusion;
 using Human;
 using JetBrains.Annotations;
-using KaimiraGames;
 using Networking;
 using Objectives;
 using Players;
@@ -847,46 +846,46 @@ Count: {AliveRats}
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void EventWonCombatRpc(HordeState[] hordes)
+        public void EventWonCombatRpc()
         {
             s_EventWonCombat.Begin();
             Debug.Log($"We ({Object.Id}) won combat!");
 
             if (player.IsLocal) GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.BattleWon, 1);
             if (player.IsLocal) GameManager.Instance.PlaySfx(SoundEffectType.BattleWin);
-            var state = GetEvolutionState();
-            var newMutations = new WeightedList<ActiveMutation>();
-            foreach (var hordeState in hordes)
-            {
-                if (player.Hordes.Any(horde => horde.Id.Object == hordeState.Horde)) continue;
-                state.PassiveEvolutions["attack"][1] = Math.Max(hordeState.Damage * 0.8,
-                    state.PassiveEvolutions["attack"][1]);
-                state.PassiveEvolutions["health"][1] = Math.Max(hordeState.HealthPerRat * 0.8,
-                    state.PassiveEvolutions["health"][1]);
-                state.PassiveEvolutions["defense"][1] = Math.Max(hordeState.DamageReduction * 0.8,
-                    state.PassiveEvolutions["defense"][1]);
-                foreach (var mut in hordeState.UnlockedMutations)
-                {
-                    // If horde has already unlocked the mutation, continue
-                    if (_evolutionManager.UnlockedMutationNames.Contains(mut)) continue;
-                    var mutation = state.AcquiredMutations.ToList().Find(x => x.Type == mut);
+            // var state = GetEvolutionState();
+            // var newMutations = new WeightedList<ActiveMutation>();
+            // foreach (var hordeState in hordes)
+            // {
+            //     if (player.Hordes.Any(horde => horde.Id.Object == hordeState.Horde)) continue;
+            //     state.PassiveEvolutions["attack"][1] = Math.Max(hordeState.Damage * 0.8,
+            //         state.PassiveEvolutions["attack"][1]);
+            //     state.PassiveEvolutions["health"][1] = Math.Max(hordeState.HealthPerRat * 0.8,
+            //         state.PassiveEvolutions["health"][1]);
+            //     state.PassiveEvolutions["defense"][1] = Math.Max(hordeState.DamageReduction * 0.8,
+            //         state.PassiveEvolutions["defense"][1]);
+            //     foreach (var mut in hordeState.UnlockedMutations)
+            //     {
+            //         // If horde has already unlocked the mutation, continue
+            //         if (_evolutionManager.UnlockedMutationNames.Contains(mut)) continue;
+            //         var mutation = state.AcquiredMutations.ToList().Find(x => x.Type == mut);
+            //
+            //         newMutations.Add(mutation, 1);
+            //     }
+            // }
 
-                    newMutations.Add(mutation, 1);
-                }
-            }
-
-            if (newMutations.Count > 0)
-            {
-                var newMutation = newMutations.Next();
-                _evolutionManager.ApplyActiveEffects(newMutation);
-                FindFirstObjectByType<UI_Manager>()
-                    .AddNotification($"You acquired a mutation, {newMutation.MutationName}, from your enemy.",
-                        Color.red);
-            }
-
-            if (state.PassiveEvolutions != GetEvolutionState().PassiveEvolutions)
-                FindFirstObjectByType<UI_Manager>()
-                    .AddNotification("In your conquests you have gained the strength of your subjects", Color.red);
+            // if (newMutations.Count > 0)
+            // {
+            //     var newMutation = newMutations.Next();
+            //     _evolutionManager.ApplyActiveEffects(newMutation);
+            //     FindFirstObjectByType<UI_Manager>()
+            //         .AddNotification($"You acquired a mutation, {newMutation.MutationName}, from your enemy.",
+            //             Color.red);
+            // }
+            //
+            // if (state.PassiveEvolutions != GetEvolutionState().PassiveEvolutions)
+            //     FindFirstObjectByType<UI_Manager>()
+            //         .AddNotification("In your conquests you have gained the strength of your subjects", Color.red);
             CurrentCombatController = null;
             if (!GetEvolutionState().AcquiredEffects.Contains("unlock_war_hawk"))
                 populationCooldown = 20.0f;

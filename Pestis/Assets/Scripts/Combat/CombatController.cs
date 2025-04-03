@@ -303,6 +303,8 @@ namespace Combat
         public void AddHordeRpc(HordeController horde)
         {
             s_AddHorde.Begin();
+            s_AddHorde.End();
+
             if (state == CombatState.Finished) throw new Exception("COMBAT: Tried to join finished combat.");
 
             // Player not in combat
@@ -329,7 +331,6 @@ namespace Combat
             horde.AddBoidsToCombatRpc(this);
 
             if (Participators.Count > 1 && state == CombatState.NotStarted) state = CombatState.InProgress;
-            s_AddHorde.End();
         }
 
         public bool HordeInCombat(HordeController horde)
@@ -392,7 +393,7 @@ namespace Combat
                     if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredEffects
                         .Contains("unlock_septic_bite"))
                         horde.GetComponent<PopulationController>().SetSepticMultRpc(1.0f);
-                    horde.EventWonCombatRpc(_allParticipants.ToArray());
+                    horde.EventWonCombatRpc();
                     break;
             }
         }
