@@ -217,9 +217,23 @@ public class GameManager : MonoBehaviour
         for (var horde = 0; horde < Players[player].Hordes.Count; horde++)
         {
             sum += Players[player].Hordes[horde].TotalHealth;
+            if (AllHordes.Count >= numHordes + 1)
+            {
+                AllHordes[numHordes] = Players[player].Hordes[horde];
+            }
+            else
+            {
+                AllHordes.Add(Players[player].Hordes[horde]);
+            }
             numHordes++;
         }
 
+        // Crop end of list when hordes removed so we don't realloc a new list
+        if (numHordes < AllHordes.Count)
+        {
+            AllHordes.RemoveRange(numHordes, AllHordes.Count - 1);
+        }
+        
         meanHordeHealth = sum / numHordes;
 
         currentPerfBucket = Players.Count != 0 ? Players[0].Runner.Tick % recoverPerfLevel : 0;

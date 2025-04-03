@@ -113,7 +113,7 @@ namespace Horde
         /// <summary>
         ///     Time in seconds since game start when the horde last finished combat
         /// </summary>
-        public float LastInCombat { get; private set; }
+        public float? LastInCombat { get; private set; }
 
         [Networked] public IntPositive AliveRats { get; set; }
 
@@ -138,9 +138,9 @@ namespace Horde
         [Networked]
         private Networking.Bounds HordeBoundsNetworked { set; get; }
 
-        private Bounds HordeBounds
+        public Bounds HordeBounds
         {
-            set => HordeBoundsNetworked = value;
+            private set => HordeBoundsNetworked = value;
 
             get => HordeBoundsNetworked;
         }
