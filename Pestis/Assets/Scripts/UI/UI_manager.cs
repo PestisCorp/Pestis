@@ -115,7 +115,7 @@ public class UI_Manager : MonoBehaviour
                         break;
                     case > 0:
                         cheeseRateText.text = "> Stockpiling <\n" +
-                                              "> Rats in-heat <";
+                                              "> Rats in heat <";
                         cheeseRateBackground.color = new Color(0, 0.65f, 0);
                         break;
                     default:
