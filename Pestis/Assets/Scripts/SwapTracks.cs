@@ -32,7 +32,7 @@ public class SwapTracks : MonoBehaviour
     }
     void CheckTrackSwap()
     {
-        if (InputHandler.Instance.LocalPlayer.selectedHorde == null || isFading)
+        if (InputHandler.Instance.LocalPlayer?.selectedHorde == null || isFading)
             return;
 
         Vector3Int pos = tilemap.WorldToCell(InputHandler.Instance.LocalPlayer.selectedHorde.GetCenter());
