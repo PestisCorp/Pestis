@@ -615,8 +615,11 @@ public class RatBoids : MonoBehaviour
     private static Sprite FlipSprite(Sprite original)
     {
         var originalTex = original.texture;
-        var flippedTex = new Texture2D(originalTex.width, originalTex.height);
-        
+        var flippedTex = new Texture2D(originalTex.width, originalTex.height)
+        {
+            filterMode = originalTex.filterMode,
+            wrapMode = originalTex.wrapMode
+        };
         for (var y = 0; y < originalTex.height; y++)
         {
             for (var x = 0; x < originalTex.width; x++)
@@ -624,8 +627,11 @@ public class RatBoids : MonoBehaviour
                 flippedTex.SetPixel(originalTex.width - x - 1, y, originalTex.GetPixel(x, y));
             }
         }
-
+        
+        
         flippedTex.Apply(); 
+        
+        flippedTex.anisoLevel = originalTex.anisoLevel;
         
         var flippedSprite = Sprite.Create(
             flippedTex, 
