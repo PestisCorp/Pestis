@@ -5,14 +5,25 @@ using Fusion;
 using Horde;
 using Human;
 using JetBrains.Annotations;
+using Networking;
 using Objectives;
 using Players;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace POI
 {
+    public enum POIType
+    {
+        Farm,
+        Lab,
+        City,
+        Camp,
+        Van
+    }
+    
     public class PoiController : NetworkBehaviour
     {
         public ParticleSystem[] captureEffect;
@@ -38,6 +49,8 @@ namespace POI
         [Networked] [CanBeNull] public CombatController Combat { get; private set; }
         
         private float TimeWhenPoiAbandoned { get; set; }
+        
+        private POIType _poiType;
 
         public void Awake()
         {
@@ -66,6 +79,26 @@ namespace POI
                 var flag = flagObject.AddComponent<Image>();
                 captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_uncaptured");
                 flag.sprite = captureFlag;
+            }
+
+            if (name.Contains("Lab"))
+            {
+                _poiType = POIType.Lab;
+            }
+
+            if (name.Contains("City"))
+            {
+                _poiType = POIType.City;
+            }
+
+            if (name.Contains("Camp"))
+            {
+                _poiType = POIType.Camp;
+            }
+
+            if (name.Contains("Van"))
+            {
+                _poiType = POIType.Van;
             }
         }
 
@@ -132,7 +165,30 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             Debug.Log($"Fixed cheese rate is {_cheesePerTick}");
             ControlledBy.IncrementCheeseIncrementRateRpc(_cheesePerTick);
             StationedHordes.Clear();
+            switch (_poiType)
+            {
+                case POIType.City:
+                    foreach (var horde in player.Hordes)
+                    {
+                        horde.AliveRats = new IntPositive((uint)((uint)horde.AliveRats * 1.1));
+                    }
+                    GameManager.Instance.UIManager.AddNotification("City captured. Population increased", Color.black);
+                    break;
+                case POIType.Lab:
+                    foreach (var horde in player.Hordes)
+                    {
+                        horde.GetComponent<EvolutionManager>().PointsAvailable += 1;
+                        horde.AddSpeechBubbleRpc(EmoteType.Evolution);
+                    }
+                    GameManager.Instance.UIManager.AddNotification("Lab captured. Mutation points acquired.", Color.black);
+                    break;
+                case POIType.Farm:
+                    player.AddCheeseRpc(100);
+                    GameManager.Instance.UIManager.AddNotification("Farm captured. Food package acquired.", Color.black);
+                    break;
+            }
             if (player.IsLocal) GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.POICaptured, 1);
+            if (player.IsLocal) GameManager.Instance.PlaySfx(SoundEffectType.POICapture);
         }
 
         private void UpdateFlag()

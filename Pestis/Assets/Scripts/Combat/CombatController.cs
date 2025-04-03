@@ -362,8 +362,9 @@ namespace Combat
                 case LeaveReason.WonCombat:
                     horde.RetrieveBoidsFromCombatRpc(this);
                     horde.AddSpeechBubbleRpc(EmoteType.Victory);
-                    if (horde.GetEvolutionState().AcquiredEffects.Contains("unlock_war_hawk"))
-                        horde.GetComponent<AbilityController>().RefreshCooldownsRpc();
+                    
+                    
+                        ;
 
                     if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredEffects
                         .Contains("unlock_septic_bite"))

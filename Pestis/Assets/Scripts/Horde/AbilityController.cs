@@ -5,6 +5,7 @@ using Fusion;
 using Human;
 using Networking;
 using POI;
+using TMPro;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,7 +25,6 @@ namespace Horde
     public class AbilityController : NetworkBehaviour
     {
         public int abilityHaste;
-        public bool forceCooldownRefresh;
         private HordeController _hordeController;
         private PopulationController _populationController;
 
@@ -169,8 +169,6 @@ namespace Horde
             newHorde.Move(_hordeController.targetLocation.transform.position - _hordeController.GetBounds().extents);
             GameManager.Instance.UIManager.ActionPanelDisable();
             GameManager.Instance.UIManager.ActionPanelEnable();
-
-
             StartCoroutine(Cooldown(120, calledBy, Abilities.Apparition));
             StartCoroutine(RemoveApparation(newHorde));
         }
@@ -228,6 +226,7 @@ namespace Horde
             }
             Destroy(calledBy.GetComponent<Tooltip>().tooltipInstance);
             _hordeController.DestroyHordeRpc();
+            GameManager.Instance.UIManager.ResetUI();
             foreach (var horde in _hordeController.player.Hordes)
                 horde.GetComponent<PopulationController>().SetBirthRateRpc(horde.GetPopulationState().BirthRate * 1.5);
         }
@@ -247,16 +246,8 @@ namespace Horde
             {
                 elapsedTime += Time.deltaTime;
                 cooldownBar.current = 100 - (int)(elapsedTime / duration * 100);
-                if (forceCooldownRefresh)
-                {
-                    cooldownBar.current = 0;
-                    forceCooldownRefresh = false;
-                    break;
-                }
-
                 yield return null;
             }
-
             calledBy.onClick.RemoveAllListeners();
             switch (ability)
             {
@@ -279,12 +270,6 @@ namespace Horde
         {
             _hordeController = GetComponent<HordeController>();
             _populationController = GetComponent<PopulationController>();
-        }
-
-        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void RefreshCooldownsRpc()
-        {
-            forceCooldownRefresh = true;
         }
     }
 }
