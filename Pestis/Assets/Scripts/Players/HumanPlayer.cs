@@ -38,6 +38,8 @@ namespace Players
                 UI_manager.HordesListRefresh();
                 UI_manager.timer.parent.SetActive(true);
                 StartCoroutine(UI_manager.showReset());
+                UI_manager.tutorialButton.SetActive(false);
+                UI_manager.tutorialButton.SetActive(true);
             }
         }
 
