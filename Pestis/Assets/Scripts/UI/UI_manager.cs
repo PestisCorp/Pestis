@@ -201,6 +201,8 @@ public class UI_Manager : MonoBehaviour
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(delegate { Camera.main.GetComponent<Panner>().PanTo(horde); });
             button.onClick.AddListener(delegate { localPlayer.SelectHorde(horde); });
+            var image = GetComponentsInChildrenWithTag<Image, GameObject>(hordeButton, "rat_img")[0];
+            image.sprite = horde.Boids.GetSpriteFromMat();
         }
 
         _refreshClock.Restart();
