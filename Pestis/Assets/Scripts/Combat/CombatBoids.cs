@@ -13,8 +13,8 @@ namespace Combat
     public class CombatBoids : MonoBehaviour
     {
         private const float blockSize = 512f;
-        private static readonly ProfilerMarker s_boundsMarker = new("CombatBoids.GetBounds");
-        private static readonly ProfilerMarker s_boundsHordeMarker = new("CombatBoids.GetBoundsHorde");
+        private static readonly ProfilerMarker s_boundsMarker = new("RPCCombatBoids.GetBounds");
+        private static readonly ProfilerMarker s_boundsHordeMarker = new("RPCCombatBoids.GetBoundsHorde");
 
         /// <summary>
         ///     How many boids to account for in initial memory allocations

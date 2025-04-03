@@ -9,10 +9,10 @@ namespace Human
 {
     public class PatrolController : NetworkBehaviour
     {
-        private static readonly ProfilerMarker s_UpdateHumanCount = new("Patrol.UpdateHumanCount");
-        private static readonly ProfilerMarker s_DealDamage = new("Population.DealDamage");
+        private static readonly ProfilerMarker s_UpdateHumanCount = new("RPCPatrol.UpdateHumanCount");
+        private static readonly ProfilerMarker s_DealDamage = new("RPCPopulation.DealDamage");
 
-        private static readonly ProfilerMarker s_Attack = new("Patrol.Attack");
+        private static readonly ProfilerMarker s_Attack = new("RPCPatrol.Attack");
         [SerializeField] private PoiController poi; // POI reference (van)
 
         // Each human's base health
