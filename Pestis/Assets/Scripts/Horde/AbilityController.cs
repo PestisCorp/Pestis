@@ -177,8 +177,15 @@ namespace Horde
         {
             yield return new WaitForSeconds(20f);
             while (apparition.InCombat) yield return null;
-            if (apparition)
-                apparition.DestroyHordeRpc();
+            if (apparition.player.Hordes.Count == 0)
+            {
+                apparition.isApparition = false;
+            }
+            else
+            {
+                if (apparition)
+                    apparition.DestroyHordeRpc();
+            }
         }
 
         public void UseMAD(Button calledBy)
