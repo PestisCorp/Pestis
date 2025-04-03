@@ -79,7 +79,6 @@ namespace Players
 
         public override void Despawned(NetworkRunner runner, bool hasState)
         {
-            
             Debug.Log($"Player {(hasState ? Username : "unknown")} left");
 
             foreach (var horde in Hordes) Destroy(horde);
@@ -289,7 +288,6 @@ namespace Players
 
             var newRats = (int)((uint)toSplit.AliveRats * splitPercentage);
 
-            var totalHealth = toSplit.TotalHealth;
             var populationState = toSplit.GetPopulationState();
             var evolutionaryState = toSplit.GetEvolutionState();
             var newHorde = Runner.Spawn(hordePrefab, Vector3.zero,
