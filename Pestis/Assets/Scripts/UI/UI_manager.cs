@@ -109,16 +109,16 @@ public class UI_Manager : MonoBehaviour
                 {
                     case <= 0 when localPlayer.player.CurrentCheese >
                                    localPlayer.player.aliveRats * localPlayer.player.cheeseConsumptionRate * 2:
-                        cheeseRateText.text = "Your rats are going to starve soon, capture POIs!";
-                        cheeseRateBackground.color = new Color(0.945098f, 0.6042559f, 0.2627451f);
+                        cheeseRateText.text = "Supply dropping\n" + cheeseRate.ToString("F2") + "/s";
+                        cheeseRateBackground.color = new Color(0.8f, 0.0f, 0.0f);
                         break;
                     case > 0:
-                        cheeseRateText.text = cheeseRate.ToString("F2") + " surplus";
-                        cheeseRateBackground.color = Color.white;
+                        cheeseRateText.text = "Supply growing\n+" + cheeseRate.ToString("F2") + "/s";
+                        cheeseRateBackground.color = new Color(0.0f, 0.65f, 0.0f);
                         break;
                     default:
-                        cheeseRateText.text = "Your rats are starving, capture POIs!";
-                        cheeseRateBackground.color = new Color(0.9433962f, 0.2936341f, 0.262549f);
+                        cheeseRateText.text = "Supply too low\nRats starving";
+                        cheeseRateBackground.color = new Color(0.5f, 0.0f, 0.0f);
                         break;
                 }
             }
