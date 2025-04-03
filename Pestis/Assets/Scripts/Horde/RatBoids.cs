@@ -4,7 +4,6 @@ using System.Runtime.InteropServices;
 using Combat;
 using Horde;
 using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Random = UnityEngine.Random;
@@ -52,6 +51,7 @@ public class RatBoids : MonoBehaviour
     private static readonly int RatRight = Shader.PropertyToID("_RatRight");
     private static readonly int RatUpRight = Shader.PropertyToID("_RatUpRight");
     private static readonly int RatDownRight = Shader.PropertyToID("_RatDownRight");
+    private static readonly int ReceivedBoidsThisFrame = Shader.PropertyToID("receivedBoidsThisFrame");
 
     [Header("Settings")] [SerializeField] private float maxSpeed = 2;
 
@@ -80,6 +80,11 @@ public class RatBoids : MonoBehaviour
     public bool paused;
 
     public int numBoids;
+
+    /// <summary>
+    ///     If we set the boid buffer this frame
+    /// </summary>
+    private int _boidAddCooldown;
 
     private float[] _boundsArr;
     private ComputeBuffer _boundsBuffer;
@@ -113,7 +118,6 @@ public class RatBoids : MonoBehaviour
 
     private float minSpeed;
 
-    private uint[] offsetsTempArr;
     private int previousNumBoids;
     private RenderParams rp;
     private RenderParams rpDead;
@@ -274,7 +278,6 @@ public class RatBoids : MonoBehaviour
         }
 
         tempBoidsArr = new Boid[INITIAL_BOID_MEMORY_ALLOCATION];
-        offsetsTempArr = new uint[gridDimX * gridDimY];
 
         AttachBuffers();
     }
@@ -395,6 +398,17 @@ public class RatBoids : MonoBehaviour
         // Actually draw the boids
         Graphics.RenderPrimitives(rp, MeshTopology.Quads, numBoids * 4);
         Graphics.RenderPrimitives(rpDead, MeshTopology.Quads, deadBoidsCount * 4);
+
+        switch (_boidAddCooldown)
+        {
+            case > 1:
+                _boidAddCooldown--;
+                break;
+            case 1:
+                _boidAddCooldown--;
+                boidShader.SetBool(ReceivedBoidsThisFrame, false);
+                break;
+        }
     }
 
     private void FixedUpdate()
@@ -445,6 +459,12 @@ public class RatBoids : MonoBehaviour
         gridSumsBuffer.Release();
         gridSumsBuffer2.Release();
         trianglePositions.Release();
+    }
+
+    private void MarkBoidsChanged()
+    {
+        _boidAddCooldown = 5;
+        boidShader.SetBool(ReceivedBoidsThisFrame, true);
     }
 
     private void AttachBuffers()
@@ -607,6 +627,7 @@ public class RatBoids : MonoBehaviour
         combatBoids.AddBoids(boidBufferOut, numBoids, myHorde);
         combatBoids.TargetPos = TargetPos;
     }
+
     /// <summary>
     ///     Need to flip the up-left, left, and down-left sprites to their right equivalents.
     /// </summary>
@@ -621,30 +642,26 @@ public class RatBoids : MonoBehaviour
             wrapMode = originalTex.wrapMode
         };
         for (var y = 0; y < originalTex.height; y++)
-        {
-            for (var x = 0; x < originalTex.width; x++)
-            {
-                flippedTex.SetPixel(originalTex.width - x - 1, y, originalTex.GetPixel(x, y));
-            }
-        }
-        
-        
-        flippedTex.Apply(); 
-        
+        for (var x = 0; x < originalTex.width; x++)
+            flippedTex.SetPixel(originalTex.width - x - 1, y, originalTex.GetPixel(x, y));
+
+
+        flippedTex.Apply();
+
         flippedTex.anisoLevel = originalTex.anisoLevel;
-        
+
         var flippedSprite = Sprite.Create(
-            flippedTex, 
-            original.rect, 
-            new Vector2(0.5f, 0.5f), 
+            flippedTex,
+            original.rect,
+            new Vector2(0.5f, 0.5f),
             original.pixelsPerUnit
         );
 
         return flippedSprite;
     }
-    
+
     /// <summary>
-    ///  Set a new material for these boids
+    ///     Set a new material for these boids
     /// </summary>
     public void SetBoidsMat()
     {
@@ -657,9 +674,9 @@ public class RatBoids : MonoBehaviour
         var downLeftSprite = Resources.Load<Sprite>("Rats/DownLeft/rat_DownLeft_" + spriteID);
         var downRightSprite = FlipSprite(downLeftSprite);
         var downSprite = Resources.Load<Sprite>("Rats/Down/rat_Down_" + spriteID);
-        
+
         boidMat = new Material(boidMat);
-        
+
         boidMat.SetTexture(RatUp, upSprite.texture);
         boidMat.SetTexture(RatUpLeft, upLeftSprite.texture);
         boidMat.SetTexture(RatLeft, leftSprite.texture);
@@ -674,13 +691,13 @@ public class RatBoids : MonoBehaviour
     {
         return boidMat;
     }
-    
+
     public Sprite GetSpriteFromMat()
     {
         var tex = boidMat.GetTexture(RatRight) as Texture2D;
         return Sprite.Create(tex, new Rect(0, 0, tex!.width, tex.height), new Vector2(0.5f, 0.5f));
     }
-    
+
     /// <summary>
     ///     Set my internal boids to some specific boids, used for transferring boids from one to another when splitting horde.
     /// </summary>
@@ -692,6 +709,7 @@ public class RatBoids : MonoBehaviour
         boidBufferOut.SetData(newBoids, 0, 0, newBoids.Length);
         numBoids = newBoids.Length;
         previousNumBoids = newBoids.Length;
+        MarkBoidsChanged();
     }
 
     /// <summary>
@@ -711,6 +729,7 @@ public class RatBoids : MonoBehaviour
         numBoids = numBoidsFromAuthority - boidsToMove;
         previousNumBoids = numBoidsFromAuthority - boidsToMove;
         otherBoids.SetBoids(boids);
+        MarkBoidsChanged();
     }
 
     public void CreateApparition(RatBoids otherBoids, int boidsToClone)
