@@ -96,13 +96,13 @@ namespace Combat
     {
         public const int MaxParticipants = 6;
 
-        private static readonly ProfilerMarker s_PlayerLeft = new("Combat.PlayerLeft");
+        private static readonly ProfilerMarker s_PlayerLeft = new("RPCCombat.PlayerLeft");
 
-        private static readonly ProfilerMarker s_AddHorde = new("Combat.AddHorde");
+        private static readonly ProfilerMarker s_AddHorde = new("RPCCombat.AddHorde");
 
-        private static readonly ProfilerMarker s_RemoveHordeBoids = new("Combat.RemoveHordeBoids");
+        private static readonly ProfilerMarker s_RemoveHordeBoids = new("RPCCombat.RemoveHordeBoids");
 
-        private static readonly ProfilerMarker s_EventRetreatDesired = new("Combat.EventRetreatDesired");
+        private static readonly ProfilerMarker s_EventRetreatDesired = new("RPCCombat.EventRetreatDesired");
 
         public CombatBoids boids;
 
@@ -167,6 +167,7 @@ namespace Combat
         public void PlayerLeftRpc(string username, RpcInfo rpcInfo = default)
         {
             s_PlayerLeft.Begin();
+            s_PlayerLeft.End();
             Debug.Log($"COMBAT: Player left during combat: {username}");
 
             if (Participators.All(kvp => kvp.Key.Username != username)) return;
@@ -177,10 +178,9 @@ namespace Combat
             {
                 if (!Runner.TryFindBehaviour<HordeController>(hordeId, out var horde))
                     throw new NullReferenceException("Couldn't find horde controller to remove it");
+
                 RemoveHorde(horde, LeaveReason.LeftGame);
             }
-
-            s_PlayerLeft.End();
         }
 
         /// <summary>

@@ -42,19 +42,19 @@ namespace Horde
         // The maximum change in a population per network tick
         private const int MaxPopGrowth = 3;
 
-        private static readonly ProfilerMarker s_SetDamage = new("Population.SetDamage");
+        private static readonly ProfilerMarker s_SetDamage = new("RPCPopulation.SetDamage");
 
-        private static readonly ProfilerMarker s_SetHealth = new("Population.SetHealth");
+        private static readonly ProfilerMarker s_SetHealth = new("RPCPopulation.SetHealth");
 
-        private static readonly ProfilerMarker s_SetDamageReduction = new("Population.SetDamageReduction");
+        private static readonly ProfilerMarker s_SetDamageReduction = new("RPCPopulation.SetDamageReduction");
 
-        private static readonly ProfilerMarker s_SetDamageReductionMult = new("Population.SetDamageReductionMult");
+        private static readonly ProfilerMarker s_SetDamageReductionMult = new("RPCPopulation.SetDamageReductionMult");
 
-        private static readonly ProfilerMarker s_SetBirthRate = new("Population.SetBirthRate");
+        private static readonly ProfilerMarker s_SetBirthRate = new("RPCPopulation.SetBirthRate");
 
-        private static readonly ProfilerMarker s_SetDamageMult = new("Population.SetDamageMult");
+        private static readonly ProfilerMarker s_SetDamageMult = new("RPCPopulation.SetDamageMult");
 
-        private static readonly ProfilerMarker s_SetSepticMult = new("Population.SetSepticMult");
+        private static readonly ProfilerMarker s_SetSepticMult = new("RPCPopulation.SetSepticMult");
         public int initialPopulation = 5;
         public bool isAgriculturalist;
 

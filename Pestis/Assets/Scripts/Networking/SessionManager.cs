@@ -68,13 +68,13 @@ namespace Networking
 
         public static SessionManager Instance;
 
-        private static readonly ProfilerMarker s_BotLeft = new("Session.BotLeft");
+        private static readonly ProfilerMarker s_BotLeft = new("RPCSession.BotLeft");
 
-        private static readonly ProfilerMarker s_AddPlayer = new("SessionManager.AddPlayer");
+        private static readonly ProfilerMarker s_AddPlayer = new("RPCSessionManager.AddPlayer");
 
-        private static readonly ProfilerMarker s_SetSlotOwner = new("Session.SetSlotOwner");
+        private static readonly ProfilerMarker s_SetSlotOwner = new("RPCSession.SetSlotOwner");
 
-        private static readonly ProfilerMarker s_MarkSlotUnused = new("Session.MarkSlotUnused");
+        private static readonly ProfilerMarker s_MarkSlotUnused = new("RPCSession.MarkSlotUnused");
 
         public GameObject botPrefab;
         public GameObject playerPrefab;

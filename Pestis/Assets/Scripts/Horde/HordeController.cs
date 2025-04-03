@@ -53,32 +53,32 @@ namespace Horde
     {
         private static Dictionary<EmoteType, Sprite> EmoteSprites = new();
 
-        private static readonly ProfilerMarker s_SetAliveRats = new("Horde.SetAliveRats");
+        private static readonly ProfilerMarker s_SetAliveRats = new("RPCHorde.SetAliveRats");
 
-        private static readonly ProfilerMarker s_AddSpeechBubble = new("Horde.AddSpeechBubble");
+        private static readonly ProfilerMarker s_AddSpeechBubble = new("RPCHorde.AddSpeechBubble");
 
-        private static readonly ProfilerMarker s_StationAt = new("Horde.StationAt");
+        private static readonly ProfilerMarker s_StationAt = new("RPCHorde.StationAt");
 
-        private static readonly ProfilerMarker s_DealDamage = new("Horde.DealDamage");
+        private static readonly ProfilerMarker s_DealDamage = new("RPCHorde.DealDamage");
 
-        private static readonly ProfilerMarker s_Retreat = new("Horde.Retreat");
+        private static readonly ProfilerMarker s_Retreat = new("RPCHorde.Retreat");
 
-        private static readonly ProfilerMarker s_Teleport = new("Horde.Teleport");
+        private static readonly ProfilerMarker s_Teleport = new("RPCHorde.Teleport");
 
-        private static readonly ProfilerMarker s_EventWonCombat = new("Horde.EventWonCombat");
+        private static readonly ProfilerMarker s_EventWonCombat = new("RPCHorde.EventWonCombat");
 
-        private static readonly ProfilerMarker s_JoinedCombat = new("Horde.JoinedCombat");
+        private static readonly ProfilerMarker s_JoinedCombat = new("RPCHorde.JoinedCombat");
 
 
-        private static readonly ProfilerMarker s_AddBoidsToCombat = new("Horde.AddBoidsToCombat");
+        private static readonly ProfilerMarker s_AddBoidsToCombat = new("RPCHorde.AddBoidsToCombat");
 
-        private static readonly ProfilerMarker s_DestroyHorde = new("Horde.DestroyHorde");
+        private static readonly ProfilerMarker s_DestroyHorde = new("RPCHorde.DestroyHorde");
 
-        private static readonly ProfilerMarker s_RetrieveBoids = new("Horde.RetrieveBoids");
+        private static readonly ProfilerMarker s_RetrieveBoids = new("RPCHorde.RetrieveBoids");
 
-        private static readonly ProfilerMarker s_SplitBoids = new("Horde.SplitBoids");
+        private static readonly ProfilerMarker s_SplitBoids = new("RPCHorde.SplitBoids");
 
-        private static readonly ProfilerMarker s_CreateApparition = new("Horde.CreateApparition");
+        private static readonly ProfilerMarker s_CreateApparition = new("RPCHorde.CreateApparition");
         [SerializeField] private Vector2 devToolsTargetLocation;
         [SerializeField] private float devToolsTotalHealth;
 
@@ -650,9 +650,11 @@ Count: {AliveRats}
         public void DealDamageRpc(float damage)
         {
             s_DealDamage.Begin();
-            TotalHealth -= damage * populationController.GetState().DamageReduction
-                                  * populationController.GetState().DamageReductionMult;
             s_DealDamage.End();
+            TotalHealth = Mathf.Max(
+                populationController.GetState().HealthPerRat * populationController.initialPopulation, damage *
+                populationController.GetState().DamageReduction
+                * populationController.GetState().DamageReductionMult);
         }
 
         public Bounds GetBounds()
@@ -967,10 +969,7 @@ Count: {AliveRats}
             }
 
             player.Hordes.Remove(this);
-            if (player.Hordes.Count == 1 && player.Hordes[0].isApparition)
-            {
-                player.Hordes[0].isApparition = false;
-            }
+            if (player.Hordes.Count == 1 && player.Hordes[0].isApparition) player.Hordes[0].isApparition = false;
             GameManager.Instance.UIManager.AbilityBars.Remove(this);
             if (GetEvolutionState().AcquiredEffects.Contains("unlock_gods_mistake"))
                 foreach (var horde in player.Hordes)
@@ -992,10 +991,10 @@ Count: {AliveRats}
         public void RetrieveBoidsFromCombatRpc(CombatController combat)
         {
             s_RetrieveBoids.Begin();
+            s_RetrieveBoids.End();
             Debug.Log($"HORDE of {player.Username}: Retrieving boids from combat");
             Boids.GetBoidsBack(combat, this);
             _combatText.SetActive(false);
-            s_RetrieveBoids.End();
         }
 
         public void CombatDespawned()

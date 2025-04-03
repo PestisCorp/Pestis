@@ -24,12 +24,12 @@ namespace Players
     {
         public delegate void OnBeforeSpawned(NetworkRunner runner, NetworkObject obj);
 
-        private static readonly ProfilerMarker s_AddControlledPoiRpc = new("Player.AddControlledPoiRpc");
-        private static readonly ProfilerMarker s_RemovedControlledPoiRpc = new("Player.RemovedControlledPoiRpc");
-        private static readonly ProfilerMarker s_AddCheeseRpc = new("Player.AddCheeseRpc");
-        private static readonly ProfilerMarker s_RemoveCheeseRpc = new("Player.RemoveCheeseRpc");
-        private static readonly ProfilerMarker s_IncrementCheeseRate = new("Player.IncrementCheeseRate");
-        private static readonly ProfilerMarker s_DecrementCheeseRate = new("Player.DecrementCheeseRate");
+        private static readonly ProfilerMarker s_AddControlledPoiRpc = new("RPCPlayer.AddControlledPoiRpc");
+        private static readonly ProfilerMarker s_RemovedControlledPoiRpc = new("RPCPlayer.RemovedControlledPoiRpc");
+        private static readonly ProfilerMarker s_AddCheeseRpc = new("RPCPlayer.AddCheeseRpc");
+        private static readonly ProfilerMarker s_RemoveCheeseRpc = new("RPCPlayer.RemoveCheeseRpc");
+        private static readonly ProfilerMarker s_IncrementCheeseRate = new("RPCPlayer.IncrementCheeseRate");
+        private static readonly ProfilerMarker s_DecrementCheeseRate = new("RPCPlayer.DecrementCheeseRate");
 
         /// <summary>
         ///     Human or Bot?

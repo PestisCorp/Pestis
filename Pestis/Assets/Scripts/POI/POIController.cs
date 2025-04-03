@@ -25,14 +25,14 @@ namespace POI
 
     public class PoiController : NetworkBehaviour
     {
-        private static readonly ProfilerMarker s_RemoveController = new("POI.RemoveController");
-        private static readonly ProfilerMarker s_ChangeController = new("POI.ChangeController");
+        private static readonly ProfilerMarker s_RemoveController = new("RPCPOI.RemoveController");
+        private static readonly ProfilerMarker s_ChangeController = new("RPCPOI.ChangeController");
 
-        private static readonly ProfilerMarker s_UnstationHorde = new("POI.UnstationHorde");
+        private static readonly ProfilerMarker s_UnstationHorde = new("RPCPOI.UnstationHorde");
 
-        private static readonly ProfilerMarker s_Attack = new("POI.Attack");
+        private static readonly ProfilerMarker s_Attack = new("RPCPOI.Attack");
 
-        private static readonly ProfilerMarker s_EventCombatOver = new("POI.EventCombatOver");
+        private static readonly ProfilerMarker s_EventCombatOver = new("RPCPOI.EventCombatOver");
         public ParticleSystem[] captureEffect;
 
         public PatrolController patrolController;
@@ -186,7 +186,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             if (player.IsLocal)
             {
                 GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.POICaptured, 1);
-                
+
                 switch (_poiType)
                 {
                     case POIType.City:
@@ -210,9 +210,10 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
                             Color.black);
                         break;
                 }
-                
+
                 GameManager.Instance.PlaySfx(SoundEffectType.POICapture);
             }
+
             s_ChangeController.End();
         }
 
