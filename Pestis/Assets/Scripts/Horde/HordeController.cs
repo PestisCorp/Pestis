@@ -515,13 +515,10 @@ Count: {AliveRats}
             _combatStrategy = "Frontal Assault";
             _selectionLightTerrain = transform.Find("SelectionLightTerrain").gameObject.GetComponent<Light2D>();
             _selectionLightPoi = transform.Find("SelectionLightPOI").gameObject.GetComponent<Light2D>();
-            if (!player.IsLocal)
-            {
-                _selectionLightPoi.color = Color.red;
-                _selectionLightTerrain.color = Color.red;
-                _selectionLightTerrain.intensity = 100;
-            }
 
+            _selectionLightPoi.color = _selectionLightTerrain.color;
+            _selectionLightPoi.intensity = _selectionLightTerrain.intensity;
+            
             targetLocation = transform.Find("TargetLocation").gameObject.GetComponent<NetworkTransform>();
 
             var canvas = transform.Find("Canvas").gameObject.GetComponent<Canvas>();
