@@ -14,6 +14,9 @@
 		}, 30000);
 	});
 
+	const bots = data.leaderboard.filter(player => player.username.startsWith('Bot '));
+	const humans = data.leaderboard.filter(player => !player.username.startsWith('Bot '));
+
 </script>
 
 <div class="bg-slate-800 min-h-screen min-w-screen max-w-screen text-gray-300 flex-wrap">
@@ -39,17 +42,17 @@
 				</h2>
 				<h2 class="mt-5 text-2xl">
 					Player
-					Hordes: {data.leaderboard.length === 0 ? 0 : (data.leaderboard.filter(player => !player.username.startsWith("Bot ")).map(player => player.hordes.length).reduce((sum, hordes) => sum + hordes))}
+					Hordes: {humans.length === 0 ? 0 : (humans.map(player => player.hordes.length).reduce((sum, hordes) => sum + hordes))}
 				</h2>
 				<h2 class="mt-5 text-2xl">
 					Bot
-					Hordes: {data.leaderboard.length === 0 ? 0 : (data.leaderboard.filter(player => player.username.startsWith("Bot ")).map(player => player.hordes.length).reduce((sum, hordes) => sum + hordes))}
+					Hordes: {bots.length === 0 ? 0 : (bots.map(player => player.hordes.length).reduce((sum, hordes) => sum + hordes))}
 				</h2>
 				<h2 class="mt-5 text-2xl">
-					Players: {data.leaderboard.filter(player => !player.username.startsWith("Bot ")).length}
+					Players: {humans.length}
 				</h2>
 				<h2 class="mt-5 text-2xl">
-					Bots: {data.leaderboard.filter(player => player.username.startsWith("Bot ")).length}
+					Bots: {bots.length}
 				</h2>
 				<h2 class="mt-5 text-2xl">
 					Median

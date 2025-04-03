@@ -7,6 +7,7 @@ using Horde;
 using JetBrains.Annotations;
 using Networking;
 using POI;
+using Unity.Profiling;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -22,6 +23,13 @@ namespace Players
     public class Player : NetworkBehaviour
     {
         public delegate void OnBeforeSpawned(NetworkRunner runner, NetworkObject obj);
+
+        private static readonly ProfilerMarker s_AddControlledPoiRpc = new("Player.AddControlledPoiRpc");
+        private static readonly ProfilerMarker s_RemovedControlledPoiRpc = new("Player.RemovedControlledPoiRpc");
+        private static readonly ProfilerMarker s_AddCheeseRpc = new("Player.AddCheeseRpc");
+        private static readonly ProfilerMarker s_RemoveCheeseRpc = new("Player.RemoveCheeseRpc");
+        private static readonly ProfilerMarker s_IncrementCheeseRate = new("Player.IncrementCheeseRate");
+        private static readonly ProfilerMarker s_DecrementCheeseRate = new("Player.DecrementCheeseRate");
 
         /// <summary>
         ///     Human or Bot?
@@ -67,6 +75,7 @@ namespace Players
 
         [Networked] public float FixedCheeseGain { get; private set; } = 0.03f;
 
+
         private void FixedUpdate()
         {
             var newSum = 0;
@@ -80,13 +89,17 @@ namespace Players
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void AddControlledPoiRpc(PoiController poi)
         {
+            s_AddControlledPoiRpc.Begin();
             ControlledPOIs.Add(poi);
+            s_AddControlledPoiRpc.End();
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void RemoveControlledPoiRpc(PoiController poi)
         {
+            s_RemovedControlledPoiRpc.Begin();
             ControlledPOIs.Remove(poi);
+            s_RemovedControlledPoiRpc.End();
         }
 
         public override void Despawned(NetworkRunner runner, bool hasState)
@@ -149,13 +162,17 @@ namespace Players
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void AddCheeseRpc(float amount)
         {
+            s_AddCheeseRpc.Begin();
             CurrentCheese += amount;
+            s_AddCheeseRpc.End();
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void RemoveCheeseRpc(float amount)
         {
+            s_RemoveCheeseRpc.Begin();
             CurrentCheese = Mathf.Max(0, CurrentCheese - amount);
+            s_RemoveCheeseRpc.End();
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -168,13 +185,17 @@ namespace Players
         public void IncrementCheeseIncrementRateRpc(float amount)
         {
             Debug.Log($"PLAYER: Increasing cheese rate by {amount}");
+            s_IncrementCheeseRate.Begin();
             FixedCheeseGain += amount;
+            s_IncrementCheeseRate.End();
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void DecrementCheeseIncrementRateRpc(float amount)
         {
+            s_DecrementCheeseRate.Begin();
             FixedCheeseGain -= amount;
+            s_DecrementCheeseRate.End();
         }
 
 

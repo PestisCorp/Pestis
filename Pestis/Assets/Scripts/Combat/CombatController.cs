@@ -6,6 +6,7 @@ using Horde;
 using JetBrains.Annotations;
 using Players;
 using POI;
+using Unity.Profiling;
 using UnityEngine;
 using Bounds = Networking.Bounds;
 
@@ -95,6 +96,14 @@ namespace Combat
     {
         public const int MaxParticipants = 6;
 
+        private static readonly ProfilerMarker s_PlayerLeft = new("Combat.PlayerLeft");
+
+        private static readonly ProfilerMarker s_AddHorde = new("Combat.AddHorde");
+
+        private static readonly ProfilerMarker s_RemoveHordeBoids = new("Combat.RemoveHordeBoids");
+
+        private static readonly ProfilerMarker s_EventRetreatDesired = new("Combat.EventRetreatDesired");
+
         public CombatBoids boids;
 
         [SerializeField] private CombatFXManager fxManager;
@@ -157,6 +166,7 @@ namespace Combat
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void PlayerLeftRpc(string username, RpcInfo rpcInfo = default)
         {
+            s_PlayerLeft.Begin();
             Debug.Log($"COMBAT: Player left during combat: {username}");
 
             if (Participators.All(kvp => kvp.Key.Username != username)) return;
@@ -169,6 +179,8 @@ namespace Combat
                     throw new NullReferenceException("Couldn't find horde controller to remove it");
                 RemoveHorde(horde, LeaveReason.LeftGame);
             }
+
+            s_PlayerLeft.End();
         }
 
         /// <summary>
@@ -290,6 +302,7 @@ namespace Combat
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void AddHordeRpc(HordeController horde)
         {
+            s_AddHorde.Begin();
             if (state == CombatState.Finished) throw new Exception("COMBAT: Tried to join finished combat.");
 
             // Player not in combat
@@ -316,6 +329,7 @@ namespace Combat
             horde.AddBoidsToCombatRpc(this);
 
             if (Participators.Count > 1 && state == CombatState.NotStarted) state = CombatState.InProgress;
+            s_AddHorde.End();
         }
 
         public bool HordeInCombat(HordeController horde)
@@ -327,8 +341,10 @@ namespace Combat
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         private void RemoveHordeBoidsRpc(NetworkBehaviourId horde)
         {
+            s_RemoveHordeBoids.Begin();
             Debug.Log("COMBAT: Removing boids");
             boids.RemoveBoids(horde);
+            s_RemoveHordeBoids.End();
         }
 
         private void RemoveHorde(HordeController horde, LeaveReason reason)
@@ -381,6 +397,7 @@ namespace Combat
             }
         }
 
+
         /// <summary>
         ///     Called by a horde when it wants to leave this combat.
         /// </summary>
@@ -388,8 +405,10 @@ namespace Combat
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void EventRetreatDesiredRpc(HordeController horde)
         {
+            s_EventRetreatDesired.Begin();
             Debug.Log($"COMBAT: Horde wants to retreat from combat: {horde.Object.Id}");
             RemoveHorde(horde, LeaveReason.VoluntaryRetreat);
+            s_EventRetreatDesired.End();
         }
 
         public override void Spawned()

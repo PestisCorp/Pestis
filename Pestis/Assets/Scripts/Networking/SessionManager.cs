@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Players;
 using TMPro;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -66,6 +67,14 @@ namespace Networking
         private const string APIEndpoint = "https://pestis.murraygrov.es/api";
 
         public static SessionManager Instance;
+
+        private static readonly ProfilerMarker s_BotLeft = new("Session.BotLeft");
+
+        private static readonly ProfilerMarker s_AddPlayer = new("SessionManager.AddPlayer");
+
+        private static readonly ProfilerMarker s_SetSlotOwner = new("Session.SetSlotOwner");
+
+        private static readonly ProfilerMarker s_MarkSlotUnused = new("Session.MarkSlotUnused");
 
         public GameObject botPrefab;
         public GameObject playerPrefab;
@@ -129,6 +138,7 @@ namespace Networking
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void BotLeftRpc(NetworkId bot)
         {
+            s_BotLeft.Begin();
             for (var i = 0; i < Players.Length; i++)
                 if (Players[i].PlayerId == bot)
                 {
@@ -136,6 +146,8 @@ namespace Networking
                     temp.InUse = false;
                     Players.Set(i, temp);
                 }
+
+            s_BotLeft.End();
         }
 
         /// <summary>
@@ -281,6 +293,7 @@ namespace Networking
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         private void AddPlayerRpc(int playerSpawnIndex, NetworkId playerID, bool isBot, RpcInfo rpcInfo = default)
         {
+            s_AddPlayer.Begin();
             var player = new PlayerSlot
             {
                 PlayerRef = rpcInfo.Source,
@@ -289,22 +302,27 @@ namespace Networking
                 InUse = true
             };
             Players.Set(playerSpawnIndex, player);
+            s_AddPlayer.End();
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         private void SetSlotOwnerRpc(int playerIndex, RpcInfo info = default)
         {
+            s_SetSlotOwner.Begin();
             var slot = Players[playerIndex];
             slot.PlayerRef = info.Source;
             Players.Set(playerIndex, slot);
+            s_SetSlotOwner.End();
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         private void MarkSlotUnusedRpc(int playerIndex)
         {
+            s_MarkSlotUnused.Begin();
             var slot = Players[playerIndex];
             slot.InUse = false;
             Players.Set(playerIndex, slot);
+            s_MarkSlotUnused.End();
         }
 
         private void StealBot(int playerIndex)

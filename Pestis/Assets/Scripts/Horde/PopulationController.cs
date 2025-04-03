@@ -1,11 +1,11 @@
 // Population manager. Update birth and death rates here
 
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using Fusion;
 using Networking;
+using Unity.Profiling;
 using UnityEngine;
 using Random = System.Random;
 
@@ -42,6 +42,22 @@ namespace Horde
         // The maximum change in a population per network tick
         private const int MaxPopGrowth = 3;
 
+        private static readonly ProfilerMarker s_SetDamage = new("Population.SetDamage");
+
+        private static readonly ProfilerMarker s_SetHealth = new("Population.SetHealth");
+
+        private static readonly ProfilerMarker s_SetDamageReduction = new("Population.SetDamageReduction");
+
+        private static readonly ProfilerMarker s_SetDamageReductionMult = new("Population.SetDamageReductionMult");
+
+        private static readonly ProfilerMarker s_SetBirthRate = new("Population.SetBirthRate");
+
+        private static readonly ProfilerMarker s_SetDamageMult = new("Population.SetDamageMult");
+
+        private static readonly ProfilerMarker s_SetSepticMult = new("Population.SetSepticMult");
+        public int initialPopulation = 5;
+        public bool isAgriculturalist;
+
         private readonly Random _random = new();
 
         // Weights are reversed because weight decreases with distance from n
@@ -49,6 +65,7 @@ namespace Horde
         // smaller than going from n to n + 1, so the weight applied is smaller
         // for the former transition
         private readonly int[] _weights = Enumerable.Range(1, MaxPopGrowth).Reverse().ToArray();
+        private BiomeEffects _biomeEffects;
 
         /// <summary>
         ///     Stores the highest health this horde has achieved. Used to stop the player losing too much progress.
@@ -62,9 +79,6 @@ namespace Horde
         private int _populationPeak;
 
         private List<double[]> _transitionMatrix;
-        private BiomeEffects _biomeEffects;
-        public int initialPopulation = 5;
-        public bool isAgriculturalist;
 
         [Networked] private ref PopulationState State => ref MakeRef<PopulationState>();
 
@@ -76,10 +90,7 @@ namespace Horde
         private double ResourceWeightGrowth()
         {
             var currentBiome = "";
-            if (_biomeEffects.currentBiome)
-            {
-                currentBiome = _biomeEffects.currentBiome.name;
-            }
+            if (_biomeEffects.currentBiome) currentBiome = _biomeEffects.currentBiome.name;
             var resistance = currentBiome switch
             {
                 "GrassTile" => State.GrassResistance,
@@ -240,6 +251,7 @@ namespace Horde
 
                 if (MaxPopGrowth > i) probabilities[i] *= declineWeight;
             }
+
             var ratio = 1.0 / probabilities.Sum();
             probabilities = probabilities.Select(o => o * ratio).ToArray();
             // Use a CDF for doing a weighted sample of the transition states
@@ -273,43 +285,58 @@ namespace Horde
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void SetDamageRpc(float damage)
         {
+            s_SetDamage.Begin();
             State.Damage = damage;
+            s_SetDamage.End();
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void SetHealthPerRatRpc(float healthPerRat)
         {
+            s_SetHealth.Begin();
             State.HealthPerRat = healthPerRat;
+            s_SetHealth.End();
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void SetDamageReductionRpc(float damageReduction)
         {
+            s_SetDamageReduction.Begin();
             State.DamageReduction = 1.0f / damageReduction;
+            s_SetDamageReduction.End();
         }
+
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void SetDamageReductionMultRpc(float damageReductionMult)
         {
+            s_SetDamageReductionMult.Begin();
             State.DamageReductionMult = damageReductionMult;
+            s_SetDamageReductionMult.End();
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void SetBirthRateRpc(double birthRate)
         {
+            s_SetBirthRate.Begin();
             State.BirthRate = birthRate;
+            s_SetBirthRate.End();
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void SetDamageMultRpc(float damageMult)
         {
+            s_SetDamageMult.Begin();
             State.DamageMult = damageMult;
+            s_SetDamageMult.End();
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void SetSepticMultRpc(float damageMult)
         {
+            s_SetSepticMult.Begin();
             State.DamageMult = damageMult;
+            s_SetSepticMult.End();
         }
 
         public PopulationState GetState()

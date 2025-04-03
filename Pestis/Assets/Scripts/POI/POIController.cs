@@ -7,6 +7,7 @@ using Human;
 using JetBrains.Annotations;
 using Objectives;
 using Players;
+using Unity.Profiling;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,6 +25,14 @@ namespace POI
 
     public class PoiController : NetworkBehaviour
     {
+        private static readonly ProfilerMarker s_RemoveController = new("POI.RemoveController");
+        private static readonly ProfilerMarker s_ChangeController = new("POI.ChangeController");
+
+        private static readonly ProfilerMarker s_UnstationHorde = new("POI.UnstationHorde");
+
+        private static readonly ProfilerMarker s_Attack = new("POI.Attack");
+
+        private static readonly ProfilerMarker s_EventCombatOver = new("POI.EventCombatOver");
         public ParticleSystem[] captureEffect;
 
         public PatrolController patrolController;
@@ -141,16 +150,21 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             }
         }
 
+
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void RemoveControllerRpc()
         {
+            s_RemoveController.Begin();
             ControlledBy = null;
             StationedHordes.Clear();
+            s_RemoveController.End();
         }
+
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void ChangeControllerRpc(Player player)
         {
+            s_ChangeController.Begin();
             Debug.Log(
                 $"Changing POI Controller from {(ControlledBy ? ControlledBy.Object.Id : "None")} to {player.Object.Id}");
             if (ControlledBy)
@@ -199,6 +213,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
                 
                 GameManager.Instance.PlaySfx(SoundEffectType.POICapture);
             }
+            s_ChangeController.End();
         }
 
         private void UpdateFlag()
@@ -249,8 +264,10 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void UnStationHordeRpc(HordeController horde, RpcInfo rpcInfo = default)
         {
+            s_UnstationHorde.Begin();
             StationedHordes.Remove(horde);
             if (StationedHordes.Count == 0) TimeWhenPoiAbandoned = Runner.SimulationTime;
+            s_UnstationHorde.End();
         }
 
         public override void Spawned()
@@ -263,9 +280,11 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void AttackRpc(HordeController horde)
         {
+            s_Attack.Begin();
             if (ControlledBy == horde.player)
             {
                 StationHorde(horde);
+                s_Attack.End();
                 return;
             }
 
@@ -274,6 +293,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             {
                 ChangeControllerRpc(horde.player);
                 StationHorde(horde);
+                s_Attack.End();
                 return;
             }
 
@@ -287,13 +307,16 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             }
 
             Combat.AddHordeRpc(horde);
+            s_Attack.End();
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void EventCombatOverRpc()
         {
+            s_EventCombatOver.Begin();
             Debug.Log("POI Combat over");
             Combat = null;
+            s_EventCombatOver.End();
         }
     }
 }

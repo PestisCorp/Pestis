@@ -13,6 +13,7 @@ using Players;
 using POI;
 using TMPro;
 using Unity.Mathematics;
+using Unity.Profiling;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -51,6 +52,33 @@ namespace Horde
     public class HordeController : NetworkBehaviour
     {
         private static Dictionary<EmoteType, Sprite> EmoteSprites = new();
+
+        private static readonly ProfilerMarker s_SetAliveRats = new("Horde.SetAliveRats");
+
+        private static readonly ProfilerMarker s_AddSpeechBubble = new("Horde.AddSpeechBubble");
+
+        private static readonly ProfilerMarker s_StationAt = new("Horde.StationAt");
+
+        private static readonly ProfilerMarker s_DealDamage = new("Horde.DealDamage");
+
+        private static readonly ProfilerMarker s_Retreat = new("Horde.Retreat");
+
+        private static readonly ProfilerMarker s_Teleport = new("Horde.Teleport");
+
+        private static readonly ProfilerMarker s_EventWonCombat = new("Horde.EventWonCombat");
+
+        private static readonly ProfilerMarker s_JoinedCombat = new("Horde.JoinedCombat");
+
+
+        private static readonly ProfilerMarker s_AddBoidsToCombat = new("Horde.AddBoidsToCombat");
+
+        private static readonly ProfilerMarker s_DestroyHorde = new("Horde.DestroyHorde");
+
+        private static readonly ProfilerMarker s_RetrieveBoids = new("Horde.RetrieveBoids");
+
+        private static readonly ProfilerMarker s_SplitBoids = new("Horde.SplitBoids");
+
+        private static readonly ProfilerMarker s_CreateApparition = new("Horde.CreateApparition");
         [SerializeField] private Vector2 devToolsTargetLocation;
         [SerializeField] private float devToolsTotalHealth;
 
@@ -292,7 +320,9 @@ Count: {AliveRats}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void SetAliveRatsRpc(uint newRatCount)
         {
+            s_SetAliveRats.Begin();
             AliveRats = new IntPositive(newRatCount);
+            s_SetAliveRats.End();
         }
 
         public override void Despawned(NetworkRunner runner, bool hasState)
@@ -373,8 +403,10 @@ Count: {AliveRats}
 
         public void AddSpeechBubbleRpc(EmoteType type)
         {
+            s_AddSpeechBubble.Begin();
             _speechBubbles.Enqueue(type);
             if (!_speechBubbleActive) StartCoroutine(ShowSpeechBubble());
+            s_AddSpeechBubble.End();
         }
 
         private IEnumerator ShowSpeechBubble()
@@ -485,9 +517,11 @@ Count: {AliveRats}
             _targetHorde = null;
         }
 
+
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void StationAtRpc(PoiController poi)
         {
+            s_StationAt.Begin();
             Debug.Log($"Adding myself (horde {Object.Id}) to POI: {poi.Object.Id}");
             _attackingPatrol = null;
             poi.AttackRpc(this);
@@ -495,6 +529,7 @@ Count: {AliveRats}
             StationedAt = poi;
             // We're not targeting a POI if we've just taken one over.
             TargetPoi = null;
+            s_StationAt.End();
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -614,8 +649,10 @@ Count: {AliveRats}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void DealDamageRpc(float damage)
         {
+            s_DealDamage.Begin();
             TotalHealth -= damage * populationController.GetState().DamageReduction
                                   * populationController.GetState().DamageReductionMult;
+            s_DealDamage.End();
         }
 
         public Bounds GetBounds()
@@ -630,6 +667,7 @@ Count: {AliveRats}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void RetreatRpc()
         {
+            s_Retreat.Begin();
             Debug.Log($"HORDE {Object.Id}: Told to retreat!");
 
             CurrentCombatController = null;
@@ -664,12 +702,15 @@ Count: {AliveRats}
 
             populationCooldown = 15.0f;
             LastInCombat = Time.time;
+            s_Retreat.End();
         }
 
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void TeleportHordeRPC(Vector3 target)
         {
+            s_Teleport.Begin();
             Boids.TeleportHorde(target, GetBounds());
+            s_Teleport.End();
         }
 
         public void AttackPoi(PoiController poi)
@@ -806,6 +847,7 @@ Count: {AliveRats}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void EventWonCombatRpc(HordeState[] hordes)
         {
+            s_EventWonCombat.Begin();
             Debug.Log($"We ({Object.Id}) won combat!");
 
             if (player.IsLocal) GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.BattleWon, 1);
@@ -847,13 +889,16 @@ Count: {AliveRats}
             if (!GetEvolutionState().AcquiredEffects.Contains("unlock_war_hawk"))
                 populationCooldown = 20.0f;
             LastInCombat = Time.time;
+            s_EventWonCombat.End();
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void EventJoinedCombatRpc(CombatController combat)
         {
+            s_JoinedCombat.Begin();
             CurrentCombatController = combat;
             if (player.IsLocal) GameManager.Instance.PlaySfx(SoundEffectType.BattleStart);
+            s_JoinedCombat.End();
         }
 
         public PopulationState GetPopulationState()
@@ -891,7 +936,6 @@ Count: {AliveRats}
             FindAnyObjectByType<InputHandler>().LocalPlayer?.SelectHorde(this);
         }
 
-
         /// <summary>
         ///     Sent to *all* machines so they can update their local boid sims
         /// </summary>
@@ -899,11 +943,13 @@ Count: {AliveRats}
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void AddBoidsToCombatRpc(CombatController combat)
         {
+            s_AddBoidsToCombat.Begin();
             Debug.Log($"HORDE {Object.Id} of {player.Username}: Joining boids to combat {combat.Id}");
 
             if (combat == null) throw new Exception("Tried to add boids to non-existent combat");
             Boids.JoinCombat(combat.boids, this);
             _combatText.SetActive(true);
+            s_AddBoidsToCombat.End();
         }
 
         /// <summary>
@@ -912,9 +958,11 @@ Count: {AliveRats}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void DestroyHordeRpc()
         {
+            s_DestroyHorde.Begin();
             if (player.Hordes.Count == 1 && player.Type == PlayerType.Bot)
             {
                 player.DestroyBotRpc();
+                s_DestroyHorde.End();
                 return;
             }
 
@@ -933,6 +981,7 @@ Count: {AliveRats}
 
             Debug.Log($"HORDE {Object.Id}: Despawned self");
             Runner.Despawn(Object);
+            s_DestroyHorde.End();
         }
 
         /// <summary>
@@ -942,9 +991,11 @@ Count: {AliveRats}
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void RetrieveBoidsFromCombatRpc(CombatController combat)
         {
+            s_RetrieveBoids.Begin();
             Debug.Log($"HORDE of {player.Username}: Retrieving boids from combat");
             Boids.GetBoidsBack(combat, this);
             _combatText.SetActive(false);
+            s_RetrieveBoids.End();
         }
 
         public void CombatDespawned()
@@ -964,13 +1015,17 @@ Count: {AliveRats}
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         public void SplitBoidsRpc(HordeController other, int numToSplit, int numBoids)
         {
+            s_SplitBoids.Begin();
             Boids.SplitBoids(numBoids, numToSplit, other.Boids);
+            s_SplitBoids.End();
         }
 
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         public void CreateApparitionRPC(HordeController other, int numToClone)
         {
+            s_CreateApparition.Begin();
             Boids.CreateApparition(other.Boids, numToClone);
+            s_CreateApparition.End();
         }
     }
 }

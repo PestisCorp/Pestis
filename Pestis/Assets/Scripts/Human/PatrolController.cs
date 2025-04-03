@@ -2,12 +2,17 @@ using System;
 using Fusion;
 using Horde;
 using POI;
+using Unity.Profiling;
 using UnityEngine;
 
 namespace Human
 {
     public class PatrolController : NetworkBehaviour
     {
+        private static readonly ProfilerMarker s_UpdateHumanCount = new("Patrol.UpdateHumanCount");
+        private static readonly ProfilerMarker s_DealDamage = new("Population.DealDamage");
+
+        private static readonly ProfilerMarker s_Attack = new("Patrol.Attack");
         [SerializeField] private PoiController poi; // POI reference (van)
 
         // Each human's base health
@@ -26,7 +31,7 @@ namespace Human
         private HordeController enemyHorde;
 
         public int HumanCount => (int)(CurrentHumanHealth / healthPerHuman); // Networked human count
-        
+
         // We store total health as a Networked field so that all players see the same value
         [Networked]
         [OnChangedRender(nameof(AdjustHumanCount))]
@@ -51,27 +56,33 @@ namespace Human
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void UpdateHumanCountRpc(int newCount)
         {
+            s_UpdateHumanCount.Begin();
             CurrentHumanHealth = newCount * healthPerHuman; // Updates across all clients
+            s_UpdateHumanCount.End();
         }
-        
+
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void DealDamageRpc(float damage)
         {
+            s_DealDamage.Begin();
             CurrentHumanHealth -= damage;
             CurrentHumanHealth = Mathf.Max(0, CurrentHumanHealth);
+            s_DealDamage.End();
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void AttackRpc(HordeController attacker)
         {
+            s_Attack.Begin();
             enemyHorde = attacker;
+            s_Attack.End();
         }
 
         public float GetCurrentHumanHealth()
         {
             return CurrentHumanHealth;
         }
-        
+
         public override void FixedUpdateNetwork()
         {
             if (enemyHorde)
