@@ -165,28 +165,37 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             Debug.Log($"Fixed cheese rate is {_cheesePerTick}");
             ControlledBy.IncrementCheeseIncrementRateRpc(_cheesePerTick);
             StationedHordes.Clear();
-            switch (_poiType)
+            if (player.IsLocal)
             {
-                case POIType.City:
-                    foreach (var horde in player.Hordes)
-                    {
-                        horde.AliveRats = new IntPositive((uint)((uint)horde.AliveRats * 1.1));
-                    }
-                    GameManager.Instance.UIManager.AddNotification("City captured. Population increased", Color.black);
-                    break;
-                case POIType.Lab:
-                    foreach (var horde in player.Hordes)
-                    {
-                        horde.GetComponent<EvolutionManager>().PointsAvailable += 1;
-                        horde.AddSpeechBubbleRpc(EmoteType.Evolution);
-                    }
-                    GameManager.Instance.UIManager.AddNotification("Lab captured. Mutation points acquired.", Color.black);
-                    break;
-                case POIType.Farm:
-                    player.AddCheeseRpc(100);
-                    GameManager.Instance.UIManager.AddNotification("Farm captured. Food package acquired.", Color.black);
-                    break;
+                switch (_poiType)
+                {
+                    case POIType.City:
+                        foreach (var horde in player.Hordes)
+                        {
+                            horde.AliveRats = new IntPositive((uint)((uint)horde.AliveRats * 1.1));
+                        }
+
+                        GameManager.Instance.UIManager.AddNotification("City captured. Population increased",
+                            Color.black);
+                        break;
+                    case POIType.Lab:
+                        foreach (var horde in player.Hordes)
+                        {
+                            horde.GetComponent<EvolutionManager>().PointsAvailable += 1;
+                            horde.AddSpeechBubbleRpc(EmoteType.Evolution);
+                        }
+
+                        GameManager.Instance.UIManager.AddNotification("Lab captured. Mutation points acquired.",
+                            Color.black);
+                        break;
+                    case POIType.Farm:
+                        player.AddCheeseRpc(100);
+                        GameManager.Instance.UIManager.AddNotification("Farm captured. Food package acquired.",
+                            Color.black);
+                        break;
+                }
             }
+
             if (player.IsLocal) GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.POICaptured, 1);
             if (player.IsLocal) GameManager.Instance.PlaySfx(SoundEffectType.POICapture);
         }
