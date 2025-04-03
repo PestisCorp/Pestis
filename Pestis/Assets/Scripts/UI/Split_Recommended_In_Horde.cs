@@ -20,7 +20,8 @@ public class Split_Recommended_In_Horde : MonoBehaviour
         if (!horde.player.IsLocal) return;
         splitHordeUI.SetActive(false);
         splitHordeButton.onClick.AddListener(SplitHordeHalf);
-        StartCoroutine(WaitTilPopulationGreaterThanRecommended());
+
+        if (!horde.isApparition) StartCoroutine(WaitTilPopulationGreaterThanRecommended());
     }
 
 
@@ -28,6 +29,7 @@ public class Split_Recommended_In_Horde : MonoBehaviour
     {
         while (true)
         {
+            
             // Wait until the horde population exceeds the recommended amount
             yield return new WaitUntil(() => horde.AliveRats > splitRecommended);
 
