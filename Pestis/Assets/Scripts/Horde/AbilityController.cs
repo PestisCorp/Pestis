@@ -5,6 +5,7 @@ using Fusion;
 using Human;
 using Networking;
 using POI;
+using TMPro;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -169,8 +170,6 @@ namespace Horde
             newHorde.Move(_hordeController.targetLocation.transform.position - _hordeController.GetBounds().extents);
             GameManager.Instance.UIManager.ActionPanelDisable();
             GameManager.Instance.UIManager.ActionPanelEnable();
-
-
             StartCoroutine(Cooldown(120, calledBy, Abilities.Apparition));
             StartCoroutine(RemoveApparation(newHorde));
         }
@@ -228,6 +227,7 @@ namespace Horde
             }
             Destroy(calledBy.GetComponent<Tooltip>().tooltipInstance);
             _hordeController.DestroyHordeRpc();
+            GameManager.Instance.UIManager.ResetUI();
             foreach (var horde in _hordeController.player.Hordes)
                 horde.GetComponent<PopulationController>().SetBirthRateRpc(horde.GetPopulationState().BirthRate * 1.5);
         }

@@ -2,7 +2,7 @@
 	{
 		"MutationName": "Septic bite",
 		"MutationTag" : "disease",
-		"MutationWeight": 10,
+		"MutationWeight": 9,
 		"Effects": ["unlock_septic_bite"],
 		"Tooltip": "Deal ramping damage that ignores armor.",
 		"MutationUse": "offensive",
@@ -11,7 +11,7 @@
 	{
 		"MutationName": "Pestis",
 		"MutationTag": "disease",
-		"MutationWeight": 10,
+		"MutationWeight": 6,
 		"Effects": ["unlock_pestis", "unlock_disease_resistance", "unlock_human_aggression"],
 		"Tooltip": "Unleash the plague by sacrificing 30% of your population. Enemy rats have reduced armor. Enemy humans extend their patrol radius. Gain immunity to disease.",
 		"MutationUse": "offensive",
@@ -20,7 +20,7 @@
 	{
 		"MutationName": "Sewer Dwellers",
 		"MutationTag" : "disease",
-		"MutationWeight": 10,
+		"MutationWeight": 8,
 		"Effects": ["unlock_city_boost", "unlock_sewer_travel"],
 		"Tooltip": "Gain stat boosts in the city. You can use the sewers to instantly travel to the closest city.",
 		"MutationUse": "utility",
@@ -38,7 +38,7 @@
 	{
 		"MutationName": "Necrosis",
 		"MutationTag": "disease",
-		"MutationWeight": 10,
+		"MutationWeight": 8,
 		"Effects": ["unlock_necrosis"],
 		"Tooltip": "Your armor is reduced by 20% but your rat corpses deal damage to enemies.",
 		"MutationUse": "offensive",
@@ -47,7 +47,7 @@
 	{
 		"MutationName": "Poltergeist",
 		"MutationTag": "psionic",
-		"MutationWeight": 10,
+		"MutationWeight": 5,
 		"Effects": ["unlock_poltergeist"],
 		"Tooltip": "Become impervious to damage from enemies for 5 seconds.",
 		"MutationUse": "defensive",
@@ -56,7 +56,7 @@
 	{
 		"MutationName": "Haunt",
 		"MutationTag": "psionic",
-		"MutationWeight": 10,
+		"MutationWeight": 7,
 		"Effects": ["unlock_haunt"],
 		"Tooltip": "Gain damage reduction when your rats die in combat.",
 		"MutationUse": "defensive",
@@ -65,7 +65,7 @@
 	{
 		"MutationName": "Apparition",
 		"MutationTag": "psionic",
-		"MutationWeight": 10,
+		"MutationWeight": 5,
 		"Effects": ["unlock_apparition"],
 		"Tooltip": "Create an apparition of your horde that you cannot control. It lasts for 20 seconds.",
 		"MutationUse": "defensive",
@@ -74,7 +74,7 @@
 	{
 		"MutationName": "Mentat",
 		"MutationTag": "psionic",
-		"MutationWeight": 10,
+		"MutationWeight": 7,
 		"Effects": ["unlock_mentat"],
 		"Tooltip": "There is a chance you can predict an attack and dodge it.",
 		"MutationUse": "defensive",
@@ -83,7 +83,7 @@
 	{
 		"MutationName": "Abraxas",
 		"MutationTag": "psionic",
-		"MutationWeight": 10,
+		"MutationWeight": 8,
 		"Effects": ["unlock_abraxas"],
 		"Tooltip": "Stats improve by 10%, future psionic mutations grant the same buff.",
 		"MutationUse": "utility",
@@ -92,7 +92,7 @@
 	{
 		"MutationName": "Agriculturalist",
 		"MutationTag": "diplomacy",
-		"MutationWeight": 10,
+		"MutationWeight": 8,
 		"Effects": ["unlock_farmer"],
 		"Tooltip": "Resource surplus massively increases birth rate.",
 		"MutationUse": "utility",
@@ -101,7 +101,7 @@
 	{
 		"MutationName": "Price of War",
 		"MutationTag": "diplomacy",
-		"MutationWeight": 10,
+		"MutationWeight": 7,
 		"Effects": ["unlock_price_of_war"],
 		"Tooltip": "Enemy rats have to donate cheese in order to start combat with you.",
 		"MutationUse": "utility",
@@ -128,7 +128,7 @@
 	{
 		"MutationName": "MAD",
 		"MutationTag": "diplomacy",
-		"MutationWeight": 10,
+		"MutationWeight": 5,
 		"Effects": ["unlock_mad"],
 		"Tooltip": "Kill 80% of all nearby horde populations, including hordes you control. 10 second birth cooldown.",
 		"MutationUse": "offensive",
@@ -137,7 +137,7 @@
 	{
 		"MutationName": "Eyeless",
 		"MutationTag": "mutant",
-		"MutationWeight": 10,
+		"MutationWeight": 8,
 		"Effects": ["unlock_eyeless"],
 		"Tooltip": "Your rats can miss attacks, but also have a chance to dodge them. Chance is doubled if you have Mentat.",
 		"MutationUse": "defensive",
@@ -155,7 +155,7 @@
 	{
 		"MutationName": "God's Mistake",
 		"MutationTag": "mutant",
-		"MutationWeight": 10,
+		"MutationWeight": 5,
 		"Effects": ["unlock_gods_mistake"],
 		"Tooltip": "On death, grant friendly hordes a mutation point.",
 		"MutationUse": "utility",
@@ -164,7 +164,7 @@
 	{
 		"MutationName": "Corpsebloom",
 		"MutationTag": "mutant",
-		"MutationWeight": 10,
+		"MutationWeight": 8,
 		"Effects": ["unlock_corpsebloom"],
 		"Tooltip": "Sacrifice this horde. 50% birth rate boost to other owned hordes. Out of combat only.",
 		"MutationUse": "utility",
