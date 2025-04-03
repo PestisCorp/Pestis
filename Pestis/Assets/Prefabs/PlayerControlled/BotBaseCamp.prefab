@@ -70,7 +70,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 1
-  hordePrefab: {fileID: 2093969167296477126, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
+  hordePrefab: {fileID: 2093969167296477126, guid: d00650c1cbe1425ed9de337bf22521f2, type: 3}
   cheeseConsumptionRate: 0.001
   TotalDamageDealt: 0
   aliveRats: 0
