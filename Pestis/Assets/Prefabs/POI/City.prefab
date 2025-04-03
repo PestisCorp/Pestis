@@ -14960,6 +14960,7 @@ GameObject:
   - component: {fileID: 5682928140232265060}
   - component: {fileID: 319081389892100198}
   - component: {fileID: 7774436815187796967}
+  - component: {fileID: 803081377950424271}
   m_Layer: 6
   m_Name: City
   m_TagString: Player
@@ -15128,3 +15129,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetworkObject: {fileID: 0}
+--- !u!58 &803081377950424271
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7727599578141111434}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.13, y: -1.76}
+  m_Radius: 3.03

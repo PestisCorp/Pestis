@@ -37,6 +37,7 @@ uniform int player;
 uniform int horde;
 
 uniform bool combatRats;
+uniform bool receivedBoidsThisFrame;
 
 uniform float2 spawnPoint;
 
@@ -152,7 +153,7 @@ void MergedBehaviours(inout Boid boid, uint3 id)
         avgVel /= neighbours;
         boid.vel += (avgVel - boid.vel) * (alignmentFactor * velocityDeltaTime * turnSpeed);
     }
-    else if (numBoidsPrevious > 30) // Boid has become separated from the pack
+    else if (numBoidsPrevious > 30 && !receivedBoidsThisFrame) // Boid has become separated from the pack
     {
         boid.pos = boidsIn[numBoids / 2].pos;
     }

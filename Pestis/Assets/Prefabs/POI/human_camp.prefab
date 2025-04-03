@@ -5062,6 +5062,7 @@ GameObject:
   - component: {fileID: 7802397073592086314}
   - component: {fileID: 8940901211010643535}
   - component: {fileID: 5485535974668635465}
+  - component: {fileID: 2221302158724925085}
   m_Layer: 6
   m_Name: human_camp
   m_TagString: Player
@@ -5228,3 +5229,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetworkObject: {fileID: 0}
+--- !u!58 &2221302158724925085
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7727599578141111434}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.6, y: 0.02}
+  m_Radius: 2.13
