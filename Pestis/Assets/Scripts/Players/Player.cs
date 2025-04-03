@@ -290,6 +290,7 @@ namespace Players
             // Move two hordes slightly apart
             newHorde.Move(toSplit.targetLocation.transform.position - toSplit.GetBounds().extents);
             toSplit.Move(toSplit.targetLocation.transform.position + toSplit.GetBounds().extents);
+            newHorde.populationCooldown += 5;
             // Ensure genetics are transferred
             if (Type == PlayerType.Human) _humanPlayer?.SelectHorde(newHorde);
 
