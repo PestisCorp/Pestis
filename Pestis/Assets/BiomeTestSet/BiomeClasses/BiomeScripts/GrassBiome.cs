@@ -27,5 +27,7 @@ public class GrassBiome : BiomeClass
         base.FeatureGeneration(map, biomeInstance, parent);
         base.FeatureGeneration(map, biomeInstance, parent);
         base.FeatureGeneration(map, biomeInstance, parent);
+        base.FeatureGeneration(map, biomeInstance, parent);
+        base.FeatureGeneration(map, biomeInstance, parent);
     }
 }
