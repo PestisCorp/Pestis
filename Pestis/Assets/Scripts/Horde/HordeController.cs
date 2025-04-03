@@ -518,7 +518,7 @@ Count: {AliveRats}
 
             _selectionLightPoi.color = _selectionLightTerrain.color;
             _selectionLightPoi.intensity = _selectionLightTerrain.intensity;
-            
+
             targetLocation = transform.Find("TargetLocation").gameObject.GetComponent<NetworkTransform>();
 
             var canvas = transform.Find("Canvas").gameObject.GetComponent<Canvas>();
@@ -605,11 +605,7 @@ Count: {AliveRats}
                 StationedAt = null;
             }
 
-            if (CurrentCombatController)
-            {
-                CurrentCombatController.EventRetreatDesiredRpc(this);
-                CurrentCombatController = null;
-            }
+            if (CurrentCombatController) CurrentCombatController.EventRetreatDesiredRpc(this);
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -948,6 +944,7 @@ Count: {AliveRats}
         {
             if (!HasStateAuthority) throw new Exception("Tried to call combat despawned but not state authority");
 
+            Debug.Log($"HORDE {Object.Id}, our combat despawned");
             CurrentCombatController = null;
         }
 

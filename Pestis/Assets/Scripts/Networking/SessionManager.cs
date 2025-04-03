@@ -117,7 +117,7 @@ namespace Networking
 
             var args = new StartGameArgs
             {
-                GameMode = GameMode.Shared,
+                GameMode = GameMode.Single,
                 SessionName = Room.Name
             };
             var scene = new NetworkSceneInfo();
