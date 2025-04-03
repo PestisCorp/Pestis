@@ -22,7 +22,7 @@ MonoBehaviour:
   CompatableTerrainTypes:
   - {fileID: 11400000, guid: b85b6c7b0af394f438789f6ceca17ae4, type: 2}
   CompatableBiomeTiles: []
-  distanceFromNearestSeed: 10
+  distanceFromNearestSeed: 15
   seedCount: 1
   walkLength: 0
   iteration: 1
