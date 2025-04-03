@@ -42,7 +42,7 @@ namespace Combat
                 var shape = vfx.shape;
                 shape.radius = overlap.extents.magnitude;
                 var emissions = vfx.emission;
-                emissions.rateMultiplier = overlap.extents.sqrMagnitude * 2.5f +4;
+                emissions.rateOverTime = overlap.extents.sqrMagnitude * 4f;
                 if (!vfx.isPlaying) vfx.Play();
             }
         }

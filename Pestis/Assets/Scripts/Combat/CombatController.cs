@@ -99,7 +99,19 @@ namespace Combat
 
         [SerializeField] private CombatFXManager fxManager;
 
-        public CombatState state;
+        private void StateChanged()
+        {
+            if (state != CombatState.InProgress)
+            {
+                fxManager.enabled = false;
+            } else
+            {
+                fxManager.enabled = true;
+            }
+        }
+
+        [Networked, OnChangedRender(nameof(StateChanged))]
+        public CombatState state { get; set; }
 
 
         private readonly List<HordeState> _allParticipants = new();
