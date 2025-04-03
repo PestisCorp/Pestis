@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public float meanHordeHealth;
 
-    public List<HordeController> AllHordes;
+    public List<HordeController> AllHordes = new();
 
     private readonly float[] fpsWindow = new float[60];
 
@@ -214,33 +214,18 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Done as for loops to avoid alloc
+        AllHordes = new();
         float sum = 0;
-        var numHordes = 0;
-        // ReSharper disable once ForCanBeConvertedToForeach
-        for (var player = 0; player < Players.Count; player++)
-            // ReSharper disable once ForCanBeConvertedToForeach
-        for (var horde = 0; horde < Players[player].Hordes.Count; horde++)
+        uint numberOfHordes = 0;
+        foreach (var player in Players)
         {
-            sum += Players[player].Hordes[horde].TotalHealth;
-            if (AllHordes.Count >= numHordes + 1)
+            foreach (var horde in player.Hordes)
             {
-                AllHordes[numHordes] = Players[player].Hordes[horde];
+                AllHordes.Add(horde);
             }
-            else
-            {
-                AllHordes.Add(Players[player].Hordes[horde]);
-            }
-            numHordes++;
-        }
-
-        // Crop end of list when hordes removed so we don't realloc a new list
-        if (numHordes < AllHordes.Count)
-        {
-            AllHordes.RemoveRange(numHordes, AllHordes.Count - numHordes);
         }
         
-        meanHordeHealth = sum / numHordes;
+        meanHordeHealth = sum / numberOfHordes;
 
         currentPerfBucket = Players.Count != 0 ? Players[0].Runner.Tick % recoverPerfLevel : 0;
     }
