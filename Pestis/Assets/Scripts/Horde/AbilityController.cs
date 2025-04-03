@@ -181,10 +181,10 @@ namespace Horde
             {
                 apparition.isApparition = false;
             }
-            else
+
+            if (apparition && apparition.isApparition)
             {
-                if (apparition)
-                    apparition.DestroyHordeRpc();
+                apparition.DestroyHordeRpc();
             }
         }
 

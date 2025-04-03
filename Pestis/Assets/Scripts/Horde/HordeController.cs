@@ -916,6 +916,10 @@ Count: {AliveRats}
             }
 
             player.Hordes.Remove(this);
+            if (player.Hordes.Count == 1 && player.Hordes[0].isApparition)
+            {
+                player.Hordes[0].isApparition = false;
+            }
             GameManager.Instance.UIManager.AbilityBars.Remove(this);
             if (GetEvolutionState().AcquiredEffects.Contains("unlock_gods_mistake"))
                 foreach (var horde in player.Hordes)
