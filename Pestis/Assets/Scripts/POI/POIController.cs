@@ -133,6 +133,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             ControlledBy.IncrementCheeseIncrementRateRpc(_cheesePerTick);
             StationedHordes.Clear();
             if (player.IsLocal) GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.POICaptured, 1);
+            if (player.IsLocal) if (player.IsLocal) GameManager.Instance.PlaySfx(SoundEffectType.POICapture);
         }
 
         private void UpdateFlag()

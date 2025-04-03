@@ -304,6 +304,7 @@ Count: {AliveRats}
                                                               * GetPopulationState().DamageMult
                                                               * GetPopulationState().SepticMult);
                 _attackingPatrol.DealDamageRpc(damageToDeal);
+                
             }
 
             if (InCombat && CurrentCombatController!.boids.containedHordes.Contains(this))
@@ -611,7 +612,7 @@ Count: {AliveRats}
             CurrentCombatController = null;
             _attackingPatrol = null;
 
-            if (player.IsLocal) GameManager.Instance.PlaySfx(SoundEffectType.BattleEnd);
+            if (player.IsLocal) GameManager.Instance.PlaySfx(SoundEffectType.BattleLoss);
 
             var baseCamp = transform.parent.position;
             if (player.ControlledPOIs.Count != 0)
@@ -785,7 +786,7 @@ Count: {AliveRats}
             Debug.Log($"We ({Object.Id}) won combat!");
 
             if (player.IsLocal) GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.BattleWon, 1);
-
+            if (player.IsLocal) GameManager.Instance.PlaySfx(SoundEffectType.BattleWin);
             var state = GetEvolutionState();
             var newMutations = new WeightedList<ActiveMutation>();
             foreach (var hordeState in hordes)

@@ -24,6 +24,7 @@ TagManager:
   - mutation_bg
   - no_points
   - rat_mugshot
+  - rat_img
   layers:
   - Default
   - TransparentFX
