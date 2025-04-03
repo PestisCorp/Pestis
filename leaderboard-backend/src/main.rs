@@ -28,12 +28,13 @@ struct Player {
     damage: u64,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 struct Update {
     tick: u64,
     player: Player,
     fps: f32,
     timestamp: u64,
+    room: String,
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, Debug)]
@@ -48,7 +49,7 @@ struct Config {
 #[derive(Serialize, Debug, Clone)]
 struct Room {
     name: String,
-    players: Vec<Player>,
+    players: Vec<String>,
     /// The config that the room was created with
     config: Config,
     active: bool,
@@ -204,7 +205,7 @@ impl LeaderboardManager {
         let mut info = self.info.write().await;
         for room in &mut info.state.rooms {
             room.players
-                .retain(|player| !to_remove.contains(&player.username));
+                .retain(|player| !to_remove.contains(&player));
         }
     }
 
@@ -259,7 +260,7 @@ impl LeaderboardManager {
         // Remove the player from all rooms
         let mut info = self.info.write().await;
         for room in &mut info.state.rooms {
-            room.players.retain(|player| player.username != username);
+            room.players.retain(|player| player != username);
         }
     }
 
@@ -407,7 +408,26 @@ async fn update_player(
 
     // Only add the update if the player has changed
     if player_history.is_empty() || player_history.last().unwrap().player != update.player {
-        player_history.push(update);
+        player_history.push(update.clone());
+    }
+
+    // Add player to room if not already in it
+    drop(history);
+    trace!("Received update: {update:?}");
+    let mut info = manager.info.write().await;
+    let rooms = &mut info.state.rooms;
+    for room in rooms {
+        if &room.name == &update.room {
+            if !room
+                .players
+                .iter()
+                .any(|player| *player == update.player.username)
+            {
+                room.players.push(update.player.username.clone());
+                debug!("Added player {} to room {}", update.player.username, room.name);
+            }
+            break;
+        }
     }
     Ok(warp::reply::with_status("ok", warp::http::StatusCode::OK))
 }
@@ -501,20 +521,16 @@ async fn main() {
         });
 
     let manager_clone = manager.clone();
-    let get_commands =
-        warp::get()
-            .and(warp::path("api"))
-            .and(warp::path("commands"))
-            .and(warp::body::json())
-            .and_then(move |body: serde_json::Value| {
-                let room = body.get("room").unwrap().as_str().unwrap().to_string();
-                let last_received_nonce =
-                    body.get("last_received_nonce").unwrap().as_i64().unwrap();
-                let manager = manager_clone.clone();
-                async move {
-                    get_commands_for_room(room, last_received_nonce, manager).await
-                }
-            });
+    let get_commands = warp::get()
+        .and(warp::path("api"))
+        .and(warp::path("commands"))
+        .and(warp::body::json())
+        .and_then(move |body: serde_json::Value| {
+            let room = body.get("room").unwrap().as_str().unwrap().to_string();
+            let last_received_nonce = body.get("last_received_nonce").unwrap().as_i64().unwrap();
+            let manager = manager_clone.clone();
+            async move { get_commands_for_room(room, last_received_nonce, manager).await }
+        });
 
     let manager_clone = manager.clone();
     let leave = warp::post()

@@ -23,7 +23,7 @@ namespace Networking
     }
 
     [Serializable]
-    internal struct RoomResponse
+    public struct RoomResponse
     {
         [JsonProperty("name")] internal string Name;
 
@@ -63,12 +63,17 @@ namespace Networking
 
     public class SessionManager : NetworkBehaviour
     {
-        private RoomResponse _room;
+        private const string APIEndpoint = "https://pestis.murraygrov.es/api";
 
         public static SessionManager Instance;
 
         public GameObject botPrefab;
         public GameObject playerPrefab;
+
+        [SerializeField] private TMP_Text roomNameText;
+
+        private int _lastReceivedCommandNonce = -1;
+        public RoomResponse Room { get; private set; }
 
         /// <summary>
         ///     Each element corresponds to one bot,
@@ -77,31 +82,26 @@ namespace Networking
         [Capacity(100)]
         private NetworkArray<PlayerSlot> Players => default;
 
-        [SerializeField] private TMP_Text roomNameText;
 
-#if UNITY_EDITOR
-        private const string APIEndpoint = "http://localhost:8081/api";
-#else
-        //private const string APIEndpoint = "https://pestis.murraygrov.es/api";
-// TODO - Remove
-        private const string APIEndpoint = "http://localhost:8081/api";
-#endif
-
-        public async void Start()
+        public void Start()
         {
             Instance = this;
+        }
+
+        public async Awaitable JoinGame(NetworkRunner runner)
+        {
             try
             {
                 var req = UnityWebRequest.Get($"{APIEndpoint}/room");
-                req.timeout = 5;
+                req.timeout = 2;
                 await req.SendWebRequest();
 
-                _room = JsonConvert.DeserializeObject<RoomResponse>(req.downloadHandler.text);
+                Room = JsonConvert.DeserializeObject<RoomResponse>(req.downloadHandler.text);
                 Debug.Log("Got room info");
             }
             catch (Exception e)
             {
-                _room = new RoomResponse
+                Room = new RoomResponse
                 {
                     Name = "Fallback Room",
                     Config = new RoomConfig
@@ -113,15 +113,12 @@ namespace Networking
                 UnityEngine.Debug.LogWarning($"Failed to get room config: {e}");
             }
 
-            roomNameText.text = _room.Name;
-        }
+            roomNameText.text = Room.Name;
 
-        public void JoinGame(NetworkRunner runner)
-        {
             var args = new StartGameArgs
             {
                 GameMode = GameMode.Shared,
-                SessionName = _room.Name
+                SessionName = Room.Name
             };
             var scene = new NetworkSceneInfo();
             scene.AddSceneRef(SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex));
@@ -183,7 +180,7 @@ namespace Networking
             var botsOnThisClient =
                 Players.Count(slot => slot.InUse && slot.PlayerRef == Runner.LocalPlayer && slot.IsBot);
 
-            var numBotsToRemove = botsOnThisClient - _room.Config.MaxBotsPerClient;
+            var numBotsToRemove = botsOnThisClient - Room.Config.MaxBotsPerClient;
             if (numBotsToRemove <= 0) return;
 
             var ourBots = Players.Select((slot, i) => new KeyValuePair<int, PlayerSlot>(i, slot)).Where(kvp =>
@@ -229,7 +226,7 @@ namespace Networking
 
                 spawnPositions.Add(point);
 
-                if (spawnPositions.Count == _room.Config.PlayersPerRoom) break;
+                if (spawnPositions.Count == Room.Config.PlayersPerRoom) break;
             }
 
             return spawnPositions;
@@ -248,13 +245,13 @@ namespace Networking
             if (presentNumbers.Count == 0)
             {
                 Debug.Log("No existing players");
-                return _room.Config.PlayersPerRoom / 2;
+                return Room.Config.PlayersPerRoom / 2;
             }
 
 
             // Consider the implicit boundaries 0 and 100
             presentNumbers.Insert(0, 0);
-            presentNumbers.Add(Math.Min(_room.Config.PlayersPerRoom, Players.Count(slot => slot.InUse)));
+            presentNumbers.Add(Math.Min(Room.Config.PlayersPerRoom, Players.Count(slot => slot.InUse)));
 
             var maxGap = 0;
             var bestIndex = -1;
@@ -276,7 +273,7 @@ namespace Networking
 
             Debug.LogError(
                 "Something went terribly wrong picking a spawn index for the new player. Failing over to spawning player in a random position.");
-            bestIndex = Random.Range(0, _room.Config.PlayersPerRoom);
+            bestIndex = Random.Range(0, Room.Config.PlayersPerRoom);
 
             return bestIndex;
         }
@@ -374,14 +371,15 @@ namespace Networking
             if (!HasStateAuthority)
             {
                 // Despawn the bot whose place we're taking
-                Runner.TryFindObject(Players[spawnIndex].PlayerId, out var botObj);
-                var bot = botObj.GetComponent<Player>();
-                bot.DestroyBotRpc();
-
+                if (Runner.TryFindObject(Players[spawnIndex].PlayerId, out var botObj))
+                {
+                    var bot = botObj.GetComponent<Player>();
+                    bot.DestroyBotRpc();
+                }
 
                 var currentPlayers = Players.Count(slot => slot.InUse);
-                var neededPlayers = _room.Config.PlayersPerRoom - currentPlayers;
-                var botsToSpawn = Math.Min(neededPlayers, _room.Config.MaxBotsPerClient);
+                var neededPlayers = Room.Config.PlayersPerRoom - currentPlayers;
+                var botsToSpawn = Math.Min(neededPlayers, Room.Config.MaxBotsPerClient);
 
                 // Find empty slots to spawn the bots in
                 for (var i = 0; botsToSpawn != 0; i++)
@@ -394,13 +392,13 @@ namespace Networking
                     botsToSpawn--;
                 }
 
-                StealBots(Math.Min(neededPlayers, _room.Config.MaxBotsPerClient));
+                StealBots(Math.Min(neededPlayers, Room.Config.MaxBotsPerClient));
 
                 return;
             }
 
             // Spawn necessary bots
-            for (var i = 0; i < _room.Config.MaxBotsPerClient; i++)
+            for (var i = 0; i < Room.Config.MaxBotsPerClient; i++)
             {
                 if (i == spawnIndex) continue;
 
@@ -417,34 +415,13 @@ namespace Networking
             }
         }
 
-        private int _lastReceivedCommandNonce = -1;
-
-        private struct GetCommandsRequest
-        {
-            [JsonProperty("room")] internal string Room;
-            [JsonProperty("last_received_nonce")] internal int LastReceivedNonce;
-        }
-
-        private enum CommandType
-        {
-            Restart
-        }
-
-        private struct Command
-        {
-            [JsonConverter(typeof(StringEnumConverter))] [JsonProperty("command_type")]
-            internal CommandType CommandType;
-
-            [JsonProperty("nonce")] internal int Nonce;
-        }
-
         private IEnumerator WatchForCommands()
         {
             while (true)
             {
                 var body = new GetCommandsRequest
                 {
-                    Room = _room.Name,
+                    Room = Room.Name,
                     LastReceivedNonce = _lastReceivedCommandNonce
                 };
 
@@ -488,6 +465,25 @@ namespace Networking
                 yield return new WaitForSecondsRealtime(30);
             }
             // ReSharper disable once IteratorNeverReturns
+        }
+
+        private struct GetCommandsRequest
+        {
+            [JsonProperty("room")] internal string Room;
+            [JsonProperty("last_received_nonce")] internal int LastReceivedNonce;
+        }
+
+        private enum CommandType
+        {
+            Restart
+        }
+
+        private struct Command
+        {
+            [JsonConverter(typeof(StringEnumConverter))] [JsonProperty("command_type")]
+            internal CommandType CommandType;
+
+            [JsonProperty("nonce")] internal int Nonce;
         }
     }
 }

@@ -12,10 +12,10 @@ namespace UI
         public Button joinButton;
         public TMP_Text usernameInput;
 
-        public void OnJoin()
+        public async void OnJoin()
         {
             GameManager.Instance.localUsername = usernameInput.text;
-            SessionManager.Instance.JoinGame(runner);
+            await SessionManager.Instance.JoinGame(runner);
             gameObject.SetActive(false);
         }
     }

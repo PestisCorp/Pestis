@@ -201,11 +201,8 @@ namespace Players
 
         private IEnumerator UpdateStats()
         {
-#if UNITY_EDITOR
-            var uri = "http://localhost:8081/api/update";
-#else
-            string uri = "https://pestis.murraygrov.es/api/update";
-#endif
+            var uri = "https://pestis.murraygrov.es/api/update";
+
             var jsonObj = new StatsUpdate
             {
                 tick = (ulong)Runner.Tick.Raw,
@@ -226,7 +223,8 @@ namespace Players
                     }).ToArray(),
                     score = CalculateScore(),
                     damage = Convert.ToUInt64(TotalDamageDealt)
-                }
+                },
+                room = SessionManager.Instance.Room.Name
             };
             var json = JsonUtility.ToJson(jsonObj);
 
@@ -387,6 +385,7 @@ namespace Players
             public long timestamp;
             public float fps;
             public PlayerUpdate player;
+            public string room;
         }
     }
 }
