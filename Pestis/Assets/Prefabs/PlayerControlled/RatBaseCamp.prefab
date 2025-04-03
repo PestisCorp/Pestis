@@ -120,6 +120,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 491337909385094232}
     m_Modifications:
+    - target: {fileID: 311767674696641390, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
+      propertyPath: m_Color.b
+      value: 0.6986472
+      objectReference: {fileID: 0}
+    - target: {fileID: 311767674696641390, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
+      propertyPath: m_Color.g
+      value: 0.9433962
+      objectReference: {fileID: 0}
+    - target: {fileID: 311767674696641390, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
+      propertyPath: m_Color.r
+      value: 0.6986472
+      objectReference: {fileID: 0}
+    - target: {fileID: 311767674696641390, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
+      propertyPath: m_Intensity
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 311767674696641390, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
+      propertyPath: m_OverlapOperation
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2093969167296477126, guid: e6ca4f2ed078c923490b61a64668de7d, type: 3}
       propertyPath: m_Name
       value: RatHorde
