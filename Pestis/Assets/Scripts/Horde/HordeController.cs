@@ -228,6 +228,11 @@ namespace Horde
                         if (CurrentCombatController!.boids.hordeBounds.TryGetValue(this, out var newBounds))
                             HordeBounds = newBounds;
                     }
+                    if (!InCombat && player.Type == PlayerType.Bot && AliveRats <5  )
+                    {
+                        Debug.LogError("Error bot horde with <5 rats, destroying horde");
+                        DestroyHordeRpc();
+                    }
                     else
                     {
                         if (Boids.Bounds.HasValue) HordeBounds = Boids.Bounds.Value;
