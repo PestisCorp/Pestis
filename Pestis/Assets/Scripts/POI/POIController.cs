@@ -5,10 +5,8 @@ using Fusion;
 using Horde;
 using Human;
 using JetBrains.Annotations;
-using Networking;
 using Objectives;
 using Players;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,7 +21,7 @@ namespace POI
         Camp,
         Van
     }
-    
+
     public class PoiController : NetworkBehaviour
     {
         public ParticleSystem[] captureEffect;
@@ -33,6 +31,8 @@ namespace POI
         public uint boidPoisIndex;
         private Camera _camera;
         private float _cheesePerTick;
+
+        private POIType _poiType;
 
         private Sprite captureFlag;
         private GameObject flagObject;
@@ -67,8 +67,6 @@ namespace POI
         [Networked] [CanBeNull] public CombatController Combat { get; private set; }
 
         private float TimeWhenPoiAbandoned { get; set; }
-        
-        private POIType _poiType;
 
         public void Awake()
         {
@@ -99,25 +97,13 @@ namespace POI
                 flag.sprite = captureFlag;
             }
 
-            if (name.Contains("Lab"))
-            {
-                _poiType = POIType.Lab;
-            }
+            if (name.Contains("Lab")) _poiType = POIType.Lab;
 
-            if (name.Contains("City"))
-            {
-                _poiType = POIType.City;
-            }
+            if (name.Contains("City")) _poiType = POIType.City;
 
-            if (name.Contains("Camp"))
-            {
-                _poiType = POIType.Camp;
-            }
+            if (name.Contains("Camp")) _poiType = POIType.Camp;
 
-            if (name.Contains("Van"))
-            {
-                _poiType = POIType.Van;
-            }
+            if (name.Contains("Van")) _poiType = POIType.Van;
         }
 
 #if UNITY_EDITOR
@@ -172,13 +158,13 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
                 // Remove Cheese benefits from previous controller
                 ControlledBy.DecrementCheeseIncrementRateRpc(_cheesePerTick);
                 // Remove this POI from previous controller
-                ControlledBy.ControlledPOIs.Remove(this);
+                ControlledBy.RemoveControlledPoiRpc(this);
             }
 
             // Give control to new controller
             ControlledBy = player;
 
-            player.ControlledPOIs.Add(this);
+            player.AddControlledPoiRpc(this);
             // Add Cheese benefits to new controller
             Debug.Log($"Fixed cheese rate is {_cheesePerTick}");
             ControlledBy.IncrementCheeseIncrementRateRpc(_cheesePerTick);
@@ -186,10 +172,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             switch (_poiType)
             {
                 case POIType.City:
-                    foreach (var horde in player.Hordes)
-                    {
-                        horde.AliveRats = new IntPositive((uint)((uint)horde.AliveRats * 1.1));
-                    }
+                    foreach (var horde in player.Hordes) horde.SetAliveRatsRpc((uint)((uint)horde.AliveRats * 1.1));
                     GameManager.Instance.UIManager.AddNotification("City captured. Population increased", Color.black);
                     break;
                 case POIType.Lab:
@@ -198,13 +181,17 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
                         horde.GetComponent<EvolutionManager>().PointsAvailable += 1;
                         horde.AddSpeechBubbleRpc(EmoteType.Evolution);
                     }
-                    GameManager.Instance.UIManager.AddNotification("Lab captured. Mutation points acquired.", Color.black);
+
+                    GameManager.Instance.UIManager.AddNotification("Lab captured. Mutation points acquired.",
+                        Color.black);
                     break;
                 case POIType.Farm:
                     player.AddCheeseRpc(100);
-                    GameManager.Instance.UIManager.AddNotification("Farm captured. Food package acquired.", Color.black);
+                    GameManager.Instance.UIManager.AddNotification("Farm captured. Food package acquired.",
+                        Color.black);
                     break;
             }
+
             if (player.IsLocal) GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.POICaptured, 1);
             if (player.IsLocal) GameManager.Instance.PlaySfx(SoundEffectType.POICapture);
         }

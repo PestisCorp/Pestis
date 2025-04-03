@@ -77,6 +77,18 @@ namespace Players
             aliveRats = newSum;
         }
 
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void AddControlledPoiRpc(PoiController poi)
+        {
+            ControlledPOIs.Add(poi);
+        }
+
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void RemoveControlledPoiRpc(PoiController poi)
+        {
+            ControlledPOIs.Remove(poi);
+        }
+
         public override void Despawned(NetworkRunner runner, bool hasState)
         {
             Debug.Log($"Player {(hasState ? Username : "unknown")} left");

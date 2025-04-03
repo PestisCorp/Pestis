@@ -289,6 +289,12 @@ Count: {AliveRats}
             targetLocation.transform.position = devToolsTargetLocation;
         }
 
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void SetAliveRatsRpc(uint newRatCount)
+        {
+            AliveRats = new IntPositive(newRatCount);
+        }
+
         public override void Despawned(NetworkRunner runner, bool hasState)
         {
             // If player's Network Object is null, it's been despawned too!
@@ -309,7 +315,6 @@ Count: {AliveRats}
                                                               * GetPopulationState().DamageMult
                                                               * GetPopulationState().SepticMult);
                 _attackingPatrol.DealDamageRpc(damageToDeal);
-                
             }
 
             if (InCombat && CurrentCombatController!.boids.containedHordes.Contains(this))
@@ -476,7 +481,7 @@ Count: {AliveRats}
                 player.RemoveCheeseRpc(player.CurrentCheese * 0.1f);
                 _targetHorde.player.AddCheeseRpc(player.CurrentCheese * 0.1f);
             }
-            
+
             _targetHorde = null;
         }
 
@@ -519,7 +524,7 @@ Count: {AliveRats}
 
             targetLocation = transform.Find("TargetLocation").gameObject.GetComponent<NetworkTransform>();
 
-            Canvas canvas = transform.Find("Canvas").gameObject.GetComponent<Canvas>();
+            var canvas = transform.Find("Canvas").gameObject.GetComponent<Canvas>();
             _playerText = transform.Find("Canvas/PlayerName").gameObject;
             _combatText = transform.Find("Canvas/PlayerName/Combat").gameObject;
 
@@ -535,7 +540,7 @@ Count: {AliveRats}
             if (player.IsLocal)
             {
                 canvas.sortingOrder = 0;
-                
+
                 var iconSprite = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_self");
                 icon.sprite = iconSprite;
                 icon.color = new Color(1f, 1f, 1f);
@@ -543,7 +548,7 @@ Count: {AliveRats}
 
                 textBackground.color = new Color(0.9137255f, 0.7568628f, 0.4666667f);
                 textSize.localScale = new Vector3(1f, 1f, 1f);
-                
+
                 GameManager.Instance.UIManager.AbilityBars[this] =
                     Instantiate(GameManager.Instance.UIManager.abilityToolbar,
                         GameManager.Instance.UIManager.abilityPanel.transform);
@@ -553,21 +558,21 @@ Count: {AliveRats}
             else
             {
                 canvas.sortingOrder = -1;
-                
+
                 var iconSprite = Resources.Load<Sprite>("UI_design/HordeIcons/rat_skull_enemy");
                 icon.sprite = iconSprite;
                 icon.color = new Color(0.85f, 0.85f, 0.85f);
                 hordeIcon.transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
-                
+
                 textBackground.color = new Color(0.6f, 0f, 0f);
                 textSize.localScale = new Vector3(0.85f, 0.85f, 0.85f);
             }
-            
+
             Boids.SetBoidsMat();
             if (CurrentCombatController)
             {
                 var boids = new Boid[AliveRats];
-                
+
                 for (var i = 0; i < AliveRats; i++)
                 {
                     boids[i].pos = new float2(HordeBounds.center.x, HordeBounds.center.y);
