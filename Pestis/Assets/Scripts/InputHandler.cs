@@ -28,6 +28,8 @@ public class InputHandler : MonoBehaviour
 
     private void Update()
     {
+        if (!LocalPlayer) return;
+
         var mouse = Mouse.current;
         
         var moveCam = _moveCamAction.ReadValue<Vector2>();
@@ -93,7 +95,7 @@ public class InputHandler : MonoBehaviour
                 Debug.Log("Attacking horde");
                 LocalPlayer!.selectedEnemyHorde = clickedHorde;
                 clickedHorde.Highlight();
-                LocalPlayer!.selectedHorde.AttackHorde(clickedHorde, LocalPlayer.selectedHorde.GetCombatStrategy());
+                LocalPlayer!.selectedHorde.AttackHorde(clickedHorde);
             }
             else if (!(clickedHorde && clickedHorde.player == LocalPlayer?.selectedHorde.player))
             {

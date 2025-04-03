@@ -399,8 +399,8 @@ public class RatBoids : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!Local || hordeController.Id.Object.Raw % GameManager.Instance.recoverPerfLevel !=
-            GameManager.Instance.currentPerfBucket) return;
+        if (!Local || hordeController.Id.Object.Raw % Math.Max(1, GameManager.Instance.recoverPerfLevel / 8) !=
+            GameManager.Instance.currentPerfBucket % Math.Max(1, GameManager.Instance.recoverPerfLevel / 8)) return;
 
         if (numBoids == 0 || paused || !_started)
         {

@@ -37,6 +37,8 @@ namespace Players
 
         public int aliveRats;
 
+        public string usernameOffline;
+
         [CanBeNull] private BotPlayer _botPlayer;
 
         [CanBeNull] private HumanPlayer _humanPlayer;
@@ -67,12 +69,28 @@ namespace Players
 
         private void FixedUpdate()
         {
-            aliveRats = Hordes.Sum(horde => horde.AliveRats);
+            var newSum = 0;
+            // LinQ/ForEach use enumerators which allocate memory
+            // ReSharper disable once ForCanBeConvertedToForeach
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            for (var i = 0; i < Hordes.Count; i++) newSum += Hordes[i].AliveRats;
+            aliveRats = newSum;
         }
 
-        private void OnDestroy()
+        public override void Despawned(NetworkRunner runner, bool hasState)
         {
+            Debug.Log($"Player {(hasState ? Username : "unknown")} left");
             GameManager.Instance.Players.Remove(this);
+            foreach (var poi in ControlledPOIs) poi.RemoveControllerRpc();
+
+            if (Object)
+            {
+                if (Type == PlayerType.Bot) SessionManager.Instance.BotLeftRpc(Object.Id);
+            }
+            else
+            {
+                Debug.LogWarning("Player despawned, but we don't have access to their Network Object to do cleanup!");
+            }
         }
 
         public int GetHordeCount()
@@ -106,6 +124,8 @@ namespace Players
 
                 Username = $"Bot {Object.Id.Raw}";
             }
+
+            usernameOffline = Username;
 
             StartCoroutine(JoinStats());
             CurrentCheese = 50.0f;
@@ -181,11 +201,8 @@ namespace Players
 
         private IEnumerator UpdateStats()
         {
-#if UNITY_EDITOR
-            var uri = "http://localhost:8081/api/update";
-#else
-            string uri = "https://pestis.murraygrov.es/api/update";
-#endif
+            var uri = "https://pestis.murraygrov.es/api/update";
+
             var jsonObj = new StatsUpdate
             {
                 tick = (ulong)Runner.Tick.Raw,
@@ -206,7 +223,8 @@ namespace Players
                     }).ToArray(),
                     score = CalculateScore(),
                     damage = Convert.ToUInt64(TotalDamageDealt)
-                }
+                },
+                room = SessionManager.Instance.Room.Name
             };
             var json = JsonUtility.ToJson(jsonObj);
 
@@ -218,14 +236,13 @@ namespace Players
 
         public override void FixedUpdateNetwork()
         {
-            if (Hordes.Count == 0) throw new Exception("Player has no hordes!");
+            if (Hordes.Count == 0) throw new Exception($"Player {Username} has no hordes!");
 
             if (_leaderboardUpdateTimer.ExpiredOrNotRunning(Runner))
             {
                 _leaderboardUpdateTimer = TickTimer.CreateFromSeconds(Runner, 60);
                 StartCoroutine(UpdateStats());
             }
-
 
             // Consume cheese
             var totalRatsCount = Hordes.Select(horde => (int)horde.AliveRats).Sum();
@@ -254,10 +271,12 @@ namespace Players
         }
 
 
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void DestroyBotRpc()
         {
             if (Type != PlayerType.Bot) throw new Exception("Tried to destroy human player remotely!");
 
+            Debug.Log($"PLAYER {Username}: Destroyed bot (self)");
             Runner.Despawn(Object);
         }
 
@@ -366,6 +385,7 @@ namespace Players
             public long timestamp;
             public float fps;
             public PlayerUpdate player;
+            public string room;
         }
     }
 }

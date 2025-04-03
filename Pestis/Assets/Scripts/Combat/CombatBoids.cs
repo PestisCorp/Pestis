@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Fusion;
 using Horde;
 using Unity.Mathematics;
 using Unity.Profiling;
@@ -34,26 +35,26 @@ namespace Combat
         [SerializeField] private ComputeShader gridShader;
         [SerializeField] private Material boidMat;
         [SerializeField] private Material deadBoidMat;
-        
+
 
         public Vector2 TargetPos;
 
         public bool paused;
         public bool local;
 
-        public List<HordeController> containedHordes;
+        public List<NetworkBehaviourId> containedHordes;
 
         public Bounds bounds;
 
-        public readonly Dictionary<HordeController, Bounds> hordeBounds = new();
+        public readonly Dictionary<NetworkBehaviourId, Bounds> hordeBounds = new();
 
         // Horde controller -> local combat ID of horde
-        private readonly Dictionary<HordeController, int> hordeIDs = new();
+        private readonly Dictionary<NetworkBehaviourId, int> hordeIDs = new();
         private float[] _boundsArr;
         private ComputeBuffer _boundsBuffer;
 
         private bool _justAddedBoids;
-        private Dictionary<HordeController, int> _previousNumBoids = new();
+        private Dictionary<NetworkBehaviourId, int> _previousNumBoids = new();
 
 
         private bool _started;
@@ -83,10 +84,10 @@ namespace Combat
 
         private float minSpeed;
 
-        private Dictionary<HordeController, int> numBoids = new();
+        private Dictionary<NetworkBehaviourId, int> numBoids = new();
         private RenderParams rp;
         private RenderParams rpDead;
-        public Dictionary<HordeController, int> totalDeathsPerHorde = new();
+        public Dictionary<NetworkBehaviourId, int> totalDeathsPerHorde = new();
         private GraphicsBuffer trianglePositions;
         private Vector2[] triangleVerts;
         private float turnSpeed;
@@ -101,6 +102,8 @@ namespace Combat
             rearrangeBoidsKernel;
 
         private float xBound, yBound;
+
+        public NetworkRunner Runner { set; private get; }
 
         private float visualRangeSq => visualRange * visualRange;
         private float minDistanceSq => minDistance * minDistance;
@@ -218,7 +221,6 @@ namespace Combat
 
             boidShader.SetInt("player", -1);
             boidShader.SetInt("horde", -1);
-            
 
 
             AttachBuffers();
@@ -232,7 +234,14 @@ namespace Combat
 
             _previousNumBoids = numBoids;
 
-            var newNumBoids = containedHordes.ToDictionary(x => x, x => (int)x.AliveRats);
+            var newNumBoids = containedHordes.ToDictionary(x => x, x =>
+            {
+                if (!Runner.TryFindBehaviour<HordeController>(x, out var horde))
+                    throw new NullReferenceException("Couldn't find horde from combat");
+
+                return (int)horde.AliveRats;
+            });
+
 
             // Some boids have died
             if (newNumBoids.Values.Sum() < numBoids.Values.Sum())
@@ -281,13 +290,13 @@ namespace Combat
             gridShader.Dispatch(addSumsKernel, blocks, 1, 1);
 
             // Rearrange boids
-            gridShader.Dispatch(rearrangeBoidsKernel, Mathf.CeilToInt(numBoids.Values.Sum() / blockSize), 1, 1);
+            gridShader.Dispatch(rearrangeBoidsKernel, Mathf.CeilToInt(numBoids.Values.Sum() / blockSize), 1,
+                1);
 
             // Compute boid behaviours
 
             var boidsToKillData = containedHordes
-                .Select(horde => Math.Max(_previousNumBoids[horde] - numBoids[horde], 0))
-                .ToArray();
+                .Select(horde => Math.Max(_previousNumBoids[horde] - numBoids[horde], 0)).ToArray();
 
             foreach (var horde in containedHordes)
                 if (totalDeathsPerHorde.Keys.Contains(horde))
@@ -296,7 +305,8 @@ namespace Combat
                     totalDeathsPerHorde[horde] = Math.Max(_previousNumBoids[horde] - numBoids[horde], 0);
 
             // If there are any boids to kill
-            if (boidsToKillData.Any(x => x != 0)) boidsToKill.SetData(boidsToKillData, 0, 0, boidsToKillData.Length);
+            if (boidsToKillData.Any(x => x != 0))
+                boidsToKill.SetData(boidsToKillData, 0, 0, boidsToKillData.Length);
 
             boidShader.Dispatch(updateBoidsKernel, containedHordes.Count,
                 Mathf.CeilToInt(numBoids.Values.Sum() / blockSize), 1);
@@ -335,8 +345,22 @@ namespace Combat
             // Calculate bounds for the combat as a whole
             if (hordeBounds.Count != 0)
             {
-                bounds = hordeBounds.First().Value;
-                foreach (var (_, hordeB) in hordeBounds) bounds.Encapsulate(hordeB);
+                var foundValue = false;
+                // For loop to avoid allocs
+                // ReSharper disable once ForCanBeConvertedToForeach
+                for (var i = 0; i < containedHordes.Count; i++)
+                {
+                    if (!hordeBounds.ContainsKey(containedHordes[i])) continue;
+                    if (foundValue)
+                    {
+                        bounds.Encapsulate(hordeBounds[containedHordes[i]]);
+                    }
+                    else
+                    {
+                        foundValue = true;
+                        bounds = hordeBounds[containedHordes[i]];
+                    }
+                }
             }
 
             // Dispatch next bounds calculation
@@ -492,7 +516,7 @@ namespace Combat
         /// <param name="newBoidsCount">How many boids to add from the compute buffer</param>
         public void AddBoids(ComputeBuffer newBoidsBuffer, int newBoidsCount, HordeController boidsHorde)
         {
-            Debug.Log("COMBAT BOIDS: Adding boids");
+            Debug.Log($"COMBAT BOIDS: Adding boids {boidsHorde.Id.Object}");
             // Resize buffers if too small
             if (numBoids.Values.Sum() + newBoidsCount > boidBuffer.count)
                 ResizeBuffers((numBoids.Values.Sum() + newBoidsCount) * 2);
@@ -527,7 +551,10 @@ namespace Combat
             {
                 var id = hordeIDs[containedHordes[i]];
 
-                var material = containedHordes[i].Boids.GetMaterial();
+                if (!Runner.TryFindBehaviour<HordeController>(containedHordes[i], out var horde))
+                    Debug.LogWarning($"Failed to find horde {containedHordes[i]} to get texture");
+
+                var material = horde.Boids.GetMaterial();
                 var upTex = material.GetTexture("_RatUp") as Texture2D;
                 var upTexColours = upTex.GetPixels();
                 upTextureArray.SetPixels(upTexColours, id);
@@ -596,7 +623,7 @@ namespace Combat
         public void RetrieveBoids(ComputeBuffer hordeBuffer, ComputeBuffer hordeBufferOut, ComputeBuffer hordeCorpses,
             ComputeBuffer hordeCorpseCount, ref int hordeDeadBoidsCount, HordeController horde)
         {
-            Debug.Log("COMBAT BOIDS: Removing boids");
+            Debug.Log("COMBAT BOIDS: retrieving boids");
             // Transfer live boids
             var boids = new Boid[numBoids.Values.Sum()];
             boidBufferOut.GetData(boids, 0, 0, numBoids.Values.Sum());
@@ -656,12 +683,18 @@ namespace Combat
         ///     Fully remove a horde's boids from this controller
         /// </summary>
         /// <param name="horde"></param>
-        public void RemoveBoids(HordeController horde)
+        public void RemoveBoids(NetworkBehaviourId hordeBehaviour)
         {
-            Debug.Log("COMBAT BOIDS: Removing boids");
+            Debug.Log($"COMBAT BOIDS: Removing boids {hordeBehaviour}");
+
+            // Already removed
+            if (containedHordes.All(x => x != hordeBehaviour)) return;
+
             // Transfer live boids
             var boids = new Boid[numBoids.Values.Sum()];
             boidBufferOut.GetData(boids, 0, 0, numBoids.Values.Sum());
+
+            var horde = containedHordes.Find(x => x == hordeBehaviour);
 
             var hordeID = hordeIDs[horde];
 

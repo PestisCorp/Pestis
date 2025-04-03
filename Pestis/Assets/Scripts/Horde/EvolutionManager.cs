@@ -159,15 +159,11 @@ namespace Horde
             var mutEffect = _evolutionaryState.PassiveEvolutions[mutation][1];
             var text = "";
             if (mutation.Contains("Resistance"))
-            {
                 text = "A horde is adapting to the " + mutation.Replace("Resistance", "").ToLower() + " biome";
-            }
             else
-            {
                 text = "A horde's " + mutation + " has improved by " +
                        Math.Round(_evolutionaryState.PassiveEvolutions["evolution strength"][1] * 100 - 100, 2)
-                           .ToString(CultureInfo.CurrentCulture) + "%.";
-            }
+                           .ToString(CultureInfo.CurrentCulture) + "%";
             if (_hordeController.player.Type == 0) GameManager.Instance.UIManager.AddNotification(text, Color.black);
             switch (mutation)
             {
@@ -209,9 +205,9 @@ namespace Horde
                     case "DesertResistance" when biome != "DesertTile":
                         continue;
                 }
-                
+
                 if (!(r < p) || !(_evolutionaryState.PassiveEvolutions[mutation][2] > mutEffect)) continue;
-                
+
                 _evolutionaryState.PassiveEvolutions[mutation][0] = p * PredispositionStrength;
                 if (mutation is "rare mutation rate" or "evolution rate")
                     _evolutionaryState.PassiveEvolutions[mutation][1] =

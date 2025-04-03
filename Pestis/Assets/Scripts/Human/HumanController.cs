@@ -16,7 +16,6 @@ namespace Human
 
         [SerializeField] private float patrolRadius = 2f;
         [SerializeField] private float patrolSpeed = 1.0f;
-        [SerializeField] private float rotationSpeed = 360.0f; // Rotation speed (degrees per second)
         [SerializeField] private float targetTolerance = 0.5f; // Distance before choosing a new target
 
         private Transform poiCenter; // Center of patrol area (Van)

@@ -25,7 +25,7 @@
 	<div class="flex">
 		<div class="flex-2 pl-5 block min-w-0 pr-0">
 			<h1 class="text-3xl pt-3 underline mx-auto text-center mb-5">Current</h1>
-			<Leaderboard leaderboard={data.leaderboard} />
+			<Leaderboard leaderboard={data.leaderboard.filter(player => !player.username.startsWith("Bot "))} />
 		</div>
 		<div class="flex-1 flex-row min-h-screen">
 			<div class="flex-1 p-10">
@@ -38,18 +38,24 @@
 					Rats: {data.leaderboard.length === 0 ? 0 : (data.leaderboard.map(player => player.hordes.length === 0 ? 0 : player.hordes.map(horde => horde.rats).reduce((sum, rats) => sum + rats)).reduce((sum, rats) => sum + rats))}
 				</h2>
 				<h2 class="mt-5 text-2xl">
-					Current
-					Hordes: {data.leaderboard.length === 0 ? 0 : (data.leaderboard.map(player => player.hordes.length).reduce((sum, hordes) => sum + hordes))}
+					Player
+					Hordes: {data.leaderboard.length === 0 ? 0 : (data.leaderboard.filter(player => !player.username.startsWith("Bot ")).map(player => player.hordes.length).reduce((sum, hordes) => sum + hordes))}
 				</h2>
 				<h2 class="mt-5 text-2xl">
-					Current
-					Players: {data.leaderboard.length}
+					Bot
+					Hordes: {data.leaderboard.length === 0 ? 0 : (data.leaderboard.filter(player => player.username.startsWith("Bot ")).map(player => player.hordes.length).reduce((sum, hordes) => sum + hordes))}
+				</h2>
+				<h2 class="mt-5 text-2xl">
+					Players: {data.leaderboard.filter(player => !player.username.startsWith("Bot ")).length}
+				</h2>
+				<h2 class="mt-5 text-2xl">
+					Bots: {data.leaderboard.filter(player => player.username.startsWith("Bot ")).length}
 				</h2>
 				<h2 class="mt-5 text-2xl">
 					Median
 					FPS: {data.fps.toFixed(0)}
 				</h2>
-				<div class="mt-50">
+				<div class="mt-15">
 					<a href="https://pestis.murraygrov.es/download/latest" class="underline">Download game</a>
 				</div>
 			</div>
@@ -57,7 +63,7 @@
 
 		<div class="flex-2 pr-5 text-center min-w-0 pl-0">
 			<h1 class="text-3xl pt-3 underline mx-auto text-center mb-5">Best of Today</h1>
-			<Leaderboard leaderboard={data.allTime} />
+			<Leaderboard leaderboard={data.allTime.filter(player => !player.username.startsWith("Bot "))} />
 		</div>
 	</div>
 	<Marquee direction="left" class="pb-3 absolute bottom-15">

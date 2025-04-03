@@ -251,12 +251,6 @@ namespace Horde
             _hordeCenter = HordeBounds.center;
         }
 
-        private void OnDestroy()
-        {
-            player.Hordes.Remove(this);
-            Debug.Log("HORDE: Destroyed self");
-        }
-
 #if UNITY_EDITOR
         public void OnDrawGizmos()
         {
@@ -290,6 +284,14 @@ Count: {AliveRats}
             targetLocation.transform.position = devToolsTargetLocation;
         }
 
+        public override void Despawned(NetworkRunner runner, bool hasState)
+        {
+            // If player's Network Object is null, it's been despawned too!
+            if (player.Object) player.Hordes.Remove(this);
+            if (CurrentCombatController) CurrentCombatController.PlayerLeftRpc(player.usernameOffline);
+            Debug.Log($"HORDE: Destroyed self, hasState: {hasState}");
+        }
+
 
         public override void FixedUpdateNetwork()
         {
@@ -313,7 +315,13 @@ Count: {AliveRats}
                 }
 
                 var enemyHordes =
-                    CurrentCombatController!.boids.containedHordes.Where(horde => horde.player != player).ToArray();
+                    CurrentCombatController!.boids.containedHordes.Select(id =>
+                    {
+                        if (!Runner.TryFindBehaviour<HordeController>(id, out var horde))
+                            throw new NullReferenceException("Couldn't find horde from combat");
+
+                        return horde;
+                    }).Where(horde => horde.player != player).ToArray();
 
                 foreach (var enemy in enemyHordes)
                 {
@@ -462,8 +470,7 @@ Count: {AliveRats}
                 player.RemoveCheeseRpc(player.CurrentCheese * 0.1f);
                 _targetHorde.player.AddCheeseRpc(player.CurrentCheese * 0.1f);
             }
-
-            _combatStrategy = null;
+            
             _targetHorde = null;
         }
 
@@ -599,7 +606,7 @@ Count: {AliveRats}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void RetreatRpc()
         {
-            Debug.Log("Retreating!");
+            Debug.Log($"HORDE {Object.Id}: Told to retreat!");
 
             CurrentCombatController = null;
             _attackingPatrol = null;
@@ -659,7 +666,7 @@ Count: {AliveRats}
             targetLocation.Teleport(poi.transform.position);
         }
 
-        public void AttackHorde(HordeController target, string combatOption)
+        public void AttackHorde(HordeController target)
         {
             // Don't fight if we're below 10 rats
             if (TotalHealth < 10 * populationController.GetState().HealthPerRat) return;
@@ -685,7 +692,6 @@ Count: {AliveRats}
 
             targetLocation.Teleport(target.HordeBounds.center);
             _targetHorde = target;
-            _combatStrategy = combatOption;
             AddSpeechBubbleRpc(EmoteType.Attack);
             if (player.IsLocal) GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.CombatStarted, 1);
         }
@@ -881,6 +887,12 @@ Count: {AliveRats}
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void DestroyHordeRpc()
         {
+            if (player.Hordes.Count == 1 && player.Type == PlayerType.Bot)
+            {
+                player.DestroyBotRpc();
+                return;
+            }
+
             player.Hordes.Remove(this);
             GameManager.Instance.UIManager.AbilityBars.Remove(this);
             if (GetEvolutionState().AcquiredEffects.Contains("unlock_gods_mistake"))
@@ -901,9 +913,16 @@ Count: {AliveRats}
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void RetrieveBoidsFromCombatRpc(CombatController combat)
         {
-            Debug.Log($"HORDE of {player.Username}: Removing boids from combat");
+            Debug.Log($"HORDE of {player.Username}: Retrieving boids from combat");
             Boids.GetBoidsBack(combat, this);
             _combatText.SetActive(false);
+        }
+
+        public void CombatDespawned()
+        {
+            if (!HasStateAuthority) throw new Exception("Tried to call combat despawned but not state authority");
+
+            CurrentCombatController = null;
         }
 
         /// <summary>
