@@ -341,7 +341,7 @@ Count: {AliveRats}
 
             if (_attackingPatrol)
             {
-                var damageToDeal = (uint)AliveRats / 50.0f * (GetPopulationState().Damage
+                var damageToDeal = (uint)AliveRats / 25.0f * (GetPopulationState().Damage
                                                               * GetPopulationState().DamageMult
                                                               * GetPopulationState().SepticMult);
                 _attackingPatrol.DealDamageRpc(damageToDeal);
