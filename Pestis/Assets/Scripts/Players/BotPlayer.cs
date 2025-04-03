@@ -77,16 +77,9 @@ namespace Players
                     {
                         Tuple<HordeController, float> temp = new(horde, calc);
                         hordesByDistance.Add(temp);
-                        //Debug.Log($"{horde} distance = {calc}");
                     }
                 }
                 hordesByDistance = hordesByDistance.OrderBy(t => t.Item2).ToList();
-                
-                // var temp = allHordes.Select(horde => new Tuple<HordeController, float>(horde, calc));
-                // var temp2 = temp.Where(tuple => tuple.Item2 < AggressionRange);
-                // var temp3 = temp2.OrderBy(horde => horde.Item2);
-                // var hordesByDistance = temp3.ToArray();
-                
                 
                 if (hordesByDistance.Count <= 1) continue;
                 
@@ -229,7 +222,7 @@ namespace Players
         /// <param name="myHorde">The horde that I'll be using to attack</param>
         /// <param name="enemyHorde">The enemy horde I'll be attacking</param>
         /// <returns>Float between 0 and 1, where 0 means we don't want to attack, and 1 means we do </returns>
-        private float CalcCombatDesirability(HordeController myHorde, HordeController enemyHorde)
+        private static float CalcCombatDesirability(HordeController myHorde, HordeController enemyHorde)
         {
             // Base desirability is 50/50
             var desirability = 0.5f;
@@ -246,7 +239,6 @@ namespace Players
             if (myHorde.LastInCombat.HasValue && Time.time - myHorde.LastInCombat < 60)
             {
                 //desirability += Mathf.Cos((Time.time - myHorde.lastInCombat) / 20.0f + 3.14f) / 3.0f - 0.35f;
-                UnityEngine.Debug.Log("Fought too recently");
                 return 0;
             }
             
