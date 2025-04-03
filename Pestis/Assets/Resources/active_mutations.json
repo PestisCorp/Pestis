@@ -112,7 +112,7 @@
 		"MutationTag": "diplomacy",
 		"MutationWeight": 10,
 		"Effects": ["unlock_war_hawk"],
-		"Tooltip": "Your ability cooldowns refresh on combat victory.",
+		"Tooltip": "No population cooldown on combat victory.",
 		"MutationUse": "offensive",
 		"IsAbility": false
 	},

@@ -838,7 +838,8 @@ Count: {AliveRats}
                 FindFirstObjectByType<UI_Manager>()
                     .AddNotification("In your conquests you have gained the strength of your subjects", Color.red);
             CurrentCombatController = null;
-            populationCooldown = 20.0f;
+            if (!GetEvolutionState().AcquiredEffects.Contains("unlock_war_hawk"))
+                populationCooldown = 20.0f;
             LastInCombat = Time.time;
         }
 

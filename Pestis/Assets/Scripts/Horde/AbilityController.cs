@@ -25,7 +25,6 @@ namespace Horde
     public class AbilityController : NetworkBehaviour
     {
         public int abilityHaste;
-        public bool forceCooldownRefresh;
         private HordeController _hordeController;
         private PopulationController _populationController;
 
@@ -243,13 +242,12 @@ namespace Horde
             var elapsedTime = 0.0f;
             var cooldownBar = calledBy.GetComponentInChildren<CooldownBar>();
             cooldownBar.current = 100;
-            while (elapsedTime < duration - abilityHaste && !forceCooldownRefresh)
+            while (elapsedTime < duration - abilityHaste)
             {
                 elapsedTime += Time.deltaTime;
                 cooldownBar.current = 100 - (int)(elapsedTime / duration * 100);
                 yield return null;
             }
-            cooldownBar.current = 0;
             calledBy.onClick.RemoveAllListeners();
             switch (ability)
             {
@@ -272,12 +270,6 @@ namespace Horde
         {
             _hordeController = GetComponent<HordeController>();
             _populationController = GetComponent<PopulationController>();
-        }
-
-        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void RefreshCooldownsRpc()
-        {
-            forceCooldownRefresh = true;
         }
     }
 }
