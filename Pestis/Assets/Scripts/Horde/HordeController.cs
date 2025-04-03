@@ -244,8 +244,11 @@ namespace Horde
                 else
                 {
                     HordeBounds = new Bounds(targetLocation.transform.position, Vector3.zero);
-                    Debug.LogError("Error horde with 0 rats, destroying horde");
-                    DestroyHordeRpc();
+                    if (!InCombat)
+                    {
+                        Debug.LogError("Error horde with 0 rats, destroying horde");
+                        DestroyHordeRpc();
+                    }
                 }
             }
 
