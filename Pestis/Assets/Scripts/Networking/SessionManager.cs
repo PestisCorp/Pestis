@@ -371,11 +371,11 @@ namespace Networking
             if (!HasStateAuthority)
             {
                 // Despawn the bot whose place we're taking
-                if (Runner.TryFindObject(Players[spawnIndex].PlayerId, out var botObj))
-                {
-                    var bot = botObj.GetComponent<Player>();
-                    bot.DestroyBotRpc();
-                }
+                // if (Runner.TryFindObject(Players[spawnIndex].PlayerId, out var botObj))
+                // {
+                //     var bot = botObj.GetComponent<Player>();
+                //     bot.DestroyBotRpc();
+                // }
 
                 var currentPlayers = Players.Count(slot => slot.InUse);
                 var neededPlayers = Room.Config.PlayersPerRoom - currentPlayers;
