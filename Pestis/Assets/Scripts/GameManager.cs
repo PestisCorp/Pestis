@@ -231,7 +231,7 @@ public class GameManager : MonoBehaviour
         // Crop end of list when hordes removed so we don't realloc a new list
         if (numHordes < AllHordes.Count)
         {
-            AllHordes.RemoveRange(numHordes, AllHordes.Count - 1);
+            AllHordes.RemoveRange(numHordes + 1, AllHordes.Count - numHordes);
         }
         
         meanHordeHealth = sum / numHordes;
