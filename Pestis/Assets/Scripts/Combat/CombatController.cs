@@ -99,22 +99,12 @@ namespace Combat
 
         [SerializeField] private CombatFXManager fxManager;
 
-        private void StateChanged()
-        {
-            if (state != CombatState.InProgress)
-            {
-                fxManager.enabled = false;
-            } else
-            {
-                fxManager.enabled = true;
-            }
-        }
-
-        [Networked, OnChangedRender(nameof(StateChanged))]
-        public CombatState state { get; set; }
-
 
         private readonly List<HordeState> _allParticipants = new();
+
+        [Networked]
+        [OnChangedRender(nameof(StateChanged))]
+        public CombatState state { get; set; }
 
         public int NumParticipators => Participators.Count;
 
@@ -156,6 +146,14 @@ namespace Combat
         }
 #endif
 
+        private void StateChanged()
+        {
+            if (state != CombatState.InProgress)
+                fxManager.enabled = false;
+            else
+                fxManager.enabled = true;
+        }
+
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void PlayerLeftRpc(string username, RpcInfo rpcInfo = default)
         {
@@ -182,7 +180,6 @@ namespace Combat
         public override void Despawned(NetworkRunner runner, bool hasState)
         {
             Debug.Log("COMBAT: Despawned");
-            if (state == CombatState.Finished) return;
 
             var localClients = Participators.Where(kvp => kvp.Key.HasStateAuthority);
             foreach (var kvp in localClients)
@@ -369,14 +366,12 @@ namespace Combat
                     break;
                 case LeaveReason.LeftGame:
                     RemoveHordeBoidsRpc(horde.Id);
+                    horde.DestroyHordeRpc();
                     break;
 
                 case LeaveReason.WonCombat:
                     horde.RetrieveBoidsFromCombatRpc(this);
                     horde.AddSpeechBubbleRpc(EmoteType.Victory);
-                    
-                    
-                        ;
 
                     if (horde.GetComponent<EvolutionManager>().GetEvolutionaryState().AcquiredEffects
                         .Contains("unlock_septic_bite"))
