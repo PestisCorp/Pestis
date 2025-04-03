@@ -122,7 +122,7 @@ public class UI_Manager : MonoBehaviour
                     default:
                         cheeseRateText.text = "> Rats starving <\n" +
                                               "> Capture bases! <";
-                        cheeseRateBackground.color = new Color(0.5f, 0.0f, 0.0f);
+                        cheeseRateBackground.color = new Color(0.65f, 0.0f, 0.0f);
                         break;
                 }
             }

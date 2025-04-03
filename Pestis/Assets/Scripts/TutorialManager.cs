@@ -18,7 +18,7 @@ public class TutorialManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        slides =  new Sprite[] {welcomeImage, fightImage, conquerImage, evolveImage, dominateImage, controlsImage};
+        slides =  new Sprite[] {welcomeImage, controlsImage, fightImage, conquerImage, evolveImage, dominateImage};
         GameObject imageObj = tutorialCanvas.transform.Find("image").gameObject;
         current = imageObj.GetComponent<Image>();
         StartTutorial();
