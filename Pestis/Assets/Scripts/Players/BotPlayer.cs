@@ -36,7 +36,7 @@ namespace Players
         /// </summary>
         public float AggressionUncapped { get; private set; }
 
-        public float AggressionRange => 100.0f * AggressionUncapped * BaseAggression;
+        public float AggressionRange => 10.0f * AggressionUncapped * BaseAggression;
 
         /// <summary>
         ///     True if this instance is the one that should handle the bot

@@ -6,6 +6,7 @@ using Fusion;
 using Horde;
 using JetBrains.Annotations;
 using Networking;
+using Objectives;
 using POI;
 using Unity.Profiling;
 using Unity.VisualScripting;
@@ -91,6 +92,7 @@ namespace Players
         {
             s_AddControlledPoiRpc.Begin();
             ControlledPOIs.Add(poi);
+            GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.POICaptured, 1);
             s_AddControlledPoiRpc.End();
         }
 
