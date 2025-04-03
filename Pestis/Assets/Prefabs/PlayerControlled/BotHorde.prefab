@@ -316,7 +316,7 @@ GameObject:
   - component: {fileID: 7873285946953598513}
   - component: {fileID: 5161670944461755985}
   m_Layer: 0
-  m_Name: RatHorde
+  m_Name: BotHorde
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -427,9 +427,9 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 3423645818
+  SortKey: 3520940163
   ObjectInterest: 1
-  Flags: 786433
+  Flags: 524289
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 6619829849645989142}
