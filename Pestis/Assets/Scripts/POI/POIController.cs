@@ -171,6 +171,8 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             StationedHordes.Clear();
             if (player.IsLocal)
             {
+                GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.POICaptured, 1);
+                
                 switch (_poiType)
                 {
                     case POIType.City:
@@ -194,10 +196,9 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
                             Color.black);
                         break;
                 }
+                
+                GameManager.Instance.PlaySfx(SoundEffectType.POICapture);
             }
-
-            if (player.IsLocal) GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.POICaptured, 1);
-            if (player.IsLocal) GameManager.Instance.PlaySfx(SoundEffectType.POICapture);
         }
 
         private void UpdateFlag()
