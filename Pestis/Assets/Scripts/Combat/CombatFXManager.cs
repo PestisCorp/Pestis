@@ -42,7 +42,7 @@ namespace Combat
                 var shape = vfx.shape;
                 shape.radius = overlap.extents.magnitude;
                 var emissions = vfx.emission;
-                emissions.rateOverDistanceMultiplier = overlap.extents.sqrMagnitude * 1.7f;
+                emissions.rateMultiplier = overlap.extents.sqrMagnitude * 2.5f +4;
                 if (!vfx.isPlaying) vfx.Play();
             }
         }
@@ -62,9 +62,9 @@ namespace Combat
                 return new Bounds(Vector3.zero, Vector3.zero);
 
             var center = (min + max) * 0.5f;
-            var size = max - min;
+            var size = max - min ;
 
-            return new Bounds(center, size);
+            return new Bounds(center, size * 1.2f);
         }
     }
 }
