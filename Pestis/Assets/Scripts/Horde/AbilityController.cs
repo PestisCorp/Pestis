@@ -243,20 +243,13 @@ namespace Horde
             var elapsedTime = 0.0f;
             var cooldownBar = calledBy.GetComponentInChildren<CooldownBar>();
             cooldownBar.current = 100;
-            while (elapsedTime < duration - abilityHaste)
+            while (elapsedTime < duration - abilityHaste && !forceCooldownRefresh)
             {
                 elapsedTime += Time.deltaTime;
                 cooldownBar.current = 100 - (int)(elapsedTime / duration * 100);
-                if (forceCooldownRefresh)
-                {
-                    cooldownBar.current = 0;
-                    forceCooldownRefresh = false;
-                    break;
-                }
-
                 yield return null;
             }
-
+            cooldownBar.current = 0;
             calledBy.onClick.RemoveAllListeners();
             switch (ability)
             {
