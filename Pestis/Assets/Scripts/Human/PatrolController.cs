@@ -19,7 +19,7 @@ namespace Human
         [SerializeField] private float healthPerHuman = 5f;
 
         // How much damage each human deals per second
-        [SerializeField] private float damagePerHuman = 0.0f;
+        [SerializeField] private float damagePerHuman = 0.5f;
 
         // Optionally track how much damage rats do to humans
         [SerializeField] private float ratDPS = 0.5f;
@@ -39,7 +39,6 @@ namespace Human
 
         public override void Spawned()
         {
-            damagePerHuman = 0;
             if (poi != null)
                 _poiCenter = poi.transform;
             else
