@@ -516,6 +516,9 @@ Count: {AliveRats}
             _selectionLightTerrain = transform.Find("SelectionLightTerrain").gameObject.GetComponent<Light2D>();
             _selectionLightPoi = transform.Find("SelectionLightPOI").gameObject.GetComponent<Light2D>();
 
+            _selectionLightTerrain.color = new Color(0.6986472f, 0.9433962f, 0.6986472f);
+            _selectionLightTerrain.intensity = 0.7f;
+
             _selectionLightPoi.color = _selectionLightTerrain.color;
             _selectionLightPoi.intensity = _selectionLightTerrain.intensity;
 
@@ -916,6 +919,10 @@ Count: {AliveRats}
             }
 
             player.Hordes.Remove(this);
+            if (player.Hordes.Count == 1 && player.Hordes[0].isApparition)
+            {
+                player.Hordes[0].isApparition = false;
+            }
             GameManager.Instance.UIManager.AbilityBars.Remove(this);
             if (GetEvolutionState().AcquiredEffects.Contains("unlock_gods_mistake"))
                 foreach (var horde in player.Hordes)
