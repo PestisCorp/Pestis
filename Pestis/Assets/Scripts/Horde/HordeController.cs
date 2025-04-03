@@ -652,7 +652,7 @@ Count: {AliveRats}
             s_DealDamage.Begin();
             s_DealDamage.End();
             TotalHealth = Mathf.Max(
-                populationController.GetState().HealthPerRat * populationController.initialPopulation, damage *
+                populationController.GetState().HealthPerRat * populationController.initialPopulation, TotalHealth - damage *
                 populationController.GetState().DamageReduction
                 * populationController.GetState().DamageReductionMult);
         }
