@@ -12,16 +12,6 @@ using Bounds = Networking.Bounds;
 
 namespace Combat
 {
-    [Serializable]
-    public struct HordeState : INetworkStruct
-    {
-        public NetworkId Horde;
-        public float Damage;
-        public float HealthPerRat;
-        public float DamageReduction;
-        [Capacity(32)] [Networked] public NetworkLinkedList<ActiveMutationType> UnlockedMutations => default;
-    }
-
     public enum CombatState
     {
         NotStarted,
@@ -65,25 +55,14 @@ namespace Combat
     {
         [Networked] [Capacity(5)] public NetworkLinkedList<NetworkBehaviourId> Hordes => default;
 
-        /// <summary>
-        ///     The health each horde had when it joined the battle. It will retreat if below 20%.
-        /// </summary>
-        [Networked]
-        [Capacity(5)]
-        public NetworkArray<float> HordeStartingHealth => default;
-
         public CombatParticipant(HordeController hordeController)
         {
             Hordes.Add(hordeController.Id);
-            var index = Hordes.IndexOf(hordeController.Id);
-            HordeStartingHealth.Set(index, hordeController.TotalHealth);
         }
 
         public void AddHorde(HordeController horde)
         {
             Hordes.Add(horde.Id);
-            var index = Hordes.IndexOf(horde.Id);
-            HordeStartingHealth.Set(index, horde.TotalHealth);
         }
 
         public void RemoveHorde(HordeController horde)
@@ -107,9 +86,6 @@ namespace Combat
         public CombatBoids boids;
 
         [SerializeField] private CombatFXManager fxManager;
-
-
-        private readonly List<HordeState> _allParticipants = new();
 
         [Networked]
         [OnChangedRender(nameof(StateChanged))]
@@ -283,22 +259,6 @@ namespace Combat
             Runner.Despawn(Object);
         }
 
-
-        private void AddHordeState(HordeController horde)
-        {
-            var hordeState = new HordeState
-            {
-                Horde = horde.Id.Object,
-                Damage = horde.GetPopulationState().Damage,
-                DamageReduction = horde.GetPopulationState().DamageReduction,
-                HealthPerRat = horde.GetPopulationState().HealthPerRat
-            };
-
-            foreach (var mutation in horde.GetEvolutionState().AcquiredMutations)
-                hordeState.UnlockedMutations.Add(mutation.Type);
-            _allParticipants.Add(hordeState);
-        }
-
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void AddHordeRpc(HordeController horde)
         {
@@ -323,7 +283,6 @@ namespace Combat
                 Participators.Set(horde.player, participant);
             }
 
-            AddHordeState(horde);
 
             // Notify horde authority it has been added to combat
             horde.EventJoinedCombatRpc(this);
