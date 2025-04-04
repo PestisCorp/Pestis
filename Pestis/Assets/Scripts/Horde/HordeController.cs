@@ -517,8 +517,8 @@ Count: {AliveRats}
                 {
                     CurrentCombatController =
                         Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
-                    CurrentCombatController!.AddHordeRpc(this);
                     CurrentCombatController.AddHordeRpc(_targetHorde);
+                    CurrentCombatController!.AddHordeRpc(this);
                 }
                 else // We both tried to lock, resolve
                 {
@@ -565,6 +565,7 @@ Count: {AliveRats}
 
         public override void Spawned()
         {
+            CombatInitiator = - 1;
             populationController = GetComponent<PopulationController>();
             _evolutionManager = GetComponent<EvolutionManager>();
             player = GetComponentInParent<Player>();
