@@ -86,8 +86,14 @@ namespace Players
                 framesSinceLostAuth++;
                 if (framesSinceLostAuth > 20)
                 {
-                    foreach (var horde in Hordes) Destroy(horde);
-                    Destroy(this);
+                    foreach (var horde in Hordes)
+                    {
+                        Runner.RequestStateAuthority(horde.Object.Id);
+                        Runner.Despawn(horde.Object);
+                    }
+
+                    Runner.RequestStateAuthority(Object);
+                    Runner.Despawn(Object);
                 }
             }
             else
