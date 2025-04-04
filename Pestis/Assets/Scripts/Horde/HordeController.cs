@@ -135,6 +135,8 @@ namespace Horde
 
         [CanBeNull] private HordeController _targetHorde;
 
+        private int MyCombatInitiator = -1;
+
         public RatBoids Boids { get; private set; }
 
         /// <summary>
@@ -252,11 +254,12 @@ namespace Horde
                 }
                 else if (AliveRats > 0) // Move horde center slowly to avoid jitter due to center rat changing
                 {
-                    if (! InCombat && AliveRats < 0 && player.Type == PlayerType.Bot)
+                    if (!InCombat && AliveRats < 0 && player.Type == PlayerType.Bot)
                     {
                         Debug.LogError("Error horde with 0 rats, destroying horde");
                         DestroyHordeRpc();
                     }
+
                     if (InCombat && CurrentCombatController!.boids.containedHordes.Contains(this))
                     {
                         if (CurrentCombatController!.boids.hordeBounds.TryGetValue(this, out var newBounds))
@@ -484,6 +487,7 @@ Count: {AliveRats}
         private void SetLockRpc(int lockVal)
         {
             if (CombatInitiator == -1) CombatInitiator = lockVal;
+            Invoke(nameof(ClearCombatInitiator), 2);
         }
 
         /// <summary>
@@ -510,9 +514,10 @@ Count: {AliveRats}
             }
             else // Otherwise start new combat and add the target to it
             {
-                if (_targetHorde.CombatInitiator == -1) // Try lock enemy
+                if (_targetHorde.CombatInitiator == -1 && CombatInitiator == -1) // Try lock enemy
                 {
                     CombatInitiator = Random.Range(0, 4096);
+                    MyCombatInitiator = CombatInitiator;
                     _targetHorde.SetLockRpc(CombatInitiator);
                     Invoke(nameof(ClearCombatInitiator), 2);
                     return;
@@ -520,10 +525,19 @@ Count: {AliveRats}
 
                 if (_targetHorde.CombatInitiator == CombatInitiator) // Successfully locked enemy
                 {
-                    CurrentCombatController =
-                        Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
-                    CurrentCombatController.AddHordeRpc(_targetHorde);
-                    CurrentCombatController!.AddHordeRpc(this);
+                    if (CombatInitiator == MyCombatInitiator)
+                    {
+                        Debug.Log($"HORDE {Object.Id} of {player.Username}, managed to start combat");
+                        CurrentCombatController =
+                            Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
+                        CurrentCombatController.AddHordeRpc(_targetHorde);
+                        CurrentCombatController!.AddHordeRpc(this);
+                        CombatInitiator = -1;
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
                 else // We both tried to lock, resolve
                 {
@@ -570,7 +584,7 @@ Count: {AliveRats}
 
         public override void Spawned()
         {
-            CombatInitiator = - 1;
+            CombatInitiator = -1;
             populationController = GetComponent<PopulationController>();
             _evolutionManager = GetComponent<EvolutionManager>();
             player = GetComponentInParent<Player>();

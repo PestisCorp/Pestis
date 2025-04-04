@@ -13,25 +13,160 @@ namespace Horde
 {
     public struct PopulationState : INetworkStruct
     {
-        internal double BirthRate;
-        internal double DeathRate;
-        internal float HealthPerRat;
-        internal float TundraResistance;
-        internal float DesertResistance;
-        internal float GrassResistance;
-        internal float StoneResistance;
+        // GROUP 1 - 30 bits
+
+        private PopulationGroup1 _group1 { get; set; }
+
+        // 0 -> 1, 0.001 accuracy, 1000 vals, 10 bits
+        internal double BirthRate
+        {
+            get => _group1.BirthRate;
+            set
+            {
+                var temp = _group1;
+                temp.BirthRate = value;
+                _group1 = temp;
+            }
+        }
+
+        internal double DeathRate
+        {
+            get => _group1.BirthRate;
+            set
+            {
+                var temp = _group1;
+                temp.DeathRate = value;
+                _group1 = temp;
+            }
+        }
+
+        // 10 -> 20, 0.01 accuracy, 1000 vals, 10 bits
+        internal float HealthPerRat
+        {
+            get => _group1.HealthPerRat + 10;
+            set
+            {
+                var temp = _group1;
+                temp.HealthPerRat = value - 10;
+                _group1 = temp;
+            }
+        }
+
+        // GROUP 2 - 32 bits
+        private PopulationGroup2 _group2 { get; set; }
+
+        // 0 -> 1.5 clamp, 0.01 accuracy, 150 vals, 8 bits
+        internal float TundraResistance
+        {
+            get => _group2.Tundra;
+            set
+            {
+                var temp = _group2;
+                temp.Tundra = Mathf.Clamp(value, 0, 1.5f);
+                _group2 = temp;
+            }
+        }
+
+        internal float DesertResistance
+        {
+            get => _group2.Desert;
+            set
+            {
+                var temp = _group2;
+                temp.Desert = Mathf.Clamp(value, 0, 1.5f);
+                _group2 = temp;
+            }
+        }
+
+        internal float GrassResistance
+        {
+            get => _group2.Grass;
+            set
+            {
+                var temp = _group2;
+                temp.Grass = Mathf.Clamp(value, 0, 1.5f);
+                _group2 = temp;
+            }
+        }
+
+        internal float StoneResistance
+        {
+            get => _group2.Stone;
+            set
+            {
+                var temp = _group2;
+                temp.Stone = Mathf.Clamp(value, 0, 1.5f);
+                _group2 = temp;
+            }
+        }
+
+        // GROUP 3 - 14 bits
+        private PopulationGroup3 _group3 { get; set; }
 
         /// <summary>
         ///     How much damage the horde does to other hordes per tick in combat
         /// </summary>
-        internal float Damage;
+        /// 0 -> 1.2, 0.01 accuracy, 120 vals, 7 bits
+        internal float Damage
+        {
+            get => _group3.Damage;
+            set
+            {
+                var temp = _group3;
+                temp.Damage = Mathf.Clamp(value, 0, 1.2f);
+                _group3 = temp;
+            }
+        }
 
-        internal float DamageReduction;
+        // 0.4 -> 1.0, 0.01 accuracy, 80 vals, 7 bits
+        internal float DamageReduction
+        {
+            get => _group3.DamageReduction;
+            set
+            {
+                var temp = _group3;
+                temp.DamageReduction = Mathf.Clamp(value, 0, 1.2f);
+                _group3 = temp;
+            }
+        }
+
+        // GROUP 4 - 24 bits
+        private PopulationGroup4 _group4 { get; set; }
 
         // Multipliers applied to damage original state
-        internal float DamageMult;
-        internal float DamageReductionMult;
-        internal float SepticMult;
+        // 0 -> 2 clamped, 0.01 accuracy, 200 vals, 8 bits
+        internal float DamageMult
+        {
+            get => _group4.DamageMult;
+            set
+            {
+                var temp = _group4;
+                temp.DamageMult = Mathf.Clamp(value, 0, 2);
+                _group4 = temp;
+            }
+        }
+
+        internal float DamageReductionMult
+        {
+            get => _group4.DamageReductionMult;
+            set
+            {
+                var temp = _group4;
+                temp.DamageReductionMult = Mathf.Clamp(value, 0, 2);
+                _group4 = temp;
+            }
+        }
+
+        internal float SepticMult
+        {
+            get => _group4.SepticMult;
+            set
+            {
+                var temp = _group4;
+                temp.SepticMult = Mathf.Clamp(value, 0, 2);
+                _group4 = temp;
+            }
+        }
     }
 
     public class PopulationController : NetworkBehaviour

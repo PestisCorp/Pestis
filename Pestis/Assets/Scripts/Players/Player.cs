@@ -65,16 +65,16 @@ namespace Players
         //time and score
         public bool TimeUp { get; private set; }
         public int Timer { get; private set; }
-        [Networked] public ulong Score { get; private set; }
+        public ulong Score { get; private set; }
 
         // Cheese Management
-        [Networked] public float CurrentCheese { get; private set; }
+        [Networked] public PositiveFloatRes100 CurrentCheese { get; private set; }
 
-        [Networked] public float CheeseIncrementRate { get; private set; } = 0.03f;
+        public float CheeseIncrementRate { get; private set; } = 0.03f;
 
         public float CheesePerSecond => CheeseIncrementRate / Runner.DeltaTime;
 
-        [Networked] public float FixedCheeseGain { get; private set; } = 0.03f;
+        [Networked] public FloatRes100 FixedCheeseGain { get; private set; } = 0.03f;
 
 
         private void FixedUpdate()
