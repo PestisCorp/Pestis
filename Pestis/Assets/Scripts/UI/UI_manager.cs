@@ -501,6 +501,16 @@ public class UI_Manager : MonoBehaviour
                 buttons[1].SetActive(false);
                 buttons[2].SetActive(false);
                 noPointsWarning.SetActive(true);
+                noPointsWarning.GetComponentInChildren<TMP_Text>().text = "No points for upgrades!!!";
+
+            }
+            if (evolutionManager.PointsAvailable < 0)
+            {
+                buttons[0].SetActive(false);
+                buttons[1].SetActive(false);
+                buttons[2].SetActive(false);
+                noPointsWarning.SetActive(true);
+                noPointsWarning.GetComponentInChildren<TMP_Text>().text = "Max mutations acquired.";
             }
             else
             {

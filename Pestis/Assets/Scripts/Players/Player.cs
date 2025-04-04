@@ -93,6 +93,30 @@ namespace Players
             s_AddControlledPoiRpc.Begin();
             ControlledPOIs.Add(poi);
             GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.POICaptured, 1);
+            GameManager.Instance.PlaySfx(SoundEffectType.POICapture);
+            if (IsLocal)
+                switch (poi._poiType)
+                {
+                    case POIType.City:
+                        foreach (var horde in poi.StationedHordes) horde.SetAliveRatsRpc((uint)((uint)horde.AliveRats * 1.1));
+                        GameManager.Instance.UIManager.AddNotification("City captured. Population increased",
+                            Color.black);
+                        break;
+                    case POIType.Lab:
+                        foreach (var horde in poi.StationedHordes)
+                        {
+                            horde.GetComponent<EvolutionManager>().AddPoints();
+                        }
+
+                        GameManager.Instance.UIManager.AddNotification("Lab captured. Mutation points acquired.",
+                            Color.black);
+                        break;
+                    case POIType.Farm:
+                        AddCheeseRpc(100);
+                        GameManager.Instance.UIManager.AddNotification("Farm captured. Food package acquired.",
+                            Color.black);
+                        break;
+                }
             s_AddControlledPoiRpc.End();
         }
 

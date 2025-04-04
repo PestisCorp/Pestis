@@ -295,6 +295,7 @@ namespace Horde
             {
                 GameManager.Instance.UIManager.AddNotification(
                     "This horde has acquired the maximum number of mutations.", Color.red);
+                PointsAvailable = -1;
                 _rareMutationClock.Reset();
             }
 
@@ -381,7 +382,7 @@ namespace Horde
             CreatePassiveEvolutions();
             CreateActiveEvolutions();
         }
-        
+
         public void AddPoints()
         {
             PointsAvailable++;
