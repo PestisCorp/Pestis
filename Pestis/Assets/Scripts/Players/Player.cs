@@ -98,12 +98,12 @@ namespace Players
                 switch (poi._poiType)
                 {
                     case POIType.City:
-                        foreach (var horde in Hordes) horde.SetAliveRatsRpc((uint)((uint)horde.AliveRats * 1.1));
+                        foreach (var horde in poi.StationedHordes) horde.SetAliveRatsRpc((uint)((uint)horde.AliveRats * 1.1));
                         GameManager.Instance.UIManager.AddNotification("City captured. Population increased",
                             Color.black);
                         break;
                     case POIType.Lab:
-                        foreach (var horde in Hordes)
+                        foreach (var horde in poi.StationedHordes)
                         {
                             horde.GetComponent<EvolutionManager>().AddPoints();
                         }
