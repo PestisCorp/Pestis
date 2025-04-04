@@ -302,7 +302,7 @@ namespace Networking
             set
             {
                 compressed &= unchecked((int)0xFF00FFFF);
-                compressed |= (int)(value * 100.0f) << 10;
+                compressed |= (int)(value * 100.0f) << 16;
             }
         }
 
@@ -310,12 +310,12 @@ namespace Networking
         {
             get
                 =>
-                    (compressed & 0x0000FF00) / 100.0f;
+                    ((compressed & 0x0000FF00) >> 8) / 100.0f;
 
             set
             {
                 compressed &= unchecked((int)0xFFFF00FF);
-                compressed |= (int)(value * 100.0f);
+                compressed |= (int)(value * 100.0f) << 8;
             }
         }
 
@@ -356,11 +356,11 @@ namespace Networking
         {
             get
                 =>
-                    ((compressed & 0xFFFF0000) >> 16) / 100.0f;
+                    (compressed & 0x0000FFFF) / 100.0f;
             set
             {
-                compressed &= unchecked(0x0000FFFF);
-                compressed |= (int)(value * 100.0f) << 16;
+                compressed &= unchecked((int)0xFFFF0000);
+                compressed |= (int)(value * 100.0f);
             }
         }
     }
