@@ -86,8 +86,8 @@ namespace Players
                 framesSinceLostAuth++;
                 if (framesSinceLostAuth > 20)
                 {
-                    foreach (var horde in Hordes) horde.DestroyHordeRpc();
-                    DestroyBotRpc();
+                    foreach (var horde in Hordes) Destroy(horde);
+                    Destroy(this);
                 }
             }
             else
