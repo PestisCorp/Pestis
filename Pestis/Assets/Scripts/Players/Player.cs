@@ -81,7 +81,7 @@ namespace Players
 
         private void FixedUpdate()
         {
-            if (Object.StateAuthority.IsNone)
+            if (Object.StateAuthority.IsNone || !Runner.ActivePlayers.Contains(Object.StateAuthority))
             {
                 framesSinceLostAuth++;
                 if (framesSinceLostAuth > 20)
