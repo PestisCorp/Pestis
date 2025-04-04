@@ -46,6 +46,13 @@ public class TutorialManager : MonoBehaviour
         if(slidesIndex > (slides.Length - 1)) CloseTutorial();
         else DisplayTutorial();
     }
+    
+    public void PrevSlide()
+    {
+        slidesIndex--;
+        if(slidesIndex < 0) slidesIndex = 0;
+        else DisplayTutorial();
+    }
 
     public void CloseTutorial()
     {
