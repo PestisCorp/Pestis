@@ -137,7 +137,7 @@ namespace Horde
         [CanBeNull] private HordeController _targetHorde;
 
         public RatBoids Boids { get; private set; }
-
+        public bool FirstTick = true;
         /// <summary>
         ///     Time in seconds since game start when the horde last finished combat
         /// </summary>
@@ -494,11 +494,25 @@ Count: {AliveRats}
             _combatText.SetActive(true);
             if (_targetHorde.InCombat) // If the target is already in combat, join it
             {
+                FirstTick = true;
                 CurrentCombatController = _targetHorde.CurrentCombatController;
                 _targetHorde.CurrentCombatController!.AddHordeRpc(this);
             }
-            else // Otherwise start new combat and add the target to it
+            else if (FirstTick)// Otherwise start new combat and add the target to it
             {
+                if (string.Compare(this.name, _targetHorde.name) == 1)
+                {
+                    CurrentCombatController =
+                        Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
+                    CurrentCombatController!.AddHordeRpc(this);
+                    CurrentCombatController.AddHordeRpc(_targetHorde);
+                    
+                }
+                FirstTick = false;
+            }
+            else
+            {
+                FirstTick = true;
                 CurrentCombatController =
                     Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
                 CurrentCombatController!.AddHordeRpc(this);
@@ -516,7 +530,6 @@ Count: {AliveRats}
 
             _targetHorde = null;
         }
-
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void StationAtRpc(PoiController poi)
