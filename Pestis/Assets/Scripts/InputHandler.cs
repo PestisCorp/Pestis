@@ -12,10 +12,9 @@ public class InputHandler : MonoBehaviour
     public static InputHandler Instance;
 
     [CanBeNull] public HumanPlayer LocalPlayer;
-    private InputAction _cameraZoom;
-
+    
     private Camera _mainCamera;
-
+    private InputAction _cameraZoom;
     private InputAction _moveCamAction;
 
     private void Awake()
@@ -34,7 +33,7 @@ public class InputHandler : MonoBehaviour
         
         var moveCam = _moveCamAction.ReadValue<Vector2>();
 
-        _mainCamera.transform.Translate(moveCam * (0.01f * _mainCamera.orthographicSize));
+        _mainCamera.transform.Translate(moveCam * (0.025f * _mainCamera.orthographicSize));
 
         var scroll = _cameraZoom.ReadValue<Vector2>();
         // Map should not zoom if we are hovering over a UI element since we are using scroll boxes
