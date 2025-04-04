@@ -185,6 +185,8 @@ namespace Horde
 
         public bool InCombat => CurrentCombatController && CurrentCombatController.HordeInCombat(this);
 
+        [Networked] public int CombatInitiator { get; set; }
+
         private void Awake()
         {
             _hordeCenter = transform.position;
@@ -341,8 +343,8 @@ Count: {AliveRats}
             if (_attackingPatrol)
             {
                 var damageToDeal = (uint)AliveRats / 5.0f * (GetPopulationState().Damage
-                                                              * GetPopulationState().DamageMult
-                                                              * GetPopulationState().SepticMult);
+                                                             * GetPopulationState().DamageMult
+                                                             * GetPopulationState().SepticMult);
                 _attackingPatrol.DealDamageRpc(damageToDeal);
             }
 
@@ -473,6 +475,12 @@ Count: {AliveRats}
             TargetPoi = null;
         }
 
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        private void SetLockRpc(int lockVal)
+        {
+            if (CombatInitiator == -1) CombatInitiator = lockVal;
+        }
+
         /// <summary>
         ///     Check if we've arrived at the combat we're in.
         ///     If we have, transfer control of our boids over to the combat controller.
@@ -498,10 +506,22 @@ Count: {AliveRats}
             }
             else // Otherwise start new combat and add the target to it
             {
-                CurrentCombatController =
-                    Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
-                CurrentCombatController!.AddHordeRpc(this);
-                CurrentCombatController.AddHordeRpc(_targetHorde);
+                if (_targetHorde.CombatInitiator == -1) // Try lock enemy
+                {
+                    CombatInitiator = Random.Range(0, 4096);
+                    _targetHorde.SetLockRpc(CombatInitiator);
+                }
+                else if (_targetHorde.CombatInitiator == CombatInitiator) // Successfully locked enemy
+                {
+                    CurrentCombatController =
+                        Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
+                    CurrentCombatController!.AddHordeRpc(this);
+                    CurrentCombatController.AddHordeRpc(_targetHorde);
+                }
+                else // We both tried to lock, resolve
+                {
+                    if (CombatInitiator <= _targetHorde.CombatInitiator) CombatInitiator = -1;
+                }
             }
 
 
@@ -651,7 +671,8 @@ Count: {AliveRats}
             s_DealDamage.Begin();
             s_DealDamage.End();
             TotalHealth = Mathf.Max(
-                populationController.GetState().HealthPerRat * populationController.initialPopulation, TotalHealth - damage *
+                populationController.GetState().HealthPerRat * populationController.initialPopulation, TotalHealth -
+                damage *
                 populationController.GetState().DamageReduction
                 * populationController.GetState().DamageReductionMult);
         }
@@ -660,7 +681,6 @@ Count: {AliveRats}
         {
             return HordeBounds;
         }
-
 
         /// <summary>
         ///     Run for your furry little lives to the nearest friendly POI
@@ -897,6 +917,7 @@ Count: {AliveRats}
         public void EventJoinedCombatRpc(CombatController combat)
         {
             s_JoinedCombat.Begin();
+            CombatInitiator = -1;
             CurrentCombatController = combat;
             if (player.IsLocal) GameManager.Instance.PlaySfx(SoundEffectType.BattleStart);
             s_JoinedCombat.End();
