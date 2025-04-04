@@ -294,6 +294,14 @@ namespace Networking
         private void AddPlayerRpc(int playerSpawnIndex, NetworkId playerID, bool isBot, RpcInfo rpcInfo = default)
         {
             s_AddPlayer.Begin();
+            if (Players[playerSpawnIndex].InUse)
+                // Despawn the bot whose place we're taking
+                if (Runner.TryFindObject(Players[playerSpawnIndex].PlayerId, out var botObj))
+                {
+                    var bot = botObj.GetComponent<Player>();
+                    bot.DestroyBotRpc();
+                }
+
             var player = new PlayerSlot
             {
                 PlayerRef = rpcInfo.Source,
@@ -388,13 +396,6 @@ namespace Networking
 
             if (!HasStateAuthority)
             {
-                // Despawn the bot whose place we're taking
-                // if (Runner.TryFindObject(Players[spawnIndex].PlayerId, out var botObj))
-                // {
-                //     var bot = botObj.GetComponent<Player>();
-                //     bot.DestroyBotRpc();
-                // }
-
                 var currentPlayers = Players.Count(slot => slot.InUse);
                 var neededPlayers = Room.Config.PlayersPerRoom - currentPlayers;
                 var botsToSpawn = Math.Min(neededPlayers, Room.Config.MaxBotsPerClient);
