@@ -185,6 +185,8 @@ namespace Horde
 
         public bool InCombat => CurrentCombatController && CurrentCombatController.HordeInCombat(this);
 
+        [Networked] public int CombatInitiator { get; set; }
+
         private void Awake()
         {
             _hordeCenter = transform.position;
@@ -341,8 +343,8 @@ Count: {AliveRats}
             if (_attackingPatrol)
             {
                 var damageToDeal = (uint)AliveRats / 5.0f * (GetPopulationState().Damage
-                                                              * GetPopulationState().DamageMult
-                                                              * GetPopulationState().SepticMult);
+                                                             * GetPopulationState().DamageMult
+                                                             * GetPopulationState().SepticMult);
                 _attackingPatrol.DealDamageRpc(damageToDeal);
             }
 
@@ -473,6 +475,12 @@ Count: {AliveRats}
             TargetPoi = null;
         }
 
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        private void SetLockRpc(int lockVal)
+        {
+            if (CombatInitiator == -1) CombatInitiator = lockVal;
+        }
+
         /// <summary>
         ///     Check if we've arrived at the combat we're in.
         ///     If we have, transfer control of our boids over to the combat controller.
@@ -490,7 +498,6 @@ Count: {AliveRats}
             // Already arrived at combat
             if (Boids.paused) return;
 
-            _combatText.SetActive(true);
             if (_targetHorde.InCombat) // If the target is already in combat, join it
             {
                 CurrentCombatController = _targetHorde.CurrentCombatController;
@@ -498,10 +505,27 @@ Count: {AliveRats}
             }
             else // Otherwise start new combat and add the target to it
             {
-                CurrentCombatController =
-                    Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
-                CurrentCombatController!.AddHordeRpc(this);
-                CurrentCombatController.AddHordeRpc(_targetHorde);
+                if (_targetHorde.CombatInitiator == -1) // Try lock enemy
+                {
+                    CombatInitiator = Random.Range(0, 4096);
+                    _targetHorde.SetLockRpc(CombatInitiator);
+                    Invoke(nameof(ClearCombatInitiator), 2);
+                    return;
+                }
+
+                if (_targetHorde.CombatInitiator == CombatInitiator) // Successfully locked enemy
+                {
+                    CurrentCombatController =
+                        Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
+                    CurrentCombatController.AddHordeRpc(_targetHorde);
+                    CurrentCombatController!.AddHordeRpc(this);
+                }
+                else // We both tried to lock, resolve
+                {
+                    if (CombatInitiator <= _targetHorde.CombatInitiator) CombatInitiator = -1;
+                    Invoke(nameof(ClearCombatInitiator), 2);
+                    return;
+                }
             }
 
 
@@ -541,6 +565,7 @@ Count: {AliveRats}
 
         public override void Spawned()
         {
+            CombatInitiator = - 1;
             populationController = GetComponent<PopulationController>();
             _evolutionManager = GetComponent<EvolutionManager>();
             player = GetComponentInParent<Player>();
@@ -651,16 +676,16 @@ Count: {AliveRats}
             s_DealDamage.Begin();
             s_DealDamage.End();
             TotalHealth = Mathf.Max(
-                populationController.GetState().HealthPerRat * populationController.initialPopulation, TotalHealth - damage *
-                populationController.GetState().DamageReduction
-                * populationController.GetState().DamageReductionMult);
+                0, TotalHealth -
+                   damage *
+                   populationController.GetState().DamageReduction
+                   * populationController.GetState().DamageReductionMult);
         }
 
         public Bounds GetBounds()
         {
             return HordeBounds;
         }
-
 
         /// <summary>
         ///     Run for your furry little lives to the nearest friendly POI
@@ -840,6 +865,11 @@ Count: {AliveRats}
             _combatStrategy = strategy;
         }
 
+        private void ClearCombatInitiator()
+        {
+            CombatInitiator = -1;
+        }
+
         public string GetCombatStrategy()
         {
             return _combatStrategy;
@@ -946,7 +976,7 @@ Count: {AliveRats}
         {
             s_AddBoidsToCombat.Begin();
             Debug.Log($"HORDE {Object.Id} of {player.Username}: Joining boids to combat {combat.Id}");
-
+            CombatInitiator = -1;
             if (combat == null) throw new Exception("Tried to add boids to non-existent combat");
             Boids.JoinCombat(combat.boids, this);
             _combatText.SetActive(true);
@@ -972,10 +1002,7 @@ Count: {AliveRats}
             GameManager.Instance.UIManager.AbilityBars.Remove(this);
             if (GetEvolutionState().AcquiredEffects.Contains("unlock_gods_mistake"))
                 foreach (var horde in player.Hordes)
-                {
                     horde.GetComponent<EvolutionManager>().AddPoints();
-                    
-                }
 
             Debug.Log($"HORDE {Object.Id}: Despawned self");
             Runner.Despawn(Object);
