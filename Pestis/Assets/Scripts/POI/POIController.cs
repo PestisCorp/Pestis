@@ -41,7 +41,7 @@ namespace POI
         private Camera _camera;
         private float _cheesePerTick;
 
-        private POIType _poiType;
+        public POIType _poiType;
 
         private Sprite captureFlag;
         private GameObject flagObject;
@@ -202,36 +202,9 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
             Debug.Log($"Fixed cheese rate is {_cheesePerTick}");
             ControlledBy.IncrementCheeseIncrementRateRpc(_cheesePerTick);
             StationedHordes.Clear();
-            if (player.IsLocal)
-            {
-                GameManager.Instance.ObjectiveManager.AddProgress(ObjectiveTrigger.POICaptured, 1);
+ 
+                
 
-                switch (_poiType)
-                {
-                    case POIType.City:
-                        foreach (var horde in player.Hordes) horde.SetAliveRatsRpc((uint)((uint)horde.AliveRats * 1.1));
-                        GameManager.Instance.UIManager.AddNotification("City captured. Population increased",
-                            Color.black);
-                        break;
-                    case POIType.Lab:
-                        foreach (var horde in player.Hordes)
-                        {
-                            horde.GetComponent<EvolutionManager>().AddPoints();
-                            horde.AddSpeechBubbleRpc(EmoteType.Evolution);
-                        }
-
-                        GameManager.Instance.UIManager.AddNotification("Lab captured. Mutation points acquired.",
-                            Color.black);
-                        break;
-                    case POIType.Farm:
-                        player.AddCheeseRpc(100);
-                        GameManager.Instance.UIManager.AddNotification("Farm captured. Food package acquired.",
-                            Color.black);
-                        break;
-                }
-
-                GameManager.Instance.PlaySfx(SoundEffectType.POICapture);
-            }
 
             s_ChangeController.End();
         }
