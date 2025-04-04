@@ -197,7 +197,7 @@ Stationed: {string.Join("\n    ", StationedHordes.Select(x => x.Object.Id))}
                     case POIType.Lab:
                         foreach (var horde in player.Hordes)
                         {
-                            horde.GetComponent<EvolutionManager>().PointsAvailable += 1;
+                            horde.GetComponent<EvolutionManager>().AddPoints();
                             horde.AddSpeechBubbleRpc(EmoteType.Evolution);
                         }
 

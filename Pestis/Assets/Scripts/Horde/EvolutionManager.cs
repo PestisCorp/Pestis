@@ -381,7 +381,27 @@ namespace Horde
             CreatePassiveEvolutions();
             CreateActiveEvolutions();
         }
-
+        
+        public void AddPoints()
+        {
+            PointsAvailable++;
+            if (GameManager.Instance.UIManager.mutationPopUp.activeSelf &&
+                _hordeController.player.GetHumanPlayer().selectedHorde!.Id == _hordeController.Id)
+            {
+                if (PointsAvailable == 1)
+                    {
+                        GameManager.Instance.UIManager.MutationPopUpDisable();
+                        GameManager.Instance.UIManager.MutationPopUpEnable();
+                     }
+                else
+                     {
+                        GameObject.FindGameObjectWithTag("mutation_points").GetComponent<TextMeshProUGUI>().text =
+                        PointsAvailable + "pts";
+                     }
+              }
+              _hordeController.AddSpeechBubbleRpc(EmoteType.Evolution);
+        }
+        
         public override void FixedUpdateNetwork()
         {
             if (_hordeController.InCombat || _hordeController.isApparition) return;
@@ -394,22 +414,7 @@ namespace Horde
             if (!(_rareMutationClock.ElapsedInSeconds >
                   _evolutionaryState.PassiveEvolutions["rare mutation rate"][1]) ||
                 _hordeController.player.Type != 0) return;
-            PointsAvailable++;
-            if (GameManager.Instance.UIManager.mutationPopUp.activeSelf &&
-                _hordeController.player.GetHumanPlayer().selectedHorde!.Id == _hordeController.Id)
-            {
-                if (PointsAvailable == 1)
-                {
-                    GameManager.Instance.UIManager.MutationPopUpDisable();
-                    GameManager.Instance.UIManager.MutationPopUpEnable();
-                }
-                else
-                {
-                    GameObject.FindGameObjectWithTag("mutation_points").GetComponent<TextMeshProUGUI>().text =
-                        PointsAvailable + "pts";
-                }
-            }
-
+            AddPoints();
             _hordeController.AddSpeechBubbleRpc(EmoteType.Evolution);
             _rareMutationClock.Restart();
         }

@@ -973,8 +973,8 @@ Count: {AliveRats}
             if (GetEvolutionState().AcquiredEffects.Contains("unlock_gods_mistake"))
                 foreach (var horde in player.Hordes)
                 {
-                    horde.GetComponent<EvolutionManager>().PointsAvailable++;
-                    horde.AddSpeechBubbleRpc(EmoteType.Evolution);
+                    horde.GetComponent<EvolutionManager>().AddPoints();
+                    
                 }
 
             Debug.Log($"HORDE {Object.Id}: Despawned self");
