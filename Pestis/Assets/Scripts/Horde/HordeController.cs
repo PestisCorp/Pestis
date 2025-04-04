@@ -498,7 +498,6 @@ Count: {AliveRats}
             // Already arrived at combat
             if (Boids.paused) return;
 
-            _combatText.SetActive(true);
             if (_targetHorde.InCombat) // If the target is already in combat, join it
             {
                 CurrentCombatController = _targetHorde.CurrentCombatController;
