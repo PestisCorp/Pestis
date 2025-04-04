@@ -54,6 +54,9 @@ namespace Players
 
         private TickTimer _leaderboardUpdateTimer;
 
+
+        private int framesSinceLostAuth;
+
         public bool IsLocal => Type != PlayerType.Bot && HasStateAuthority;
 
         [Networked] [Capacity(32)] public NetworkLinkedList<HordeController> Hordes { get; } = default;
@@ -76,9 +79,22 @@ namespace Players
 
         [Networked] public FloatRes100 FixedCheeseGain { get; private set; } = 0.03f;
 
-
         private void FixedUpdate()
         {
+            if (Object.StateAuthority.IsNone)
+            {
+                framesSinceLostAuth++;
+                if (framesSinceLostAuth > 20)
+                {
+                    foreach (var horde in Hordes) horde.DestroyHordeRpc();
+                    DestroyBotRpc();
+                }
+            }
+            else
+            {
+                framesSinceLostAuth = 0;
+            }
+
             var newSum = 0;
             // LinQ/ForEach use enumerators which allocate memory
             // ReSharper disable once ForCanBeConvertedToForeach
@@ -98,15 +114,13 @@ namespace Players
                 switch (poi._poiType)
                 {
                     case POIType.City:
-                        foreach (var horde in poi.StationedHordes) horde.SetAliveRatsRpc((uint)((uint)horde.AliveRats * 1.1));
+                        foreach (var horde in poi.StationedHordes)
+                            horde.SetAliveRatsRpc((uint)((uint)horde.AliveRats * 1.1));
                         GameManager.Instance.UIManager.AddNotification("City captured. Population increased",
                             Color.black);
                         break;
                     case POIType.Lab:
-                        foreach (var horde in poi.StationedHordes)
-                        {
-                            horde.GetComponent<EvolutionManager>().AddPoints();
-                        }
+                        foreach (var horde in poi.StationedHordes) horde.GetComponent<EvolutionManager>().AddPoints();
 
                         GameManager.Instance.UIManager.AddNotification("Lab captured. Mutation points acquired.",
                             Color.black);
@@ -117,6 +131,7 @@ namespace Players
                             Color.black);
                         break;
                 }
+
             s_AddControlledPoiRpc.End();
         }
 
