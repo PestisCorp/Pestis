@@ -252,11 +252,12 @@ namespace Horde
                 }
                 else if (AliveRats > 0) // Move horde center slowly to avoid jitter due to center rat changing
                 {
-                    if (! InCombat && AliveRats < 0 && player.Type == PlayerType.Bot)
+                    if (!InCombat && AliveRats < 0 && player.Type == PlayerType.Bot)
                     {
                         Debug.LogError("Error horde with 0 rats, destroying horde");
                         DestroyHordeRpc();
                     }
+
                     if (InCombat && CurrentCombatController!.boids.containedHordes.Contains(this))
                     {
                         if (CurrentCombatController!.boids.hordeBounds.TryGetValue(this, out var newBounds))
@@ -484,6 +485,7 @@ Count: {AliveRats}
         private void SetLockRpc(int lockVal)
         {
             if (CombatInitiator == -1) CombatInitiator = lockVal;
+            Invoke(nameof(ClearCombatInitiator), 2);
         }
 
         /// <summary>
@@ -570,7 +572,7 @@ Count: {AliveRats}
 
         public override void Spawned()
         {
-            CombatInitiator = - 1;
+            CombatInitiator = -1;
             populationController = GetComponent<PopulationController>();
             _evolutionManager = GetComponent<EvolutionManager>();
             player = GetComponentInParent<Player>();
