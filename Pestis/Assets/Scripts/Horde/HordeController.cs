@@ -252,6 +252,11 @@ namespace Horde
                 }
                 else if (AliveRats > 0) // Move horde center slowly to avoid jitter due to center rat changing
                 {
+                    if (! InCombat && AliveRats < 0 && player.Type == PlayerType.Bot)
+                    {
+                        Debug.LogError("Error horde with 0 rats, destroying horde");
+                        DestroyHordeRpc();
+                    }
                     if (InCombat && CurrentCombatController!.boids.containedHordes.Contains(this))
                     {
                         if (CurrentCombatController!.boids.hordeBounds.TryGetValue(this, out var newBounds))
