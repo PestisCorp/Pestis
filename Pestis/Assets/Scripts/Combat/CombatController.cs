@@ -122,6 +122,15 @@ namespace Combat
         [CanBeNull]
         public PoiController FightingOver { get; private set; }
 
+        private void FixedUpdate()
+        {
+            if (Object.StateAuthority.IsNone)
+            {
+                TimeToDie();
+                Destroy(this);
+            }
+        }
+
 #if UNITY_EDITOR
         public void OnDrawGizmos()
         {
@@ -165,7 +174,7 @@ namespace Combat
         /// <param name="runner"></param>
         /// <param name="hasState"></param>
         /// <exception cref="NullReferenceException"></exception>
-        public override void Despawned(NetworkRunner runner, bool hasState)
+        public void TimeToDie()
         {
             Debug.Log("COMBAT: Despawned");
 
