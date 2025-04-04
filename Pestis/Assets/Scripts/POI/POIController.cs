@@ -79,13 +79,40 @@ namespace POI
 
         public void Awake()
         {
+            if (name.Contains("Lab")) _poiType = POIType.Lab;
+            if (name.Contains("Farm")) _poiType = POIType.Farm;
+            if (name.Contains("City")) _poiType = POIType.City;
+            if (name.Contains("camp")) _poiType = POIType.Camp;
+            if (name.Contains("Van")) _poiType = POIType.Van;
+            
             // Create a new GameObject for the icon
             if (!flagObject)
             {
                 // create canvas to display icon
                 var canvasGO = new GameObject("Canvas");
                 canvasGO.transform.SetParent(transform);
-                canvasGO.transform.localPosition = new Vector3(0, 2f, 0);
+
+                switch (_poiType)
+                {
+                    case POIType.Van:
+                        canvasGO.transform.localPosition = new Vector3(2.07f, 1.1f, 0);
+                        break;
+                    case POIType.Farm:
+                        canvasGO.transform.localPosition = new Vector3(-0.05f, 1.95f, 0);
+                        break;
+                    case POIType.Camp:
+                        canvasGO.transform.localPosition = new Vector3(-0.19f, 1.68f, 0);
+                        break;
+                    case POIType.Lab:
+                        canvasGO.transform.localPosition = new Vector3(1.47f, 2.84f, 0);
+                        break;
+                    case POIType.City:
+                        canvasGO.transform.localPosition = new Vector3(0.85f, 4.04f, 0);
+                        break;
+                    default:
+                        canvasGO.transform.localPosition = new Vector3(0, 2f, 0);
+                        break;
+                }
 
                 var canvas = canvasGO.AddComponent<Canvas>();
                 canvas.renderMode = RenderMode.WorldSpace;
@@ -105,14 +132,6 @@ namespace POI
                 captureFlag = Resources.Load<Sprite>("UI_design/POI_capture_flags/POI_capture_flag_uncaptured");
                 flag.sprite = captureFlag;
             }
-
-            if (name.Contains("Lab")) _poiType = POIType.Lab;
-
-            if (name.Contains("City")) _poiType = POIType.City;
-
-            if (name.Contains("Camp")) _poiType = POIType.Camp;
-
-            if (name.Contains("Van")) _poiType = POIType.Van;
         }
 
 #if UNITY_EDITOR
