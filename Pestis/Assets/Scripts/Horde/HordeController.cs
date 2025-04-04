@@ -507,6 +507,7 @@ Count: {AliveRats}
             {
                 if (_targetHorde.CombatInitiator == -1) // Try lock enemy
                 {
+                    _combatText.SetActive(true);
                     CombatInitiator = Random.Range(0, 4096);
                     _targetHorde.SetLockRpc(CombatInitiator);
                     Invoke(nameof(ClearCombatInitiator), 2);
