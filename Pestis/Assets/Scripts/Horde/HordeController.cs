@@ -510,8 +510,11 @@ Count: {AliveRats}
                 {
                     CombatInitiator = Random.Range(0, 4096);
                     _targetHorde.SetLockRpc(CombatInitiator);
+                    Invoke(nameof(ClearCombatInitiator), 2);
+                    return;
                 }
-                else if (_targetHorde.CombatInitiator == CombatInitiator) // Successfully locked enemy
+
+                if (_targetHorde.CombatInitiator == CombatInitiator) // Successfully locked enemy
                 {
                     CurrentCombatController =
                         Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
@@ -521,6 +524,8 @@ Count: {AliveRats}
                 else // We both tried to lock, resolve
                 {
                     if (CombatInitiator <= _targetHorde.CombatInitiator) CombatInitiator = -1;
+                    Invoke(nameof(ClearCombatInitiator), 2);
+                    return;
                 }
             }
 
@@ -860,6 +865,11 @@ Count: {AliveRats}
             _combatStrategy = strategy;
         }
 
+        private void ClearCombatInitiator()
+        {
+            CombatInitiator = -1;
+        }
+
         public string GetCombatStrategy()
         {
             return _combatStrategy;
@@ -917,7 +927,6 @@ Count: {AliveRats}
         public void EventJoinedCombatRpc(CombatController combat)
         {
             s_JoinedCombat.Begin();
-            CombatInitiator = -1;
             CurrentCombatController = combat;
             if (player.IsLocal) GameManager.Instance.PlaySfx(SoundEffectType.BattleStart);
             s_JoinedCombat.End();
@@ -967,7 +976,7 @@ Count: {AliveRats}
         {
             s_AddBoidsToCombat.Begin();
             Debug.Log($"HORDE {Object.Id} of {player.Username}: Joining boids to combat {combat.Id}");
-
+            CombatInitiator = -1;
             if (combat == null) throw new Exception("Tried to add boids to non-existent combat");
             Boids.JoinCombat(combat.boids, this);
             _combatText.SetActive(true);
@@ -993,10 +1002,7 @@ Count: {AliveRats}
             GameManager.Instance.UIManager.AbilityBars.Remove(this);
             if (GetEvolutionState().AcquiredEffects.Contains("unlock_gods_mistake"))
                 foreach (var horde in player.Hordes)
-                {
                     horde.GetComponent<EvolutionManager>().AddPoints();
-                    
-                }
 
             Debug.Log($"HORDE {Object.Id}: Despawned self");
             Runner.Despawn(Object);
