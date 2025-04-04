@@ -135,6 +135,8 @@ namespace Horde
 
         [CanBeNull] private HordeController _targetHorde;
 
+        private readonly int MyCombatInitiator = -1;
+
         public RatBoids Boids { get; private set; }
 
         /// <summary>
@@ -512,7 +514,7 @@ Count: {AliveRats}
             }
             else // Otherwise start new combat and add the target to it
             {
-                if (_targetHorde.CombatInitiator == -1) // Try lock enemy
+                if (_targetHorde.CombatInitiator == -1 && CombatInitiator == -1) // Try lock enemy
                 {
                     CombatInitiator = Random.Range(0, 4096);
                     _targetHorde.SetLockRpc(CombatInitiator);
@@ -522,10 +524,13 @@ Count: {AliveRats}
 
                 if (_targetHorde.CombatInitiator == CombatInitiator) // Successfully locked enemy
                 {
-                    CurrentCombatController =
-                        Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
-                    CurrentCombatController.AddHordeRpc(_targetHorde);
-                    CurrentCombatController!.AddHordeRpc(this);
+                    if (CombatInitiator == MyCombatInitiator)
+                    {
+                        CurrentCombatController =
+                            Runner.Spawn(GameManager.Instance.CombatControllerPrefab).GetComponent<CombatController>();
+                        CurrentCombatController.AddHordeRpc(_targetHorde);
+                        CurrentCombatController!.AddHordeRpc(this);
+                    }
                 }
                 else // We both tried to lock, resolve
                 {
