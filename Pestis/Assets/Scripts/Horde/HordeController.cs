@@ -235,10 +235,11 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
             targetLocation.transform.position = devToolsTargetLocation;
         }
 
-
         public override void FixedUpdateNetwork()
         {
             CheckArrivedAtPoi();
+
+            if (Runner.Tick.Raw % 2 == 0) TotalHealth += _populationController.GetState().HealthPerRat;
 
             if (InCombat)
             {
@@ -469,8 +470,8 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
         public void RetreatRpc()
         {
             Debug.Log("Retreating!");
-            Vector3 baseCamp = transform.parent.position;
-            POIController closestPOI = Player.ControlledPOIs.Aggregate((closest, poi) =>
+            var baseCamp = transform.parent.position;
+            var closestPOI = Player.ControlledPOIs.Aggregate((closest, poi) =>
                 Vector3.Distance(HordeBounds.center, poi.transform.position) <
                 Vector3.Distance(HordeBounds.center, closest.transform.position)
                     ? poi
@@ -486,6 +487,7 @@ POI Target {(TargetPoi ? TargetPoi.Object.Id : "None")}
                 targetLocation.Teleport(baseCamp);
                 StationedAt = null;
             }
+
             HordeBeingDamaged = null;
             CurrentCombatController = null;
             PopulationCooldown = 15.0f;

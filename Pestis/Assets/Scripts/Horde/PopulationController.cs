@@ -181,6 +181,7 @@ namespace Horde
         // Check for birth or death events
         private void PopulationEvent()
         {
+            return;
             if (_hordeController.AliveRats > _populationPeak)
             {
                 _populationPeak = _hordeController.AliveRats;
