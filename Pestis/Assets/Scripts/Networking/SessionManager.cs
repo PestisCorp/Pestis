@@ -116,7 +116,7 @@ namespace Networking
                     Config = new RoomConfig
                     {
                         PlayersPerRoom = 50,
-                        MaxBotsPerClient = 25
+                        MaxBotsPerClient = 0
                     }
                 };
                 UnityEngine.Debug.LogWarning($"Failed to get room config: {e}");

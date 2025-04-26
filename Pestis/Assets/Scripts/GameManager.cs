@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Horde;
@@ -87,6 +88,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public ComputeBuffer poiOffsetBuffer;
 
+    private StreamWriter writer;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
@@ -94,6 +97,8 @@ public class GameManager : MonoBehaviour
         fpsText.gameObject.SetActive(true);
         boidText.gameObject.SetActive(true);
 #endif
+        writer = new StreamWriter("/home/murrax2/pestis-gpu.csv");
+        writer.Write("Rats,Fps");
 
         if (Instance == null)
         {
@@ -111,7 +116,7 @@ public class GameManager : MonoBehaviour
             { SoundEffectType.BattleLoss, Resources.Load<AudioClip>("SFX/Combat Loss  1") },
             { SoundEffectType.BattleWin, Resources.Load<AudioClip>("SFX/Combat Victory 1") },
             { SoundEffectType.POICapture, Resources.Load<AudioClip>("SFX/Imporant Location captured") },
-            { SoundEffectType.HumanScream , Resources.Load<AudioClip>("SFX/Human Grunts Scared v4")}
+            { SoundEffectType.HumanScream, Resources.Load<AudioClip>("SFX/Human Grunts Scared v4") }
         };
 
         pois = FindObjectsByType<PoiController>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
@@ -214,6 +219,7 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        writer.WriteLine($"{Players.Sum(player => player.Hordes.Sum(horde => horde.AliveRats))},{currentFps}");
         // Done as for loops to avoid alloc
         float sum = 0;
         var numHordes = 0;
@@ -224,25 +230,23 @@ public class GameManager : MonoBehaviour
         {
             sum += Players[player].Hordes[horde].TotalHealth;
             if (AllHordes.Count >= numHordes + 1)
-            {
                 AllHordes[numHordes] = Players[player].Hordes[horde];
-            }
             else
-            {
                 AllHordes.Add(Players[player].Hordes[horde]);
-            }
             numHordes++;
         }
 
         // Crop end of list when hordes removed so we don't realloc a new list
-        if (numHordes < AllHordes.Count)
-        {
-            AllHordes.RemoveRange(numHordes, AllHordes.Count - numHordes);
-        }
-        
+        if (numHordes < AllHordes.Count) AllHordes.RemoveRange(numHordes, AllHordes.Count - numHordes);
+
         meanHordeHealth = sum / numHordes;
 
         currentPerfBucket = Players.Count != 0 ? Players[0].Runner.Tick % recoverPerfLevel : 0;
+    }
+
+    private void OnDestroy()
+    {
+        writer.Close();
     }
 
     public void PlaySfx(SoundEffectType type)

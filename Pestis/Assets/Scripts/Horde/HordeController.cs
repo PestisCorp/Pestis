@@ -345,6 +345,8 @@ Count: {AliveRats}
 
         public override void FixedUpdateNetwork()
         {
+            if (Runner.Tick.Raw % 2 == 0) AliveRats = new IntPositive(Convert.ToUInt32(AliveRats + 1));
+
             CheckArrivedAtPoi();
             CheckArrivedAtCombat();
 
