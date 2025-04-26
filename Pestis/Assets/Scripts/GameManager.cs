@@ -37,6 +37,8 @@ public class GameManager : MonoBehaviour
 
         writer = new StreamWriter("/home/murrax2/Downloads/pestis-physics.csv");
         writer.WriteLine("Rats,FPS");
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 144;
     }
 
     // Update is called once per frame
