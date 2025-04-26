@@ -4,8 +4,6 @@ using System.Runtime.InteropServices;
 using Combat;
 using Horde;
 using Unity.Mathematics;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Random = UnityEngine.Random;
@@ -90,6 +88,7 @@ public class RatBoids : MonoBehaviour
 
     private float[] _boundsArr;
     private ComputeBuffer _boundsBuffer;
+    private ComputeBuffer _gridBoundsBuffer;
 
     private bool _started;
 
@@ -133,7 +132,11 @@ public class RatBoids : MonoBehaviour
     private Vector2[] triangleVerts;
     private float turnSpeed;
 
-    private int updateBoidsKernel, generateBoidsKernel, updateBoundsKernel, updatePositionsKernel;
+    private int updateBoidsKernel,
+        generateBoidsKernel,
+        updateBoundsKernel,
+        updatePositionsKernel,
+        updateGridBoundsKernel;
 
     private int updateGridKernel,
         clearGridKernel,
@@ -175,6 +178,7 @@ public class RatBoids : MonoBehaviour
         updateBoidsKernel = boidShader.FindKernel("UpdateBoidsVelocity");
         updatePositionsKernel = boidShader.FindKernel("UpdateBoidsPositions");
         updateBoundsKernel = boidShader.FindKernel("UpdateBounds");
+        updateGridBoundsKernel = boidShader.FindKernel("UpdateGridBounds");
         updateGridKernel = gridShader.FindKernel("UpdateGrid");
         clearGridKernel = gridShader.FindKernel("ClearGrid");
         prefixSumKernel = gridShader.FindKernel("PrefixSum");
@@ -190,6 +194,7 @@ public class RatBoids : MonoBehaviour
         Assert.AreEqual(Marshal.SizeOf(typeof(float)), Marshal.SizeOf(typeof(uint)),
             "uint and float have different byte sizes, bounds calc WILL break");
         _boundsBuffer = new ComputeBuffer(4, Marshal.SizeOf(typeof(float)));
+        _gridBoundsBuffer = new ComputeBuffer(4, Marshal.SizeOf(typeof(uint)));
         _boundsArr = new float[4];
 
         _boundsArr[0] = 1024.0f;
@@ -242,8 +247,8 @@ public class RatBoids : MonoBehaviour
 
         // Spatial grid setup
         gridCellSize = visualRange;
-        gridDimX = Mathf.FloorToInt(xBound * 2 / gridCellSize) + 30;
-        gridDimY = Mathf.FloorToInt(yBound * 2 / gridCellSize) + 30;
+        gridDimX = Mathf.FloorToInt(xBound * 2 / gridCellSize) + 31;
+        gridDimY = Mathf.FloorToInt(yBound * 2 / gridCellSize) + 31;
         gridTotalCells = gridDimX * gridDimY;
 
 
@@ -255,6 +260,11 @@ public class RatBoids : MonoBehaviour
         gridSumsBuffer2 = new ComputeBuffer(blocks, 4);
         gridShader.SetInt("numBoids", numBoids);
         gridShader.SetInt("numBoidsPrevious", 0);
+
+
+        boidShader.SetBuffer(updateGridBoundsKernel, "gridBounds", _gridBoundsBuffer);
+        boidShader.SetBuffer(updateBoundsKernel, "gridBounds", _gridBoundsBuffer);
+        boidShader.SetBuffer(updateGridBoundsKernel, "gridOffsetBuffer", gridOffsetBuffer);
 
 
         gridShader.SetFloat("gridCellSize", gridCellSize);
@@ -433,6 +443,7 @@ public class RatBoids : MonoBehaviour
         if (_boundsArr[0] == 1024.0f)
         {
             Bounds = null;
+            boidShader.Dispatch(updateGridBoundsKernel, 5, 5, 1);
             boidShader.Dispatch(updateBoundsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
             return;
         }
@@ -445,6 +456,7 @@ public class RatBoids : MonoBehaviour
         _boundsArr[2] = -1024.0f;
         _boundsArr[3] = 1024.0f;
         _boundsBuffer.SetData(_boundsArr, 0, 0, 4);
+        boidShader.Dispatch(updateGridBoundsKernel, 5, 5, 1);
         boidShader.Dispatch(updateBoundsKernel, Mathf.CeilToInt(numBoids / blockSize), 1, 1);
     }
 
@@ -641,7 +653,7 @@ public class RatBoids : MonoBehaviour
         var flippedTex = new Texture2D(originalTex.width, originalTex.height, originalTex.format, false)
         {
             filterMode = originalTex.filterMode,
-            wrapMode = originalTex.wrapMode,
+            wrapMode = originalTex.wrapMode
         };
         for (var y = 0; y < originalTex.height; y++)
         for (var x = 0; x < originalTex.width; x++)
@@ -658,7 +670,7 @@ public class RatBoids : MonoBehaviour
             new Vector2(0.5f, 0.5f),
             original.pixelsPerUnit
         );
-    
+
         return flippedSprite;
     }
 
