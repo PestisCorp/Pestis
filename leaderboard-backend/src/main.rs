@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::io::{Read, Write};
 use std::sync::Arc;
+use chrono::Timelike;
 use tokio::sync::RwLock;
 use warp::Filter;
 use warp::hyper::body::Bytes;
@@ -579,6 +580,21 @@ async fn main() {
         loop {
             tokio::time::sleep(tokio::time::Duration::from_secs(120)).await;
             debug!("Running management tasks");
+
+            // Wipe the leaderboard at midnight
+            let current_time = chrono::Utc::now();
+            if current_time.hour() == 0 && current_time.minute() <= 1 {
+                debug!("Wiping leaderboard");
+                let mut history = manager.history.write().await;
+                history.clear();
+                drop(history);
+                let mut players = manager.players.write().await;
+                players.clear();
+                drop(players);
+                let mut info = manager.info.write().await;
+                info.state.rooms.clear();
+            }
+
             manager.remove_idle_players().await;
             debug!("Finished cleaning idle players");
             manager.save_to_file().await;
