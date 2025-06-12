@@ -57,6 +57,9 @@ namespace Players
 
         private int framesSinceLostAuth;
 
+        /// <summary>
+        ///     Whether this player is the one being controlled by the player on this machine.
+        /// </summary>
         public bool IsLocal => Type != PlayerType.Bot && HasStateAuthority;
 
         [Networked] [Capacity(32)] public NetworkLinkedList<HordeController> Hordes { get; } = default;
@@ -263,6 +266,8 @@ namespace Players
 
         private IEnumerator JoinStats()
         {
+            if (!IsLocal) yield break;
+
 #if UNITY_EDITOR
             var uri = "http://localhost:8081/api/join";
 #else
@@ -283,6 +288,8 @@ namespace Players
 
         private IEnumerator UpdateStats()
         {
+            if (!IsLocal) yield break;
+
             var uri = "https://pestis.murraygrov.es/api/update";
 
             var jsonObj = new StatsUpdate

@@ -20,14 +20,14 @@ namespace Players
         /// <summary>
         ///     Squared distance below which a horde will be considered a problem and either attacked or moved away from
         /// </summary>
-        public float territorialDistance = 0;
+        public float territorialDistance;
 
         private float _timeSinceLastUpdate;
 
         /// <summary>
         ///     Multiplier to current `aggressionUncapped`, makes a horde more likely to take offensive action at all times
         /// </summary>
-        public float BaseAggression { get; private set; } = 0.0f;
+        public float BaseAggression { get; private set; } = 1.0f;
 
         /// <summary>
         ///     Arbitrary float, starts at 0.0, and increases over time - increasing desire to take offensive action. Reset to zero
@@ -36,7 +36,7 @@ namespace Players
         /// </summary>
         public float AggressionUncapped { get; private set; }
 
-        public float AggressionRange => 0.0f * AggressionUncapped * BaseAggression;
+        public float AggressionRange => 1.0f * AggressionUncapped * BaseAggression;
 
         /// <summary>
         ///     True if this instance is the one that should handle the bot
@@ -46,7 +46,8 @@ namespace Players
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         private void Start()
         {
-            //BaseAggression = Random.Range(1f, 10f);
+            BaseAggression = Random.Range(1f, 10f);
+            territorialDistance = Random.Range(5f, 100f);
         }
 
         private void FixedUpdate()
@@ -68,60 +69,63 @@ namespace Players
             {
                 // Don't take any actions if we're already in combat or attacking a POI
                 if (myHorde.InCombat || myHorde.TargetPoi) continue;
-                
+
                 List<Tuple<HordeController, float>> hordesByDistance = new();
                 foreach (var horde in allHordes)
                 {
-                    float calc = (horde.HordeBounds.center - myHorde.HordeBounds.center).sqrMagnitude;
+                    var calc = (horde.HordeBounds.center - myHorde.HordeBounds.center).sqrMagnitude;
                     if (calc < AggressionRange)
                     {
                         Tuple<HordeController, float> temp = new(horde, calc);
                         hordesByDistance.Add(temp);
                     }
                 }
+
                 hordesByDistance = hordesByDistance.OrderBy(t => t.Item2).ToList();
-                
-                if (hordesByDistance.Count <= 1) continue;
-                
-                // First closest horde is us, so get second
-                var closestHorde = hordesByDistance[1].Item1;
-                var closestHordeDistance = hordesByDistance[1].Item2;
 
-                var distFromHordeEdgeToClosestHorde = closestHordeDistance -
-                                                      closestHorde.GetBounds()
-                                                          .extents.sqrMagnitude -
-                                                      myHorde.GetBounds().extents.sqrMagnitude;
-
-                // DEFENSIVE ACTIONS
-                // If nearest horde is too close, either attack or run away
-                if (distFromHordeEdgeToClosestHorde < territorialDistance)
+                if (hordesByDistance.Count > 1)
                 {
-                    var closestHordeIsFriendly = closestHorde.player == myHorde.player;
-                    var attack = !closestHordeIsFriendly;
-                    if (!closestHordeIsFriendly) // If we can attack this horde, let's calculate a desirability
+                    // First closest horde is us, so get second
+                    var closestHorde = hordesByDistance[1].Item1;
+                    var closestHordeDistance = hordesByDistance[1].Item2;
+
+                    var distFromHordeEdgeToClosestHorde = closestHordeDistance -
+                                                          closestHorde.GetBounds()
+                                                              .extents.sqrMagnitude -
+                                                          myHorde.GetBounds().extents.sqrMagnitude;
+
+                    // DEFENSIVE ACTIONS
+                    // If nearest horde is too close, either attack or run away
+                    if (distFromHordeEdgeToClosestHorde < territorialDistance)
                     {
-                        var desirability = CalcCombatDesirability(myHorde, closestHorde);
-                        attack = Random.Range(0.0f, 1.0f) < desirability;
-                        attack = false;
-                    }
-                    
-                    if (attack)
-                    {
-                        myHorde.AttackHorde(closestHorde);
+                        var closestHordeIsFriendly = closestHorde.player == myHorde.player;
+                        var attack = !closestHordeIsFriendly;
+                        if (!closestHordeIsFriendly) // If we can attack this horde, let's calculate a desirability
+                        {
+                            var desirability = CalcCombatDesirability(myHorde, closestHorde);
+                            attack = Random.Range(0.0f, 1.0f) < desirability;
+                        }
+
+                        if (attack)
+                        {
+                            myHorde.AttackHorde(closestHorde);
+                            return;
+                        }
+
+                        Vector2 pushDirection =
+                            (myHorde.GetBounds().center - closestHorde.GetBounds().center).normalized;
+                        // Go 10 tiles in the opposite direction to the nearest horde.
+                        var newLocation = (Vector2)myHorde.GetBounds().center + pushDirection * 10.0f;
+                        myHorde.Move(newLocation);
+                        // Return because we only want to take one action each second
                         return;
                     }
-
-                    Vector2 pushDirection = (myHorde.GetBounds().center - closestHorde.GetBounds().center).normalized;
-                    // Go 10 tiles in the opposite direction to the nearest horde.
-                    var newLocation = (Vector2)myHorde.GetBounds().center + pushDirection * 10.0f;
-                    myHorde.Move(newLocation);
-                    // Return because we only want to take one action each second
-                    return;
                 }
 
                 // MANAGEMENT ACTIONS
 
-                if (myHorde.TotalHealth > 3 * GameManager.Instance.meanHordeHealth &&
+                if ((myHorde.TotalHealth > 3 * GameManager.Instance.meanHordeHealth ||
+                     Random.Range(0.0f, 1.0f) < (myHorde.AliveRats - 300) / 20000.0f) &&
                     myHorde.TotalHealth / myHorde.GetPopulationState().HealthPerRat > 10)
                 {
                     player.SplitHorde(myHorde, 0.5f);
@@ -129,8 +133,12 @@ namespace Players
                     return;
                 }
 
-                // If we're the sole defender of a POI, don't make any offensive actions
-                if (myHorde.StationedAt && myHorde.StationedAt.StationedHordes.Count == 1) return;
+                // // If we're the sole defender of a POI, don't make any offensive actions
+                // if (myHorde.StationedAt && myHorde.StationedAt.StationedHordes.Count == 1)
+                // {
+                //     AggressionUncapped += 2f;
+                //     return;
+                // }
 
                 // OFFENSIVE ACTIONS
 
@@ -149,7 +157,6 @@ namespace Players
                         desirability *= CalcCombatDesirability(myHorde, enemy);
 
                     desirability *= 1.0f - sqrDistance / AggressionRange;
-                    desirability = 0;
                     poiDesirabilities.Add(poi, desirability);
                 }
 
@@ -170,7 +177,7 @@ namespace Players
                 Dictionary<HordeController, float> hordeDesirabilities = new();
                 foreach (var kvp in hordesByDistance)
                 {
-                    if (kvp.Item1.player == player) return;
+                    if (kvp.Item1.player == player) continue;
 
                     // Skip Horde if too far away
                     var sqrDistance = kvp.Item2;
@@ -179,7 +186,6 @@ namespace Players
                     var desirability = CalcCombatDesirability(myHorde, kvp.Item1);
 
                     desirability *= 1.0f - sqrDistance / AggressionRange;
-                    desirability = 0;
                     hordeDesirabilities.Add(kvp.Item1, desirability);
                 }
 
@@ -198,7 +204,7 @@ namespace Players
             }
 
             // We took no actions, increase aggression
-            AggressionUncapped += 0.0f;
+            AggressionUncapped += 2f;
         }
 
 #if UNITY_EDITOR
@@ -237,11 +243,9 @@ namespace Players
             // If less than 60 seconds since the horde has been in combat,
             // reduce desirability by a nice curve that heavily discourages early re-engagement, but reduces effects closer to 60
             if (myHorde.LastInCombat.HasValue && Time.time - myHorde.LastInCombat < 60)
-            {
                 //desirability += Mathf.Cos((Time.time - myHorde.lastInCombat) / 20.0f + 3.14f) / 3.0f - 0.35f;
                 return 0;
-            }
-            
+
             return Mathf.Clamp(desirability, 0.0f, 0.0f);
         }
     }
