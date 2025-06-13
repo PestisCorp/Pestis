@@ -88,11 +88,11 @@ jobs:
             version: ${{ github.ref_name }}
             projectPath: Pestis
             runAsHostUser: true
-            chownFilesTo: ec2-user
+            chownFilesTo: 1000
 
         # Output
         - name: Zip Linux build to hosting folder
-          run: mkdir -p /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/ && zip -urD /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/linux.zip build/StandaloneLinux64 
+          run: mkdir -p ../../../builds/${{ github.ref_name  }}/ && zip -urD ../../../builds/${{ github.ref_name  }}/linux.zip build/StandaloneLinux64 
 
     build-windows:
       needs: test
@@ -133,9 +133,9 @@ jobs:
             version: ${{ github.ref_name }}
             projectPath: Pestis
             runAsHostUser: true
-            chownFilesTo: ec2-user
+            chownFilesTo: 1000
 
         # Output
         - name: Zip Windows build to hosting folder
-          run: mkdir -p /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/ && zip -urD /home/ec2-user/actions-runner/builds/${{ github.ref_name  }}/windows.zip build/StandaloneWindows64 
+          run: mkdir -p ../../../builds/${{ github.ref_name  }}/ && zip -urD ../../../builds/${{ github.ref_name  }}/windows.zip build/StandaloneWindows64 
       

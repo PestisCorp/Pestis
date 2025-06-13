@@ -92,11 +92,11 @@ jobs:
             version: ${{needs.test.outputs.version  }}
             projectPath: Pestis
             runAsHostUser: true
-            chownFilesTo: ec2-user
+            chownFilesTo: 1000
 
         # Output
         - name: Zip Linux build to hosting folder
-          run:  mkdir -p /home/ec2-user/actions-runner/builds/${{ needs.test.outputs.version  }}/ && zip -urD /home/ec2-user/actions-runner/builds/${{ needs.test.outputs.version  }}/linux.zip build/StandaloneLinux64 
+          run:  mkdir -p ../../../builds/${{ needs.test.outputs.version  }}/ && zip -urD ../../../builds/${{ needs.test.outputs.version  }}/linux.zip build/StandaloneLinux64 
 
     build-windows:
       needs: test
@@ -138,12 +138,12 @@ jobs:
             version: ${{needs.test.outputs.version}}
             projectPath: Pestis
             runAsHostUser: true
-            chownFilesTo: ec2-user
+            chownFilesTo: 1000
 
 
         # Output
         - name: Zip Windows build to hosting folder
-          run: mkdir -p /home/ec2-user/actions-runner/builds/${{ needs.test.outputs.version  }}/ && zip -urD /home/ec2-user/actions-runner/builds/${{needs.test.outputs.version}}/windows.zip build/StandaloneWindows64 
+          run: mkdir -p ../../../builds/${{ needs.test.outputs.version  }}/ && zip -urD ../../../builds/${{needs.test.outputs.version}}/windows.zip build/StandaloneWindows64 
 
         - name: Symlink to latest
-          run: ln -sfn /home/ec2-user/actions-runner/builds/${{needs.test.outputs.version}} /home/ec2-user/actions-runner/builds/latest
+          run: ln -sfn ../../../builds/${{needs.test.outputs.version}} ../../../builds/latest
