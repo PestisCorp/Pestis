@@ -146,4 +146,4 @@ jobs:
           run: mkdir -p ../../../builds/${{ needs.test.outputs.version  }}/ && zip -urD ../../../builds/${{needs.test.outputs.version}}/windows.zip build/StandaloneWindows64 
 
         - name: Symlink to latest
-          run: ln -sfn ../../../builds/${{needs.test.outputs.version}} ../../../builds/latest
+          run: ln -sfn ./${{needs.test.outputs.version}} ../../../builds/latest
