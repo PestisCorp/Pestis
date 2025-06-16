@@ -5,7 +5,6 @@ using Combat;
 using Horde;
 using Unity.Mathematics;
 using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Random = UnityEngine.Random;
@@ -144,7 +143,8 @@ public class RatBoids : MonoBehaviour
 
     private float xBound, yBound;
 
-    public bool Local => hordeController.HasStateAuthority;
+    // If horde controller is null then the game is running in Benchmark mode, so we should simulate these boids!
+    public bool Local => hordeController.IsUnityNull() || hordeController.HasStateAuthority;
 
     public Bounds? Bounds { private set; get; }
 
@@ -292,7 +292,9 @@ public class RatBoids : MonoBehaviour
         _timeSinceVelUpdate += Time.deltaTime;
 
         boidShader.SetFloat("positionDeltaTime", Time.deltaTime);
-        if (hordeController.Id.Object.Raw % GameManager.Instance.recoverPerfLevel !=
+        // If this boids sim is not selected for full update this frame due to performance reason, update only positions and not velocity and then return.
+        // Check only performed if not in Benchmark mode.
+        if (!hordeController.IsUnityNull() && hordeController.Id.Object.Raw % GameManager.Instance.recoverPerfLevel !=
             GameManager.Instance.currentPerfBucket && numBoids != 0)
         {
             // Clear indices
@@ -415,8 +417,11 @@ public class RatBoids : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!Local || hordeController.Id.Object.Raw % Math.Max(1, GameManager.Instance.recoverPerfLevel / 8) !=
-            GameManager.Instance.currentPerfBucket % Math.Max(1, GameManager.Instance.recoverPerfLevel / 8)) return;
+        // If the horde isn't local, or there are performance issues, don't calculate bounds.
+        if (!Local || (!hordeController.IsUnityNull() &&
+                       hordeController.Id.Object.Raw % Math.Max(1, GameManager.Instance.recoverPerfLevel / 8) !=
+                       GameManager.Instance.currentPerfBucket %
+                       Math.Max(1, GameManager.Instance.recoverPerfLevel / 8))) return;
 
         if (numBoids == 0 || paused || !_started)
         {
@@ -641,7 +646,7 @@ public class RatBoids : MonoBehaviour
         var flippedTex = new Texture2D(originalTex.width, originalTex.height, originalTex.format, false)
         {
             filterMode = originalTex.filterMode,
-            wrapMode = originalTex.wrapMode,
+            wrapMode = originalTex.wrapMode
         };
         for (var y = 0; y < originalTex.height; y++)
         for (var x = 0; x < originalTex.width; x++)
@@ -658,7 +663,7 @@ public class RatBoids : MonoBehaviour
             new Vector2(0.5f, 0.5f),
             original.pixelsPerUnit
         );
-    
+
         return flippedSprite;
     }
 
