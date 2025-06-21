@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8228648336783413388
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3263927631060680294}
+  - component: {fileID: 2816895676164861926}
+  - component: {fileID: 8687238367721215732}
+  m_Layer: 5
+  m_Name: Boids
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3263927631060680294
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8228648336783413388}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.005900369}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2816895676164861926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8228648336783413388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35719502745a45e6a830b4f92c4e09a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxSpeed: 3
+  edgeMargin: 0.5
+  visualRange: 10
+  minDistance: 0.8
+  cohesionFactor: 1
+  separationFactor: 0.5
+  alignmentFactor: 0.5
+  targetFactor: 2
+  boidShader: {fileID: 7200000, guid: 9c4516c864c64285a3313ea819bbf605, type: 3}
+  gridShader: {fileID: 7200000, guid: 09b3d2d9369c4b7dab8d97a7e83f5eaf, type: 3}
+  boidMat: {fileID: 2100000, guid: 14e523a1206d6077695982ee0599c60b, type: 2}
+  deadBoidMat: {fileID: 2100000, guid: 5f6be8f0d010ed2ca8a5dda610fa09ee, type: 2}
+  combat: 0
+  AliveRats: 0
+  TargetPos: {x: 0, y: 0}
+  paused: 0
+  numBoids: 0
+--- !u!222 &8687238367721215732
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8228648336783413388}
+  m_CullTransparentMesh: 1

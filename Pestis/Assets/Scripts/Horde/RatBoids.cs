@@ -222,11 +222,22 @@ public class RatBoids : MonoBehaviour
         boidShader.SetFloat("alignmentFactor", alignmentFactor);
         boidShader.SetFloat("targetFactor", targetFactor);
 
-        boidShader.SetBuffer(updateBoidsKernel, "pois", GameManager.Instance.poiBuffer);
-        boidShader.SetBuffer(updateBoidsKernel, "poiOffsets", GameManager.Instance.poiOffsetBuffer);
-        boidShader.SetFloat("poiGridCellSize", GameManager.Instance.poiGridCellSize);
-        boidShader.SetInt("poiGridDimX", GameManager.Instance.poiGridDimX);
-        boidShader.SetInt("poiGridDimY", GameManager.Instance.poiGridDimY);
+        if (GameManager.Instance)
+        {
+            boidShader.SetBuffer(updateBoidsKernel, "pois", GameManager.Instance.poiBuffer);
+            boidShader.SetBuffer(updateBoidsKernel, "poiOffsets", GameManager.Instance.poiOffsetBuffer);
+            boidShader.SetFloat("poiGridCellSize", GameManager.Instance.poiGridCellSize);
+            boidShader.SetInt("poiGridDimX", GameManager.Instance.poiGridDimX);
+            boidShader.SetInt("poiGridDimY", GameManager.Instance.poiGridDimY);
+        }
+        else
+        {
+            boidShader.SetBuffer(updateBoidsKernel, "pois", new ComputeBuffer(1, sizeof(uint)));
+            boidShader.SetBuffer(updateBoidsKernel, "poiOffsets", new ComputeBuffer(1, sizeof(uint)));
+            boidShader.SetFloat("poiGridCellSize", 5);
+            boidShader.SetInt("poiGridDimX", 128);
+            boidShader.SetInt("poiGridDimY", 128);
+        }
 
 
         // Set render params

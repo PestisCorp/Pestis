@@ -194,7 +194,7 @@ void UpdateBoidsVelocity(uint3 id : SV_DispatchThreadID)
         boid.dead = false;
         if (numBoidsPrevious == 0)
         {
-            boid.pos = float2(targetPosX, targetPosY);
+            boid.pos = float2(targetPosX + (id.x / 1000.0f), targetPosY);
             boid.vel = float2(0, 0);
         }
         else
@@ -202,11 +202,11 @@ void UpdateBoidsVelocity(uint3 id : SV_DispatchThreadID)
             if (spawnPoint.x == 0 && spawnPoint.y == 0)
             {
                 float2 pos = boidsIn[floor(numBoidsPrevious / 2.0f)].pos;
-                boid.pos = float2(pos.x + (id.x / 1000.0f), pos.y + (id.x / 1000.0f));
+                boid.pos = float2(pos.x + (id.x / 1000.0f), pos.y + (numBoidsPrevious / 1000.0f));
             }
             else
             {
-                boid.pos = float2(spawnPoint.x + (id.x / 1000.0f), spawnPoint.y + (id.x / 1000.0f));
+                boid.pos = float2(spawnPoint.x + (id.x / 1000.0f), spawnPoint.y + (numBoidsPrevious / 1000.0f));
             }
             boid.vel = float2(id.x / 1000.0f, id.x / 1000.0f);
         }

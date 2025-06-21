@@ -42,8 +42,8 @@ PlayerSettings:
   m_SplashScreenLogos: []
   m_VirtualRealitySplashScreen: {fileID: 0}
   m_HolographicTrackingLossScreen: {fileID: 0}
-  defaultScreenWidth: 1920
-  defaultScreenHeight: 1080
+  defaultScreenWidth: 800
+  defaultScreenHeight: 600
   defaultScreenWidthWeb: 1800
   defaultScreenHeightWeb: 900
   m_StereoRenderingPath: 0
@@ -106,7 +106,7 @@ PlayerSettings:
   xboxEnableFitness: 0
   visibleInBackground: 1
   allowFullscreenSwitch: 1
-  fullscreenMode: 0
+  fullscreenMode: 2
   xboxSpeechDB: 0
   xboxEnableHeadOrientation: 0
   xboxEnableGuest: 0
@@ -483,15 +483,20 @@ PlayerSettings:
   - m_BuildTarget: WebGL
     m_StaticBatching: 1
     m_DynamicBatching: 1
+  - m_BuildTarget: Standalone
+    m_StaticBatching: 1
+    m_DynamicBatching: 1
   m_BuildTargetShaderSettings: []
   m_BuildTargetGraphicsJobs:
   - m_BuildTarget: WebGLSupport
     m_GraphicsJobs: 1
+  - m_BuildTarget: LinuxStandaloneSupport
+    m_GraphicsJobs: 0
   m_BuildTargetGraphicsJobMode: []
   m_BuildTargetGraphicsAPIs:
   - m_BuildTarget: LinuxStandaloneSupport
     m_APIs: 1500000011000000
-    m_Automatic: 1
+    m_Automatic: 0
   m_BuildTargetVRSettings: []
   m_DefaultShaderChunkSizeInMB: 16
   m_DefaultShaderChunkCount: 0
@@ -508,6 +513,7 @@ PlayerSettings:
   - serializedVersion: 2
     m_BuildTarget: WebGL
     m_EncodingQuality: 1
+  m_BuildTargetGroupHDRCubemapEncodingQuality: []
   m_BuildTargetGroupLightmapSettings: []
   m_BuildTargetGroupLoadStoreDebugModeSettings: []
   m_BuildTargetNormalMapEncoding: []
@@ -774,12 +780,12 @@ PlayerSettings:
   webGLMemoryLinearGrowthStep: 16
   webGLMemoryGeometricGrowthStep: 0.2
   webGLMemoryGeometricGrowthCap: 96
-  webGLEnableWebGPU: 0
   webGLPowerPreference: 2
   webGLWebAssemblyTable: 0
   webGLWebAssemblyBigInt: 1
   webGLCloseOnQuit: 0
   webWasm2023: 1
+  webEnableSubmoduleStrippingCompatibility: 0
   scriptingDefineSymbols:
     Standalone: FUSION_LOGLEVEL_INFO;FUSION_WEAVER;FUSION2
     WebGL: FUSION_WEAVER;FUSION2;FUSION_LOGLEVEL_INFO
@@ -910,3 +916,4 @@ PlayerSettings:
   insecureHttpOption: 0
   androidVulkanDenyFilterList: []
   androidVulkanAllowFilterList: []
+  androidVulkanDeviceFilterListAsset: {fileID: 0}
