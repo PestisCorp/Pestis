@@ -260,8 +260,8 @@ public class RatBoids : MonoBehaviour
 
         // Spatial grid setup
         gridCellSize = visualRange;
-        gridDimX = Mathf.FloorToInt(xBound * 2 / gridCellSize) + 31;
-        gridDimY = Mathf.FloorToInt(yBound * 2 / gridCellSize) + 31;
+        gridDimX = Mathf.FloorToInt(xBound * 2 / gridCellSize);
+        gridDimY = Mathf.FloorToInt(yBound * 2 / gridCellSize);
         gridTotalCells = gridDimX * gridDimY;
 
 
