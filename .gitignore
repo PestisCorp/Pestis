@@ -88,3 +88,4 @@ Pestis/Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fall
 
 leaderboard-backend/target/
 leaderboard-backend/*.json
+Pestis/*.csv

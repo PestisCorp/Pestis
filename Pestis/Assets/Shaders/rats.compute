@@ -62,6 +62,9 @@ uniform float poiGridCellSize;
 uniform uint poiGridDimX;
 uniform uint poiGridDimY;
 
+/// TopY, LeftX, BottomY, RightX
+RWStructuredBuffer<uint> gridBounds;
+
 // Left, Top, Right, Bottom
 // Holds uints, but their bits are actually floats, since the Atomic APIs only support ints
 // This is fine because we only compare for equality, and nothing else, so doesn't matter what the underlying bits represent
@@ -239,6 +242,14 @@ void UpdateBounds(uint3 id : SV_DispatchThreadID)
     if (id.x >= numBoids) return;
 
     Boid boid = boidsIn[id.x];
+
+    uint2 location = getGridLocation(boid);
+    if (location.y > gridBounds[0] || location.x < gridBounds[1] || location.y < gridBounds[2] || location.x >
+        gridBounds[3])
+    {
+        return;
+    }
+
     float left = asfloat(bounds[0]);
     while (boid.pos.x < left)
     {
@@ -265,5 +276,50 @@ void UpdateBounds(uint3 id : SV_DispatchThreadID)
     {
         InterlockedCompareStore(bounds[3], asuint(bottom), asuint(boid.pos.y));
         bottom = asfloat(bounds[3]);
+    }
+}
+
+
+#pragma kernel UpdateGridBounds
+[numthreads(20, 20, 1)]
+void UpdateGridBounds(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= gridDimX || id.y >= gridDimY) return;
+
+    // Check if cell is populated by checking offsets
+    uint cell = id.x + id.y * gridDimX;
+    uint start = gridOffsetBuffer[cell];
+    uint end = gridOffsetBuffer[cell + 1];
+    if (start == end)
+    {
+        return;
+    }
+
+    uint top = gridBounds[0];
+    while (id.y > top)
+    {
+        InterlockedCompareStore(gridBounds[0], top, id.y);
+        top = gridBounds[0];
+    }
+
+    uint left = gridBounds[1];
+    while (id.x < left)
+    {
+        InterlockedCompareStore(gridBounds[1], left, id.x);
+        left = gridBounds[1];
+    }
+
+    uint bottom = gridBounds[2];
+    while (id.y < bottom)
+    {
+        InterlockedCompareStore(gridBounds[2], bottom, id.y);
+        bottom = gridBounds[2];
+    }
+
+    uint right = gridBounds[3];
+    while (id.x > right)
+    {
+        InterlockedCompareStore(gridBounds[3], right, id.x);
+        right = gridBounds[3];
     }
 }

@@ -118,6 +118,7 @@ public class BenchmarkManager : MonoBehaviour
     private void Start()
     {
         Debug.Log("Starting benchmark manager...");
+        Debug.Log($"Supports Async Compute: {SystemInfo.supportsAsyncCompute}");
         _hordeSpawnPositions = CalculateHordeSpawnPositions();
         Debug.Log("Calculated horde spawn positions.");
     }
