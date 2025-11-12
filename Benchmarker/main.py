@@ -5,9 +5,9 @@ import json
 
 # Get CSVs from game directory
 profiles = {}
-for filename in os.listdir('../Pestis'):
+for filename in os.listdir('../Builds'):
     if filename.endswith('.csv'):
-        with open(os.path.join('../Pestis', filename), 'r') as file:
+        with open(os.path.join('../Builds', filename), 'r') as file:
             df = pd.read_csv(file)
 
             profiles[filename.split("-")[1]] = (df, filename)
@@ -18,7 +18,7 @@ profile_name = input("Enter profile name: ")
 os.makedirs(profile_name, exist_ok=True)
 
 profile = profiles[latest_profile][0]
-os.rename(f"../Pestis/{profiles[latest_profile][1]}", f"{profile_name}/data.csv")
+os.rename(f"../Builds/{profiles[latest_profile][1]}", f"{profile_name}/data.csv")
 
 new = pd.DataFrame()
 new["Average"] = df.groupby("TotalRats")["FPS"].mean()
