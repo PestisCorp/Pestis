@@ -77,11 +77,11 @@ uint getPOIGridID(Boid boid)
     return (poiGridDimX * y) + x;
 }
 
-uint2 getGridLocation(Boid boid)
+int2 getGridLocation(Boid boid)
 {
     int x = floor(boid.pos.x / gridCellSize + gridDimX / 2);
     int y = floor(boid.pos.y / gridCellSize + gridDimY / 2);
-    return uint2(x, y);
+    return int2(x, y);
 }
 
 /// Get Grid Index from 2D grid coordinate
@@ -90,41 +90,38 @@ uint getGridID(uint2 pos)
     return (gridDimX * pos.y) + pos.x;
 }
 
-void MergedBehaviours(inout Boid boid, uint3 id)
+groupshared Boid threadGroupBoids[blockSize];
+
+void MergedBehaviours(inout Boid boid, uint3 thread_id, uint3 group_id,
+                      uint3 group_thread_id)
 {
     float2 close = 0;
     float2 avgVel = 0;
     uint neighbours = 0;
 
-    uint2 gridXY = getGridLocation(boid);
-    uint cell = getGridID(gridXY);
+    int2 gridXY = getGridLocation(boid);
 
-    // Loop row above, current row, row below
-    for (uint y = cell - gridDimX; y <= cell + gridDimX; y += gridDimX)
+    for (uint i = 0; i < blockSize && i + group_id.x * blockSize < numBoids; i++)
     {
-        // y-2 because that gives last index of boid in y-2, i.e. first index of boid in y-1
-        uint start = gridOffsetBuffer[y - 2];
-        uint end = gridOffsetBuffer[y + 1];
-        // Loop boids in left, center, right grid cells
-        for (uint i = start; i < end; i++)
+        Boid other = threadGroupBoids[i];
+        int2 otherGridXY = getGridLocation(other);
+        uint2 distance = abs(gridXY - otherGridXY);
+        if (other.dead || i == thread_id.x || any(distance > uint2(1, 1)))
+        // Don't change behaviour because of corpses
         {
-            Boid other = boidsIn[i];
-            if (other.dead || i == id.x) // Don't change behaviour because of corpses
-            {
-                continue;
-            }
-            float2 diff = boid.pos - other.pos;
-            // To never be 0
-            float distSq = dot(diff, diff) + 0.001;
-
-            close += (diff / distSq) * (-sign(distSq - minDistanceSq) + 0.99f);
-
-            avgVel += other.vel;
-            neighbours++;
+            continue;
         }
+        float2 diff = boid.pos - other.pos;
+        // To never be 0
+        float distSq = dot(diff, diff) + 0.001;
+
+        close += (diff / distSq) * (-sign(distSq - minDistanceSq) + 0.99f);
+
+        avgVel += other.vel;
+        neighbours++;
     }
 
-    cell = getPOIGridID(boid);
+    uint cell = getPOIGridID(boid);
 
     float2 poiClose;
     // Loop row above, current row, row below
@@ -169,35 +166,38 @@ void LimitSpeed(inout Boid boid)
     boid.vel *= clampedSpeed / speed;
 }
 
-#pragma kernel UpdateBoidsVelocity // ID 0
+#pragma kernel UpdateBoidsVelocity
 [numthreads(blockSize, 1, 1)]
-void UpdateBoidsVelocity(uint3 id : SV_DispatchThreadID)
+void UpdateBoidsVelocity(uint3 thread_id : SV_DispatchThreadID, uint3 group_id: SV_GroupID,
+                         uint3 group_thread_id: SV_GroupThreadID)
 {
-    if (id.x >= numBoids)
+    Boid boid = boidsIn[thread_id.x];
+    threadGroupBoids[group_thread_id.x] = boid;
+    GroupMemoryBarrierWithGroupSync();
+
+    if (thread_id.x >= numBoids)
     {
         // Freshly died
-        if (id.x < numBoidsPrevious && combatRats)
+        if (thread_id.x < numBoidsPrevious && combatRats)
         {
-            Boid boid = boidsIn[id.x];
+            Boid boid = boidsIn[thread_id.x];
             boid.dead = true;
-            boidsOut[id.x] = boid;
+            boidsOut[thread_id.x] = boid;
         }
 
         return;
     }
 
 
-    Boid boid = boidsIn[id.x];
-
     // Initialise new boid
-    if (id.x >= numBoidsPrevious)
+    if (thread_id.x >= numBoidsPrevious)
     {
         boid.player = player;
         boid.horde = horde;
         boid.dead = false;
         if (numBoidsPrevious == 0)
         {
-            boid.pos = float2(targetPosX + (id.x / 1000.0f), targetPosY);
+            boid.pos = float2(targetPosX + (thread_id.x / 1000.0f), targetPosY);
             boid.vel = float2(0, 0);
         }
         else
@@ -205,22 +205,22 @@ void UpdateBoidsVelocity(uint3 id : SV_DispatchThreadID)
             if (spawnPoint.x == 0 && spawnPoint.y == 0)
             {
                 float2 pos = boidsIn[floor(numBoidsPrevious / 2.0f)].pos;
-                boid.pos = float2(pos.x + (id.x / 1000.0f), pos.y + (numBoidsPrevious / 1000.0f));
+                boid.pos = float2(pos.x + (thread_id.x / 1000.0f), pos.y + (numBoidsPrevious / 1000.0f));
             }
             else
             {
-                boid.pos = float2(spawnPoint.x + (id.x / 1000.0f), spawnPoint.y + (numBoidsPrevious / 1000.0f));
+                boid.pos = float2(spawnPoint.x + (thread_id.x / 1000.0f), spawnPoint.y + (numBoidsPrevious / 1000.0f));
             }
-            boid.vel = float2(id.x / 1000.0f, id.x / 1000.0f);
+            boid.vel = float2(thread_id.x / 1000.0f, thread_id.x / 1000.0f);
         }
     }
 
-    MergedBehaviours(boid, id);
+    MergedBehaviours(boid, thread_id, group_id, group_thread_id);
     LimitSpeed(boid);
 
     // Update positions
     boid.pos += boid.vel * positionDeltaTime;
-    boidsOut[id.x] = boid;
+    boidsOut[thread_id.x] = boid;
 }
 
 #pragma kernel UpdateBoidsPositions
