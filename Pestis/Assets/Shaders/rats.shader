@@ -4,14 +4,8 @@ Shader "Unlit/boidShader"
     {
         _Colour ("Colour", Color) = (1, 1, 0, 0)
         _Scale ("Scale", Float) = 0.1
-        _RatUp ("Rat Up", 2D) = "yellow"
-        _RatUpRight ("Rat Up-Right", 2D) = "grey"
-        _RatRight ("Rat Right", 2D) = "grey"
-        _RatDownRight ("Rat Down-Right", 2D) = "grey"
-        _RatDown ("Rat Down", 2D) = "grey"
-        _RatDownLeft ("Rat Down-Left", 2D) = "grey"
-        _RatLeft ("Rat Left", 2D) = "grey"
-        _RatUpLeft ("Rat Up-Left", 2D) = "grey"
+        // [Up, UpRight, Right, DownRight, Down]
+        _MainTex ("Texture Array", 2DArray) = "" {}
     }
     SubShader
     {
@@ -26,6 +20,7 @@ Shader "Unlit/boidShader"
             #include "UnityCG.cginc"
             #pragma vertex vert
             #pragma fragment frag
+            #pragma require 2darray
 
             struct Boid
             {
@@ -58,8 +53,7 @@ Shader "Unlit/boidShader"
 
             struct other
             {
-                float2 uv;
-                int sprite;
+                float3 uv;
                 bool dead;
             };
 
@@ -75,61 +69,73 @@ Shader "Unlit/boidShader"
                 uint instanceID = vertexID / 4;
                 Boid boid = boids[instanceID];
                 float2 pos = _Positions[vertexID - instanceID * 4];
-                //rotate2D(pos, boid.vel);
                 v2f o;
                 o.pos = UnityWorldToClipPos(float4(pos + boid.pos, 0, 0));
                 o.otherData.dead = boid.dead;
                 if (vertexID % 4 == 0)
                 {
-                    o.otherData.uv = float2(0, 0);
+                    o.otherData.uv = float3(0, 0, 0);
                 }
                 else if (vertexID % 4 == 1)
                 {
-                    o.otherData.uv = float2(0, 1);
+                    o.otherData.uv = float3(0, 1, 0);
                 }
                 else if (vertexID % 4 == 2)
                 {
-                    o.otherData.uv = float2(1, 1);
+                    o.otherData.uv = float3(1, 1, 0);
                 }
                 else
                 {
-                    o.otherData.uv = float2(1, 0);
+                    o.otherData.uv = float3(1, 0, 0);
                 }
 
+                // Up
                 if (boid.vel.x > 0 && boid.vel.y > 0 && boid.vel.y > boid.vel.x)
                 {
-                    o.otherData.sprite = 0;
+                    o.otherData.uv.z = 0;
                 }
+                // UpRight
                 else if (boid.vel.x > 0 && boid.vel.y > 0)
                 {
-                    o.otherData.sprite = 1;
+                    o.otherData.uv.z = 1;
                 }
+                // Right
                 else if (boid.vel.x > 0 && boid.vel.y < 0 && boid.vel.x > -boid.vel.y)
                 {
-                    o.otherData.sprite = 2;
+                    o.otherData.uv.z = 2;
                 }
+                // DownRight
                 else if (boid.vel.x > 0 && boid.vel.y < 0)
                 {
-                    o.otherData.sprite = 3;
+                    o.otherData.uv.z = 3;
                 }
+                // Down
                 else if (boid.vel.x < 0 && boid.vel.y < 0 && boid.vel.y < boid.vel.x)
                 {
-                    o.otherData.sprite = 4;
+                    o.otherData.uv.z = 4;
                 }
+                // DownLeft
                 else if (boid.vel.x < 0 && boid.vel.y < 0)
                 {
-                    o.otherData.sprite = 5;
+                    o.otherData.uv.z = 3;
+                    o.otherData.uv.x = 1.0 - o.otherData.uv.x;
                 }
+                // Left
                 else if (boid.vel.x < 0 && boid.vel.y > 0 && -boid.vel.x > boid.vel.y)
                 {
-                    o.otherData.sprite = 6;
+                    o.otherData.uv.z = 2;
+                    o.otherData.uv.x = 1.0 - o.otherData.uv.x;
                 }
+                // UpLeft
                 else if (boid.vel.x < 0 && boid.vel.y > 0)
                 {
-                    o.otherData.sprite = 7;
+                    o.otherData.uv.z = 1;
+                    o.otherData.uv.x = 1.0 - o.otherData.uv.x;
                 }
                 return o;
             }
+
+            UNITY_DECLARE_TEX2DARRAY(_MainTex);
 
             fixed4 frag(v2f i) : SV_Target
             {
@@ -138,27 +144,7 @@ Shader "Unlit/boidShader"
                     return _Colour;
                 }
 
-                switch (i.otherData.sprite)
-                {
-                case 0:
-                    return tex2D(_RatUp, i.otherData.uv);
-                case 1:
-                    return tex2D(_RatUpRight, i.otherData.uv);
-                case 2:
-                    return tex2D(_RatRight, i.otherData.uv);
-                case 3:
-                    return tex2D(_RatDownRight, i.otherData.uv);
-                case 4:
-                    return tex2D(_RatDown, i.otherData.uv);
-                case 5:
-                    return tex2D(_RatDownLeft, i.otherData.uv);
-                case 6:
-                    return tex2D(_RatLeft, i.otherData.uv);
-                case 7:
-                    return tex2D(_RatUpLeft, i.otherData.uv);
-                default:
-                    return _Colour;
-                }
+                return UNITY_SAMPLE_TEX2DARRAY(_MainTex, i.otherData.uv);
             }
             ENDCG
         }

@@ -44,14 +44,7 @@ public class RatBoids : MonoBehaviour
     /// </summary>
     private static readonly int INITIAL_BOID_MEMORY_ALLOCATION = 2048;
 
-    private static readonly int RatLeft = Shader.PropertyToID("_RatLeft");
-    private static readonly int RatUp = Shader.PropertyToID("_RatUp");
-    private static readonly int RatUpLeft = Shader.PropertyToID("_RatUpLeft");
-    private static readonly int RatDownLeft = Shader.PropertyToID("_RatDownLeft");
-    private static readonly int RatDown = Shader.PropertyToID("_RatDown");
-    private static readonly int RatRight = Shader.PropertyToID("_RatRight");
-    private static readonly int RatUpRight = Shader.PropertyToID("_RatUpRight");
-    private static readonly int RatDownRight = Shader.PropertyToID("_RatDownRight");
+    private static readonly int MainTex = Shader.PropertyToID("_MainTex");
     private static readonly int ReceivedBoidsThisFrame = Shader.PropertyToID("receivedBoidsThisFrame");
 
     [Header("Settings")] [SerializeField] private float maxSpeed = 2;
@@ -90,6 +83,8 @@ public class RatBoids : MonoBehaviour
     private float[] _boundsArr;
     private ComputeBuffer _boundsBuffer;
     private ComputeBuffer _gridBoundsBuffer;
+
+    private Sprite _leftSprite;
 
     private bool _started;
 
@@ -156,9 +151,11 @@ public class RatBoids : MonoBehaviour
     private float visualRangeSq => visualRange * visualRange;
     private float minDistanceSq => minDistance * minDistance;
 
+    // Runs before start
     private void Awake()
     {
         triangleVerts = getTriangleVerts();
+        SetBoidsMat();
     }
 
     // Start is called before the first frame update
@@ -702,6 +699,7 @@ public class RatBoids : MonoBehaviour
         var upLeftSprite = Resources.Load<Sprite>("Rats/UpLeft/rat_UpLeft_" + spriteID);
         var upRightSprite = FlipSprite(upLeftSprite);
         var leftSprite = Resources.Load<Sprite>("Rats/Left/rat_Left_" + spriteID);
+        _leftSprite = leftSprite;
         var rightSprite = FlipSprite(leftSprite);
         var downLeftSprite = Resources.Load<Sprite>("Rats/DownLeft/rat_DownLeft_" + spriteID);
         var downRightSprite = FlipSprite(downLeftSprite);
@@ -709,14 +707,16 @@ public class RatBoids : MonoBehaviour
 
         boidMat = new Material(boidMat);
 
-        boidMat.SetTexture(RatUp, upSprite.texture);
-        boidMat.SetTexture(RatUpLeft, upLeftSprite.texture);
-        boidMat.SetTexture(RatLeft, leftSprite.texture);
-        boidMat.SetTexture(RatDownLeft, downLeftSprite.texture);
-        boidMat.SetTexture(RatDown, downSprite.texture);
-        boidMat.SetTexture(RatRight, rightSprite.texture);
-        boidMat.SetTexture(RatUpRight, upRightSprite.texture);
-        boidMat.SetTexture(RatDownRight, downRightSprite.texture);
+        var textureArray = new Texture2DArray(64, 64, 5, TextureFormat.RGBA32, false);
+        textureArray.filterMode = FilterMode.Point;
+        textureArray.SetPixels(upSprite.texture.GetPixels(), 0);
+        textureArray.SetPixels(upRightSprite.texture.GetPixels(), 1);
+        textureArray.SetPixels(rightSprite.texture.GetPixels(), 2);
+        textureArray.SetPixels(downRightSprite.texture.GetPixels(), 3);
+        textureArray.SetPixels(downSprite.texture.GetPixels(), 4);
+        textureArray.Apply();
+
+        boidMat.SetTexture(MainTex, textureArray);
     }
 
     public Material GetMaterial()
@@ -726,7 +726,7 @@ public class RatBoids : MonoBehaviour
 
     public Sprite GetSpriteFromMat()
     {
-        var tex = boidMat.GetTexture(RatLeft) as Texture2D;
+        var tex = _leftSprite.texture;
         return Sprite.Create(tex, new Rect(0, 0, tex!.width, tex.height), new Vector2(0.5f, 0.5f));
     }
 

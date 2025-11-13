@@ -646,7 +646,6 @@ Count: {AliveRats}
                 textSize.localScale = new Vector3(0.85f, 0.85f, 0.85f);
             }
 
-            Boids.SetBoidsMat();
             if (CurrentCombatController)
             {
                 var boids = new Boid[AliveRats];
