@@ -3,6 +3,7 @@ services:
     ports:
       - "5173:5173"
     build: .
+    restart: always
 
   backend:
     ports:
@@ -10,3 +11,4 @@ services:
     build: ../leaderboard-backend
     volumes:
       - ../leaderboard-storage:/data
+    restart: always

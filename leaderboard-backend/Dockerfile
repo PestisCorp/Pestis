@@ -2,6 +2,7 @@ FROM rust:latest
 
 ADD ./src /app/src
 ADD ./Cargo.toml /app/Cargo.toml
+ADD ./Cargo.lock /app/Cargo.lock
 WORKDIR /app
 
 RUN cargo build --release
